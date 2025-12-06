@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圆的标准方程 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration --><script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <!-- MathJax Library --><script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0.25rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            overflow-x: auto;
+            text-align: center;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+
+            .print-grid-cols-2 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 --><div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">圆的标准方程</h1>
+                <p class="text-2xl text-slate-600 mt-4">从定义到应用</p>
+                <p class="mt-8 text-xl text-cyan-600 font-semibold">"抓住圆心和半径，就能“锁”住圆"</p>
+            </div>
+        </div>
+
+        <!-- 核心推导 --><div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-4">核心推导：圆的标准方程</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <p class="text-lg"><strong>定义：</strong>圆是到定点（圆心）的距离等于定长（半径）的点的集合。</p>
+                <ul class="list-disc list-inside mt-4 text-lg space-y-2">
+                    <li>设圆心为 $C(a, b)$。</li>
+                    <li>设半径为 $r$。</li>
+                    <li>设圆上任意一点为 $P(x, y)$。</li>
+                </ul>
+                <p class="text-lg mt-2">根据定义，点 P 必须满足：$|CP| = r$</p>
+                <p class="text-lg mt-2">使用两点间距离公式：$\sqrt{(x-a)^2 + (y-b)^2} = r$</p>
+                <p class="text-lg mt-2">两边平方，得到标准方程：</p>
+                 <div class="formula-box text-2xl my-4">
+                    $(x-a)^2 + (y-b)^2 = r^2$
+                </div>
+            </div>
+        </div>
+        
+        <!-- 方程的理解 (一) --><div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2 mb-4">方程的理解：“写”方程</h2>
+            <div class="w-full max-w-xl mx-auto">
+                <div class="bg-emerald-50 p-6 rounded-lg">
+                    <h3 class="font-bold text-lg">“写”方程：从圆心半径到方程</h3>
+                    <p class="text-base mt-2"><strong>例：</strong>圆心 $C(5, -1)$，半径 $r=4$。</p>
+                    <p class="text-base mt-1">代入 $(x - a)^2 + (y - b)^2 = r^2$</p>
+                    <p class="text-base mt-1">$(x - 5)^2 + (y - (-1))^2 = 4^2$</p>
+                    <p class="text-base mt-1 font-bold">$\implies (x-5)^2 + (y+1)^2 = 16$</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 方程的理解 (二) --><div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-rose-500 pb-2 mb-4">方程的理解：“读”方程 (易错点)</h2>
+            <div class="w-full max-w-xl mx-auto">
+                 <div class="bg-rose-50 p-6 rounded-lg">
+                    <h3 class="font-bold text-lg text-rose-800">“读”方程：从方程到圆心半径</h3>
+                    <p class="text-base mt-2"><strong>例：</strong>$(x+3)^2 + y^2 = 7$</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 进阶求解一 --><div class="section">
+             <div class="w-full max-w-5xl mx-auto"> <!-- 增大了宽度以容纳图像 --><h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-2">进阶求解(一)：圆心在直线上</h2>
+                <!-- 使用 grid 进行左右布局 --><div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6 items-center print-grid-cols-2">
+                    
+                    <!-- 左侧：SVG 图像 --><div class="w-full bg-sky-50 p-4 rounded-lg flex justify-center items-center aspect-square">
+                        <svg viewBox="0 0 100 100" class="w-full h-full">
+                            <!-- 坐标轴 --><line x1="10" y1="90" x2="90" y2="90" stroke="#9ca3af" stroke-width="0.5" /> <!-- X轴 --><line x1="10" y1="90" x2="10" y2="10" stroke="#9ca3af" stroke-width="0.5" /> <!-- Y轴 --><text x="92" y="91" font-size="4" class="fill-gray-500">x</text>
+                            <text x="8" y="8" font-size="4" class="fill-gray-500">y</text>
+                            <text x="8" y="91" font-size="4" class="fill-gray-500">O</text>
+
+                            <!-- 直线 y=x --><line x1="10" y1="90" x2="82" y2="18" stroke="#fb923c" stroke-width="1" stroke-dasharray="2 2" />
+                            <text x="83" y="17" font-size="4" class="fill-orange-500">y=x</text>
+
+                            <!-- 圆: C(4,4), r=sqrt(10) --><!-- r = sqrt(10) approx 3.16. Scaled R = 3.16 * 8 = 25.3 --><circle cx="42" cy="58" r="25.3" stroke="#0ea5e9" stroke-width="1" fill="none" />
+                            
+                            <!-- 点 --><!-- A(5, 1) -> (10 + 5*8, 90 - 1*8) = (50, 82) --><circle cx="50" cy="82" r="1.5" fill="#16a34a" /> 
+                            <text x="52" y="83" font-size="4" class="fill-green-700">A(5, 1)</text>
+                            
+                            <!-- B(1, 3) -> (10 + 1*8, 90 - 3*8) = (18, 66) --><circle cx="18" cy="66" r="1.5" fill="#16a34a" /> 
+                            <text x="20" y="67" font-size="4" class="fill-green-700">B(1, 3)</text>
+                            
+                            <!-- C(4, 4) -> (10 + 4*8, 90 - 4*8) = (42, 58) --><circle cx="42" cy="58" r="1.5" fill="#be123c" /> 
+                            <text x="44" y="59" font-size="4" class="fill-rose-700">C(4, 4)</text>
+
+                            <!-- 半径 (虚线) --><line x1="42" y1="58" x2="50" y2="82" stroke="#0ea5e9" stroke-width="0.5" stroke-dasharray="2 2" />
+                            <line x1="42" y1="58" x2="18" y2="66" stroke="#0ea5e9" stroke-width="0.5" stroke-dasharray="2 2" />
+                        </svg>
+                    </div>
+
+                    <!-- 右侧：文字解析 --><div class="text-base bg-sky-50 p-4 rounded-lg">
+                        <p class="font-bold text-lg">例：圆心在直线 $y=x$ 上，且经过 $A(5, 1)$ 和 $B(1, 3)$ 两点，求圆的方程。</p>
+                        <!-- 分析内容已删除 --></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 进阶求解二 --><div class="section">
+             <div class="w-full max-w-5xl mx-auto"> <!-- 增大了宽度以容纳图像 --><h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-rose-500 pb-2">进阶求解(二)：与坐标轴相切</h2>
+                <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6 items-center print-grid-cols-2">
+                    
+                    <!-- 左侧：SVG 图像 --><div class="w-full bg-rose-50 p-4 rounded-lg flex justify-center items-center aspect-square">
+                        <svg viewBox="0 0 100 100" class="w-full h-full">
+                            <!-- 坐标轴 --><line x1="10" y1="90" x2="90" y2="90" stroke="#9ca3af" stroke-width="0.5" /> <!-- X轴 --><line x1="10" y1="90" x2="10" y2="10" stroke="#9ca3af" stroke-width="0.5" /> <!-- Y轴 --><text x="92" y="91" font-size="4" class="fill-gray-500">x</text>
+                            <text x="8" y="8" font-size="4" class="fill-gray-500">y</text>
+                            <text x="8" y="91" font-size="4" class="fill-gray-500">O</text>
+
+                            <!-- 圆: C(6, 5), r=5 --><!-- C(6,5) -> (10 + 6*8, 90 - 5*8) = (58, 50) --><!-- r=5 -> R=5*8 = 40 --><circle cx="58" cy="50" r="40" stroke="#ec4899" stroke-width="1" fill="none" />
+                            
+                            <!-- 圆心 C(6, 5) --><circle cx="58" cy="50" r="1.5" fill="#be123c" /> 
+                            <text x="60" y="51" font-size="4" class="fill-rose-700">C(6, 5)</text>
+
+                            <!-- 与 X 轴的切点 (6,0) --><circle cx="58" cy="90" r="1.5" fill="#16a34a" /> 
+                            <text x="60" y="89" font-size="4" class="fill-green-700">切点(6,0)</text>
+
+                            <!-- 半径 (虚线) --><line x1="58" y1="50" x2="58" y2="90" stroke="#ec4899" stroke-width="0.5" stroke-dasharray="2 2" />
+                        </svg>
+                    </div>
+
+                    <!-- 右侧：文字解析 --><div class="text-base bg-rose-50 p-4 rounded-lg">
+                        <p class="font-bold text-lg">例：一个圆的圆心在 $C(6, 5)$，且与 $x$ 轴相切，求圆的方程。</p>
+                        <!-- 分析内容已删除 --></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题 1/4 --><div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (1/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                    <p class="font-semibold mb-2">1. 圆的标准方程为 $(x-2)^2 + (y+1)^2 = 9$，它的圆心和半径分别是？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) 圆心 $(2, -1)$，半径 $9$</p>
+                        <p>(B) 圆心 $(-2, 1)$，半径 $3$</p>
+                        <p>(C) 圆心 $(2, -1)$，半径 $3$</p>
+                        <p>(D) 圆心 $(-2, 1)$，半径 $9$</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题 2/4 --><div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (2/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                    <p class="font-semibold mb-2">2. 已知一个圆的圆心为 $C(0, -5)$，半径为 $2$，则该圆的标准方程是？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) $x^2 + (y-5)^2 = 4$</p>
+                        <p>(B) $x^2 + (y+5)^2 = 4$</p>
+                        <p>(C) $(x-5)^2 + y^2 = 2$</p>
+                        <p>(D) $x^2 + (y+5)^2 = 2$</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3/4 --><div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (3/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                     <p class="font-semibold mb-2">3. (计算题) 一个圆的圆心为 $C(3, -4)$，且该圆与 $x$ 轴相切，那么它的半径 $r$ 是多少？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) $3$</p>
+                        <p>(B) $4$</p>
+                        <p>(C) $5$</p>
+                        <p>(D) $-4$</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题 4/4 --><div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (4/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                     <p class="font-semibold mb-2">4. (计算题) 已知圆 $(x-3)^2 + y^2 = 1$，圆上一点 $M$ 到原点 $O(0, 0)$ 的最大距离是多少？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) $1$</p>
+                        <p>(B) $2$</p>
+                        <p>(C) $3$</p>
+                        <p>(D) $4$</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题解析 --><div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析</h2>
+                <div class="space-y-3 text-base">
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>1. 答案：C</strong></p>
+                        <p><strong>解析：</strong>对比 $(x-a)^2 + (y-b)^2 = r^2$。$a=2$, $b=-1$ (符号反读)。$r^2=9$, $r=3$ (开方)。圆心 $(2, -1)$，半径 $3$。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>2. 答案：B</strong></p>
+                        <p><strong>解析：</strong>代入公式 $(x-0)^2 + (y-(-5))^2 = 2^2$，整理得 $x^2 + (y+5)^2 = 4$。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>3. 答案：B</strong></p>
+                        <p><strong>解析：</strong>圆心 $C(3, -4)$ 到 $x$ 轴的距离等于其纵坐标的绝对值 $|-4| = 4$。与 $x$ 轴相切，则半径 $r=4$。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>4. 答案：D</strong></p>
+                        <p><strong>解析：</strong>圆心 $C(3, 0)$，半径 $r=1$。圆心到原点 $O(0,0)$ 的距离 $d = \sqrt{(3-0)^2+(0-0)^2} = 3$。圆上点到原点的最大距离 = $d + r = 3 + 1 = 4$。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 总结 --><div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8">课程总结</h2>
+                <p class="text-xl">今天我们只学了一个公式：</p>
+                <div class="formula-box text-2xl my-4">
+                    <strong>$(x-a)^2 + (y-b)^2 = r^2$</strong>
+                </div>
+                <p class="text-xl">无论题目多复杂，我们的目标永远是找到两个东西：</p>
+                <p class="text-3xl font-semibold text-center my-4 text-red-600">
+                    圆心 $(a, b)$ 和 半径 $r$！
+                </p>
+                <div class="mt-4 text-base bg-gray-50 p-4 rounded-lg text-left">
+                    <p class="font-bold">课后作业：</p>
+                    <p><strong>1. (基础)</strong> 求圆心在 $x$ 轴上，半径为 $5$，且经过点 $P(2, -3)$ 的圆的标准方程。</p>
+                    <p><strong>2. (进阶)</strong> 求以 $A(1, 5)$ 和 $B(7, -3)$ 为<strong>直径</strong>两端点的圆的方程。</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
+
+
+
+

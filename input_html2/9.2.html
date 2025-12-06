@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>等差数列 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <!-- MathJax Library -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0.25rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            overflow-x: auto;
+            text-align: center;
+        }
+        
+        .highlight-box {
+            background-color: #fffbe6;
+            border: 2px dashed #f59e0b;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">等差数列</h1>
+                <p class="text-2xl text-slate-600 mt-4">核心概念与四大公式</p>
+                <p class="mt-8 text-xl text-cyan-600 font-semibold">"万物皆可 $a_1$ 和 $d$。"</p>
+            </div>
+        </div>
+
+        <!-- 概念入门 -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-4">啥叫等差？(概念入门)</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <p class="text-lg"><strong>例子：</strong> (5, 10, 15, 20, ...)</p>
+                <p class="text-lg mt-4">“等差”就是“<strong>相等的差值</strong>”。</p>
+                <ul class="list-disc list-inside text-lg mt-2 space-y-2">
+                    <li>$10 - 5 = 5$</li>
+                    <li>$15 - 10 = 5$</li>
+                    <li>$20 - 15 = 5$</li>
+                </ul>
+                <p class="text-lg mt-2"><strong>核心三要素：</strong></p>
+                <ul class="list-disc list-inside text-lg mt-2 space-y-2">
+                    <li><strong>首项 ($a_1$)：</strong> 第一个大哥。($a_1 = 5$)</li>
+                    <li><strong>公差 ($d$)：</strong> 那个固定的差值。($d = 5$)
+                        <br><span class="text-red-600 text-base">（必须是 后项 - 前项）</span>
+                    </li>
+                    <li><strong>等差中项：</strong> 若 $A, B, C$ 成等差，则 $B$ 是中项。
+                        <br><strong>核心性质：$A + C = 2B$</strong></li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- 概念小抢答 (新增) -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-yellow-500 pb-2 mb-8">概念小抢答 (看你懂了没)</h2>
+            <div class="w-full max-w-4xl mx-auto text-lg">
+                
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg mb-4">
+                    <p class="font-semibold">问题一： 7, 7, 7, 7, ...这是不是等差数列？</p>
+                </div>
+                
+                <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg mb-8">
+                    <p><strong>答案：必须是！</strong> 咱来算公差：$7 - 7 = 0$。公差 $d = 0$。零也是一个“定值”啊！这种叫<strong>常数列</strong>，它也是等差数列的一种特殊情况。</p>
+                </div>
+                
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg mb-4">
+                    <p class="font-semibold">问题二： 100, 90, 80, 70, ...这是不是等差数列？</p>
+                </div>
+                
+                <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg">
+                    <p><strong>答案：也是！</strong> 咱来算公差：$90 - 100 = -10$。$80 - 90 = -10$。公差 $d = -10$。谁说公差不能是负数啦？</p>
+                </div>
+
+            </div>
+        </div>
+        
+        <!-- 啥叫“等差中项”？ (新增) -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-indigo-500 pb-2 mb-8">啥叫“等差中项”？</h2>
+            <div class="w-full max-w-4xl mx-auto text-lg">
+                <p>这个概念巨简单。如果有三个数，比如 $A, B, C$，它们仨排排坐，成了一个等差数列。</p>
+                <p class="mt-2">那么，中间这个 $B$，就叫做 $A$ 和 $C$ 的<strong>等差中项</strong>。</p>
+                
+                <p class="mt-4"><strong>比如：</strong> 100, 90, 80。 90 就是 100 和 80 的等差中项。</p>
+                
+                <p class="mt-4">它有个特别重要的性质：</p>
+                <div class="formula-box text-xl font-bold">
+                     $A + C = 2B$
+                </div>
+                
+                <p class="mt-4"><strong>为啥呢？</strong></p>
+                <p class="ml-4">因为 $B - A = d$，$C - B = d$。</p>
+                <p class="ml-4">所以 $B - A = C - B$，把 $B$ 移到一边，$A, C$ 移到另一边，不就是 $2B = A + C$ 吗？</p>
+                <p class="mt-4"><strong>说白了，中间项 $B$ 就是两边项 $A$ 和 $C$ 的平均值！</strong> $B = \frac{A+C}{2}$</p>
+            </div>
+        </div>
+
+        <!-- 通项公式 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-2 mb-4">核心武器：通项公式 ($a_n$)</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <p class="text-lg"><strong>例：</strong>求 (5, 10, 15...) 的第100项 $a_{100}$。</p>
+                <p class="text-lg ml-4 mb-4">$a_{100} = a_1 + (100-1)d = 5 + 99 \times 5 = 500$</p>
+
+                <p class="text-lg mt-4">第 $n$ 项，就是从 $a_1$ 的基础上跳了 $(n-1)$ 次公差。</p>
+                
+                <div class="formula-box text-xl font-bold">
+                    ✅ 公式一 (标准)： $a_n = a_1 + (n-1)d$
+                </div>
+                
+                <p class="text-lg mt-4"><strong>推论：</strong> $a_8$ 和 $a_3$ 差几个 $d$？差 $8-3=5$ 个 $d$。</p>
+                
+                <div class="formula-box text-xl font-bold">
+                    ✅ 公式二 (灵活)： $a_n = a_m + (n-m)d$
+                </div>
+
+            </div>
+        </div>
+        
+        <!-- 前n项和公式 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-2 mb-4">核心武器：前 $n$ 项和 ($S_n$)</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <p class="text-lg">求 (5, 10, ..., 500) 的前100项和 $S_{100}$。</p>
+                
+                <div class="formula-box text-xl font-bold">
+                    ✅ 公式三 (高斯公式)： $S_n = \frac{n(a_1 + a_n)}{2}$
+                </div>
+                <p class="text-lg mt-2 ml-4"><strong>应用：</strong> $S_{100} = \frac{100 \times (a_1 + a_{100})}{2} = \frac{100 \times (5 + 500)}{2} = 25250$</p>
+                <p class="text-lg mt-4"><strong>推导：</strong> 把 $a_n = a_1 + (n-1)d$ 代入公式三...</p>
+
+                <div class="formula-box text-xl font-bold">
+                    ✅ 公式四 (万能公式)： $S_n = na_1 + \frac{n(n-1)}{2}d$
+                </div>
+                 <p class="text-lg mt-2 ml-4"><strong>应用：</strong> 求 $S_n$ 只需要 $a_1$ 和 $d$。</p>
+            </div>
+        </div>
+
+        <!-- 解题思路 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-amber-500 pb-2">上战场！(解题思路)</h2>
+                 <div class="mt-4 text-lg space-y-4">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-xl text-gray-800">思路一：【万能法】</h3>
+                        <p class="mt-2">不管题目给啥，统统换成 $a_1$ 和 $d$ 解方程组。</p>
+                    </div>
+                    <div class="bg-indigo-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-xl text-indigo-800">思路二：【基准法 / 中项法】(推荐)</h3>
+                        <p class="mt-2">灵活运用等差中项性质。(见下页实例)</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 练习2 (S_n 应用) (新增) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-lime-500 pb-2">练习2 (感受 $S_n$ 公式的应用)</h2>
+                 <div class="mt-4 text-base bg-yellow-50 p-4 rounded-lg">
+                    <p class="font-bold text-lg">题目：已知等差数列 \(a_n\) 中， \(a_1 = 100\)， \(d = -5\)。求前10项和 \(S_{10}\)。</p>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 演练 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-amber-500 pb-2">实战演练</h2>
+                 <div class="mt-4 text-base bg-gray-50 p-4 rounded-lg">
+                    <p class="font-bold text-lg">题目：已知等差数列 \(a_n\) 中， \(S_7 = S_{12}\)。求 \(S_{19}\)。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1/4 -->
+        <div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (1/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                    <p class="font-semibold mb-2">1. 在等差数列 $5, 8, 11, 14, ...$ 中，公差 $d$ 是多少？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) 5</p>
+                        <p>(B) 3</p>
+                        <p>(C) -3</p>
+                        <p>(D) 8</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题 2/4 -->
+        <div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (2/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                    <p class="font-semibold mb-2">2. 已知 $x, 10, 20$ 是一个等差数列的三项，那么 $x$ 的值是？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) 5</p>
+                        <p>(B) 0</p>
+                        <p>(C) 15</p>
+                        <p>(D) 30</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3/4 -->
+        <div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (3/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                     <p class="font-semibold mb-2">3. 在一个等差数列中，首项 $a_1 = 2$，公差 $d = 4$，求第5项 $a_5$？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) 16</p>
+                        <p>(B) 18</p>
+                        <p>(C) 20</p>
+                        <p>(D) 22</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题 4/4 -->
+        <div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (4/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                     <p class="font-semibold mb-2">4. 在一个等差数列中，首项 $a_1 = 1$，末项 $a_{10} = 19$，求前10项和 $S_{10}$？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) 100</p>
+                        <p>(B) 190</p>
+                        <p>(C) 200</p>
+                        <p>(D) 95</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题解析 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析</h2>
+                <div class="space-y-3 text-base">
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>1. 答案：B</strong></p>
+                        <p><strong>解析：</strong>公差 $d$ = 后一项 - 前一项。$8 - 5 = 3$。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>2. 答案：B</strong></p>
+                        <p><strong>解析：</strong>根据等差中项性质 $A + C = 2B$。
+                        <br>$x + 20 = 2 \times 10 \implies x + 20 = 20 \implies x = 0$。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>3. 答案：B</strong></p>
+                        <p><strong>解析：</strong>用通项公式 $a_n = a_1 + (n-1)d$。
+                        <br>$a_5 = 2 + (5-1) \times 4 = 2 + 4 \times 4 = 18$。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>4. 答案：A</strong></p>
+                        <p><strong>解析：</strong>给了首项和末项，用高斯公式 $S_n = \frac{n(a_1 + a_n)}{2}$。
+                        <br>$S_{10} = \frac{10 \times (1 + 19)}{2} = \frac{10 \times 20}{2} = 100$。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 总结 -->
+         <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8">总结</h2>
+                <p class="text-xl">今日总结：四大公式（必须背）</p>
+                <div class="text-left text-lg mt-4 space-y-2 bg-gray-50 p-6 rounded-lg">
+                    <p>1. $a_n = a_1 + (n-1)d$ (标准)</p>
+                    <p>2. $a_n = a_m + (n-m)d$ (灵活)</p>
+                    <p>3. $S_n = \frac{n(a_1 + a_n)}{2}$ (首末)</p>
+                    <p>4. $S_n = na_1 + \frac{n(n-1)}{2}d$ (万能)</p>
+                </div>
+                <p class="text-xl mt-6">两大心法（必须会）</p>
+                 <div class="text-left text-lg mt-4 space-y-2 bg-gray-50 p-6 rounded-lg">
+                    <p>1. <strong>万能法：</strong> 统统换成 $a_1$ 和 $d$ 解方程。</p>
+                    <p>2. <strong>基准法：</strong> 活用等差中项性质 ($a_m + a_n = a_p + a_q$, 若 $m+n=p+q$)</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

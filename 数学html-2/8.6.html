@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>直线与圆的位置关系 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <!-- MathJax Library -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0.25rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            overflow-x: auto;
+            text-align: center;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+
+            /* === 新增：修复打印时SVG图像格式 === */
+            svg {
+                /* 强制打印SVG的颜色和填充 */
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            /* 强制浏览器在打印时将 flex 和 grid 容器
+               视为简单的块级元素，防止布局冲突 
+            */
+            .grid, .flex {
+                display: block !important;
+            }
+
+            /* 对于“核心判断”页的3列SVG，
+               让它们并排显示，而不是堆叠 
+            */
+            .core-judgment-svg-container {
+                 display: inline-block !important; /* 并排 */
+                 width: 32%; /* 大约 1/3 宽度 */
+                 vertical-align: top; /* 顶部对齐 */
+                 padding: 0.5rem;
+                 box-sizing: border-box;
+            }
+
+            /* 对于“核心模型”页的图文混排，
+               强制它们垂直堆叠并居中
+            */
+            .model-flex-container > div {
+                display: block !important;
+                width: 100% !important;
+                text-align: center;
+                margin-bottom: 1rem;
+            }
+            .model-flex-container svg {
+                margin: 0 auto; /* 居中SVG */
+            }
+            /* === 修复结束 === */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">直线与圆的位置关系</h1>
+                <p class="text-2xl text-slate-600 mt-4">从“看”到“算”</p>
+                <p class="mt-8 text-xl text-cyan-600 font-semibold">"一个圆，一条线，咱让他俩‘碰一碰’！"</p>
+            </div>
+        </div>
+
+        <!-- 核心判断 -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-4">核心判断： $d$ vs $r$</h2>
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <p class="text-xl">我们只比较两个量：圆心 $C$ 到直线 $l$ 的距离 (<strong>$d$</strong>) 和圆的半径 (<strong>$r$</strong>)。</p>
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <h3 class="font-bold text-xl text-gray-800">相离</h3>
+                        <p class="text-lg mt-2">(0个交点)</p>
+                        <p class="text-2xl font-bold text-blue-600 mt-2">$d > r$</p>
+                    </div>
+                    <div class="bg-emerald-100 p-4 rounded-lg">
+                        <h3 class="font-bold text-xl text-emerald-800">相交</h3>
+                        <p class="text-lg mt-2">(2个交点)</p>
+                        <p class="text-2xl font-bold text-emerald-600 mt-2">$d < r$</p>
+                    </div>
+                    <div class="bg-amber-100 p-4 rounded-lg">
+                        <h3 class="font-bold text-xl text-amber-800">相切</h3>
+                        <p class="text-lg mt-2">(1个交点)</p>
+                        <p class="text-2xl font-bold text-amber-600 mt-2">$d = r$</p>
+                    </div>
+                </div>
+                <p class="text-xl mt-8">下图为这三种情况的直观图像。👇</p>
+            </div>
+        </div>
+        
+        <!-- 核心判断 - 图像 -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-4">核心判断：直观图像</h2>
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- 相离 (添加了 new class) -->
+                    <div class="bg-gray-100 p-4 rounded-lg flex flex-col items-center core-judgment-svg-container">
+                        <h3 class="font-bold text-xl text-gray-800">相离 ($d > r$)</h3>
+                        <svg width="200" height="220" viewBox="0 0 200 220" class="mt-2">
+                            <!-- Circle -->
+                            <circle cx="100" cy="100" r="50" stroke="#3b82f6" stroke-width="2" fill="none" />
+                            <!-- Center -->
+                            <circle cx="100" cy="100" r="3" fill="#3b82f6" />
+                            <text x="105" y="95" font-size="14" fill="#3b82f6">C</text>
+                            <!-- Line l -->
+                            <line x1="20" y1="180" x2="180" y2="180" stroke="#000" stroke-width="2" />
+                            <text x="10" y="180" font-size="14" fill="#000">l</text>
+                            <!-- Radius r -->
+                            <line x1="100" y1="100" x2="100" y2="50" stroke="#22c55e" stroke-width="2" />
+                            <text x="105" y="75" font-size="14" fill="#22c55e">r</text>
+                            <!-- Distance d -->
+                            <line x1="100" y1="100" x2="100" y2="180" stroke="#ef4444" stroke-width="2" stroke-dasharray="4" />
+                            <text x="105" y="140" font-size="14" fill="#ef4444">d</text>
+                        </svg>
+                    </div>
+                    <!-- 相切 (添加了 new class) -->
+                    <div class="bg-amber-100 p-4 rounded-lg flex flex-col items-center core-judgment-svg-container">
+                        <h3 class="font-bold text-xl text-amber-800">相切 ($d = r$)</h3>
+                        <svg width="200" height="220" viewBox="0 0 200 220" class="mt-2">
+                            <!-- Circle -->
+                            <circle cx="100" cy="100" r="50" stroke="#3b82f6" stroke-width="2" fill="none" />
+                            <!-- Center -->
+                            <circle cx="100" cy="100" r="3" fill="#3b82f6" />
+                            <text x="105" y="95" font-size="14" fill="#3b82f6">C</text>
+                            <!-- Line l -->
+                            <line x1="20" y1="150" x2="180" y2="150" stroke="#000" stroke-width="2" />
+                            <text x="10" y="150" font-size="14" fill="#000">l</text>
+                            <!-- Distance d / Radius r -->
+                            <line x1="100" y1="100" x2="100" y2="150" stroke="#ef4444" stroke-width="2" />
+                            <text x="105" y="125" font-size="14" fill="#ef4444">d = r</text>
+                        </svg>
+                    </div>
+                    <!-- 相交 (添加了 new class) -->
+                    <div class="bg-emerald-100 p-4 rounded-lg flex flex-col items-center core-judgment-svg-container">
+                        <h3 class="font-bold text-xl text-emerald-800">相交 ($d < r$)</h3>
+                        <svg width="200" height="220" viewBox="0 0 200 220" class="mt-2">
+                            <!-- Circle -->
+                            <circle cx="100" cy="100" r="50" stroke="#3b82f6" stroke-width="2" fill="none" />
+                            <!-- Center -->
+                            <circle cx="100" cy="100" r="3" fill="#3b82f6" />
+                            <text x="105" y="95" font-size="14" fill="#3b82f6">C</text>
+                            <!-- Line l -->
+                            <line x1="20" y1="130" x2="180" y2="130" stroke="#000" stroke-width="2" />
+                            <text x="10" y="130" font-size="14" fill="#000">l</text>
+                            <!-- Radius r -->
+                            <line x1="100" y1="100" x2="140" y2="130" stroke="#22c55e" stroke-width="2" />
+                            <text x="120" y="105" font-size="14" fill="#22c55e">r</text>
+                            <!-- Distance d -->
+                            <line x1="100" y1="100" x2="100" y2="130" stroke="#ef4444" stroke-width="2" stroke-dasharray="4" />
+                            <text x="105" y="115" font-size="14" fill="#ef4444">d</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 模型一：相交 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2 mb-4">核心模型一：相交 ($d < r$) —— “弦长模型”</h2>
+            <div class="w-full max-w-4xl mx-auto"> <!-- 调整了布局 -->
+                <p class="text-lg text-center">当直线与圆相交于A, B两点，弦长为 $L$。连接圆心C与弦中点M。</p>
+                <p class="text-lg text-center">我们得到一个“黄金直角三角形” $\Delta CMA$。</p>
+                
+                <!-- (添加了 new class 'model-flex-container') -->
+                <div class="mt-6 flex flex-col md:flex-row items-center justify-around gap-6 model-flex-container">
+                    <!-- 图像 -->
+                    <div class="flex-shrink-0">
+                        <svg width="250" height="250" viewBox="0 0 250 250">
+                            <!-- 圆 -->
+                            <circle cx="125" cy="125" r="80" stroke="#3b82f6" stroke-width="2" fill="rgba(59, 130, 246, 0.05)" />
+                            <!-- 圆心 C -->
+                            <circle cx="125" cy="125" r="3" fill="#3b82f6" />
+                            <text x="130" y="120" font-size="16" fill="#3b82f6">C</text>
+                            
+                            <!-- 直线 l (弦 AB) -->
+                            <line x1="40" y1="185" x2="210" y2="185" stroke="#000" stroke-width="2" />
+                            
+                            <!-- 点 A -->
+                            <circle cx="72.085" cy="185" r="3" fill="#000" />
+                            <text x="62" y="205" font-size="16" fill="#000">A</text>
+                            <!-- 点 B -->
+                            <circle cx="177.915" cy="185" r="3" fill="#000" />
+                            <text x="172" y="205" font-size="16" fill="#000">B</text>
+                            
+                            <!-- 中点 M -->
+                            <circle cx="125" cy="185" r="3" fill="#ef4444" />
+                            <text x="120" y="205" font-size="16" fill="#ef4444">M</text>
+                            
+                            <!-- 三角形 CMA -->
+                            <!-- 半径 r (CA) -->
+                            <line x1="125" y1="125" x2="72.085" y2="185" stroke="#22c55e" stroke-width="2" />
+                            <text x="90" y="145" font-size="16" fill="#22c55e">r</text>
+                            
+                            <!-- 距离 d (CM) -->
+                            <line x1="125" y1="125" x2="125" y2="185" stroke="#ef4444" stroke-width="2" stroke-dasharray="4" />
+                            <text x="130" y="160" font-size="16" fill="#ef4444">d</text>
+                            
+                            <!-- 半弦长 L/2 (AM) -->
+                            <line x1="72.085" y1="185" x2="125" y2="185" stroke="#f59e0b" stroke-width="3" />
+                            <text x="90" y="175" font-size="16" fill="#f59e0b">L/2</text>
+                            
+                            <!-- 直角符号 -->
+                            <polyline points="125,175 115,175 115,185" fill="none" stroke="#ef4444" stroke-width="1.5" />
+                        </svg>
+                    </div>
+                    
+                    <!-- 文字说明 -->
+                    <div class="flex-grow md:pl-6">
+                        <p class="text-xl font-semibold text-slate-700">“黄金直角三角形” $\Delta CMA$:</p>
+                        <ul class="list-disc list-inside text-left text-lg mt-4 space-y-2">
+                            <li><strong class="text-green-600">斜边 $CA$</strong> = 半径 $r$</li>
+                            <li><strong class="text-red-600">直角边 $CM$</strong> = 距离 $d$</li>
+                            <li><strong class="text-amber-600">直角边 $AM$</strong> = 弦长的一半 $L/2$</li>
+                        </ul>
+                         <div class="formula-box text-2xl my-4">
+                            $(\frac{L}{2})^2 + d^2 = r^2$
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 弦长模型应用 (1/2) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-2">弦长模型应用 (1/2)：求弦长</h2>
+                 <div class="mt-4 text-base bg-sky-50 p-4 rounded-lg">
+                     <p class="font-bold text-lg">应用1：求弦长</p>
+                     <p><strong>例：</strong>圆 $(x-1)^2 + (y-2)^2 = 25$ 与直线 $y = 5$ 相交，求弦长 $L$。</p>
+                     <!-- 
+                     <p><strong>解：</strong>$C(1, 2)$, $r=5$。直线 $y-5=0$。
+                     <br>$d = \frac{|2 - 5|}{\sqrt{0^2+1^2}} = 3$。
+                     <br>代入公式：$(\frac{L}{2})^2 + 3^2 = 5^2 \implies (\frac{L}{2})^2 = 16 \implies \frac{L}{2} = 4$。
+                     <br><strong>弦长 $L = 8$。</strong></p>
+                     -->
+                 </div>
+            </div>
+        </div>
+
+        <!-- 弦长模型应用 (2/2) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-2">弦长模型应用 (2/2)：求参数</h2>
+                 <div class="mt-6 text-base bg-sky-50 p-4 rounded-lg">
+                     <p class="font-bold text-lg">应用2：求参数</p>
+                     <p><strong>例：</strong>圆 $C: (x-1)^2 + (y-2)^2 = 25$ ($r=5$)。直线 $l: 3x+4y+m=0$ 截得弦长 $L=6$。求 $m$。</p>
+                     <!-- 
+                     <p><strong>解：</strong>$L=6 \implies L/2 = 3$。
+                     <br>代入公式：$3^2 + d^2 = 5^2 \implies d = 4$。
+                     <br>另一方面, $d = \frac{|3(1) + 4(2) + m|}{\sqrt{3^2+4^2}} = \frac{|11 + m|}{5}$。
+                     <br>令 $\frac{|11 + m|}{5} = 4 \implies |11+m|=20$。
+                     <br><strong>$m = 9$ 或 $m = -31$。</strong></p>
+                     -->
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 模型二：相切 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-rose-500 pb-2 mb-4">核心模型二：相切 ($d = r$) —— “切线模型”</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <p class="text-lg text-center">当从圆外一点 $P$ 向圆作切线，切点为 $T$。连接圆心 $C$。</p>
+                <p class="text-lg text-center">我们得到一个“黄金直角三角形” $\Delta PCT$。</p>
+                
+                <!-- (添加了 new class 'model-flex-container') -->
+                <div class="mt-6 flex flex-col md:flex-row items-center justify-around gap-6 model-flex-container">
+                    <!-- 图像 -->
+                    <div class="flex-shrink-0">
+                        <svg width="250" height="250" viewBox="0 0 250 250">
+                            <!-- 圆 -->
+                            <circle cx="100" cy="125" r="60" stroke="#3b82f6" stroke-width="2" fill="rgba(59, 130, 246, 0.05)" />
+                            <!-- 圆心 C -->
+                            <circle cx="100" cy="125" r="3" fill="#3b82f6" />
+                            <text x="95" y="115" font-size="16" fill="#3b82f6">C</text>
+                            
+                            <!-- 点 P -->
+                            <circle cx="230" cy="125" r="3" fill="#000" />
+                            <text x="235" y="130" font-size="16" fill="#000">P</text>
+                            
+                            <!-- 点 T (切点) -->
+                            <circle cx="100" cy="65" r="3" fill="#ef4444" />
+                            <text x="95" y="60" font-size="16" fill="#ef4444">T</text>
+                            
+                            <!-- 三角形 PCT -->
+                            <!-- 半径 r (CT) -->
+                            <line x1="100" y1="125" x2="100" y2="65" stroke="#22c55e" stroke-width="2" />
+                            <text x="105" y="95" font-size="16" fill="#22c55e">r</text>
+                            
+                            <!-- 距离 PC -->
+                            <line x1="100" y1="125" x2="230" y2="125" stroke="#a855f7" stroke-width="2" />
+                            <text x="160" y="120" font-size="16" fill="#a855f7">PC</text>
+                            
+                            <!-- 切线长 PT -->
+                            <line x1="230" y1="125" x2="100" y2="65" stroke="#f59e0b" stroke-width="3" />
+                            <text x="165" y="90" font-size="16" fill="#f59e0b">PT (切线长)</text>
+                            
+                            <!-- 直角符号 -->
+                            <polyline points="100,75 110,75 110,65" fill="none" stroke="#ef4444" stroke-width="1.5" />
+                        </svg>
+                    </div>
+
+                    <!-- 文字说明 -->
+                    <div class="flex-grow md:pl-6">
+                        <p class="text-xl font-semibold text-slate-700">“黄金直角三角形” $\Delta PCT$:</p>
+                        <ul class="list-disc list-inside text-left text-lg mt-4 space-y-2">
+                            <li><strong class="text-green-600">直角边 $CT$</strong> = 半径 $r$ (切线性质)</li>
+                            <li><strong class="text-purple-600">斜边 $PC$</strong> = 圆心 $C$ 到点 $P$ 的距离</li>
+                            <li><strong class="text-amber-600">直角边 $PT$</strong> = <strong>切线长</strong></li>
+                        </ul>
+                        <div class="formula-box text-2xl my-4">
+                            $(PT)^2 + r^2 = (PC)^2$
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 切线应用 1 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-rose-500 pb-2">切线模型应用：求参数</h2>
+                 <div class="mt-4 text-base bg-rose-50 p-4 rounded-lg">
+                     <p class="font-bold text-lg">应用1：求参数 (相切 $\implies d=r$)</p>
+                     <p><strong>例：</strong>圆 $C: x^2 + y^2 = 4$ 与直线 $l: 3x+y+b=0$ 相切，求 $b$。</p>
+                     <!-- <p><strong>解：</strong>$C(0,0), r=2$。
+                     <br>$d = \frac{|3(0)+1(0)+b|}{\sqrt{3^2+1^2}} = \frac{|b|}{\sqrt{10}}$。
+                     <br>令 $d=r \implies \frac{|b|}{\sqrt{10}} = 2 \implies |b|=2\sqrt{10}$。
+                     <br><strong>$b = \pm 2\sqrt{10}$。</strong></p> -->
+                 </div>
+            </div>
+        </div>
+
+        <!-- 切线应用 2 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-rose-500 pb-2">切线模型应用：求切线长</h2>
+                 <div class="mt-6 text-base bg-rose-50 p-4 rounded-lg">
+                     <p class="font-bold text-lg">应用2：求切线长</p>
+                     <p><strong>例：</strong>从圆 $C: (x-1)^2+(y-2)^2=25$ ($r=5$) 外一点 $P(9,8)$ 向圆作切线，求切线长 $PT$。</p>
+                     <!-- <p><strong>解：</strong>套公式 $(PT)^2 + r^2 = (PC)^2$。
+                     <br>$r^2 = 25$。
+                     <br>$PC^2 = (9-1)^2 + (8-2)^2 = 8^2+6^2 = 100$。
+                     <br>$(PT)^2 + 25 = 100 \implies (PT)^2 = 75$。
+                     <br><strong>$PT = \sqrt{75} = 5\sqrt{3}$。</strong></p> -->
+                 </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1/4 -->
+        <div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (1/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                    <p class="font-semibold mb-2">1. 已知圆 $C$ 的半径 $r = 3$，圆心 $C$ 到直线 $l$ 的距离 $d = 2$，则直线 $l$ 与圆 $C$ 的位置关系是？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) 相离</p>
+                        <p>(B) 相切</p>
+                        <p>(C) 相交</p>
+                        <p>(D) 无法判断</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题 2/4 -->
+        <div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (2/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                    <p class="font-semibold mb-2">2. 直线 $y = kx + 1$ 与圆 $x^2 + y^2 = 1$ 相切，则 $k$ 的值是？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) 1</p>
+                        <p>(B) $\pm 1$</p>
+                        <p>(C) 0</p>
+                        <p>(D) 2</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3/4 -->
+        <div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (3/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                     <p class="font-semibold mb-2">3. 圆 $(x-1)^2 + y^2 = 4$ 被直线 $x = 2$ 截得的弦长为？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) 2</p>
+                        <p>(B) 4</p>
+                        <p>(C) $\sqrt{3}$</p>
+                        <p>(D) $2\sqrt{3}$</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题 4/4 -->
+        <div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (4/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                     <p class="font-semibold mb-2">4. 从圆 $x^2 + y^2 = 9$ 外一点 $P(5, 0)$ 向圆引切线，切线长为？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) 3</p>
+                        <p>(B) 4</p>
+                        <p>(C) 5</p>
+                        <p>(D) 16</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题解析 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析</h2>
+                <div class="space-y-3 text-base">
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>1. 答案：C</strong></p>
+                        <p><strong>解析：</strong>半径 $r=3$, 距离 $d=2$。因为 $d < r$ ($2 < 3$)，所以直线与圆相交。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>2. 答案：C</strong></p>
+                        <p><strong>解析：</strong>圆心 $C(0,0), r=1$。直线 $kx-y+1=0$。相切 $\implies d=r$。
+                        <br>$d = \frac{|k(0)-(0)+1|}{\sqrt{k^2+(-1)^2}} = \frac{1}{\sqrt{k^2+1}}$。
+                        <br>令 $d=r \implies \frac{1}{\sqrt{k^2+1}} = 1 \implies k^2+1=1 \implies k=0$。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>3. 答案：D</strong></p>
+                        <p><strong>解析：</strong>圆心 $C(1,0), r=2$。直线 $x-2=0$。
+                        <br>距离 $d = \frac{|1-2|}{\sqrt{1^2+0^2}} = 1$。
+                        <br>弦长模型：$(\frac{L}{2})^2 + d^2 = r^2 \implies (\frac{L}{2})^2 + 1^2 = 2^2 \implies (\frac{L}{2})^2 = 3$。
+                        <br>$L/2 = \sqrt{3} \implies L = 2\sqrt{3}$。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>4. 答案：B</strong></p>
+                        <p><strong>解析：</strong>圆心 $C(0,0), r=3$。点 $P(5,0)$。
+                        <br>圆心到点P距离 $PC = \sqrt{(5-0)^2+(0-0)^2} = 5$。
+                        <br>切线长 $PT$ 满足 $(PT)^2 + r^2 = (PC)^2 \implies (PT)^2 + 3^2 = 5^2$。
+                        <br>$(PT)^2 = 25-9=16 \implies PT=4$。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 总结页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">五、晚节撒花！（总结）</h2>
+                <p class="text-xl text-center mb-6">好啦，同学们！今天咱把直线和圆的关系彻底搞明白了！</p>
+                <p class="text-2xl font-semibold text-center mb-6">咱总结一下，所有题，不管多花哨，咱就抓两个模型：</p>
+                
+                <div class="space-y-6">
+                    <!-- 模型一总结 -->
+                    <div class="bg-emerald-50 border-l-4 border-emerald-500 p-6 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-bold text-emerald-800 mb-3">1. 遇到相交、求弦长</h3>
+                        <p class="text-xl">
+                            立马画“<strong class="text-emerald-600">垂径定理三角形</strong>” ($r, d, L/2$)，
+                            <br>用勾股定理：
+                        </p>
+                        <div class="formula-box text-2xl my-3 !border-emerald-500">
+                            $(\frac{L}{2})^2 + d^2 = r^2$
+                        </div>
+                    </div>
+                    
+                    <!-- 模型二总结 -->
+                    <div class="bg-rose-50 border-l-4 border-rose-500 p-6 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-bold text-rose-800 mb-3">2. 遇到相切、求切线长</h3>
+                        <p class="text-xl">
+                            立马画“<strong class="text-rose-600">切线性质三角形</strong>” ($r, PT, PC$)，
+                            <br>用勾股定理：
+                        </p>
+                        <div class="formula-box text-2xl my-3 !border-rose-500">
+                            $(PT)^2 + r^2 = (PC)^2$
+                        </div>
+                    </div>
+                </div>
+                
+                <p class="text-2xl text-center text-slate-700 mt-10 font-semibold">
+                    解析几何，就是把“形”变成“数”。
+                    <br>
+                    看准模型，大胆去算！
+                </p>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

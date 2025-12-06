@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>元素周期律</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+
+        /* 元素周期表样式 */
+        .ptable-container {
+            overflow-x: auto; /* 允许在小屏幕上水平滚动 */
+            -webkit-overflow-scrolling: touch;
+        }
+        .ptable {
+            display: grid;
+            grid-template-columns: repeat(18, minmax(0, 1fr));
+            grid-auto-rows: 1fr; /* 确保行高一致 */
+            gap: 0.25rem; /* 4px */
+            width: 100%;
+            min-width: 700px; /* 保证表格最小宽度 */
+            margin: 1rem auto 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-size: 0.7rem; /* 减小字体 */
+        }
+        .ptable-cell {
+            position: relative;
+            padding-top: 100%; /* 保持1:1宽高比 */
+            border-radius: 0.25rem;
+            font-weight: bold;
+            display: flex; /* 使用flex以防内容为空 */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.2s ease-in-out;
+        }
+        .ptable-cell:hover {
+             transform: scale(1.1);
+             z-index: 10;
+             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+             border-color: rgba(0,0,0,0.2);
+        }
+        .ptable-cell-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0.1rem;
+            line-height: 1.1;
+            text-align: center;
+        }
+        .ptable-cell .number {
+            font-size: 0.7em; /* 稍大的原子序数 */
+            position: absolute;
+            top: 0.2rem;
+            left: 0.2rem;
+            color: rgba(0,0,0,0.6);
+        }
+        .ptable-cell .symbol {
+            font-size: 1.15em; /* 稍大的符号 */
+        }
+        .ptable-cell .name {
+            font-size: 0.6em; /* 最小的中文名 */
+            font-weight: 500;
+        }
+        
+        /* 对于名称较长的未知元素 */
+        .ptable-cell .name-long {
+            font-size: 0.45em;
+            font-weight: 500;
+            line-height: 1;
+            margin-top: 1px;
+        }
+
+        /* 元素类别颜色 */
+        .cat-alkali { background-color: #fde68a; border-color: #fde68a; color: #78350f; } /* amber-300 */
+        .cat-alkaline { background-color: #fef08a; border-color: #fef08a; color: #713f12; } /* yellow-300 */
+        .cat-lanthanide { background-color: #fcd34d; border-color: #fcd34d; color: #78350f; } /* amber-400 */
+        .cat-actinide { background-color: #fca5a5; border-color: #fca5a5; color: #7f1d1d; } /* red-300 */
+        .cat-transition { background-color: #fecdd3; border-color: #fecdd3; color: #881337; } /* rose-200 */
+        .cat-post-transition { background-color: #bfdbfe; border-color: #bfdbfe; color: #1e3a8a; } /* blue-200 */
+        .cat-metalloid { background-color: #bbf7d0; border-color: #bbf7d0; color: #14532d; } /* green-200 */
+        .cat-nonmetal { background-color: #a5f3fc; border-color: #a5f3fc; color: #083344; } /* cyan-200 */
+        .cat-noble-gas { background-color: #c7d2fe; border-color: #c7d2fe; color: #312e81; } /* indigo-200 */
+        .cat-unknown { background-color: #d1d5db; border-color: #d1d5db; color: #1f2937; } /* gray-300 */
+
+        /* 占位符 */
+        .ptable-gap {
+             /* 透明单元格 */
+             border: none;
+             padding: 0;
+        }
+        .ptable-cell.el-57-71, .ptable-cell.el-89-103 {
+            font-size: 0.8em;
+            line-height: 1;
+        }
+        
+        /* 镧系锕系标签 */
+        .ptable-series-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+            background-color: #f3f4f6;
+            border-radius: 0.25rem;
+            border: 1px dashed #d1d5db;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-teal-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c1.355 0 2.707-.157 4.018-.443M12 21c-1.355 0-2.707-.157-4.018-.443M3.284 14.253A9.004 9.004 0 0012 21.001A9.004 9.004 0 0020.716 14.253M12 3c1.355 0 2.707.157 4.018.443m-8.036 0A9.004 9.004 0 0112 3c1.355 0 2.707.157 4.018.443m0 0A9.004 9.004 0 0120.716 9.747M3.284 9.747A9.004 9.004 0 0012 3.001A9.004 9.004 0 003.284 9.747m17.432 4.506A9.004 9.004 0 0112 21.001c-2.305 0-4.408-.867-6-2.292m8.036-14.453c1.355 0 2.707.157 4.018.443m-8.036 0c-1.355 0-2.707.157-4.018.443m16.072 0A9.004 9.004 0 0112 3.001c-2.305 0-4.408.867-6 2.292m8.036 0c1.355 0 2.707.157 4.018.443" />
+                </svg>
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">元素周期律</h1>
+                <p class="text-2xl text-slate-600 mt-2">—— 解读化学世界的“密码”</p>
+            </div>
+        </div>
+
+        <!-- 电子排布规律 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-blue-500 rounded"></span>核外电子排布的周期性</h2>
+                <p class="mt-8 text-xl text-slate-700">随着原子序数的递增，元素原子的<strong class="text-blue-600">最外层电子数</strong>呈现出从 <strong class="text-red-600">1 → 8</strong> 的周期性变化。</p>
+                <div class="mt-8 bg-blue-50 border border-blue-200 p-8 rounded-lg text-lg text-slate-700 space-y-4">
+                    <p><strong>第二周期：</strong>Li (1) → Ne (8)</p>
+                    <p><strong>第三周期：</strong>Na (1) → Ar (8)</p>
+                </div>
+                 <p class="mt-6 text-xl text-slate-600"><strong>结论：</strong>正是这种电子排布的周期性变化，导致了元素性质也呈现出周期性变化。</p>
+            </div>
+        </div>
+
+        <!-- 化合价规律 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>主要化合价的周期性</h2>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-teal-50 border border-teal-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-teal-800 text-xl">最高正价</h3>
+                        <p class="mt-3 text-slate-600">一般情况下，<strong class="text-red-600">最高正价 = 主族序数</strong>。</p>
+                        <p class="mt-2 text-slate-600"><strong>例外：</strong><strong class="text-red-600">O</strong> 没有最高正价，<strong class="text-red-600">F</strong> 只有-1价，没有正价。</p>
+                    </div>
+                    <div class="bg-purple-50 border border-purple-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-purple-800 text-xl">最低负价</h3>
+                         <p class="mt-3 text-slate-600">对于非金属，<strong class="text-red-600">最低负价 = 主族序数 - 8</strong>。</p>
+                         <p class="mt-2 text-slate-600"><strong>例如：</strong>N元素为VA族，最低负价为 5-8 = -3价。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 原子半径规律 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>原子半径的周期性</h2>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-sky-50 border border-sky-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-sky-800 text-xl">同周期 (从左到右)</h3>
+                        <p class="mt-3 text-slate-600">电子层数相同，核电荷数递增，原子核对核外电子的吸引力增强，导致原子半径<strong class="text-red-600">逐渐减小</strong>。</p>
+                    </div>
+                    <div class="bg-orange-50 border border-orange-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-orange-800 text-xl">同主族 (从上到下)</h3>
+                         <p class="mt-3 text-slate-600">核外电子层数递增，电子层数的影响是主要因素，导致原子半径<strong class="text-red-600">逐渐增大</strong>。</p>
+                    </div>
+                </div>
+                 <p class="mt-6 text-xl text-slate-600"><strong>总结：</strong>除0族外，原子半径最小的是<strong class="text-sky-700">F</strong>(H除外)，最大的是<strong class="text-orange-700">Cs</strong>(Fr除外)。短周期主族中半径最大的是<strong class="text-orange-700">Na</strong>。</p>
+            </div>
+        </div>
+
+        <!-- 离子半径规律 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>离子半径的比较规律</h2>
+                 <div class="mt-8 space-y-4">
+                     <div class="bg-indigo-50 border border-indigo-200 p-4 rounded-lg">
+                         <h3 class="font-bold text-indigo-800 text-lg">1. 同种元素：电子数越多，半径越大</h3>
+                         <p class="mono text-center text-slate-600 mt-2">Fe³⁺ < Fe < Fe²⁺ (错误示例，应为 Fe³⁺ < Fe²⁺)</p>
+                         <p class="mono text-center text-slate-600 mt-2">Cl⁻ > Cl</p>
+                     </div>
+                    <div class="bg-indigo-50 border border-indigo-200 p-4 rounded-lg">
+                         <h3 class="font-bold text-indigo-800 text-lg">2. 电子层结构相同：核电荷数越大，半径越小 (序大径小)</h3>
+                         <p class="mono text-center text-slate-600 mt-2">O²⁻ > F⁻ > Na⁺ > Mg²⁺ > Al³⁺</p>
+                     </div>
+                     <div class="bg-indigo-50 border border-indigo-200 p-4 rounded-lg">
+                        <h3 class="font-bold text-indigo-800 text-lg">3. 同主族离子：电子层数越多，半径越大</h3>
+                        <p class="mono text-center text-slate-600 mt-2">Li⁺ < Na⁺ < K⁺</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新增：元素周期表全览 -->
+        <div class="section">
+            <div class="w-full max-w-7xl mx-auto px-2"> <!-- 使用max-w-7xl以容纳更宽的表格 -->
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2 mb-6 text-center"><span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/4 h-1 bg-cyan-500 rounded"></span>元素周期表全览</h2>
+                
+                <!-- 表格容器 -->
+                <div class="ptable-container">
+                    <div class="ptable">
+                        <!-- 第1周期 -->
+                        <div class="ptable-cell cat-nonmetal" style="grid-column-start: 1; grid-row-start: 1;"><div class="ptable-cell-content"><span class="number">1</span><span class="symbol">H</span><span class="name">氢</span></div></div>
+                        <div class="ptable-gap" style="grid-column: 2 / span 16; grid-row-start: 1;"></div> <!-- 16格空隙 -->
+                        <div class="ptable-cell cat-noble-gas" style="grid-column-start: 18; grid-row-start: 1;"><div class="ptable-cell-content"><span class="number">2</span><span class="symbol">He</span><span class="name">氦</span></div></div>
+                        
+                        <!-- 第2周期 -->
+                        <div class="ptable-cell cat-alkali" style="grid-column-start: 1; grid-row-start: 2;"><div class="ptable-cell-content"><span class="number">3</span><span class="symbol">Li</span><span class="name">锂</span></div></div>
+                        <div class="ptable-cell cat-alkaline" style="grid-column-start: 2; grid-row-start: 2;"><div class="ptable-cell-content"><span class="number">4</span><span class="symbol">Be</span><span class="name">铍</span></div></div>
+                        <div class="ptable-gap" style="grid-column: 3 / span 10; grid-row-start: 2;"></div> <!-- 10格空隙 -->
+                        <div class="ptable-cell cat-metalloid" style="grid-column-start: 13; grid-row-start: 2;"><div class="ptable-cell-content"><span class="number">5</span><span class="symbol">B</span><span class="name">硼</span></div></div>
+                        <div class="ptable-cell cat-nonmetal" style="grid-column-start: 14; grid-row-start: 2;"><div class="ptable-cell-content"><span class="number">6</span><span class="symbol">C</span><span class="name">碳</span></div></div>
+                        <div class="ptable-cell cat-nonmetal" style="grid-column-start: 15; grid-row-start: 2;"><div class="ptable-cell-content"><span class="number">7</span><span class="symbol">N</span><span class="name">氮</span></div></div>
+                        <div class="ptable-cell cat-nonmetal" style="grid-column-start: 16; grid-row-start: 2;"><div class="ptable-cell-content"><span class="number">8</span><span class="symbol">O</span><span class="name">氧</span></div></div>
+                        <div class="ptable-cell cat-nonmetal" style="grid-column-start: 17; grid-row-start: 2;"><div class="ptable-cell-content"><span class="number">9</span><span class="symbol">F</span><span class="name">氟</span></div></div>
+                        <div class="ptable-cell cat-noble-gas" style="grid-column-start: 18; grid-row-start: 2;"><div class="ptable-cell-content"><span class="number">10</span><span class="symbol">Ne</span><span class="name">氖</span></div></div>
+                        
+                        <!-- 第3周期 -->
+                        <div class="ptable-cell cat-alkali" style="grid-column-start: 1; grid-row-start: 3;"><div class="ptable-cell-content"><span class="number">11</span><span class="symbol">Na</span><span class="name">钠</span></div></div>
+                        <div class="ptable-cell cat-alkaline" style="grid-column-start: 2; grid-row-start: 3;"><div class="ptable-cell-content"><span class="number">12</span><span class="symbol">Mg</span><span class="name">镁</span></div></div>
+                        <div class="ptable-gap" style="grid-column: 3 / span 10; grid-row-start: 3;"></div> <!-- 10格空隙 -->
+                        <div class="ptable-cell cat-post-transition" style="grid-column-start: 13; grid-row-start: 3;"><div class="ptable-cell-content"><span class="number">13</span><span class="symbol">Al</span><span class="name">铝</span></div></div>
+                        <div class="ptable-cell cat-metalloid" style="grid-column-start: 14; grid-row-start: 3;"><div class="ptable-cell-content"><span class="number">14</span><span class="symbol">Si</span><span class="name">硅</span></div></div>
+                        <div class="ptable-cell cat-nonmetal" style="grid-column-start: 15; grid-row-start: 3;"><div class="ptable-cell-content"><span class="number">15</span><span class="symbol">P</span><span class="name">磷</span></div></div>
+                        <div class="ptable-cell cat-nonmetal" style="grid-column-start: 16; grid-row-start: 3;"><div class="ptable-cell-content"><span class="number">16</span><span class="symbol">S</span><span class="name">硫</span></div></div>
+                        <div class="ptable-cell cat-nonmetal" style="grid-column-start: 17; grid-row-start: 3;"><div class="ptable-cell-content"><span class="number">17</span><span class="symbol">Cl</span><span class="name">氯</span></div></div>
+                        <div class="ptable-cell cat-noble-gas" style="grid-column-start: 18; grid-row-start: 3;"><div class="ptable-cell-content"><span class="number">18</span><span class="symbol">Ar</span><span class="name">氩</span></div></div>
+
+                        <!-- 第4周期 -->
+                        <div class="ptable-cell cat-alkali" style="grid-column-start: 1; grid-row-start: 4;"><div class="ptable-cell-content"><span class="number">19</span><span class="symbol">K</span><span class="name">钾</span></div></div>
+                        <div class="ptable-cell cat-alkaline" style="grid-column-start: 2; grid-row-start: 4;"><div class="ptable-cell-content"><span class="number">20</span><span class="symbol">Ca</span><span class="name">钙</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 3; grid-row-start: 4;"><div class="ptable-cell-content"><span class="number">21</span><span class="symbol">Sc</span><span class="name">钪</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 4; grid-row-start: 4;"><div class="ptable-cell-content"><span class="number">22</span><span class="symbol">Ti</span><span class="name">钛</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 5; grid-row-start: 4;"><div class="ptable-cell-content"><span class="number">23</span><span class="symbol">V</span><span class="name">钒</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 6; grid-row-start: 4;"><div class="ptable-cell-content"><span class="number">24</span><span class="symbol">Cr</span><span class="name">铬</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 7; grid-row-start: 4;"><div class="ptable-cell-content"><span class="number">25</span><span class="symbol">Mn</span><span class="name">锰</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 8; grid-row-start: 4;"><div class="ptable-cell-content"><span class="number">26</span><span class="symbol">Fe</span><span class="name">铁</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 9; grid-row-start: 4;"><div class="ptable-cell-content"><span class="number">27</span><span class="symbol">Co</span><span class="name">钴</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 10; grid-row-start: 4;"><div class="ptable-cell-content"><span class="number">28</span><span class="symbol">Ni</span><span class="name">镍</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 11; grid-row-start: 4;"><div class="ptable-cell-content"><span class="number">29</span><span class="symbol">Cu</span><span class="name">铜</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 12; grid-row-start: 4;"><div class="ptable-cell-content"><span class="number">30</span><span class="symbol">Zn</span><span class="name">锌</span></div></div>
+                        <div class="ptable-cell cat-post-transition" style="grid-column-start: 13; grid-row-start: 4;"><div class="ptable-cell-content"><span class="number">31</span><span class="symbol">Ga</span><span class="name">镓</span></div></div>
+                        <div class="ptable-cell cat-metalloid" style="grid-column-start: 14; grid-row-start: 4;"><div class="ptable-cell-content"><span class="number">32</span><span class="symbol">Ge</span><span class="name">锗</span></div></div>
+                        <div class="ptable-cell cat-metalloid" style="grid-column-start: 15; grid-row-start: 4;"><div class="ptable-cell-content"><span class="number">33</span><span class="symbol">As</span><span class="name">砷</span></div></div>
+                        <div class="ptable-cell cat-nonmetal" style="grid-column-start: 16; grid-row-start: 4;"><div class="ptable-cell-content"><span class="number">34</span><span class="symbol">Se</span><span class="name">硒</span></div></div>
+                        <div class="ptable-cell cat-nonmetal" style="grid-column-start: 17; grid-row-start: 4;"><div class="ptable-cell-content"><span class="number">35</span><span class="symbol">Br</span><span class="name">溴</span></div></div>
+                        <div class="ptable-cell cat-noble-gas" style="grid-column-start: 18; grid-row-start: 4;"><div class="ptable-cell-content"><span class="number">36</span><span class="symbol">Kr</span><span class="name">氪</span></div></div>
+                        
+                        <!-- 第5周期 -->
+                        <div class="ptable-cell cat-alkali" style="grid-column-start: 1; grid-row-start: 5;"><div class="ptable-cell-content"><span class="number">37</span><span class="symbol">Rb</span><span class="name">铷</span></div></div>
+                        <div class="ptable-cell cat-alkaline" style="grid-column-start: 2; grid-row-start: 5;"><div class="ptable-cell-content"><span class="number">38</span><span class="symbol">Sr</span><span class="name">锶</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 3; grid-row-start: 5;"><div class="ptable-cell-content"><span class="number">39</span><span class="symbol">Y</span><span class="name">钇</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 4; grid-row-start: 5;"><div class="ptable-cell-content"><span class="number">40</span><span class="symbol">Zr</span><span class="name">锆</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 5; grid-row-start: 5;"><div class="ptable-cell-content"><span class="number">41</span><span class="symbol">Nb</span><span class="name">铌</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 6; grid-row-start: 5;"><div class="ptable-cell-content"><span class="number">42</span><span class="symbol">Mo</span><span class="name">钼</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 7; grid-row-start: 5;"><div class="ptable-cell-content"><span class="number">43</span><span class="symbol">Tc</span><span class="name">锝</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 8; grid-row-start: 5;"><div class="ptable-cell-content"><span class="number">44</span><span class="symbol">Ru</span><span class="name">钌</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 9; grid-row-start: 5;"><div class="ptable-cell-content"><span class="number">45</span><span class="symbol">Rh</span><span class="name">铑</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 10; grid-row-start: 5;"><div class="ptable-cell-content"><span class="number">46</span><span class="symbol">Pd</span><span class="name">钯</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 11; grid-row-start: 5;"><div class="ptable-cell-content"><span class="number">47</span><span class="symbol">Ag</span><span class="name">银</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 12; grid-row-start: 5;"><div class="ptable-cell-content"><span class="number">48</span><span class="symbol">Cd</span><span class="name">镉</span></div></div>
+                        <div class="ptable-cell cat-post-transition" style="grid-column-start: 13; grid-row-start: 5;"><div class="ptable-cell-content"><span class="number">49</span><span class="symbol">In</span><span class="name">铟</span></div></div>
+                        <div class="ptable-cell cat-post-transition" style="grid-column-start: 14; grid-row-start: 5;"><div class="ptable-cell-content"><span class="number">50</span><span class="symbol">Sn</span><span class="name">锡</span></div></div>
+                        <div class="ptable-cell cat-metalloid" style="grid-column-start: 15; grid-row-start: 5;"><div class="ptable-cell-content"><span class="number">51</span><span class="symbol">Sb</span><span class="name">锑</span></div></div>
+                        <div class="ptable-cell cat-metalloid" style="grid-column-start: 16; grid-row-start: 5;"><div class="ptable-cell-content"><span class="number">52</span><span class="symbol">Te</span><span class="name">碲</span></div></div>
+                        <div class="ptable-cell cat-nonmetal" style="grid-column-start: 17; grid-row-start: 5;"><div class="ptable-cell-content"><span class="number">53</span><span class="symbol">I</span><span class="name">碘</span></div></div>
+                        <div class="ptable-cell cat-noble-gas" style="grid-column-start: 18; grid-row-start: 5;"><div class="ptable-cell-content"><span class="number">54</span><span class="symbol">Xe</span><span class="name">氙</span></div></div>
+
+                        <!-- 第6周期 -->
+                        <div class="ptable-cell cat-alkali" style="grid-column-start: 1; grid-row-start: 6;"><div class="ptable-cell-content"><span class="number">55</span><span class="symbol">Cs</span><span class="name">铯</span></div></div>
+                        <div class="ptable-cell cat-alkaline" style="grid-column-start: 2; grid-row-start: 6;"><div class="ptable-cell-content"><span class="number">56</span><span class="symbol">Ba</span><span class="name">钡</span></div></div>
+                        <div class="ptable-cell el-57-71 cat-lanthanide" style="grid-column-start: 3; grid-row-start: 6;"><div class="ptable-cell-content">57-71<br>镧系</div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 4; grid-row-start: 6;"><div class="ptable-cell-content"><span class="number">72</span><span class="symbol">Hf</span><span class="name">铪</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 5; grid-row-start: 6;"><div class="ptable-cell-content"><span class="number">73</span><span class="symbol">Ta</span><span class="name">钽</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 6; grid-row-start: 6;"><div class="ptable-cell-content"><span class="number">74</span><span class="symbol">W</span><span class="name">钨</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 7; grid-row-start: 6;"><div class="ptable-cell-content"><span class="number">75</span><span class="symbol">Re</span><span class="name">铼</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 8; grid-row-start: 6;"><div class="ptable-cell-content"><span class="number">76</span><span class="symbol">Os</span><span class="name">锇</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 9; grid-row-start: 6;"><div class="ptable-cell-content"><span class="number">77</span><span class="symbol">Ir</span><span class="name">铱</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 10; grid-row-start: 6;"><div class="ptable-cell-content"><span class="number">78</span><span class="symbol">Pt</span><span class="name">铂</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 11; grid-row-start: 6;"><div class="ptable-cell-content"><span class="number">79</span><span class="symbol">Au</span><span class="name">金</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 12; grid-row-start: 6;"><div class="ptable-cell-content"><span class="number">80</span><span class="symbol">Hg</span><span class="name">汞</span></div></div>
+                        <div class="ptable-cell cat-post-transition" style="grid-column-start: 13; grid-row-start: 6;"><div class="ptable-cell-content"><span class="number">81</span><span class="symbol">Tl</span><span class="name">铊</span></div></div>
+                        <div class="ptable-cell cat-post-transition" style="grid-column-start: 14; grid-row-start: 6;"><div class="ptable-cell-content"><span class="number">82</span><span class="symbol">Pb</span><span class="name">铅</span></div></div>
+                        <div class="ptable-cell cat-post-transition" style="grid-column-start: 15; grid-row-start: 6;"><div class="ptable-cell-content"><span class="number">83</span><span class="symbol">Bi</span><span class="name">铋</span></div></div>
+                        <div class="ptable-cell cat-metalloid" style="grid-column-start: 16; grid-row-start: 6;"><div class="ptable-cell-content"><span class="number">84</span><span class="symbol">Po</span><span class="name">钋</span></div></div>
+                        <div class="ptable-cell cat-nonmetal" style="grid-column-start: 17; grid-row-start: 6;"><div class="ptable-cell-content"><span class="number">85</span><span class="symbol">At</span><span class="name">砹</span></div></div>
+                        <div class="ptable-cell cat-noble-gas" style="grid-column-start: 18; grid-row-start: 6;"><div class="ptable-cell-content"><span class="number">86</span><span class="symbol">Rn</span><span class="name">氡</span></div></div>
+
+                        <!-- 第7周期 -->
+                        <div class="ptable-cell cat-alkali" style="grid-column-start: 1; grid-row-start: 7;"><div class="ptable-cell-content"><span class="number">87</span><span class="symbol">Fr</span><span class="name">钫</span></div></div>
+                        <div class="ptable-cell cat-alkaline" style="grid-column-start: 2; grid-row-start: 7;"><div class="ptable-cell-content"><span class="number">88</span><span class="symbol">Ra</span><span class="name">镭</span></div></div>
+                        <div class="ptable-cell el-89-103 cat-actinide" style="grid-column-start: 3; grid-row-start: 7;"><div class="ptable-cell-content">89-103<br>锕系</div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 4; grid-row-start: 7;"><div class="ptable-cell-content"><span class="number">104</span><span class="symbol">Rf</span><span class="name-long">Rutherfordium</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 5; grid-row-start: 7;"><div class="ptable-cell-content"><span class="number">105</span><span class="symbol">Db</span><span class="name-long">Dubnium</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 6; grid-row-start: 7;"><div class="ptable-cell-content"><span class="number">106</span><span class="symbol">Sg</span><span class="name-long">Seaborgium</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 7; grid-row-start: 7;"><div class="ptable-cell-content"><span class="number">107</span><span class="symbol">Bh</span><span class="name-long">Bohrium</span></div></div>
+                        <div class="ptable-cell cat-transition" style="grid-column-start: 8; grid-row-start: 7;"><div class="ptable-cell-content"><span class="number">108</span><span class="symbol">Hs</span><span class="name-long">Hassium</span></div></div>
+                        <div class="ptable-cell cat-unknown" style="grid-column-start: 9; grid-row-start: 7;"><div class="ptable-cell-content"><span class="number">109</span><span class="symbol">Mt</span><span class="name-long">Meitnerium</span></div></div>
+                        <div class="ptable-cell cat-unknown" style="grid-column-start: 10; grid-row-start: 7;"><div class="ptable-cell-content"><span class="number">110</span><span class="symbol">Ds</span><span class="name-long">Darmstadtium</span></div></div>
+                        <div class="ptable-cell cat-unknown" style="grid-column-start: 11; grid-row-start: 7;"><div class="ptable-cell-content"><span class="number">111</span><span class="symbol">Rg</span><span class="name-long">Roentgenium</span></div></div>
+                        <div class="ptable-cell cat-unknown" style="grid-column-start: 12; grid-row-start: 7;"><div class="ptable-cell-content"><span class="number">112</span><span class="symbol">Cn</span><span class="name-long">Copernicium</span></div></div>
+                        <div class="ptable-cell cat-unknown" style="grid-column-start: 13; grid-row-start: 7;"><div class="ptable-cell-content"><span class="number">113</span><span class="symbol">Nh</span><span class="name-long">Nihonium</span></div></div>
+                        <div class="ptable-cell cat-unknown" style="grid-column-start: 14; grid-row-start: 7;"><div class="ptable-cell-content"><span class="number">114</span><span class="symbol">Fl</span><span class="name-long">Flerovium</span></div></div>
+                        <div class="ptable-cell cat-unknown" style="grid-column-start: 15; grid-row-start: 7;"><div class="ptable-cell-content"><span class="number">115</span><span class="symbol">Mc</span><span class="name-long">Moscovium</span></div></div>
+                        <div class="ptable-cell cat-unknown" style="grid-column-start: 16; grid-row-start: 7;"><div class="ptable-cell-content"><span class="number">116</span><span class="symbol">Lv</span><span class="name-long">Livermorium</span></div></div>
+                        <div class="ptable-cell cat-unknown" style="grid-column-start: 17; grid-row-start: 7;"><div class="ptable-cell-content"><span class="number">117</span><span class="symbol">Ts</span><span class="name-long">Tennessine</span></div></div>
+                        <div class="ptable-cell cat-unknown" style="grid-column-start: 18; grid-row-start: 7;"><div class="ptable-cell-content"><span class="number">118</span><span class="symbol">Og</span><span class="name-long">Oganesson</span></div></div>
+
+                        <!-- 镧系元素 (已删除) -->
+                        
+                        <!-- 锕系元素 (已删除) -->
+                    </div>
+                </div> <!-- end ptable-container -->
+
+                 <!-- 图例 -->
+                <div class="mt-4 w-full max-w-4xl mx-auto">
+                    <h4 class="font-bold text-center text-slate-700">元素类别图例</h4>
+                    <div class="flex flex-wrap justify-center gap-2 mt-2 text-xs">
+                        <span class="px-2 py-1 rounded cat-alkali">碱金属</span>
+                        <span class="px-2 py-1 rounded cat-alkaline">碱土金属</span>
+                        <span class="px-2 py-1 rounded cat-transition">过渡金属</span>
+                        <!-- <span class="px-2 py-1 rounded cat-lanthanide">镧系元素</span> (已删除) -->
+                        <!-- <span class="px-2 py-1 rounded cat-actinide">锕系元素</span> (已删除) -->
+                        <span class="px-2 py-1 rounded cat-post-transition">主族金属</span>
+                        <span class="px-2 py-1 rounded cat-metalloid">类金属</span>
+                        <span class="px-2 py-1 rounded cat-nonmetal">非金属</span>
+                        <span class="px-2 py-1 rounded cat-noble-gas">稀有气体</span>
+                        <span class="px-2 py-1 rounded cat-unknown">未知属性</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+        <!-- 例题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (一)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>同周期的主族元素从左到右，原子半径的变化趋势是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 逐渐增大</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 逐渐减小</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 基本不变</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 无规律变化</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (一)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>在同一周期中，从左到右，原子的电子层数相同，但核电荷数（质子数）依次增加。原子核对核外电子的吸引力增强，导致原子半径<strong class="text-green-700">逐渐减小</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (二)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列粒子中，半径最大的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> Na⁺</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> Mg²⁺</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> F⁻</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> O²⁻</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (二)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>这四种离子的核外电子排布都是2-8，电子层结构相同。根据“序大径小”的规律，核电荷数越小，半径越大。它们的核电荷数分别为 Na⁺(11), Mg²⁺(12), F⁻(9), O²⁻(8)。因此，核电荷数最小的<strong class="text-green-700">O²⁻</strong>半径最大。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (三)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>第VIA族元素（如O, S）的最低化合价是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> +6</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> +4</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> -2</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> -3</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (三)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>第VIA族元素的最外层电子数为6。为了达到8电子稳定结构，它们倾向于得到2个电子。根据规律，最低负价 = 主族序数 - 8 = 6 - 8 = <strong class="text-green-700">-2</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (四)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列元素中，最高正价不是+7的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> Cl (氯)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> Mn (锰)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> F (氟)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> I (碘)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1-4 h-1 bg-green-500 rounded"></span>练习 (四)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>Cl, Mn, I 都有+7价的化合物。而<strong class="text-green-700">氟(F)</strong>是电负性最强的元素，得电子能力第一，因此在所有化合物中只显-1价，没有正化合价。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (五)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>短周期主族元素中，原子半径最大的元素是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> Li (锂)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> Na (钠)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> Al (铝)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> Cl (氯)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (五)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>短周期包括第1, 2, 3周期。根据原子半径变化规律，半径在周期表中向左下角增大。在这四个选项中，<strong class="text-green-700">钠(Na)</strong>位于第三周期最左侧，其原子半径最大。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看，下节课再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>
+

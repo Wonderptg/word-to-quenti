@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <title>活泼的金属单质钠</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <!-- 烧杯图标已删除 -->
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">活泼的金属单质——钠</h1>
+                <p class="text-2xl text-slate-600 mt-2">元素化学学习系列</p>
+            </div>
+        </div>
+        
+        <!-- 学习框架 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>学习元素化学的框架</h2>
+                <p class="mt-8 text-xl text-slate-700">面对多、杂、乱的元素化学，我们需要建立系统化的知识框架，才能学得清楚明白。</p>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800 text-2xl">物理性质</h3>
+                        <p class="mt-3 text-slate-600">色、态、味、熔、沸、密、溶、热、电导性。</p>
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-emerald-800 text-2xl">化学性质</h3>
+                        <p class="mt-3 text-slate-600">与氢、氧、金、非、水、酸、碱、盐、氧化物的反应及热稳定性。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 钠的物理性质 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>钠单质的物理性质</h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg flex items-center gap-4"><strong class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full">颜色</strong><p class="text-lg">银白色，有金属光泽</p></div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg flex items-center gap-4"><strong class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full">密度</strong><p class="text-lg">比水小，比煤油大 (重点)</p></div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg flex items-center gap-4"><strong class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full">熔点</strong><p class="text-lg">低，低于100℃</p></div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg flex items-center gap-4"><strong class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full">硬度</strong><p class="text-lg">小，质地柔软，可用刀切</p></div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg flex items-center gap-4"><strong class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full">导性</strong><p class="text-lg">导电、导热性良好</p></div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 钠的化学性质 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800">从原子结构看化学性质</h2>
+                <div class="mt-8 flex justify-center">
+                    <!-- 更准确的钠原子结构示意图 -->
+                    <svg width="200" height="200" viewBox="0 0 200 200" class="mx-auto">
+                        <!-- 原子核 -->
+                        <circle cx="100" cy="100" r="15" fill="#fbbf24" />
+                        <text x="100" y="105" text-anchor="middle" font-size="14" fill="#78350f" font-weight="bold">+11</text>
+                        
+                        <!-- 第一电子层 (K层, 2个电子) -->
+                        <circle cx="100" cy="100" r="35" fill="none" stroke="#e5e7eb" stroke-width="2" />
+                        <circle cx="100" cy="65" r="5" fill="#3b82f6" />
+                        <circle cx="100" cy="135" r="5" fill="#3b82f6" />
+
+                        <!-- 第二电子层 (L层, 8个电子) -->
+                        <circle cx="100" cy="100" r="60" fill="none" stroke="#d1d5db" stroke-width="2" />
+                        <g>
+                           <circle transform="rotate(0 100 100)" cx="100" cy="40" r="5" fill="#3b82f6"/>
+                           <circle transform="rotate(45 100 100)" cx="100" cy="40" r="5" fill="#3b82f6"/>
+                           <circle transform="rotate(90 100 100)" cx="100" cy="40" r="5" fill="#3b82f6"/>
+                           <circle transform="rotate(135 100 100)" cx="100" cy="40" r="5" fill="#3b82f6"/>
+                           <circle transform="rotate(180 100 100)" cx="100" cy="40" r="5" fill="#3b82f6"/>
+                           <circle transform="rotate(225 100 100)" cx="100" cy="40" r="5" fill="#3b82f6"/>
+                           <circle transform="rotate(270 100 100)" cx="100" cy="40" r="5" fill="#3b82f6"/>
+                           <circle transform="rotate(315 100 100)" cx="100" cy="40" r="5" fill="#3b82f6"/>
+                        </g>
+
+                        <!-- 第三电子层 (M层, 1个电子) -->
+                        <circle cx="100" cy="100" r="85" fill="none" stroke="#9ca3af" stroke-width="2" />
+                        <circle cx="100" cy="15" r="6" fill="#ef4444" />
+                    </svg>
+                </div>
+                <p class="mt-4 text-xl text-slate-700">核外电子排布为<code>2-8-1</code>，最外层只有1个电子，极易失去，显示出很强的<strong class="text-red-600">还原性</strong>。</p>
+            </div>
+        </div>
+        
+        <!-- 与氧气反应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-red-500 rounded"></span>与氧气的反应 (重点)</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-gray-800 text-xl">常温在空气中</h3>
+                        <p class="mt-3 text-slate-600">表面迅速变暗，生成白色的<strong class="text-gray-700">氧化钠</strong>。</p>
+                        <p class="mt-4 text-center mono bg-gray-100 p-2 rounded">4Na + O₂ = 2Na₂O</p>
+                    </div>
+                    <div class="bg-yellow-50 border border-yellow-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-yellow-800 text-xl">加热或点燃</h3>
+                        <p class="mt-3 text-slate-600">熔化、剧烈燃烧，发<strong class="text-yellow-600">黄色火焰</strong>，生成淡黄色的<strong class="text-yellow-700">过氧化钠</strong>。</p>
+                        <p class="mt-4 text-center mono bg-yellow-100 p-2 rounded flex items-center justify-center">
+                            <span>2Na + O₂</span>
+                            <span class="inline-flex flex-col text-center mx-2">
+                                <span class="text-xs">加热</span>
+                                <span>→</span>
+                            </span>
+                            <span>Na₂O₂</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 钠的变质之旅 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>钠在空气中的“变质”之旅</h2>
+                 <div class="mt-8 space-y-2 text-lg text-center">
+                    <p class="bg-slate-100 p-3 rounded-lg">Na</p>
+                    <p class="font-bold">↓ <span class="text-sm font-normal text-slate-500">(O₂)</span></p>
+                    <p class="bg-slate-100 p-3 rounded-lg">Na₂O</p>
+                    <p class="font-bold">↓ <span class="text-sm font-normal text-slate-500">(H₂O)</span></p>
+                    <p class="bg-slate-100 p-3 rounded-lg">NaOH</p>
+                    <p class="font-bold">↓ <span class="text-sm font-normal text-slate-500">(CO₂)</span></p>
+                    <p class="bg-green-100 text-green-800 p-3 rounded-lg font-bold">Na₂CO₃ (最终产物)</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 与水反应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>与水的反应 (重点)</h2>
+                <div class="mt-8 bg-cyan-50 border border-cyan-200 p-6 rounded-lg">
+                    <p class="mono text-center text-xl">2Na + 2H₂O = 2NaOH + H₂↑</p>
+                    <p class="mono text-center text-xl mt-2">2Na + 2H₂O = 2Na⁺ + 2OH⁻ + H₂↑</p>
+                </div>
+                 <div class="mt-8 text-center bg-sky-100 text-sky-800 p-4 rounded-lg">
+                    <p class="text-lg">下一页将详细图解反应现象的记忆口诀。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 现象图解：芙蓉犹想红 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-2xl font-bold text-slate-800 relative pb-2 text-center"><span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/4 h-1 bg-rose-500 rounded"></span>现象图解：芙蓉犹想红</h2>
+                <div class="mt-6 flex flex-col md:flex-row items-center gap-6">
+                    <!-- SVG Illustration -->
+                    <div class="w-full md:w-1/2 flex justify-center">
+                        <svg viewBox="0 0 200 200" class="w-full max-w-xs">
+                            <!-- Beaker -->
+                            <path d="M40 30 H160 V170 Q160 180 150 180 H50 Q40 180 40 170 V30" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+                            <path d="M40 30 Q100 20 160 30" fill="none" stroke="#38bdf8" stroke-width="2"/>
+                            <!-- Water with gradient to pink -->
+                            <defs>
+                                <linearGradient id="grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#bae6fd;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#fecdd3;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M42 90 H158 V170 Q158 178 150 178 H50 Q42 178 42 170 V90" fill="url(#grad)" />
+                            <!-- Sodium ball with animation -->
+                            <circle cx="80" cy="85" r="12" fill="#fefce8" stroke="#facc15" stroke-width="1.5">
+                                <animateMotion path="M0,0 C10,10 30,-10 40,0 C50,10 70,-10 80,0" dur="4s" repeatCount="indefinite" />
+                            </circle>
+                            <!-- Bubbles with animation -->
+                            <circle cx="75" cy="100" r="2" fill="white" opacity="0.8"><animate attributeName="cy" from="100" to="85" dur="1s" repeatCount="indefinite" /><animate attributeName="opacity" from="0.8" to="0" dur="1s" repeatCount="indefinite" /></circle>
+                            <circle cx="90" cy="110" r="3" fill="white" opacity="0.7"><animate attributeName="cy" from="110" to="90" dur="1.5s" begin="0.5s" repeatCount="indefinite" /><animate attributeName="opacity" from="0.7" to="0" dur="1.5s" begin="0.5s" repeatCount="indefinite" /></circle>
+                             <circle cx="110" cy="120" r="2.5" fill="white" opacity="0.9"><animate attributeName="cy" from="120" to="95" dur="1.2s" begin="0.2s" repeatCount="indefinite" /><animate attributeName="opacity" from="0.9" to="0" dur="1.2s" begin="0.2s" repeatCount="indefinite" /></circle>
+                        </svg>
+                    </div>
+                    <!-- Mnemonic Text -->
+                    <div class="w-full md:w-1/2 space-y-3">
+                        <div class="bg-rose-50 border-l-4 border-rose-500 p-3 rounded-r-lg">
+                            <p class="text-xl font-bold text-rose-700">浮 <span class="text-base font-normal text-slate-600">(密度小)</span></p>
+                        </div>
+                        <div class="bg-rose-50 border-l-4 border-rose-500 p-3 rounded-r-lg">
+                            <p class="text-xl font-bold text-rose-700">熔 <span class="text-base font-normal text-slate-600">(熔点低, 放热)</span></p>
+                        </div>
+                         <div class="bg-rose-50 border-l-4 border-rose-500 p-3 rounded-r-lg">
+                            <p class="text-xl font-bold text-rose-700">游 <span class="text-base font-normal text-slate-600">(产生气体)</span></p>
+                        </div>
+                         <div class="bg-rose-50 border-l-4 border-rose-500 p-3 rounded-r-lg">
+                            <p class="text-xl font-bold text-rose-700">响 <span class="text-base font-normal text-slate-600">(气体逸出)</span></p>
+                        </div>
+                         <div class="bg-rose-50 border-l-4 border-rose-500 p-3 rounded-r-lg">
+                            <p class="text-xl font-bold text-rose-700">红 <span class="text-base font-normal text-slate-600">(生成碱, 酚酞变红)</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 与盐溶液反应 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-blue-500 rounded"></span>与盐溶液的反应 (高频考点)</h2>
+                <p class="mt-8 text-xl text-slate-700">将钠投入<code>CuSO₄</code>溶液，<strong class="text-red-600">不能</strong>置换出铜！钠会<strong class="text-blue-600">优先和水反应</strong>。</p>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-lg">
+                        <h3 class="font-semibold text-lg">第一步：钠与水反应</h3>
+                        <p class="mono mt-2">2Na + 2H₂O → 2NaOH + H₂↑</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-lg">
+                         <h3 class="font-semibold text-lg">第二步：产物再反应</h3>
+                        <p class="mono mt-2">2NaOH + CuSO₄ → Cu(OH)₂↓ + Na₂SO₄</p>
+                    </div>
+                </div>
+                 <div class="mt-6 bg-blue-100 text-blue-800 p-4 rounded-lg text-lg text-center font-semibold">
+                    最终现象：产生气体和<strong class="text-blue-900">蓝色絮状沉淀</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- 制取、保存与用途 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>制取、保存与用途</h2>
+                 <div class="mt-8 space-y-4 text-lg">
+                    <div class="bg-teal-50 border border-teal-200 p-4 rounded-lg"><strong class="font-bold text-teal-800">制取：</strong>电解熔融的<code>NaCl</code>。<code>2NaCl(熔融) --(通电)→ 2Na + Cl₂↑</code></div>
+                    <div class="bg-amber-50 border border-amber-200 p-4 rounded-lg"><strong class="font-bold text-amber-800">保存：</strong>保存在石蜡油或煤油中，隔绝空气。</div>
+                    <div class="bg-violet-50 border border-violet-200 p-4 rounded-lg"><strong class="font-bold text-violet-800">用途：</strong>强还原剂(冶炼金属)，制备Na₂O₂，原子反应堆导热剂，高压钠灯。</div>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 知识点验收 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-rose-500 rounded"></span>知识点验收 (判断正误)</h2>
+                 <div class="mt-8 space-y-3 text-lg">
+                    <p class="flex items-center gap-3 bg-red-50 p-3 rounded-lg"><span class="text-red-600 font-bold text-2xl">×</span> 钠硬度大。</p>
+                    <p class="flex items-center gap-3 bg-green-50 p-3 rounded-lg"><span class="text-green-600 font-bold text-2xl">√</span> 自然界中钠只能以化合物形式存在。</p>
+                    <p class="flex items-center gap-3 bg-green-50 p-3 rounded-lg"><span class="text-green-600 font-bold text-2xl">√</span> 钠在反应时只能作为还原剂。</p>
+                    <p class="flex items-center gap-3 bg-red-50 p-3 rounded-lg"><span class="text-red-600 font-bold text-2xl">×</span> 钠在空气中加热生成白色固体。</p>
+                    <p class="flex items-center gap-3 bg-red-50 p-3 rounded-lg"><span class="text-red-600 font-bold text-2xl">×</span> 钠与O₂反应只能生成过氧化钠。</p>
+                    <p class="flex items-center gap-3 bg-red-50 p-3 rounded-lg"><span class="text-red-600 font-bold text-2xl">×</span> 钠与水反应比与盐酸反应更剧烈。</p>
+                    <p class="flex items-center gap-3 bg-red-50 p-3 rounded-lg"><span class="text-red-600 font-bold text-2xl">×</span> 钠投入CuSO₄溶液中产生红色固体。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（一）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">实验室中，金属钠通常保存在哪里？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 水中</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 煤油中</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 敞口暴露在空气中</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 盐酸中</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（一）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>金属钠化学性质非常活泼，会与水和空气中的氧气反应。煤油不与钠反应，且密度比钠小，可以覆盖在钠表面，使其与空气和水隔绝。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（二）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">钠在空气中燃烧时，火焰的颜色是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 白色</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 蓝色</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 黄色</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 紫色</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（二）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>钠元素的焰色反应为黄色。因此，钠在空气中燃烧时，我们会观察到特征性的黄色火焰。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（三）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">下列哪个现象<strong class="text-red-600">不属于</strong>钠与水反应的现象？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 浮在水面上</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 熔化成银白色小球</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 沉入水底</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 发出嘶嘶的响声</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（三）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>钠的密度比水小，所以会浮在水面上，而不会沉入水底。根据口诀“芙蓉犹想红”，浮、熔、游、响、红都是正确的现象。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（四）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">钠在常温下与氧气反应，生成的主要产物是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(A)</strong> Na₂O₂</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(B)</strong> Na₂O</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(C)</strong> NaOH</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(D)</strong> Na₂CO₃</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（四）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>钠与氧气的反应条件不同，产物也不同。在常温下，钠与氧气反应生成白色的氧化钠（Na₂O）；在加热或点燃的条件下，则生成淡黄色的过氧化钠（Na₂O₂）。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（五）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">将一小块金属钠投入到足量的CuSO₄溶液中，最终观察到的现象是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 析出红色固体</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 产生无色气体和蓝色沉淀</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 钠熔化成小球，四处游动</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 溶液变为无色</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 5 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（五）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>钠会优先与盐溶液中的水发生反应，生成NaOH和H₂（无色气体）。随后，生成的NaOH会与溶液中的CuSO₄反应，生成蓝色的Cu(OH)₂沉淀。因此，最终的现象是产生无色气体和蓝色沉淀。</p>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <!-- 简约结束图标 -->
+                 <svg class="w-24 h-24 mx-auto text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                 </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看，下节课再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>
+

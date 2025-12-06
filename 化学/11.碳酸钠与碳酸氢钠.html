@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>双胞胎兄弟：碳酸钠与碳酸氢钠</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">双胞胎兄弟</h1>
+                <p class="text-2xl text-slate-600 mt-2">—— 碳酸钠 (Na₂CO₃) 与 碳酸氢钠 (NaHCO₃)</p>
+            </div>
+        </div>
+
+        <!-- 俗名与碱性 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>俗名与性质初探</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-gray-50 border border-gray-200 p-6 rounded-lg text-center">
+                        <svg class="w-16 h-16 mx-auto text-gray-500" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="24" cy="24" r="8"></circle>
+                            <circle cx="40" cy="40" r="12"></circle>
+                            <circle cx="16" cy="44" r="4"></circle>
+                        </svg>
+                        <h3 class="font-bold text-gray-800 text-2xl mt-2">碳酸钠 (Na₂CO₃)</h3>
+                        <p class="mt-4"><strong>俗名：</strong>纯碱、苏打</p>
+                        <p class="mt-2"><strong>碱性：</strong><strong class="text-red-600">较强</strong></p>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg text-center">
+                         <svg class="w-16 h-16 mx-auto text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.38 8.16A4 4 0 0 0 17.1 6H6.9a4 4 0 0 0-3.28 2.16l-2.1 4.2A2 2 0 0 0 3.48 15h17.04a2 2 0 0 0 1.96-2.64Z"></path>
+                            <path d="M8 6V4"></path><path d="M12 6V4"></path><path d="M16 6V4"></path>
+                        </svg>
+                        <h3 class="font-bold text-blue-800 text-2xl mt-2">碳酸氢钠 (NaHCO₃)</h3>
+                        <p class="mt-4"><strong>俗名：</strong>小苏打</p>
+                        <p class="mt-2"><strong>碱性：</strong><strong class="text-emerald-600">较弱</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 溶解性 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>溶解性：水中的表现</h2>
+                 <p class="mt-8 text-xl text-slate-700 text-center">在相同条件下，碳酸钠的溶解度远大于碳酸氢钠。</p>
+                 <div class="mt-8 flex justify-around items-end">
+                    <div class="text-center">
+                        <div class="w-32 h-40 bg-sky-200 rounded-t-lg relative flex items-end justify-center">
+                            <div class="w-full h-3/4 bg-sky-500 opacity-70"></div>
+                            <p class="absolute text-white font-bold text-lg">饱和</p>
+                        </div>
+                        <p class="mt-2 font-bold">Na₂CO₃</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-32 h-40 bg-sky-200 rounded-t-lg relative flex items-end justify-center">
+                            <div class="w-full h-1/4 bg-sky-500 opacity-70"></div>
+                            <p class="absolute top-1/2 text-black font-bold text-lg">饱和</p>
+                        </div>
+                         <p class="mt-2 font-bold">NaHCO₃</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 侯氏制碱法 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>侯氏制碱法：溶解度的应用</h2>
+                 <p class="mt-8 text-xl text-slate-700">利用NaHCO₃溶解度小的特点，我们可以从饱和食盐水中制备它。</p>
+                 <div class="mt-8 bg-teal-50 border border-teal-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-teal-800 text-xl">核心步骤：</h3>
+                    <p class="mt-3 text-lg">向饱和食盐水中，<strong class="text-red-500">先</strong>通入NH₃（使溶液呈碱性，有利吸收CO₂），<strong class="text-red-500">后</strong>通入CO₂。</p>
+                    <p class="mono text-center bg-teal-100 p-3 rounded mt-3 text-sm">NaCl + NH₃ + CO₂ + H₂O = NaHCO₃↓ + NH₄Cl</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 热稳定性 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2 inline-block"><span class="absolute bottom-0 left-0 w-full h-1 bg-orange-500 rounded"></span>热稳定性大挑战</h2>
+                 <div class="mt-12 flex justify-around items-center">
+                    <div class="text-center">
+                        <svg class="w-24 h-24 mx-auto text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        <h3 class="font-bold text-slate-800 text-xl mt-2">碳酸钠</h3>
+                        <p class="mt-2 text-xl text-emerald-600 font-semibold">稳定</p>
+                    </div>
+                    <div class="text-center">
+                        <svg class="w-24 h-24 mx-auto text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path><path d="M12 22L2 17"></path><path d="M22 17L12 22"></path><path d="M17 9.5L7 14.5"></path><path d="M17 14.5L7 9.5"></path></svg>
+                        <h3 class="font-bold text-orange-800 text-xl mt-2">碳酸氢钠</h3>
+                        <p class="mt-2 text-xl text-red-600 font-semibold">不稳定</p>
+                    </div>
+                </div>
+                <div class="mono text-center bg-orange-100 p-4 rounded mt-8 text-lg flex justify-center items-center space-x-2">
+                    <span>2NaHCO₃</span>
+                    <div class="flex flex-col items-center px-2">
+                        <span class="text-sm font-sans">加热</span>
+                        <span class="text-2xl font-sans leading-none">→</span>
+                    </div>
+                    <span>Na₂CO₃ + H₂O + CO₂↑</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实验验证 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>实验验证：大管套小管</h2>
+                 <p class="mt-8 text-xl text-slate-700 text-center">为了证明Na₂CO₃更稳定，我们让它接受更<strong class="text-indigo-600">高温</strong>的挑战，而让NaHCO₃在<strong class="text-indigo-600">低温</strong>下加热。</p>
+                 <p class="mt-2 text-lg font-semibold text-indigo-900 text-center">结果：连接小试管的石灰水变浑浊，证明 NaHCO₃ 分解了。</p>
+            </div>
+        </div>
+
+        <!-- 与酸反应 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-red-500 rounded"></span>与酸反应：现象大不同</h2>
+                <p class="mt-8 text-xl text-slate-700">向两种溶液中<strong class="text-red-600">逐滴</strong>加入盐酸，可以观察到不同现象。</p>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-gray-50 border border-gray-200 p-6 rounded-lg text-center">
+                         <svg class="w-16 h-16 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+                        <h3 class="font-bold text-gray-800 text-xl mt-2">碳酸钠溶液</h3>
+                        <p class="mt-3"><strong>现象：</strong>先无气泡，后产生气泡。</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg text-center">
+                        <svg class="w-16 h-16 mx-auto text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 18h.01M12 6v6"/></svg>
+                        <h3 class="font-bold text-red-800 text-xl mt-2">碳酸氢钠溶液</h3>
+                        <p class="mt-3"><strong>现象：</strong>立即产生气泡。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 用途 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-yellow-500 rounded"></span>用途大比拼</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-gray-50 border border-gray-200 p-6 rounded-lg text-center">
+                        <svg class="w-16 h-16 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                        <h3 class="font-bold text-gray-800 text-2xl mt-2">碳酸钠</h3>
+                        <p class="mt-4">玻璃、肥皂、造纸等工业原料</p>
+                    </div>
+                    <div class="bg-yellow-50 border border-yellow-200 p-6 rounded-lg text-center">
+                        <svg class="w-16 h-16 mx-auto text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                        <h3 class="font-bold text-yellow-800 text-2xl mt-2">碳酸氢钠</h3>
+                        <p class="mt-4">发酵粉、灭火剂、制酸剂</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 相互转化 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>兄弟间的相互转化</h2>
+                <div class="mt-8 flex justify-center items-center text-center text-lg">
+                    <div class="p-4 rounded-lg bg-gray-100 shadow">
+                        <p class="font-bold text-2xl">Na₂CO₃</p>
+                    </div>
+                    <div class="mx-4">
+                        <p class="mb-2 text-cyan-600 font-semibold text-sm">+ CO₂ + H₂O</p>
+                        <svg class="w-24 h-8" viewBox="0 0 100 20"><path d="M0 10 L100 10" stroke="#999" stroke-width="2" /><path d="M95 5 L100 10 L95 15" fill="none" stroke="#333" stroke-width="2"/></svg>
+                        <svg class="w-24 h-8" viewBox="0 0 100 20"><path d="M0 10 L100 10" stroke="#999" stroke-width="2"/><path d="M5 15 L0 10 L5 5" fill="none" stroke="#333" stroke-width="2"/></svg>
+                         <p class="mt-2 text-cyan-600 font-semibold text-sm">加热 / + NaOH</p>
+                    </div>
+                     <div class="p-4 rounded-lg bg-blue-100 shadow">
+                        <p class="font-bold text-2xl">NaHCO₃</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 例题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (一)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>俗称“小苏打”的物质是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> Na₂CO₃</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> NaHCO₃</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> NaOH</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> NaCl</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (一)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>碳酸氢钠(NaHCO₃)的俗名是小苏打，而碳酸钠(Na₂CO₃)的俗名是纯碱或苏打。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (二)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>要鉴别碳酸钠和碳酸氢钠两种白色固体，最可靠的方法是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 观察颜色</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 分别加热</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 闻气味</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 滴加酚酞试液</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (二)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>碳酸氢钠热稳定性差，加热易分解产生能使澄清石灰水变浑浊的CO₂气体，而碳酸钠稳定，加热不分解。这是区分两种固体的有效方法。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (三)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>向碳酸钠溶液中逐滴加入稀盐酸，立即观察到的现象是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 立即产生大量气泡</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 溶液变浑浊</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 溶液颜色改变</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 开始时无明显现象</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (三)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>盐酸逐滴加入碳酸钠溶液时，会分两步反应。第一步是 Na₂CO₃ + HCl = NaHCO₃ + NaCl，此过程没有气体生成。继续加酸，才会产生气泡。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (四)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>“侯氏制碱法”中，先析出碳酸氢钠沉淀而不是碳酸钠，是因为？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 碳酸氢钠的溶解度更大</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 碳酸氢钠的溶解度更小</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 碳酸氢钠更稳定</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 碳酸氢钠碱性更强</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (四)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>在相同条件下，碳酸氢钠的溶解度比碳酸钠小，因此在饱和食盐水中通入氨气和二氧化碳后，会首先作为沉淀析出。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (五)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>如何将碳酸钠溶液转化为碳酸氢钠溶液？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 加入足量NaOH溶液</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 加热溶液</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 通入足量CO₂</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 加入CaCl₂溶液</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (五)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>根据反应 <code>Na₂CO₃ + H₂O + CO₂ = 2NaHCO₃</code>，向碳酸钠溶液中通入足量的二氧化碳，可以将其转化为碳酸氢钠溶液。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>
+

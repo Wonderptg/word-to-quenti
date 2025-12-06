@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基元反应与反应历程</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            }
+        };
+    </script>
+    <!-- MathJax for Formulas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* 字体设置 */
+        body { font-family: "Microsoft YaHei", "SimHei", sans-serif; }
+        
+        /* 打印优化样式 - 核心部分 */
+        @media print {
+            @page {
+                size: landscape; /* 强制横向 */
+                margin: 0;
+            }
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                background-color: white;
+            }
+            /* 隐藏导航栏和非幻灯片元素 */
+            .no-print { display: none !important; }
+            
+            /* 让所有幻灯片在打印时显示 */
+            .slide-container {
+                display: block !important;
+                height: auto !important;
+                overflow: visible !important;
+            }
+            
+            /* 每一页幻灯片的打印样式 */
+            .slide {
+                display: flex !important; /* 强制显示所有幻灯片 */
+                break-after: page; /* 每张幻灯片后强制分页 */
+                page-break-after: always;
+                height: 100vh; /* 充满一页纸 */
+                width: 100vw;
+                border: none; /* 打印时去掉边框 */
+                margin: 0;
+                padding: 40px; /* 打印时的内边距 */
+            }
+        }
+
+        /* 屏幕演示样式 */
+        .slide {
+            display: none; /* 默认隐藏，JS控制显示 */
+            height: 100vh;
+            width: 100%;
+            flex-direction: column;
+            justify-content: center;
+            background-color: white;
+            padding: 3rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* 当前激活的幻灯片 */
+        .slide.active {
+            display: flex;
+        }
+
+        .formula-box {
+            background-color: #f3f4f6;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border-left: 5px solid #3b82f6;
+            margin: 1rem 0;
+        }
+
+        .highlight-text {
+            color: #ef4444;
+            font-weight: bold;
+        }
+        
+        /* 自定义SVG样式 */
+        .chart-line { stroke-width: 3; fill: none; }
+        .chart-axis { stroke: black; stroke-width: 2; marker-end: url(#arrow); }
+        .chart-text { font-size: 14px; font-family: sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- 导航控制 (打印时隐藏) -->
+    <div class="no-print fixed bottom-5 right-5 z-50 flex gap-4 bg-white p-2 rounded shadow-lg border">
+        <button onclick="prevSlide()" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded font-bold">上一页</button>
+        <span id="page-indicator" class="px-4 py-2 font-mono flex items-center">1 / 1</span>
+        <button onclick="nextSlide()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-bold">下一页</button>
+        <button onclick="window.print()" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded font-bold">打印/存为PDF</button>
+    </div>
+
+    <div class="slide-container">
+        
+        <!-- P1: 封面 -->
+        <div class="slide active">
+            <div class="flex-1 flex flex-col justify-center items-center text-center">
+                <h1 class="text-6xl font-bold mb-8 text-blue-900 tracking-wider">化学反应原理</h1>
+                <div class="w-32 h-2 bg-blue-500 mb-12"></div>
+                <h2 class="text-4xl font-semibold text-gray-700 mb-6">基元反应、反应历程与活化能</h2>
+                <p class="text-2xl text-gray-500">深入浅出解析核心考点</p>
+            </div>
+            <div class="mt-auto text-center text-gray-400 text-sm">
+                全网深度课程 · 核心素养提升
+            </div>
+        </div>
+
+        <!-- P2: 基元反应与反应历程 -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-blue-800 mb-8 border-b-4 border-blue-200 pb-2">一、基元反应与反应历程</h3>
+            <div class="space-y-8 text-2xl leading-relaxed">
+                <div class="bg-blue-50 p-6 rounded-lg">
+                    <p><span class="font-bold text-blue-700">基元反应：</span>由反应物<span class="highlight-text">只经一步</span>就转化为生成物的反应。</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <p><span class="font-bold text-gray-700">非基元反应（复杂反应）：</span>反应由多步完成，每一步都是一个基元反应。</p>
+                    <p class="text-xl text-gray-500 mt-2">注：我们平时看到的绝大多数化学方程式（如 $2H_2+O_2 \rightarrow 2H_2O$）都是复杂反应的总和。</p>
+                </div>
+                <div class="p-4 border-l-4 border-yellow-500">
+                    <p><span class="font-bold">反应历程（机理）：</span>化学反应所经过的一系列基元反应步骤。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- P3: 反应历程图示分析 -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-blue-800 mb-6 border-b-4 border-blue-200 pb-2">二、反应历程的能量图示</h3>
+            <div class="flex flex-row justify-between items-center h-full">
+                <div class="w-1/2 pr-8">
+                    <ul class="list-disc list-inside space-y-4 text-xl">
+                        <li>横坐标：反应历程</li>
+                        <li>纵坐标：能量</li>
+                        <li><span class="highlight-text">峰的数量</span> = 基元反应的步骤数</li>
+                        <li><span class="highlight-text">波谷</span> = 中间产物（生成后立即被消耗）</li>
+                        <li><span class="highlight-text">波峰</span> = 过渡态（TS，能量最高，旧键未断新键未成）</li>
+                    </ul>
+                </div>
+                <!-- SVG: 多步反应能量图 -->
+                <div class="w-1/2 flex justify-center">
+                    <svg viewBox="0 0 400 300" class="w-full h-auto bg-white rounded shadow-md">
+                        <defs>
+                            <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#000" />
+                            </marker>
+                        </defs>
+                        <!-- Axis -->
+                        <line x1="40" y1="260" x2="380" y2="260" class="chart-axis" />
+                        <line x1="40" y1="260" x2="40" y2="20" class="chart-axis" />
+                        <text x="350" y="280" class="chart-text">反应历程</text>
+                        <text x="10" y="30" class="chart-text" writing-mode="tb">能量</text>
+                        
+                        <!-- Curve: 3 steps -->
+                        <!-- Start at 150. Step 1 peak 50, valley 130. Step 2 peak 80, valley 120. Step 3 peak 100, end 200 -->
+                        <path d="M 50 150 
+                                 Q 100 20 130 130 
+                                 Q 180 60 210 120 
+                                 Q 260 80 300 200 
+                                 L 360 200" 
+                              class="chart-line" stroke="#2563eb" fill="none"/>
+                        
+                        <!-- Labels -->
+                        <text x="45" y="145" class="chart-text font-bold">反应物</text>
+                        <text x="310" y="195" class="chart-text font-bold">生成物</text>
+                        <text x="90" y="15" class="chart-text text-red-500">TS1</text>
+                        <text x="170" y="55" class="chart-text text-red-500">TS2</text>
+                        <text x="250" y="75" class="chart-text text-red-500">TS3</text>
+                        <text x="125" y="150" class="chart-text text-green-600">中间产物1</text>
+                        <text x="205" y="140" class="chart-text text-green-600">中间产物2</text>
+                    </svg>
+                </div>
+            </div>
+            <p class="mt-4 text-center text-gray-500">图示：三步基元反应构成的复杂反应</p>
+        </div>
+
+        <!-- P4: 实例分析 - NO反应 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">实例：NO与CO的反应历程</h3>
+            <div class="text-xl space-y-4">
+                <p>总反应：$$2NO + 2CO \rightarrow 2CO_2 + N_2$$</p>
+                <div class="bg-white border rounded p-4 shadow-sm">
+                    <p class="font-bold mb-2">机理拆解：</p>
+                    <ol class="list-decimal list-inside space-y-2">
+                        <li>$$2NO \rightarrow N_2O_2$$ <span class="text-sm text-gray-500">(生成中间产物 $N_2O_2$)</span></li>
+                        <li>$$N_2O_2 + CO \rightarrow CO_2 + N_2O$$ <span class="text-sm text-gray-500">(生成中间产物 $N_2O$)</span></li>
+                        <li>$$N_2O + CO \rightarrow CO_2 + N_2$$ <span class="text-sm text-gray-500">(消耗 $N_2O$)</span></li>
+                    </ol>
+                </div>
+                <div class="p-4 bg-yellow-50 rounded">
+                    <p><span class="font-bold">判断技巧：</span></p>
+                    <ul class="list-disc list-inside mt-2">
+                        <li><span class="highlight-text">中间产物</span>：在某一步生成，随即在下一步被消耗（如 $N_2O_2, N_2O$）。</li>
+                        <li><span class="font-bold">总反应</span>：将所有基元反应相加，消去中间产物。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- P5: 浓度对速率的影响 -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-blue-800 mb-8 border-b-4 border-blue-200 pb-2">三、浓度与反应速率的关系</h3>
+            <div class="space-y-6 text-2xl">
+                <p>在定温下，反应速率 $v$ 与反应物浓度 $c$ 存在如下关系（速率方程）：</p>
+                <div class="formula-box text-center text-3xl">
+                    $$ v = k \cdot c^x(A) \cdot c^y(B) $$
+                </div>
+                <ul class="list-disc list-inside space-y-4">
+                    <li>$k$：<span class="font-bold">反应速率常数</span>。
+                        <ul class="list-none ml-8 text-xl text-gray-600 mt-2">
+                            <li>- 只与温度、催化剂、固体表面性质有关。</li>
+                            <li>- 与浓度无关。</li>
+                        </ul>
+                    </li>
+                    <li>$x, y$：反应级数。
+                        <ul class="list-none ml-8 text-xl text-gray-600 mt-2">
+                            <li>- <span class="highlight-text">必须由实验测定</span>，不一定等于化学计量数。</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- P6: 基元反应的特殊规律 -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-blue-800 mb-8 border-b-4 border-blue-200 pb-2">四、基元反应的特殊规律（重要）</h3>
+            <div class="space-y-6 text-2xl">
+                <div class="bg-red-50 p-6 rounded border-l-8 border-red-500">
+                    <h4 class="font-bold text-red-700 mb-4">二级结论（可以直接背诵）：</h4>
+                    <p class="mb-4">若是<span class="font-bold">基元反应</span>，反应速率方程的级数直接等于化学方程式的计量数。</p>
+                    <p class="text-xl">例如基元反应 $aA + bB \rightarrow P$：</p>
+                    <p class="text-center font-bold my-2">$$ v = k \cdot c^a(A) \cdot c^b(B) $$</p>
+                </div>
+                
+                <div class="bg-blue-50 p-6 rounded border-l-8 border-blue-500">
+                    <h4 class="font-bold text-blue-700 mb-4">平衡常数与速率常数的关系：</h4>
+                    <p class="mb-2">当达到平衡时，$v_{正} = v_{逆}$，推导可得：</p>
+                    <div class="text-center font-bold text-3xl my-4">
+                        $$ K = \frac{k_{正}}{k_{逆}} $$
+                    </div>
+                    <p class="text-lg text-gray-500">注意：此关系式不仅适用于基元反应，对可逆反应总包也成立。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- P7: 温度与活化能 -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-blue-800 mb-6 border-b-4 border-blue-200 pb-2">五、温度与活化能</h3>
+            <div class="flex gap-8 h-full">
+                <div class="w-1/2 space-y-6 text-xl">
+                    <p><span class="font-bold">活化能 ($E_a$)：</span>过渡态能量与反应物平均能量之差。</p>
+                    <p><span class="font-bold">规律：</span></p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>$E_a$ 越大，反应越难发生，速率越慢。</li>
+                        <li>温度升高，活化分子百分数增加，有效碰撞增加，速率加快。</li>
+                    </ul>
+                    <div class="bg-gray-100 p-4 rounded mt-4">
+                        <p class="font-bold">阿伦尼乌斯公式（定性理解）：</p>
+                        <p>$$ k = A \cdot e^{-\frac{E_a}{RT}} $$</p>
+                        <p class="text-sm mt-2">结论：$T$ 升高，$k$ 增大；$E_a$ 越大，温度对 $k$ 的提升幅度越明显。</p>
+                    </div>
+                </div>
+                <!-- SVG: 活化能示意 -->
+                <div class="w-1/2 flex items-center justify-center">
+                    <svg viewBox="0 0 300 250" class="w-full h-auto">
+                        <defs>
+                            <marker id="arrow2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#000" />
+                            </marker>
+                        </defs>
+                        <line x1="30" y1="220" x2="280" y2="220" class="chart-axis" marker-end="url(#arrow2)"/>
+                        <line x1="30" y1="220" x2="30" y2="20" class="chart-axis" marker-end="url(#arrow2)"/>
+                        
+                        <!-- Profile -->
+                        <path d="M 40 150 Q 150 -50 260 180" fill="none" stroke="#dc2626" stroke-width="3"/>
+                        
+                        <!-- Lines -->
+                        <line x1="40" y1="150" x2="160" y2="150" stroke="#666" stroke-dasharray="4"/>
+                        <line x1="150" y1="50" x2="160" y2="50" stroke="#666" stroke-dasharray="4"/>
+                        
+                        <!-- Ea label -->
+                        <line x1="150" y1="150" x2="150" y2="50" stroke="#000" marker-end="url(#arrow2)" marker-start="url(#arrow2)"/>
+                        <text x="160" y="100" class="font-bold text-red-600 italic">Ea (活化能)</text>
+                        <text x="130" y="40" class="font-bold text-gray-700">过渡态</text>
+                        <text x="30" y="140" class="font-bold text-blue-700">反应物</text>
+                        <text x="250" y="200" class="font-bold text-blue-700">生成物</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- P8: 催化剂原理 -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-blue-800 mb-8 border-b-4 border-blue-200 pb-2">六、催化剂的原理</h3>
+            <div class="flex gap-8">
+                <div class="w-3/5 text-2xl space-y-6">
+                    <p class="font-bold text-blue-600">定义：</p>
+                    <p>改变反应历程，<span class="highlight-text">降低反应的活化能</span>，从而加快反应速率。</p>
+                    <p class="font-bold text-blue-600">特征：</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>反应前后质量和化学性质不变。</li>
+                        <li><span class="highlight-text">不改变</span>平衡常数 $K$。</li>
+                        <li><span class="highlight-text">不改变</span>反应热 $\Delta H$。</li>
+                        <li><span class="highlight-text">不改变</span>平衡转化率。</li>
+                    </ul>
+                </div>
+                <div class="w-2/5 flex flex-col items-center justify-center bg-white rounded shadow p-4">
+                     <svg viewBox="0 0 300 200" class="w-full h-auto">
+                        <line x1="20" y1="180" x2="280" y2="180" class="chart-axis" />
+                        <line x1="20" y1="180" x2="20" y2="20" class="chart-axis" />
+                        
+                        <!-- No Catalyst -->
+                        <path d="M 30 140 Q 150 10 270 160" fill="none" stroke="#999" stroke-width="2" stroke-dasharray="5,5"/>
+                        <text x="160" y="30" class="text-gray-500 text-xs">无催化剂</text>
+
+                        <!-- With Catalyst -->
+                        <path d="M 30 140 Q 100 100 130 130 Q 160 90 270 160" fill="none" stroke="#2563eb" stroke-width="3"/>
+                        <text x="150" y="110" class="text-blue-600 font-bold text-xs">有催化剂</text>
+                    </svg>
+                    <p class="text-sm mt-2 text-center">催化剂改变了历程（多步），降低了最高能垒</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- P9: 速率控制步骤 -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-blue-800 mb-8 border-b-4 border-blue-200 pb-2">七、决速步（Rate Determining Step）</h3>
+            <div class="space-y-6 text-2xl">
+                <div class="bg-yellow-50 p-6 rounded border-l-8 border-yellow-500">
+                    <p class="font-bold mb-4">木桶效应原理：</p>
+                    <p>复杂反应的速率取决于<span class="highlight-text">最慢</span>的那一步基元反应。</p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-8 mt-8">
+                    <div class="bg-gray-100 p-4 rounded">
+                        <p class="font-bold text-center mb-2">如何判断慢反应？</p>
+                        <ul class="list-disc list-inside">
+                            <li>活化能（能垒）<span class="text-red-600 font-bold">最高</span>的一步。</li>
+                            <li>过渡态与该步反应物能量差最大。</li>
+                        </ul>
+                    </div>
+                    <div class="flex items-center justify-center">
+                        <!-- Simple visual for distinct steps -->
+                        <svg viewBox="0 0 200 100" class="w-full h-auto">
+                            <path d="M 10 80 L 40 20 L 70 70 L 100 60 L 130 90" fill="none" stroke="#000" stroke-width="2"/>
+                            <text x="40" y="15" class="text-xs text-red-600 font-bold">Highest peak (慢)</text>
+                            <text x="100" y="55" class="text-xs text-blue-600">Lower peak (快)</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- P10: 例题1 (无解析) -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">【例题 1】催化剂选择性</h3>
+            <div class="text-2xl space-y-6">
+                <p>已知乙烯($C_2H_4$)与氧气反应存在两个竞争反应：</p>
+                <div class="pl-8 space-y-2">
+                    <p>① $2C_2H_4 + O_2 \rightarrow 2C_2H_4O$ (环氧乙烷)</p>
+                    <p>② $C_2H_4 + 3O_2 \rightarrow 2CO_2 + 2H_2O$</p>
+                </div>
+                <p class="mt-8">为了提高环氧乙烷的产率，工业生产中采取的关键措施是？</p>
+            </div>
+            <div class="mt-auto text-gray-400 text-lg">（思考时间）</div>
+        </div>
+
+        <!-- P11: 例题2 (无解析) -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">【例题 2】决速步判断</h3>
+            <div class="flex gap-8">
+                <div class="w-1/2 text-xl space-y-4">
+                    <p>右图为某化学反应的能量变化过程，该历程包含三个基元反应步骤。</p>
+                    <p>请观察图像，判断：</p>
+                    <ol class="list-decimal list-inside space-y-2">
+                        <li>整个反应是吸热还是放热？</li>
+                        <li>哪一步是反应速率控制步骤（决速步）？</li>
+                    </ol>
+                </div>
+                <div class="w-1/2">
+                     <svg viewBox="0 0 300 200" class="w-full h-auto bg-white border">
+                        <line x1="20" y1="180" x2="280" y2="180" class="chart-axis" />
+                        <line x1="20" y1="180" x2="20" y2="20" class="chart-axis" />
+                        <!-- High peak in middle -->
+                        <path d="M 30 120 
+                                 Q 60 100 80 110
+                                 Q 120 10 150 100
+                                 Q 180 80 200 110
+                                 Q 220 90 260 160" 
+                              fill="none" stroke="#2563eb" stroke-width="2"/>
+                        <text x="35" y="115" class="text-xs">反应物</text>
+                        <text x="260" y="155" class="text-xs">产物</text>
+                        <text x="120" y="30" class="text-xs text-red-500 font-bold">Step 2</text>
+                    </svg>
+                </div>
+            </div>
+            <div class="mt-auto text-gray-400 text-lg">（思考时间）</div>
+        </div>
+
+        <!-- P12: 练习题1 (题目) -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">【巩固练习 1】反应级数推导</h3>
+            <div class="text-2xl space-y-6">
+                <p>某温度下，反应 $2NO(g) + O_2(g) \rightarrow 2NO_2(g)$ 的实验数据如下：</p>
+                <table class="w-full text-center border-collapse border border-gray-400 text-lg">
+                    <tr class="bg-gray-200">
+                        <th class="border border-gray-400 p-2">实验序号</th>
+                        <th class="border border-gray-400 p-2">$c(NO) / mol \cdot L^{-1}$</th>
+                        <th class="border border-gray-400 p-2">$c(O_2) / mol \cdot L^{-1}$</th>
+                        <th class="border border-gray-400 p-2">$v / mol \cdot L^{-1} \cdot s^{-1}$</th>
+                    </tr>
+                    <tr>
+                        <td class="border border-gray-400 p-2">1</td>
+                        <td class="border border-gray-400 p-2">0.1</td>
+                        <td class="border border-gray-400 p-2">0.1</td>
+                        <td class="border border-gray-400 p-2">$1.2 \times 10^{-3}$</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-gray-400 p-2">2</td>
+                        <td class="border border-gray-400 p-2">0.2</td>
+                        <td class="border border-gray-400 p-2">0.1</td>
+                        <td class="border border-gray-400 p-2">$4.8 \times 10^{-3}$</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-gray-400 p-2">3</td>
+                        <td class="border border-gray-400 p-2">0.1</td>
+                        <td class="border border-gray-400 p-2">0.2</td>
+                        <td class="border border-gray-400 p-2">$2.4 \times 10^{-3}$</td>
+                    </tr>
+                </table>
+                <p class="mt-4 font-bold">问题：写出该反应的速率方程。</p>
+            </div>
+        </div>
+
+        <!-- P13: 练习题1 (解析) -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-green-700 mb-6 border-b-2 border-green-200">【解析 1】</h3>
+            <div class="text-xl space-y-4">
+                <p>设速率方程为 $v = k \cdot c^x(NO) \cdot c^y(O_2)$</p>
+                <div class="bg-gray-50 p-4 rounded border-l-4 border-gray-400">
+                    <p class="font-bold">1. 确定 x (对比实验 1 和 2)：</p>
+                    <p>$c(O_2)$ 不变，$c(NO)$ 变为 2 倍 ($0.1 \rightarrow 0.2$)。</p>
+                    <p>速率 $v$ 变为 $\frac{4.8}{1.2} = 4$ 倍。</p>
+                    <p>即 $2^x = 4 \Rightarrow x = 2$。</p>
+                </div>
+                <div class="bg-gray-50 p-4 rounded border-l-4 border-gray-400">
+                    <p class="font-bold">2. 确定 y (对比实验 1 和 3)：</p>
+                    <p>$c(NO)$ 不变，$c(O_2)$ 变为 2 倍 ($0.1 \rightarrow 0.2$)。</p>
+                    <p>速率 $v$ 变为 $\frac{2.4}{1.2} = 2$ 倍。</p>
+                    <p>即 $2^y = 2 \Rightarrow y = 1$。</p>
+                </div>
+                <div class="mt-4 p-4 bg-green-100 rounded text-center">
+                    <p class="text-2xl font-bold text-green-800">结论：速率方程为 $v = k \cdot c^2(NO) \cdot c(O_2)$</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 基础巩固题改版 (选择题 + 解析分离) ==================== -->
+
+        <!-- Q1 题目 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">【基础巩固 1】基本概念</h3>
+            <div class="flex flex-col justify-center h-full space-y-6">
+                <p class="text-3xl font-bold mb-4">1. 下列关于“基元反应”的说法，正确的是：</p>
+                <div class="space-y-4 text-2xl">
+                    <div class="p-4 border rounded hover:bg-blue-50 cursor-pointer">A. 反应物经历多个中间步骤转化为生成物</div>
+                    <div class="p-4 border rounded hover:bg-blue-50 cursor-pointer">B. 反应物只经一步直接转化为生成物</div>
+                    <div class="p-4 border rounded hover:bg-blue-50 cursor-pointer">C. 所有的氧化还原反应都是基元反应</div>
+                    <div class="p-4 border rounded hover:bg-blue-50 cursor-pointer">D. 活化能为零的反应</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q1 解析 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-green-700 mb-6 border-b-2 border-green-200">【答案与解析 1】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6 text-2xl">
+                <div class="p-6 bg-green-100 rounded border-l-8 border-green-600">
+                    <p class="font-bold">正确答案：B</p>
+                </div>
+                <div class="p-6 bg-gray-50 rounded">
+                    <p class="font-bold text-gray-700 mb-2">解析：</p>
+                    <p>基元反应的定义就是<span class="highlight-text">“只经一步”</span>、没有中间产物的反应。</p>
+                    <p class="text-gray-500 mt-2 text-lg">A选项描述的是复杂反应（非基元反应）。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q2 题目 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">【基础巩固 2】温度影响</h3>
+            <div class="flex flex-col justify-center h-full space-y-6">
+                <p class="text-3xl font-bold mb-4">2. 对于大多数化学反应，当温度升高时，反应速率常数 $k$ 会：</p>
+                <div class="space-y-4 text-2xl">
+                    <div class="p-4 border rounded hover:bg-blue-50 cursor-pointer">A. 减小</div>
+                    <div class="p-4 border rounded hover:bg-blue-50 cursor-pointer">B. 不变</div>
+                    <div class="p-4 border rounded hover:bg-blue-50 cursor-pointer">C. 增大</div>
+                    <div class="p-4 border rounded hover:bg-blue-50 cursor-pointer">D. 先减小后增大</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q2 解析 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-green-700 mb-6 border-b-2 border-green-200">【答案与解析 2】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6 text-2xl">
+                <div class="p-6 bg-green-100 rounded border-l-8 border-green-600">
+                    <p class="font-bold">正确答案：C</p>
+                </div>
+                <div class="p-6 bg-gray-50 rounded">
+                    <p class="font-bold text-gray-700 mb-2">解析：</p>
+                    <p>根据阿伦尼乌斯公式 $k = A \cdot e^{-\frac{E_a}{RT}}$，温度 $T$ 升高，指数部分增大，导致 <span class="highlight-text">速率常数 $k$ 增大</span>。</p>
+                    <p class="text-gray-500 mt-2 text-lg">注：无论是吸热反应还是放热反应，升温都会使反应速率加快。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q3 题目 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">【基础巩固 3】催化剂</h3>
+            <div class="flex flex-col justify-center h-full space-y-6">
+                <p class="text-3xl font-bold mb-4">3. 下列关于催化剂的叙述，正确的是：</p>
+                <div class="space-y-4 text-2xl">
+                    <div class="p-4 border rounded hover:bg-blue-50 cursor-pointer">A. 催化剂能改变反应的焓变($\Delta H$)</div>
+                    <div class="p-4 border rounded hover:bg-blue-50 cursor-pointer">B. 催化剂能改变平衡常数($K$)</div>
+                    <div class="p-4 border rounded hover:bg-blue-50 cursor-pointer">C. 催化剂能降低反应的活化能($E_a$)</div>
+                    <div class="p-4 border rounded hover:bg-blue-50 cursor-pointer">D. 催化剂能提高平衡转化率</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q3 解析 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-green-700 mb-6 border-b-2 border-green-200">【答案与解析 3】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6 text-2xl">
+                <div class="p-6 bg-green-100 rounded border-l-8 border-green-600">
+                    <p class="font-bold">正确答案：C</p>
+                </div>
+                <div class="p-6 bg-gray-50 rounded">
+                    <p class="font-bold text-gray-700 mb-2">解析：</p>
+                    <p>催化剂的作用机理是改变反应历程，<span class="highlight-text">降低活化能</span>，从而加快速率。</p>
+                    <p class="text-gray-500 mt-2 text-lg">A、B、D 错误：催化剂不改变始态和终态，因此不改变 $\Delta H$、平衡常数 $K$ 和转化率。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q4 题目 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">【基础巩固 4】决速步</h3>
+            <div class="flex flex-col justify-center h-full space-y-6">
+                <p class="text-3xl font-bold mb-4">4. 在多步进行的复杂反应中，决定总反应速率的是：</p>
+                <div class="space-y-4 text-2xl">
+                    <div class="p-4 border rounded hover:bg-blue-50 cursor-pointer">A. 反应速率最快的一步</div>
+                    <div class="p-4 border rounded hover:bg-blue-50 cursor-pointer">B. 活化能最高（反应速率最慢）的一步</div>
+                    <div class="p-4 border rounded hover:bg-blue-50 cursor-pointer">C. 反应的第一步</div>
+                    <div class="p-4 border rounded hover:bg-blue-50 cursor-pointer">D. 反应的最后一步</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q4 解析 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-green-700 mb-6 border-b-2 border-green-200">【答案与解析 4】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6 text-2xl">
+                <div class="p-6 bg-green-100 rounded border-l-8 border-green-600">
+                    <p class="font-bold">正确答案：B</p>
+                </div>
+                <div class="p-6 bg-gray-50 rounded">
+                    <p class="font-bold text-gray-700 mb-2">解析：</p>
+                    <p>这遵循<span class="highlight-text">“木桶效应”</span>。总反应速率受限于最慢的那个环节，即活化能（能垒）最高的那一步。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q5 题目 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">【基础巩固 5】速率方程应用</h3>
+            <div class="flex flex-col justify-center h-full space-y-6">
+                <p class="text-3xl font-bold mb-4">5. 对于基元反应 $A(g) + B(g) \rightarrow C(g)$，若将容器体积缩小为原来的一半（温度不变），反应速率将变为原来的：</p>
+                <div class="space-y-4 text-2xl">
+                    <div class="p-4 border rounded hover:bg-blue-50 cursor-pointer">A. 2 倍</div>
+                    <div class="p-4 border rounded hover:bg-blue-50 cursor-pointer">B. 4 倍</div>
+                    <div class="p-4 border rounded hover:bg-blue-50 cursor-pointer">C. 8 倍</div>
+                    <div class="p-4 border rounded hover:bg-blue-50 cursor-pointer">D. 不变</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q5 解析 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-green-700 mb-6 border-b-2 border-green-200">【答案与解析 5】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6 text-2xl">
+                <div class="p-6 bg-green-100 rounded border-l-8 border-green-600">
+                    <p class="font-bold">正确答案：B</p>
+                </div>
+                <div class="p-6 bg-gray-50 rounded">
+                    <p class="font-bold text-gray-700 mb-2">解析：</p>
+                    <p>1. 体积减半 $\rightarrow$ 浓度 $c(A), c(B)$ 均翻倍。</p>
+                    <p>2. 基元反应速率方程为 $v = k \cdot c(A) \cdot c(B)$。</p>
+                    <p>3. 新速率 $v' = k \cdot (2c_A) \cdot (2c_B) = 4 \cdot v$。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- P24: 结束页 (原P19) -->
+        <div class="slide text-center">
+            <h2 class="text-5xl font-bold text-blue-900 mb-8">课程结束</h2>
+            <p class="text-3xl text-gray-600 mb-12">请同学们课后及时复习</p>
+            <div class="w-24 h-24 bg-blue-600 rounded-full mx-auto flex items-center justify-center text-white text-4xl">
+                ✓
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const indicator = document.getElementById('page-indicator');
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+            indicator.textContent = `${currentSlide + 1} / ${slides.length}`;
+            window.scrollTo(0, 0);
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+
+        // Initialize
+        updateSlide();
+    </script>
+</body>
+</html>

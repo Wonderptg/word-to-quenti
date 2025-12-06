@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 移除了 (简化版) -->
+    <title>生物大分子</title>
+    <!-- 使用更现代、易读的字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 1. 基础设置 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans SC', sans-serif; /* 使用清晰的无衬线字体 */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f8fafc; /* 更柔和的背景灰 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.75rem; /* 12px 圆角 */
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 3rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        /* 2. 排版风格 */
+        h1 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 3rem; /* 48px */
+            font-weight: 700;
+            color: #111827; /* gray-900 */
+            text-align: center;
+        }
+        h2 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 2.25rem; /* 36px */
+            font-weight: 700;
+            color: #111827;
+            border-bottom: 3px solid #3b82f6; /* blue-500 */
+            padding-bottom: 0.75rem;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+        h3 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.5rem; /* 24px */
+            font-weight: 700;
+            color: #1e3a8a; /* blue-800 */
+            margin-bottom: 0.75rem;
+        }
+        p, li {
+            font-size: 1.125rem; /* 18px */
+            line-height: 1.75;
+            color: #374151; /* gray-700 */
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+            font-size: 1rem; /* 16px */
+            background-color: #eef2ff; /* indigo-100 */
+            color: #3730a3; /* indigo-800 */
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem; /* 6px */
+        }
+        
+        ul {
+            list-style-type: disc;
+            padding-left: 1.75rem;
+            margin-top: 1rem;
+        }
+        li { margin-bottom: 0.5rem; }
+
+        /* 卡片/信息框 */
+        .info-card {
+            background-color: #f9fafb; /* gray-50 */
+            border: 1px solid #e5e7eb; /* gray-200 */
+            padding: 1.5rem; /* 24px */
+            border-radius: 0.75rem; /* 12px */
+            margin-top: 1.5rem;
+        }
+        
+        /* 表格 */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            font-size: 1rem;
+        }
+        .styled-table th, .styled-table td {
+            border: 1px solid #cbd5e1;
+            padding: 0.75rem 1rem;
+            text-align: center;
+        }
+        .styled-table thead {
+            background-color: #f1f5f9;
+        }
+        .styled-table th {
+            font-weight: 700;
+            color: #334155;
+        }
+
+        /* 导航 */
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #ffffff;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e5e7eb;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        #navigation button {
+            background-color: #3b82f6; /* blue-500 */
+            color: white;
+            font-family: 'Noto Sans SC', sans-serif;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem; /* 8px */
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s, opacity 0.2s;
+        }
+        #navigation button:hover {
+            background-color: #2563eb; /* blue-600 */
+        }
+        #navigation button:disabled {
+            background-color: #9ca3af; /* gray-400 */
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        #page-indicator {
+            font-family: 'Noto Sans SC', sans-serif;
+            color: #4b5563; /* gray-600 */
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        /* 打印专用 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            html, body { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <!-- 移除了 (简化版) -->
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">生物大分子</h1>
+                <p class="text-2xl text-slate-600 mt-2">糖类 · 蛋白质 · 核酸</p>
+            </div>
+        </div>
+        
+        <!-- 章节标题：糖类 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-blue-600 mb-4 mt-4">第一部分：糖类</h1>
+                <p class="text-2xl text-slate-600 mt-2">“碳水化合物”</p>
+            </div>
+        </div>
+
+        <!-- 糖类：定义与误区 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">糖类：定义与误区</h2>
+                <div class="info-card">
+                    <h3>化学定义：</h3>
+                    <p>糖类是<strong class="text-blue-600">多羟基醛</strong>、<strong class="text-blue-600">多羟基酮</strong>或它们的<strong class="text-blue-600">脱水缩合物</strong>。</p>
+                </div>
+                 <div class="info-card mt-6 bg-red-50 border-red-200">
+                    <h3 class="text-red-700">常见误区：</h3>
+                    <ul class="list-disc pl-6 text-slate-700">
+                        <li><strong class="text-red-600">×</strong> 糖一定有甜味？ (反例: 淀粉)</li>
+                        <li><strong class="text-red-600">×</strong> 有甜味一定是糖？ (反例: 甘油)</li>
+                        <li><strong class="text-red-600">×</strong> 糖一定符合 <code>Cₘ(H₂O)ₙ</code>？ (反例: 脱氧核糖 <code>C₅H₁₀O₄</code>)</li>
+                        <li><strong class="text-red-600">×</strong> 符合 <code>Cₘ(H₂O)ₙ</code> 一定是糖？ (反例: 乙酸 <code>C₂(H₂O)₂</code>)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 糖类的分类 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">糖类的分类 (按水解)</h2>
+                <div class="mt-8 overflow-x-auto">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>类别</th>
+                                <th>定义</th>
+                                <th>常见例子</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold text-blue-600">单糖</td>
+                                <td><strong class="text-red-600">不能</strong>水解</td>
+                                <td class="mono">葡萄糖、果糖、核糖</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-green-600">二糖</td>
+                                <td>水解生成 <strong class="text-red-600">2</strong> 个单糖</td>
+                                <td class="mono">蔗糖、麦芽糖</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-purple-600">多糖</td>
+                                <td>水解生成 <strong class="text-red-600">很多</strong>单糖</td>
+                                <td class="mono">淀粉、纤维素</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 重点单糖：葡萄糖 vs 果糖 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">重点单糖：葡萄糖 vs 果糖</h2>
+                <p class="mt-2 text-xl">它们分子式都是 <code>C₆H₁₂O₆</code>，互为<strong class="text-red-600">同分异构体</strong>。</p>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="info-card border-l-4 border-blue-500">
+                        <h3 class="text-blue-700">葡萄糖 (醛糖)</h3>
+                        <p class="mt-3 text-slate-600">官能团：<br/>· <strong class="text-blue-700">1个 醛基 (-CHO)</strong><br/>· <strong class="text-blue-700">5个 羟基 (-OH)</strong></p>
+                        <p class="mt-2 text-sm text-slate-500 mono"><code>CH₂(OH)-(CHOH)₄-CHO</code></p>
+                    </div>
+                    <div class="info-card border-l-4 border-purple-500">
+                        <h3 class="text-purple-700">果糖 (酮糖)</h3>
+                        <p class="mt-3 text-slate-600">官能团：<br/>· <strong class="text-purple-700">1个 酮羰基 (>C=O)</strong><br/>· <strong class="text-purple-700">5个 羟基 (-OH)</strong></p>
+                        <p class="mt-2 text-sm text-slate-500 mono"><code>CH₂(OH)-(CHOH)₃-CO-CH₂(OH)</code></p>
+                    </div>
+                </div>
+                 <div class="info-card mt-6 bg-yellow-50 border-yellow-200">
+                    <h3 class="text-yellow-700">甜度对比：</h3>
+                    <p class="mt-2 text-lg text-center font-bold"><span class="text-purple-600">果糖</span> > <span class="text-gray-700">蔗糖</span> > <span class="text-blue-600">葡萄糖</span> > <span class="text-orange-600">麦芽糖</span></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 葡萄糖的化学性质 (总览) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">葡萄糖的化学性质</h2>
+                 <div class="mt-8 space-y-4 text-lg">
+                    <div class="info-card">
+                        <strong class="font-bold text-blue-700 text-xl">基于 醇羟基 (-OH)：</strong>
+                        <p class="mt-2 text-slate-700">能发生<strong class="text-blue-600">酯化反应</strong> (1mol 葡萄糖最多消耗 5mol 酸)。</p>
+                    </div>
+                    <div class="info-card">
+                        <strong class="font-bold text-red-700 text-xl">基于 醛基 (-CHO)：</strong>
+                        <p class="mt-2 text-slate-700">1. <strong class="text-red-600">氧化反应</strong> (能发生<strong class="text-red-600">银镜反应</strong>、与<strong class="text-red-600">新制Cu(OH)₂</strong>反应)。</p>
+                        <p class="mt-1 text-slate-700">2. <strong class="text-red-600">加成反应</strong> (与 H₂ 加成)。</p>
+                    </div>
+                    <div class="info-card">
+                        <strong class="font-bold text-yellow-700 text-xl">特殊反应：</strong>
+                        <p class="mt-2 text-slate-700">在酒化酶作用下，<strong class="text-yellow-700">发酵</strong>生成<strong class="text-yellow-700">酒精 (乙醇)</strong>。</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 葡萄糖的氧化反应 (重点) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">葡萄糖的氧化反应 (重点)</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="info-card">
+                        <h3 class="text-gray-700">银镜反应 (水浴加热)</h3>
+                        <p class="mt-3 text-slate-600">与<strong class="text-gray-600">银氨溶液</strong>反应。</p>
+                        <p class="mt-4 text-xl text-center font-bold text-gray-800">现象：生成<strong class="text-gray-700">光亮银镜</strong></p>
+                    </div>
+                    <div class="info-card">
+                        <h3 class="text-blue-700">与新制Cu(OH)₂ (加热)</h3>
+                        <p class="mt-3 text-slate-600">与<strong class="text-blue-600">新制氢氧化铜</strong>反应。</p>
+                        <p class="mt-4 text-xl text-center font-bold text-red-600">现象：生成<strong class="text-red-600">砖红色沉淀 (Cu₂O)</strong></p>
+                    </div>
+                </div>
+                <p class="mt-6 text-xl text-slate-700 text-center">这两个反应证明葡萄糖是<strong class="text-green-600">还原性糖</strong>。</p>
+            </div>
+        </div>
+
+        <!-- 重点二糖：蔗糖 vs 麦芽糖 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">重点二糖：蔗糖 vs 麦芽糖</h2>
+                <p class="mt-8 text-xl text-slate-700">分子式均为 <code>C₁₂H₂₂O₁₁</code>，互为<strong class="text-red-600">同分异构体</strong>。</p>
+                <div class="mt-8 overflow-x-auto">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th class="text-red-600">蔗糖 (非还原性糖)</th>
+                                <th class="text-green-600">麦芽糖 (还原性糖)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold">能否发生银镜反应</td>
+                                <td class="text-red-600 text-xl font-bold">× 否</td>
+                                <td class="text-green-600 text-xl font-bold">√ 能</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">水解产物</td>
+                                <td>1 葡萄糖 + 1 果糖</td>
+                                <td>2 葡萄糖</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 实验：蔗糖的水解 (关键) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">实验：蔗糖/淀粉的水解</h2>
+                <div class="info-card mt-8 bg-red-100 border-red-200">
+                    <h3 class="font-bold text-red-700 text-xl">核心考点：</h3>
+                    <p class="mt-3 text-lg text-slate-700">1. 蔗糖或淀粉用<strong class="text-blue-600">稀硫酸 (H₂SO₄)</strong>作催化剂，<strong class="text-blue-600">水浴加热</strong>水解。</p>
+                    <p class="mt-2 text-lg text-slate-700">2. 取出水解液，准备用银氨溶液或新制Cu(OH)₂检验产物（葡萄糖）。</p>
+                    <p class="mt-2 text-lg text-slate-700">3. <strong class="text-red-600">关键一步：</strong>必须<strong class="text-red-600">先加入 NaOH 溶液</strong>！</p>
+                    <p class="mt-4 text-lg text-slate-700"><strong>原因：</strong>检验醛基的反应<strong class="text-red-600">必须在碱性条件下</strong>进行，必须先中和掉作催化剂的稀硫酸。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 重点多糖：淀粉 vs 纤维素 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">重点多糖：淀粉 vs 纤维素</h2>
+                <p class="mt-8 text-xl text-slate-700">通式均为 <code>(C₆H₁₀O₅)ₙ</code>，均为葡萄糖形成的天然高分子（混合物）。</p>
+                <div class="mt-8 overflow-x-auto">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th class="text-blue-600">淀粉 (Starch)</th>
+                                <th class="text-green-600">纤维素 (Cellulose)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold">甜味</td>
+                                <td class="text-red-600">无</td>
+                                <td class="text-red-600">无</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">水解</td>
+                                <td class="text-blue-600">能 (酸/酶) → 葡萄糖</td>
+                                <td class="text-green-600">能 (条件苛刻) → 葡萄糖</td>
+                            </tr>
+                             <tr>
+                                <td class="font-bold">人体消化</td>
+                                <td class="text-blue-600">√ 能</td>
+                                <td class="text-red-600">× 不能</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">特征反应</td>
+                                <td class="text-blue-600 font-bold">遇碘 (I₂) 变蓝色</td>
+                                <td class="text-gray-500">无</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实验：淀粉水解程度判断 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">实验：淀粉水解程度判断</h2>
+                <p class="mt-8 text-xl text-slate-700">取水解后的溶液，分两份：</p>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="info-card border-l-4 border-blue-500">
+                        <h3 class="text-blue-700 text-xl">A：检验淀粉 (是否水解完)</h3>
+                        <p class="mt-3 text-slate-600">操作：<strong class="text-blue-700">直接</strong>滴加<strong class="text-blue-700">碘水</strong>。</p>
+                        <p class="mt-2 text-slate-600">现象：变蓝 (有淀粉) / 不变蓝 (无淀粉)</p>
+                    </div>
+                    <div class="info-card border-l-4 border-green-500">
+                        <h3 class="text-green-700 text-xl">B：检验葡萄糖 (是否已水解)</h3>
+                        <p class="mt-3 text-slate-600">操作：<strong class="text-red-600">先加NaOH</strong>，再加银氨溶液，水浴加热。</p>
+                        <p class="mt-2 text-slate-600">现象：有银镜 (有葡萄糖) / 无银镜 (无葡萄糖)</p>
+                    </div>
+                </div>
+                 <div class="info-card mt-6 bg-yellow-50 border-yellow-200">
+                    <p class="text-lg text-slate-700"><strong>结论：</strong><br/>
+                    A蓝, B无镜 → <strong class="text-red-600">未水解</strong><br/>
+                    A蓝, B有镜 → <strong class="text-orange-600">部分水解</strong><br/>
+                    A不蓝, B有镜 → <strong class="text-green-600">完全水解</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 章节标题：蛋白质 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-green-600 mb-4 mt-4">第二部分：蛋白质</h1>
+                <p class="text-2xl text-slate-600 mt-2">生命的基础</p>
+            </div>
+        </div>
+
+        <!-- 氨基酸 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">蛋白质的“积木”：氨基酸</h2>
+                <div class="info-card">
+                    <h3>α-氨基酸：</h3>
+                    <p class="mt-3 text-lg">分子中同时含有：<br/>
+                    · <strong class="text-red-600">羧基 (-COOH)</strong> (显酸性)<br/>
+                    · <strong class="text-blue-600">氨基 (-NH₂)</strong> (显碱性)<br/>
+                    且两者连接在<strong class="text-green-700">同一个碳原子</strong>上。</p>
+                </div>
+                <div class="info-card mt-6">
+                    <h3 class="text-purple-700">两性：</h3>
+                    <p class="mt-3 text-lg">氨基酸是<strong class="text-purple-700">两性化合物</strong>，既能与酸（-NH₂反应）反应，也能与碱（-COOH反应）反应。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 肽键 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">氨基酸的连接：成肽反应</h2>
+                <div class="info-card mt-8">
+                    <h3>脱水缩合：</h3>
+                    <p class="mt-3 text-lg">一个氨基酸的 <code class="text-red-600">-COOH</code> 和另一个的 <code class="text-blue-600">-NH₂</code> 脱去一分子 H₂O。</p>
+                    <p class="mono mt-2 text-center text-lg">...-CO<span class="text-red-600">OH</span> + <span class="text-blue-600">H</span>₂N-... → ...-CO-NH-... + H₂O</p>
+                    <p class="mt-4 text-xl text-slate-700 text-center">形成的 <code class="bg-green-100 text-green-800 text-xl mono">-CO-NH-</code> 结构称为<strong class="text-green-700">肽键</strong>。</p>
+                </div>
+                <div class="info-card mt-6 bg-red-50 border-red-200">
+                    <p class="text-lg text-slate-700"><strong>二肽：</strong>由 <strong class="text-red-600">2</strong> 个氨基酸分子缩合而成，含 <strong class="text-red-600">1</strong> 个肽键。</p>
+                    <p class="text-lg text-slate-700 mt-2"><strong>三肽：</strong>由 <strong class="text-red-600">3</strong> 个氨基酸分子缩合而成，含 <strong class="text-red-600">2</strong> 个肽键。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 蛋白质的结构 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">蛋白质的结构</h2>
+                 <div class="mt-8 space-y-3 text-lg">
+                    <p class="p-3 rounded-md bg-white border"><strong class="text-gray-700">一级结构：</strong>氨基酸的<strong class="text-red-600">排列顺序</strong>。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong class="text-gray-700">二级结构：</strong>肽链通过<strong class="text-blue-600">氢键</strong>形成的<strong class="text-blue-600">α-螺旋</strong>或<strong class="text-blue-600">β-折叠</strong>。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong class="text-gray-700">三/四级结构：</strong>肽链进一步盘曲折叠（含<strong class="text-purple-600">二硫键</strong>）形成特定空间结构。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 蛋白质的性质 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">蛋白质的性质</h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="info-card"><strong class="text-purple-600">两性：</strong>因含有-COOH和-NH₂，显两性。</div>
+                    <div class="info-card"><strong class="text-purple-600">水解：</strong>在酸/碱/酶作用下<strong class="text-red-600">逐步</strong>水解，最终产物是<strong class="text-purple-600">氨基酸</strong>。</div>
+                    <div class="info-card"><strong class="text-purple-600">胶体：</strong>蛋白质分子巨大，溶于水形成<strong class="text-purple-600">胶体</strong> (不能透过半透膜)。</div>
+                    <div class="info-card"><strong class="text-yellow-600">显色反应：</strong>含<strong class="text-yellow-600">苯环</strong>的蛋白质遇<strong class="text-yellow-600">浓硝酸</strong>加热变<strong class="text-yellow-600">黄色</strong>。</div>
+                    <div class="info-card"><strong class="text-orange-600">灼烧：</strong>有<strong class="text-orange-600">烧焦羽毛</strong>的气味 (可鉴别羊毛、蚕丝)。</div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 盐析 vs 变性 (重要) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="relative pb-3">重要对比：盐析 vs 变性</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="info-card border-l-4 border-green-500">
+                        <h3 class="text-green-700 text-xl">盐析 (Salting Out)</h3>
+                        <p class="mt-3 text-slate-600"><strong>操作：</strong>加 (NH₄)₂SO₄, NaCl 等<strong class="text-green-600">轻金属盐</strong>。</p>
+                        <p class="mt-2 text-slate-600"><strong>原理：</strong>溶解度降低。</p>
+                        <p class="mt-4 text-center font-bold text-xl text-green-700">可逆 (活性不变)</p>
+                    </div>
+                    <div class="info-card border-l-4 border-red-500">
+                        <h3 class="text-red-700 text-xl">变性 (Denaturation)</h3>
+                        <p class="mt-3 text-slate-600"><strong>操作：</strong><strong class="text-red-600">加热</strong>、强酸/碱、<strong class="text-red-600">重金属盐</strong>(Cu²⁺, Pb²⁺)、酒精、紫外线。</p>
+                        <p class="mt-2 text-slate-600"><strong>原理：</strong>空间结构破坏。</p>
+                        <p class="mt-4 text-center font-bold text-xl text-red-700">不可逆 (活性丧失)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 酶 (Enzymes) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">酶 (Enzymes)</h2>
+                <div class="info-card">
+                    <h3 class="text-gray-800">1. 定义：</h3>
+                    <p class="mt-3 text-lg">由细胞产生的、具有<strong class="text-green-600">催化</strong>作用的有机物。</p>
+                </div>
+                <div class="info-card mt-6">
+                    <h3 class="text-gray-800">2. 成分：</h3>
+                    <p class="mt-3 text-lg">绝大多数是<strong class="text-blue-600">蛋白质</strong>，少数是 <code>RNA</code>。</p>
+                </div>
+                 <div class="info-card mt-6">
+                    <h3 class="text-gray-800">3. 特点：</h3>
+                    <ul class="list-disc pl-6 text-lg">
+                        <li><strong class="text-purple-600">高效性</strong> (比普通催化剂快 10⁷ 倍以上)</li>
+                        <li><strong class="text-purple-600">专一性</strong> (一把钥匙开一把锁)</li>
+                        <li><strong class="text-purple-600">温和性</strong> (在体温和中性条件下活性最高，过热/过酸/过碱会<strong class="text-red-600">变性</strong>失活)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 章节标题：核酸 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-purple-600 mb-4 mt-4">第三部分：核酸</h1>
+                <p class="text-2xl text-slate-600 mt-2">遗传信息的载体</p>
+            </div>
+        </div>
+
+        <!-- 核酸的组成 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">核酸的组成</h2>
+                <p class="mt-8 text-xl text-slate-700">核酸是由 C, H, O, N, <strong class="text-red-600">P</strong> 五种元素组成的生物大分子。</p>
+                <p class="mt-4 text-xl text-slate-700">基本组成单元（单体）是<strong class="text-purple-600">核苷酸</strong>。</p>
+                 <div class="mt-8 space-y-3 text-lg text-center">
+                    <p class="p-3 rounded-md bg-purple-100 text-purple-800 font-bold">核酸 (高分子)</p>
+                    <p class="font-bold">↓ <span class="text-sm font-normal text-slate-500">(水解)</span></p>
+                    <p class="p-3 rounded-md bg-purple-50 text-purple-700 font-bold">核苷酸 (单体)</p>
+                    <p class="font-bold">↓ <span class="text-sm font-normal text-slate-500">(水解)</span></p>
+                    <p class="p-3 rounded-md bg-gray-50 text-gray-700"><strong class="text-blue-600">磷酸</strong> + <strong class="text-green-600">五碳糖</strong> + <strong class="text-orange-600">含氮碱基</strong></p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- DNA vs RNA (组成) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">DNA vs RNA (组成对比)</h2>
+                <div class="mt-8 overflow-x-auto">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th class="text-blue-600">DNA (脱氧核糖核酸)</th>
+                                <th class="text-green-600">RNA (核糖核酸)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold">五碳糖</td>
+                                <td class="text-blue-600 font-bold">脱氧核糖 (C₅H₁₀O₄)</td>
+                                <td class="text-green-600 font-bold">核糖 (C₅H₁₀O₅)</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">含氮碱基</td>
+                                <td class="mono font-bold">A, G, C, <strong class="text-red-600">T</strong> (胸腺嘧啶)</td>
+                                <td class="mono font-bold">A, G, C, <strong class="text-red-600">U</strong> (尿嘧啶)</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">结构</td>
+                                <td>双螺旋</td>
+                                <td>单链 (通常)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- DNA 双螺旋与碱基配对 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">DNA 双螺旋与碱基配对</h2>
+                <div class="info-card mt-8">
+                    <h3>DNA 双螺旋结构：</h3>
+                    <p class="mt-3 text-lg">两条链的<strong class="text-gray-700">磷酸-脱氧核糖</strong>骨架在<strong class="text-gray-700">外侧</strong>。</p>
+                    <p class="mt-2 text-lg">内侧的<strong class="text-purple-700">碱基</strong>通过<strong class="text-red-600">氢键</strong>相互连接。</p>
+                </div>
+                <div class="info-card mt-6 bg-red-50 border-red-200">
+                    <h3 class="text-red-700">碱基互补配对原则：</h3>
+                    <p class="mt-4 text-2xl text-center font-bold mono text-blue-700">A = T (腺嘌呤 - 胸腺嘧啶)  (2个氢键)</p>
+                    <p class="mt-4 text-2xl text-center font-bold mono text-green-700">G ≡ C (鸟嘌呤 - 胞嘧啶)  (3个氢键)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 碱基配对 (记忆法) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">碱基配对 (记忆法)</h2>
+                <div class="info-card mt-8 bg-blue-50 border-blue-200">
+                    <h3 class="text-blue-700">DNA 记忆口诀：</h3>
+                    <p class="mt-3 text-3xl text-center font-bold">爱(A) 舔(T) 鸡(G) 翅(C)</p>
+                    <p class="mt-2 text-lg text-center text-slate-700">A-T 配对 (2个氢键)，G-C 配对 (3个氢键)</p>
+                </div>
+                 <div class="info-card mt-6 bg-green-50 border-green-200">
+                    <h3 class="text-green-700">RNA 记忆口诀：</h3>
+                    <p class="mt-3 text-3xl text-center font-bold">爱(A) U(邮) 鸡(G) 翅(C)</p>
+                    <p class="mt-2 text-lg text-center text-slate-700">(RNA 中 T 换成了 U)</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 随堂练习 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="relative pb-3">随堂练习（一）</h2>
+                <div class="info-card bg-slate-50">
+                    <p class="text-xl text-slate-700">下列物质中，<strong class="text-red-600">不属于</strong>单糖的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border border-slate-200"><strong>(A)</strong> 葡萄糖</p>
+                        <p class="p-3 rounded-md bg-white border border-slate-200"><strong>(B)</strong> 蔗糖</p>
+                        <p class="p-3 rounded-md bg-white border border-slate-200"><strong>(C)</strong> 果糖</p>
+                        <p class="p-3 rounded-md bg-white border border-slate-200"><strong>(D)</strong> 核糖</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="relative pb-3">练习题（一）：解析</h2>
+                <div class="info-card bg-green-50 border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p class="text-xl mt-4"><strong>解析：</strong></p>
+                    <p>单糖是不能再水解的糖。葡萄糖、果糖、核糖都是单糖。</p>
+                    <p>蔗糖是<strong class="text-red-600">二糖</strong>，它可以水解生成 1 分子葡萄糖和 1 分子果糖。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="relative pb-3">随堂练习（二）</h2>
+                <div class="info-card bg-slate-50">
+                    <p class="text-xl text-slate-700">下列哪种性质是蛋白质<strong class="text-red-600">变性</strong>（不可逆）？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border border-slate-200"><strong>(A)</strong> 溶解在水中形成胶体</p>
+                        <p class="p-3 rounded-md bg-white border border-slate-200"><strong>(B)</strong> 加入浓 (NH₄)₂SO₄ 溶液析出沉淀</p>
+                        <p class="p-3 rounded-md bg-white border border-slate-200"><strong>(C)</strong> 加入浓硝酸并加热变黄</p>
+                        <p class="p-3 rounded-md bg-white border border-slate-200"><strong>(D)</strong> 蛋白质水解</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="relative pb-3">练习题（二）：解析</h2>
+                <div class="info-card bg-green-50 border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p class="text-xl mt-4"><strong>解析：</strong></p>
+                    <p>(A) 是胶体性质。(B) 是<strong class="text-blue-600">盐析</strong>，属于物理变化，是<strong class="text-blue-600">可逆</strong>的。(D) 是水解反应。</p>
+                    <p>(C) 浓硝酸是强化学试剂，加热会破坏蛋白质的空间结构，使其<strong class="text-red-600">变性</strong>，这是<strong class="text-red-600">不可逆</strong>的化学变化。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="relative pb-3">随堂练习（三）</h2>
+                <div class="info-card bg-slate-50">
+                    <p class="text-xl text-slate-700">DNA 分子中，与碱基 A (腺嘌呤) 互补配对的是哪个碱基？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border border-slate-200 mono"><strong>(A)</strong> G (鸟嘌呤)</p>
+                        <p class="p-3 rounded-md bg-white border border-slate-200 mono"><strong>(B)</strong> C (胞嘧啶)</p>
+                        <p class="p-3 rounded-md bg-white border border-slate-200 mono"><strong>(C)</strong> T (胸腺嘧啶)</p>
+                        <p class="p-3 rounded-md bg-white border border-slate-200 mono"><strong>(D)</strong> U (尿嘧啶)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="relative pb-3">练习题（三）：解析</h2>
+                <div class="info-card bg-green-50 border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p class="text-xl mt-4"><strong>解析：</strong></p>
+                    <p>根据 DNA 的碱基互补配对原则“<strong class="text-red-600">爱(A)舔(T)鸡(G)翅(C)</strong>”，A 总是与 T 配对。U (尿嘧啶) 是 RNA 中特有的碱基。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="relative pb-3">随堂练习（四）</h2>
+                <div class="info-card bg-slate-50">
+                    <p class="text-xl text-slate-700">在检验蔗糖水解产物时，为何要先加入 NaOH 溶液？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border border-slate-200"><strong>(A)</strong> NaOH 是反应的催化剂</p>
+                        <p class="p-3 rounded-md bg-white border border-slate-200"><strong>(B)</strong> 检验银镜反应必须在碱性条件下进行</p>
+                        <p class="p-3 rounded-md bg-white border border-slate-200"><strong>(C)</strong> NaOH 能使葡萄糖显色</p>
+                        <p class="p-3 rounded-md bg-white border border-slate-200"><strong>(D)</strong> NaOH 用于溶解蔗糖</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="relative pb-3">练习题（四）：解析</h2>
+                <div class="info-card bg-green-50 border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p class="text-xl mt-4"><strong>解析：</strong></p>
+                    <p>蔗糖水解需要<strong class="text-red-600">稀硫酸 (H₂SO₄)</strong> 作催化剂，导致水解液呈<strong class="text-red-600">酸性</strong>。而后续的银镜反应或新制Cu(OH)₂反应都<strong class="text-blue-600">必须在碱性条件下</strong>进行。因此，必须先加 NaOH 中和掉 H₂SO₄。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="relative pb-3">随堂练习（五）</h2>
+                <div class="info-card bg-slate-50">
+                    <p class="text-xl text-slate-700">两个不同的氨基酸分子（如甘氨酸和丙氨酸）脱水缩合，最多能生成几种二肽？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border border-slate-200"><strong>(A)</strong> 1 种</p>
+                        <p class="p-3 rounded-md bg-white border border-slate-200"><strong>(B)</strong> 2 种</p>
+                        <p class="p-3 rounded-md bg-white border border-slate-200"><strong>(C)</strong> 3 种</p>
+                        <p class="p-3 rounded-md bg-white border border-slate-200"><strong>(D)</strong> 4 种</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 5 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="relative pb-3">练习题（五）：解析</h2>
+                <div class="info-card bg-green-50 border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p class="text-xl mt-4"><strong>解析：</strong></p>
+                    <p>假设两种氨基酸为 A 和 B：<br/>
+                    1. A 的羧基 + B 的氨基 → A-B<br/>
+                    2. B 的羧基 + A 的氨基 → B-A<br/>
+                    3. A 的羧基 + A 的氨基 → A-A<br/>
+                    4. B 的羧基 + B 的氨基 → B-B<br/>
+                    共 4 种不同的二肽。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                 </svg>
+                <h1 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h1>
+                <p class="text-2xl text-slate-600 mt-8">感谢观看，下节课再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- 导航控件 -->
+    <div id="navigation">
+        <button id="prevBtn" class="nav-button">上一页</button>
+        <!-- 修改了初始显示的页码格式 -->
+        <span id="page-indicator">1</span>
+        <button id="nextBtn" class="nav-button">下一页</button>
+    </div>
+
+    <!-- JS 逻辑 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                if (activeSection) { // 检查元素是否存在
+                    activeSection.classList.add('active');
+                }
+                
+                if (pageIndicator) { // 检查元素是否存在
+                    // 修改了页码显示的格式
+                    pageIndicator.textContent = `${pageIndex + 1}`;
+                }
+                
+                if (prevBtn) { // 检查元素是否存在
+                    prevBtn.disabled = pageIndex === 0;
+                    prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                    prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                }
+
+                if (nextBtn) { // 检查元素是否存在
+                    nextBtn.disabled = pageIndex === totalPages - 1;
+                    nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                    nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+                }
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

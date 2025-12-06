@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>氧化还原反应强弱规律</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <!-- 图标：原子结构示意图 -->
+                 <svg class="w-24 h-24 mx-auto text-sky-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                    <circle cx="12" cy="12" r="1.5"></circle>
+                    <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(45 12 12)"></ellipse>
+                    <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-45 12 12)"></ellipse>
+                    <ellipse cx="12" cy="12" rx="10" ry="4"></ellipse>
+                 </svg>
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">氧化还原反应强弱规律</h1>
+                <p class="text-2xl text-slate-600 mt-2">—— 化学反应中的“潜规则”</p>
+            </div>
+        </div>
+        
+        <!-- 核心规律：强者胜 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>核心规律：强者反应，生成弱者</h2>
+                <p class="mt-8 text-xl text-slate-700">一个能力<strong class="text-orange-600">更强</strong>的氧化剂，总是和能力<strong class="text-orange-600">更强</strong>的还原剂反应，生成能力<strong class="text-gray-500">更弱</strong>的还原产物和氧化产物。</p>
+                <!-- 示意图：电子转移过程 -->
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-6 rounded-lg shadow-sm">
+                    <div class="text-2xl mono text-center space-x-4 flex justify-center items-end leading-none">
+                        <div class="flex flex-col items-center">
+                            <span class="text-base text-slate-500 font-sans">0</span>
+                            <span class="mt-1">Fe</span>
+                        </div>
+                        <span class="pb-1">+</span>
+                        <div class="flex flex-col items-center">
+                            <span class="text-base text-slate-500 font-sans">+2</span>
+                            <span class="mt-1">Cu²⁺</span>
+                        </div>
+                        <span class="pb-1">→</span>
+                        <div class="flex flex-col items-center">
+                            <span class="text-base text-slate-500 font-sans">+2</span>
+                            <span class="mt-1">Fe²⁺</span>
+                        </div>
+                        <span class="pb-1">+</span>
+                        <div class="flex flex-col items-center">
+                            <span class="text-base text-slate-500 font-sans">0</span>
+                            <span class="mt-1">Cu</span>
+                        </div>
+                    </div>
+                    <div class="mt-6 grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-4 text-center text-lg">
+                        <!-- 反应物 -->
+                        <div class="flex justify-center items-start space-x-6">
+                            <div class="flex flex-col items-center">
+                                <span class="w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center text-2xl font-bold">Fe</span>
+                                <span class="mt-2 text-slate-600">还原剂</span>
+                                <span class="mt-1 text-orange-500 font-semibold">失去 2e⁻</span>
+                            </div>
+                            <div class="font-bold text-3xl text-orange-500 mt-4">+</div>
+                            <div class="flex flex-col items-center">
+                                 <span class="w-16 h-16 rounded-full bg-sky-200 text-sky-800 flex items-center justify-center text-2xl font-bold">Cu²⁺</span>
+                                 <span class="mt-2 text-slate-600">氧化剂</span>
+                                 <span class="mt-1 text-sky-500 font-semibold">得到 2e⁻</span>
+                            </div>
+                        </div>
+
+                        <!-- 箭头 -->
+                        <div class="flex justify-center">
+                            <svg class="w-12 h-12 text-slate-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
+                        </div>
+
+                        <!-- 生成物 -->
+                        <div class="flex justify-center items-start space-x-6">
+                             <div class="flex flex-col items-center">
+                                <span class="w-16 h-16 rounded-full bg-gray-200 text-gray-700 flex items-center justify-center text-2xl font-bold">Fe²⁺</span>
+                                <span class="mt-2 text-slate-600">氧化产物</span>
+                            </div>
+                            <div class="font-bold text-3xl text-orange-500 mt-4">+</div>
+                             <div class="flex flex-col items-center">
+                                <span class="w-16 h-16 rounded-full bg-sky-300 flex items-center justify-center text-2xl font-bold">Cu</span>
+                                <span class="mt-2 text-slate-600">还原产物</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 口诀解释 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>温故知新：判断氧化还原的“小口诀”</h2>
+                <div class="mt-8 text-center">
+                    <p class="text-5xl font-bold font-serif tracking-widest text-green-700">升失氧，降得还</p>
+                </div>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-orange-50 border border-orange-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-orange-800 text-2xl text-center">升 → 失 → 氧</h3>
+                        <ul class="mt-4 space-y-2 list-disc list-inside text-slate-700">
+                            <li><strong>升:</strong> 化合价<strong class="text-red-500">升</strong>高</li>
+                            <li><strong>失:</strong> <strong class="text-red-500">失</strong>去电子</li>
+                            <li><strong>氧:</strong> 发生<strong class="text-red-500">氧</strong>化反应，作<strong class="text-red-500">还原剂</strong></li>
+                        </ul>
+                    </div>
+                    <div class="bg-sky-50 border border-sky-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-sky-800 text-2xl text-center">降 → 得 → 还</h3>
+                         <ul class="mt-4 space-y-2 list-disc list-inside text-slate-700">
+                            <li><strong>降:</strong> 化合价<strong class="text-blue-500">降</strong>低</li>
+                            <li><strong>得:</strong> <strong class="text-blue-500">得</strong>到电子</li>
+                            <li><strong>还:</strong> 发生<strong class="text-blue-500">还</strong>原反应，作<strong class="text-blue-500">氧化剂</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 口诀应用 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>口诀应用：再看 Fe + Cu²⁺ 反应</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-6 rounded-lg shadow-sm">
+                     <div class="text-2xl mono text-center space-x-4 flex justify-center items-end leading-none">
+                        <div class="flex flex-col items-center">
+                            <span class="text-base text-slate-500 font-sans">0</span>
+                            <span class="mt-1">Fe</span>
+                        </div>
+                        <span class="pb-1">+</span>
+                        <div class="flex flex-col items-center">
+                            <span class="text-base text-slate-500 font-sans">+2</span>
+                            <span class="mt-1">Cu²⁺</span>
+                        </div>
+                        <span class="pb-1">→</span>
+                        <div class="flex flex-col items-center">
+                            <span class="text-base text-slate-500 font-sans">+2</span>
+                            <span class="mt-1">Fe²⁺</span>
+                        </div>
+                        <span class="pb-1">+</span>
+                        <div class="flex flex-col items-center">
+                            <span class="text-base text-slate-500 font-sans">0</span>
+                            <span class="mt-1">Cu</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 text-lg space-y-4">
+                    <div class="flex items-start bg-orange-50 p-4 rounded-lg">
+                        <svg class="w-8 h-8 text-orange-500 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" /></svg>
+                        <div>
+                            <strong>Fe → Fe²⁺:</strong> 化合价从0<strong class="text-red-500">升</strong>高到+2，根据“<strong class="text-orange-600">升失氧</strong>”，Fe<strong class="text-red-500">失</strong>去电子，发生<strong class="text-red-500">氧</strong>化反应，是<strong class="text-red-500">还原剂</strong>。
+                        </div>
+                    </div>
+                    <div class="flex items-start bg-sky-50 p-4 rounded-lg">
+                        <svg class="w-8 h-8 text-sky-500 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75" /></svg>
+                        <div>
+                           <strong>Cu²⁺ → Cu:</strong> 化合价从+2<strong class="text-blue-500">降</strong>低到0，根据“<strong class="text-sky-600">降得还</strong>”，Cu²⁺<strong class="text-blue-500">得</strong>到电子，发生<strong class="text-blue-500">还</strong>原反应，是<strong class="text-blue-500">氧化剂</strong>。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新增：物质与性质 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>认识我们的“主角”：物质与性质</h2>
+                <p class="mt-8 text-xl text-slate-700">我们已经能找出谁是氧化剂，谁是还原剂了。现在，我们要比较的就是它们<strong class="text-indigo-600">“搞事情”</strong>的能力大小：</p>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-sky-50 border border-sky-200 p-6 rounded-lg text-center flex flex-col items-center justify-center">
+                        <svg class="w-20 h-20 text-sky-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 7.5v6m3-3h-6" /></svg>
+                        <p class="mt-4 text-2xl font-bold text-sky-800">氧化剂</p>
+                        <p class="mt-2 text-slate-600">具有<strong class="text-sky-600">氧化性</strong></p>
+                        <p class="text-sm text-slate-500">（得电子的能力）</p>
+                    </div>
+                    <div class="bg-orange-50 border border-orange-200 p-6 rounded-lg text-center flex flex-col items-center justify-center">
+                        <svg class="w-20 h-20 text-orange-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9" /></svg>
+                        <p class="mt-4 text-2xl font-bold text-orange-800">还原剂</p>
+                        <p class="mt-2 text-slate-600">具有<strong class="text-orange-600">还原性</strong></p>
+                        <p class="text-sm text-slate-500">（失电子的能力）</p>
+                    </div>
+                </div>
+                 <p class="mt-8 text-lg text-center text-slate-700 bg-slate-100 p-4 rounded-lg">简单说：<strong class="text-blue-600">氧化性强的氧化剂</strong> + <strong class="text-orange-600">还原性强的还原剂</strong> → <strong class="text-gray-500">氧化性弱的氧化产物</strong> + <strong class="text-gray-500">还原性弱的还原产物</strong></p>
+            </div>
+        </div>
+
+        <!-- 规律推论 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>由反应推断强弱关系</h2>
+                 <p class="mt-8 text-xl text-slate-700">因为反应 <code>Fe + CuSO₄ → FeSO₄ + Cu</code> 能够发生，说明反应物的“能力”更强：</p>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <!-- 氧化性比较 -->
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-blue-800 text-2xl">氧化性比较</h3>
+                        <div class="mt-4 flex justify-center items-center h-32">
+                           <p class="text-3xl font-bold mono text-blue-700">氧化性: Cu²⁺ > Fe²⁺</p>
+                        </div>
+                    </div>
+                    <!-- 还原性比较 -->
+                    <div class="bg-emerald-50 border border-emerald-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-emerald-800 text-2xl">还原性比较</h3>
+                         <div class="mt-4 flex justify-center items-center h-32">
+                            <p class="text-3xl font-bold mono text-emerald-700">还原性: Fe > Cu</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 高手排位赛 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>高手排位赛：搭建反应链条</h2>
+                <p class="mt-8 text-xl text-slate-700">通过一系列反应，我们可以给多种物质的氧化性或还原性排名次：</p>
+                 <div class="mt-6 space-y-4 text-lg">
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg shadow-sm flex items-center">
+                        <span class="text-2xl font-bold text-teal-500 mr-4">1</span>
+                        <p class="mono">MnO₂ + 4HCl(浓) <span class="text-red-500 font-bold">≜</span> MnCl₂ + Cl₂↑ + 2H₂O</p>
+                    </div>
+                     <div class="bg-white border border-slate-200 p-4 rounded-lg shadow-sm flex items-center">
+                         <span class="text-2xl font-bold text-teal-500 mr-4">2</span>
+                        <p class="mono">Cl₂ + 2FeCl₂ → 2FeCl₃</p>
+                    </div>
+                     <div class="bg-white border border-slate-200 p-4 rounded-lg shadow-sm flex items-center">
+                        <span class="text-2xl font-bold text-teal-500 mr-4">3</span>
+                        <p class="mono">2FeCl₃ + 2KI → 2FeCl₂ + 2KCl + I₂</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 排位赛分析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>排位赛分析：串联结论</h2>
+                <div class="mt-8 space-y-4 text-lg">
+                    <div class="bg-white p-4 rounded-lg border border-slate-200">
+                        <p class="text-slate-600"><strong>来自反应1:</strong> 氧化剂<code>MnO₂</code> > 氧化产物<code>Cl₂</code></p>
+                        <p class="mt-1 font-semibold text-teal-700 text-center text-xl">结论: 氧化性 <code>MnO₂ > Cl₂</code></p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-slate-200">
+                        <p class="text-slate-600"><strong>来自反应2:</strong> 氧化剂<code>Cl₂</code> > 氧化产物<code>Fe³⁺</code></p>
+                        <p class="mt-1 font-semibold text-teal-700 text-center text-xl">结论: 氧化性 <code>Cl₂ > Fe³⁺</code></p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-slate-200">
+                        <p class="text-slate-600"><strong>来自反应3:</strong> 氧化剂<code>Fe³⁺</code> > 氧化产物<code>I₂</code></p>
+                        <p class="mt-1 font-semibold text-teal-700 text-center text-xl">结论: 氧化性 <code>Fe³⁺ > I₂</code></p>
+                    </div>
+                </div>
+                <!-- 最终结论 -->
+                <div class="mt-8 bg-sky-50 border border-sky-200 p-6 rounded-lg text-center">
+                    <p class="text-2xl font-bold text-sky-800">串联起来，最终氧化性排行榜为：</p>
+                    <p class="mt-3 text-3xl mono text-sky-700">MnO₂ > Cl₂ > Fe³⁺ > I₂</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 还原性捷径 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-violet-500 rounded"></span>还原性排名的“捷径”</h2>
+                 <!-- 新示意图：反向关系图 -->
+                <div class="mt-10 bg-violet-50 border border-violet-200 p-8 rounded-lg flex flex-col items-center">
+                    <div class="w-full max-w-md flex justify-around items-center text-center">
+                        <!-- 氧化性标尺 -->
+                        <div class="flex flex-col items-center">
+                            <span class="font-bold text-blue-700 mb-2">氧化性</span>
+                            <div class="w-8 h-40 bg-gray-200 rounded-full flex flex-col justify-end relative">
+                                <div class="bg-gradient-to-t from-blue-300 to-blue-500 rounded-full w-full h-full"></div>
+                            </div>
+                            <span class="font-semibold text-blue-700 mt-10">增强</span>
+                        </div>
+                        
+                        <!-- 关系文字 -->
+                        <div class="text-slate-600 font-bold text-xl px-4">
+                            <p>反向</p>
+                            <p>相关</p>
+                        </div>
+
+                        <!-- 还原性标尺 -->
+                        <div class="flex flex-col items-center">
+                            <span class="font-bold text-emerald-700 mb-2">还原性<span class="text-sm font-normal text-slate-500">(产物)</span></span>
+                            <div class="w-8 h-40 bg-gray-200 rounded-full flex flex-col justify-end relative">
+                                <div class="bg-gradient-to-b from-emerald-300 to-emerald-500 rounded-full w-full h-full"></div>
+                                <svg class="w-6 h-6 text-emerald-600 absolute -bottom-8 left-1/2 -translate-x-1/2" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+                            </div>
+                            <span class="font-semibold text-emerald-700 mt-10">增强</span>
+                        </div>
+                    </div>
+                    <p class="mt-8 text-2xl text-center text-slate-700">物质的<strong class="text-blue-600">氧化性</strong>越强，其对应还原产物的<strong class="text-emerald-600">还原性</strong>就越<strong class="text-red-600">弱</strong>。</p>
+                </div>
+                 <div class="mt-8 bg-emerald-50 border border-emerald-200 p-6 rounded-lg text-center">
+                    <p class="text-2xl font-bold text-emerald-800">因此，还原性排行榜正好相反：</p>
+                    <p class="mt-3 text-3xl mono text-emerald-700">I⁻ > Fe²⁺ > Cl⁻ > Mn²⁺</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 强者先行 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800">规律二：强者先行</h2>
+                <div class="mt-10 flex flex-col md:flex-row items-center gap-8 text-left">
+                    <div class="flex-shrink-0">
+                        <!-- 新图标：靶心示意图 -->
+                         <svg class="w-32 h-32 text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="12" cy="12" r="10" />
+                            <circle cx="12" cy="12" r="6" />
+                            <circle cx="12" cy="12" r="2" />
+                        </svg>
+                    </div>
+                    <div class="flex-1 text-xl text-slate-700 space-y-4">
+                       <p>当多种还原剂共存时，氧化剂会<strong class="text-red-600">优先</strong>与<strong class="text-emerald-600">还原性最强</strong>的物质反应。</p>
+                       <p>就像射击比赛要先瞄准靶心，<strong class="text-emerald-600">“最强”</strong>的物质会成为<strong class="text-red-600">“首要目标”</strong>并优先反应。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 强者先行实例 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-rose-500 rounded"></span>实例：向<code>Br⁻</code>和<code>I⁻</code>混合液中滴加氯水</h2>
+                <!-- 示意图：烧杯反应顺序 -->
+                 <div class="mt-10 flex flex-col md:flex-row items-center justify-center gap-6">
+                     <div class="w-48 text-center p-4 border-2 border-slate-300 rounded-lg">
+                        <p class="font-bold text-lg">初始溶液</p>
+                        <svg class="w-24 h-24 mx-auto my-2" viewBox="0 0 100 100">
+                             <!-- Beaker -->
+                             <path d="M15 10 H 85 V 90 H 15 Z" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="2"/>
+                             <path d="M15 10 Q 50 20 85 10" fill="none" stroke="#0ea5e9" stroke-width="2"/>
+                             <!-- Ions -->
+                             <circle cx="30" cy="50" r="10" fill="#a78bfa"><title>I⁻</title></circle>
+                             <text x="30" y="56" font-size="12" font-weight="bold" fill="white" text-anchor="middle" stroke="white" stroke-width="0.5">I⁻</text>
+                             <circle cx="70" cy="60" r="10" fill="#f472b6"><title>Br⁻</title></circle>
+                             <text x="70" y="66" font-size="12" font-weight="bold" fill="white" text-anchor="middle" stroke="white" stroke-width="0.5">Br⁻</text>
+                             <circle cx="50" cy="75" r="10" fill="#a78bfa"><title>I⁻</title></circle>
+                             <text x="50" y="81" font-size="12" font-weight="bold" fill="white" text-anchor="middle" stroke="white" stroke-width="0.5">I⁻</text>
+                        </svg>
+                        <p class="text-sm">还原性: <code class="text-emerald-700">I⁻ > Br⁻</code></p>
+                     </div>
+                     <div class="flex flex-col items-center">
+                        <p class="font-bold text-rose-600">加入少量Cl₂</p>
+                        <svg class="w-12 h-12 text-rose-500 my-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" /></svg>
+                     </div>
+                      <div class="w-48 text-center p-4 border-2 border-rose-500 rounded-lg bg-rose-50">
+                        <p class="font-bold text-lg">优先反应</p>
+                        <svg class="w-24 h-24 mx-auto my-2" viewBox="0 0 100 100">
+                            <path d="M15 10 H 85 V 90 H 15 Z" fill="#fef2f2" stroke="#f43f5e" stroke-width="2"/>
+                             <path d="M15 10 Q 50 20 85 10" fill="none" stroke="#f43f5e" stroke-width="2"/>
+                            <!-- I2 product -->
+                            <rect x="25" y="45" width="20" height="20" fill="#6d28d9" rx="4"><title>I₂</title></rect>
+                             <text x="35" y="58" font-size="12" font-weight="bold" fill="white" text-anchor="middle">I₂</text>
+                            <!-- Br- remains -->
+                            <circle cx="70" cy="70" r="10" fill="#f472b6"><title>Br⁻</title></circle>
+                             <text x="70" y="76" font-size="12" font-weight="bold" fill="white" text-anchor="middle" stroke="white" stroke-width="0.5">Br⁻</text>
+                        </svg>
+                        <p class="mono text-sm">Cl₂ + 2I⁻ → 2Cl⁻ + I₂</p>
+                     </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 课堂总结 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>课堂总结</h2>
+                <ul class="mt-10 text-xl space-y-5">
+                    <li class="flex items-start">
+                        <svg class="w-8 h-8 text-green-500 mr-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+                         <strong>判断方法：“升失氧，降得还”</strong><br><span class="text-slate-600 text-lg">快速判断反应中的氧化剂、还原剂及对应的反应。</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-8 h-8 text-orange-500 mr-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        <strong>强弱规律：“强者反应，生成弱者”</strong><br><span class="text-slate-600 text-lg">用于判断物质氧化性或还原性的相对强弱。</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-8 h-8 text-rose-500 mr-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        <strong>优先规律：“强者先行”</strong><br><span class="text-slate-600 text-lg">用于在混合体系中，准确预测反应的先后顺序。</span>
+                    </li>
+                </ul>
+                 <div class="mt-8 bg-slate-100 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">请大家务必理解，化学不仅仅是记忆，更是<strong class="text-red-600">逻辑</strong>和<strong class="text-red-600">推理</strong>。掌握了这三个要点，你就能像化学家一样去思考和预测未知的反应了。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（一）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">根据反应 <code>2Fe + 3Cl₂ → 2FeCl₃</code>，判断下列哪组物质的氧化性更强？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> Cl₂ > Fe³⁺</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> Fe³⁺ > Cl₂</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> Fe > Fe³⁺</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> Cl₂ > Cl⁻</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（一）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(A)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>在该反应中，<code>Cl₂</code>是氧化剂，<code>FeCl₃</code>(Fe³⁺)是氧化产物。根据“强者反应，生成弱者”的规律，氧化剂的氧化性强于氧化产物的氧化性。因此，氧化性为 <strong class="text-green-700"><code>Cl₂ > Fe³⁺</code></strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（二）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">已知反应 <code>2KI + Br₂ → 2KBr + I₂</code> 可以发生，下列关于还原性的判断正确的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> I⁻ > Br⁻</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> Br⁻ > I⁻</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> Br₂ > I₂</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> KI > KBr</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（二）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(A)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>在该反应中，<code>KI</code>(I⁻)是还原剂，<code>KBr</code>(Br⁻)是还原产物。根据规律，还原剂的还原性强于还原产物的还原性。因此，还原性为 <strong class="text-green-700"><code>I⁻ > Br⁻</code></strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（三）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">已知氧化性 <code>Cl₂ > Br₂ > I₂</code>。向含有<code>KBr</code>和<code>KI</code>的混合溶液中通入足量的<code>Cl₂</code>，最终的产物是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> Br₂</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> I₂</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> Br₂ 和 I₂</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 无法确定</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（三）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>根据“强者先行”规律，还原性更强的<code>I⁻</code>会先被<code>Cl₂</code>氧化成<code>I₂</code>。因为通入的是足量的<code>Cl₂</code>，在<code>I⁻</code>反应完后，<code>Cl₂</code>会继续氧化<code>Br⁻</code>生成<code>Br₂</code>。所以最终两种产物都有。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（四）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">向<code>AgNO₃</code>和<code>Cu(NO₃)₂</code>的混合溶液中加入一定量的铁粉，充分反应后，一定被还原析出的金属是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> Ag</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> Cu</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> Ag 和 Cu</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> Fe</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（四）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(A)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>溶液中有两种氧化剂<code>Ag⁺</code>和<code>Cu²⁺</code>，根据金属活动性顺序，氧化性为<code>Ag⁺ > Cu²⁺</code>。铁粉作为还原剂，根据“强者先行”规律，会优先与氧化性更强的<code>Ag⁺</code>反应。因为加入的铁粉量不确定，所以只能确定一定有<code>Ag</code>析出。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（五）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">在一个自发的氧化还原反应中，反应物还原性的总和一定 ______ 生成物还原性的总和。</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 大于</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 小于</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 等于</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 无法比较</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 5 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（五）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(A)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>这是“强者反应，生成弱者”规律的另一种表述。强还原剂反应生成弱还原剂，强氧化剂反应生成弱氧化剂。因此，反应物整体的还原性（或氧化性）总和，一定强于生成物整体的还原性（或氧化性）总和。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">下节课再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>
+

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>芳香烃：苯及其同系物</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        
+        /* 表格样式 */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+        }
+        .styled-table th, .styled-table td {
+            border: 1px solid #cbd5e1;
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+        .styled-table thead {
+            background-color: #f8fafc;
+        }
+        .styled-table th {
+            font-weight: 700;
+            color: #334155;
+            text-align: center;
+        }
+        .styled-table tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+        .styled-table tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">有机化学基础</h1>
+                <p class="text-2xl text-slate-600 mt-2">苯与芳香烃</p>
+            </div>
+        </div>
+        
+        <!-- 芳香烃的分类 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>芳香烃的分类</h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="font-bold text-gray-700 text-xl">1. 苯 (C₆H₆)</strong>
+                        <p class="mt-2 text-lg text-slate-700">最简单的芳香烃。</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="font-bold text-gray-700 text-xl">2. 苯的同系物 (如 甲苯)</strong>
+                        <p class="mt-2 text-lg text-slate-700">只含<strong class="text-red-600">一个苯环</strong>，与苯相差 n 个 <code>-CH₂-</code>。通式: <code>CₙH₂ₙ₋₆ (n≥6)</code>。</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="font-bold text-gray-700 text-xl">3. 芳香烃 (如 萘 C₁₀H₈)</strong>
+                        <p class="mt-2 text-lg text-slate-700">含<strong class="text-red-600">一个或多个苯环</strong>，且<strong class="text-red-600">只含 C、H 元素</strong>。（包含苯和苯的同系物）</p>
+                    </div>
+                     <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="font-bold text-gray-700 text-xl">4. 芳香族化合物 (如 溴苯)</strong>
+                        <p class="mt-2 text-lg text-slate-700">含<strong class="text-red-600">一个或多个苯环</strong>的<strong class="text-red-600">所有</strong>有机物（可含 O, N, X 等）。（范围最大）</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 苯的物理性质 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>苯 (Benzene) 的物理性质</h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg flex items-center gap-4"><strong class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full">色/态/味</strong><p class="text-lg">无色、有特殊气味的液体</p></div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg flex items-center gap-4"><strong class="bg-red-100 text-red-700 px-3 py-1 rounded-full">毒性</strong><p class="text-lg"><strong class="text-red-600">有毒</strong>，易挥发</p></div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg flex items-center gap-4"><strong class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">溶解性</strong><p class="text-lg"><strong class="text-red-600">不溶于水</strong>（相似相容原理）</p></div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg flex items-center gap-4"><strong class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">密度</strong><p class="text-lg">密度比水<strong class="text-red-600">小</strong>（“视烃则轻”）</p></div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg flex items-center gap-4"><strong class="bg-green-100 text-green-700 px-3 py-1 rounded-full">用途</strong><p class="text-lg">重要的化工原料、有机溶剂（如萃取剂）</p></div>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 苯的分子结构 (一)：实验事实 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>苯的分子结构 (一)：实验事实</h2>
+                <p class="mt-8 text-xl text-slate-700">苯的结构曾是一个谜。如果苯是 <code>C=C</code> 和 <code>C-C</code> 交替（凯库勒式），它应具有烯烃的性质。</p>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">实验事实 (与烯烃对比)：</h3>
+                    <p>1. 苯<strong class="text-red-900">不能</strong>使溴的四氯化碳溶液褪色 (无加成)。</p>
+                    <p>2. 苯<strong class="text-red-900">不能</strong>使酸性高锰酸钾溶液褪色 (不氧化)。</p>
+                </div>
+                 <div class="mt-8 bg-green-50 border border-green-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-green-800 text-xl">结论：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">苯分子中<strong class="text-red-600">不存在</strong>真正的 <code>C=C</code> 双键，也不是 <code>C=C</code> 和 <code>C-C</code> 交替的结构。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 苯的分子结构 (二)：真实结构 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>苯的分子结构 (二)：真实结构</h2>
+                <div class="mt-8 bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                    <p class="mt-3 text-slate-600 text-lg"><strong>事实：</strong>苯分子中的 6 个碳碳键<strong class="text-blue-700">完全相同</strong>，键长、键能介于 C-C 单键和 C=C 双键之间。</p>
+                    <p class="mt-4 text-slate-600 text-lg"><strong>解释 (大π键)：</strong>每个 C 原子 (sp² 杂化) 都有 1 个未参与杂化的 p 轨道（各有1个电子）。这 6 个 p 轨道在环的上方和下方“肩并肩”重叠，形成一个<strong class="text-red-600">离域大π键</strong>。</p>
+                    <p class="mt-2 text-slate-600 text-lg">这 6 个电子不属于某两个碳，而是被<strong class="text-red-600">6个碳原子共同拥有</strong>，使苯环非常稳定。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 苯的结构总结 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>苯的结构总结</h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="font-bold text-gray-700 text-xl">表示方法：</strong>
+                        <p class="mt-2 text-lg text-slate-700 text-center">凯库勒式（单双键交替）或 <strong class="text-red-600">中间画圈</strong>（更接近真实）。</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="font-bold text-gray-700 text-xl">空间构型：</strong>
+                        <p class="mt-2 text-lg text-slate-700"><strong class="text-red-600">平面正六边形</strong>结构，键角 120°，<strong class="text-red-600">12 个原子共平面</strong>。</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="font-bold text-gray-700 text-xl">化学键：</strong>
+                        <p class="mt-2 text-lg text-slate-700">6 个 C-H σ键，6 个 C-C σ键，和 1 个 6中心6电子的<strong class="text-red-600">离域大π键</strong>。</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 苯的化学性质 (总览) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-rose-500 rounded"></span>苯的化学性质 (总览)</h2>
+                <p class="mt-8 text-xl text-slate-700">由于大π键的存在，苯环<strong class="text-green-600">非常稳定</strong>。</p>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-blue-800 text-2xl">易 取代</h3>
+                        <p class="mt-3 text-slate-600">（保留大π键，更容易）</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-red-800 text-2xl">难 加成</h3>
+                        <p class="mt-3 text-slate-600">（需破坏大π键，更困难）</p>
+                    </div>
+                </div>
+                 <div class="mt-8 bg-yellow-50 border border-yellow-200 p-6 rounded-lg text-center">
+                    <h3 class="font-bold text-yellow-800 text-2xl">难 氧化</h3>
+                    <p class="mt-3 text-slate-600">（不能被KMnO₄等氧化）</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 化学性质 (一)：取代反应 (卤代) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-rose-500 rounded"></span>化学性质 (一)：取代反应 (卤代)</h2>
+                <p class="mt-8 text-xl text-slate-700">苯与<strong class="text-red-600">液溴 (Br₂)</strong> 在<strong class="text-red-600">FeBr₃ (或Fe粉)</strong> 作催化剂下反应，生成溴苯。</p>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <p class="mono text-center text-xl">C₆H₆ + Br₂ --(FeBr₃)→ C₆H₅Br + HBr↑</p>
+                    <p class="mt-2 text-lg text-center text-slate-700">(苯环上的 H 被 Br 原子取代)</p>
+                </div>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">注意：</h3>
+                    <p>必须是<strong class="text-red-900">纯液溴</strong>和<strong class="text-red-900">催化剂</strong>。苯<strong class="text-red-900">不能</strong>与溴水或溴的CCl₄溶液发生加成反应。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 化学性质 (二)：取代反应 (硝化) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-rose-500 rounded"></span>化学性质 (二)：取代反应 (硝化)</h2>
+                <p class="mt-8 text-xl text-slate-700">苯与<strong class="text-red-600">浓硝酸</strong>、<strong class="text-red-600">浓硫酸</strong>混合（作催化剂和脱水剂），在 <strong class="text-red-600">50-60°C 水浴加热</strong>下反应，生成硝基苯。</p>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <p class="mono text-center text-xl">C₆H₆ + HONO₂ --(浓H₂SO₄/△)→ C₆H₅NO₂ + H₂O</p>
+                    <p class="mt-2 text-lg text-center text-slate-700">(苯环上的 H 被 硝基 <code>-NO₂</code> 取代)</p>
+                    <p class="mt-2 text-lg text-center text-slate-700">(硝基苯：无色、苦杏仁味、密度比水大的油状液体)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 化学性质 (三)：取代反应 (磺化) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-rose-500 rounded"></span>化学性质 (三)：取代反应 (磺化)</h2>
+                <p class="mt-8 text-xl text-slate-700">苯与<strong class="text-red-600">浓硫酸</strong>在 <strong class="text-red-600">70-80°C</strong> 加热反应，生成苯磺酸。</p>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <p class="mono text-center text-xl">C₆H₆ + HOSO₃H --(△)→ C₆H₅SO₃H + H₂O</p>
+                    <p class="mt-2 text-lg text-center text-slate-700">(苯环上的 H 被 磺基 <code>-SO₃H</code> 取代)</p>
+                    <p class="mt-2 text-lg text-center text-slate-700">(苯磺酸：易溶于水，是一种<strong class="text-red-600">强酸</strong>)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 化学性质 (四)：加成反应 (加氢) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>化学性质 (四)：加成反应 (加氢)</h2>
+                <p class="mt-8 text-xl text-slate-700">苯的加成反应<strong class="text-red-600">困难</strong>，需要在<strong class="text-red-600">催化剂 (Pt/Ni)</strong> 和<strong class="text-red-600">加热、加压</strong>条件下才能进行。</p>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <p class="mt-3 text-slate-600 text-lg">苯与氢气发生加成反应，生成环己烷。</p>
+                    <p class="mt-4 text-center mono bg-gray-100 p-3 rounded text-xl">C₆H₆ + 3H₂ --(催化剂/△/P)→ C₆H₁₂</p>
+                    <p class="mt-2 text-lg text-center text-slate-700">(大π键被破坏，生成环己烷)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 苯的同系物：甲苯 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>苯的同系物：甲苯 (C₇H₈)</h2>
+                <p class="mt-8 text-xl text-slate-700">甲苯 (<code>C₆H₅-CH₃</code>) 的结构是苯环上连接一个<strong class="text-orange-600">甲基 (<code>-CH₃</code>)</strong>。</p>
+                <p class="mt-4 text-xl text-slate-700">苯环和甲基<strong class="text-red-600">相互影响</strong>，使甲苯既有与苯相似的性质，又有其特殊的性质。</p>
+            </div>
+        </div>
+
+        <!-- 甲苯的化学性质 (一)：氧化 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>甲苯的化学性质 (一)：氧化</h2>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">与苯不同！</h3>
+                    <p>苯环<strong class="text-red-900">活化</strong>了侧链甲基，使甲基易被氧化。</p>
+                </div>
+                <div class="mt-6 bg-purple-50 border border-purple-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-purple-800 text-xl">与酸性KMnO₄反应：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">甲苯<strong class="text-red-600">能使</strong>酸性高锰酸钾溶液<strong class="text-red-600">褪色</strong>。（而苯<strong class="text-blue-600">不能</strong>）</p>
+                    <p class="mono mt-2 text-center text-lg">C₆H₅-CH₃ --(KMnO₄/H⁺/△)→ C₆H₅-COOH</p>
+                    <p class="mt-1 text-center text-lg text-slate-700">(侧链被氧化为羧基)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 甲苯的化学性质 (二)：取代 (条件) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>甲苯的化学性质 (二)：取代</h2>
+                <p class="mt-8 text-xl text-slate-700">甲苯的取代反应，<strong class="text-red-600">反应条件不同，产物不同</strong>。</p>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-yellow-50 border border-yellow-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-yellow-800 text-xl text-center">光照 (光)</h3>
+                        <p class="mt-3 text-slate-600 text-center">类似于<strong class="text-yellow-700">烷烃</strong>的取代。</p>
+                        <p class="mt-2 text-xl text-center font-semibold text-yellow-800">取代<strong class="text-red-600">侧链(甲基)</strong>上的氢</p>
+                        <p class="mono mt-1 text-center">C₆H₅-CH₃ + Cl₂ --(光)→ C₆H₅-CH₂Cl + HCl</p>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800 text-xl text-center">催化剂 (FeBr₃)</h3>
+                        <p class="mt-3 text-slate-600 text-center">类似于<strong class="text-blue-700">苯</strong>的取代。</p>
+                        <p class="mt-2 text-xl text-center font-semibold text-blue-800">取代<strong class="text-red-600">苯环</strong>上的氢</p>
+                        <p class="mono mt-1 text-center">C₆H₅-CH₃ + Br₂ --(FeBr₃)→ C₆H₄(CH₃)Br + HBr</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 甲苯的化学性质 (三)：取代 (定位) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>甲苯的化学性质 (三)：取代定位</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-green-800 text-xl">甲基的活化作用：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">甲基 (<code>-CH₃</code>) 是给电子基团，它<strong class="text-green-700">活化</strong>了苯环，使苯环上的取代反应<strong class="text-green-700">更容易</strong>发生。</p>
+                    <p class="mt-2 text-slate-600 text-lg">并且，它主要活化了<strong class="text-red-600">邻位</strong> (2, 6位) 和<strong class="text-red-600">对位</strong> (4位) 的氢。</p>
+                </div>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">硝化反应 (TNT)：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">甲苯与浓硝酸/浓硫酸反应，主要生成<strong class="text-red-600">邻硝基甲苯</strong>和<strong class="text-red-600">对硝基甲苯</strong>。</p>
+                    <p class="mt-2 text-slate-600 text-lg">强力硝化可生成 <strong class="text-red-600">2,4,6-三硝基甲苯</strong>（俗称 <strong class="text-red-600">TNT</strong> 炸药）。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（一）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">下列关于苯的说法，<strong class="text-red-600">不正确</strong>的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 苯是一种无色、有毒、密度比水小的液体</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 苯分子中含有碳碳双键，易发生加成反应</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 苯分子为平面正六边形，12个原子共平面</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 苯不能使酸性高锰酸钾溶液褪色</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（一）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>苯分子中<strong class="text-red-600">不存在</strong>碳碳双键，而是一种介于单键和双键之间的特殊大π键。因此，苯环结构稳定，<strong class="text-red-600">难</strong>加成、<strong class="text-red-600">难</strong>氧化，但<strong class="text-blue-600">易</strong>取代。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（二）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">苯与浓硝酸反应制备硝基苯的反应类型是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 加成反应</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 取代反应</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 氧化反应</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 加聚反应</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（二）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>苯环上的一个 H 原子被硝基 (<code>-NO₂</code>) <strong class="text-red-600">取代</strong>了，生成 <code>C₆H₅NO₂</code> 和 <code>H₂O</code>。这是典型的<strong class="text-red-600">取代反应</strong>（硝化反应）。</H_2_SO_4/△)>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（三）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">下列哪种试剂可以用于鉴别苯和甲苯？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 溴的四氯化碳溶液</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 酸性高锰酸钾溶液</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 氢氧化钠溶液</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 银氨溶液</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（三）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>苯环稳定，<strong class="text-red-600">不能</strong>使酸性KMnO₄褪色。</p>
+                    <p>甲苯的侧链甲基受苯环活化，<strong class="text-blue-600">能</strong>被酸性KMnO₄氧化而使其<strong class="text-blue-600">褪色</strong>。</p>
+                    <p>两者均不与(A), (C), (D)反应。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（四）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">甲苯与 Cl₂ 在<strong class="text-red-600">光照</strong>条件下反应，主要取代的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 苯环上的氢</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 甲基上的氢</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 间位上的氢</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 不发生反应</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（四）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p><strong class="text-red-600">光照</strong>条件是<strong class="text-red-600">烷烃</strong>（或烷基）发生取代的条件。因此，甲苯在光照下发生的是<strong class="text-red-600">侧链（甲基）</strong>上的氢原子取代。如果是催化剂 (FeCl₃) 条件，才会取代苯环上的氢。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                 </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看！希望大家对苯及其同系物有了清晰的认识！</p>
+                <p class="mt-4 text-2xl text-slate-600">下节课再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- 导航控件 -->
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <!-- JS 逻辑 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

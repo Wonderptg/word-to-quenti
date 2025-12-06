@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>同系物与同分异构体</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        
+        /* 图片占位符样式 */
+        .placeholder-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #e5e7eb; /* 浅灰色背景 */
+            border: 1px dashed #9ca3af; /* 虚线边框 */
+            color: #6b7280; /* 文字颜色 */
+            font-size: 0.9em;
+            text-align: center;
+            border-radius: 0.375rem; /* 圆角 */
+            min-height: 150px; /* 最小高度 */
+            width: 100%; /* 宽度 */
+            margin-top: 1rem; /* 上边距 */
+            margin-bottom: 1rem; /* 下边距 */
+        }
+
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+             .placeholder-image { background-color: #e5e7eb !important; -webkit-print-color-adjust: exact; print-color-adjust: exact;} /* 确保打印背景色 */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-teal-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                   <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25l-3.75-3.75m3.75 3.75L12 21m3.75-3.75H12m6 0a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                 </svg>
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">同系物与同分异构体</h1>
+                <p class="text-2xl text-slate-600 mt-2">—— 理解有机物的多样性 (必修)</p>
+            </div>
+        </div>
+
+        <!-- 同系物概念 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-blue-500 rounded"></span>同系物 (Homologues) 的概念</h2>
+                <div class="mt-8 bg-blue-50 border border-blue-200 p-8 rounded-lg text-lg">
+                    <p class="text-blue-800 leading-relaxed"><strong>定义：</strong><strong class="text-red-600">结构相似</strong>，在分子组成上相差一个或若干个 <code class="text-lg">-CH₂-</code> 原子团的<strong class="text-red-600">一系列化合物</strong>。</p>
+                </div>
+                <div class="mt-6 text-xl text-slate-600 space-y-2">
+                    <p><strong>理解：</strong>就像手机的系列升级 (iPhone 4, 5, 6)，属于<strong class="text-blue-700">同一系列</strong>的有机物。</p>
+                    <p><strong>关键：</strong></p>
+                    <ul class="list-disc list-inside ml-4 text-base">
+                        <li><strong class="text-red-600">结构相似</strong>是前提 (官能团种类、个数相同)。</li>
+                        <li>分子组成相差 <code class="text-base">n(-CH₂-)</code>。</li>
+                        <li>相对分子质量相差 <code class="text-base">14n</code>。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 同系物实例 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-blue-500 rounded"></span>同系物实例</h2>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800 text-xl">链状烷烃</h3>
+                        <p class="mt-3 text-slate-600 mono">CH₄ (甲烷)</p>
+                        <p class="mt-1 text-slate-600 mono">CH₃CH₃ (乙烷) +CH₂</p>
+                        <p class="mt-1 text-slate-600 mono">CH₃CH₂CH₃ (丙烷) +CH₂</p>
+                        <p class="mt-2 text-slate-600">结构相似，分子组成依次差-CH₂-。</p>
+                        <!-- 图片占位符 -->
+                        
+<figure class="fig" aria-label="链状烷烃（正丙-正丁-正戊）">
+<svg viewBox="0 0 640 160" xmlns="http://www.w3.org/2000/svg">
+  <g stroke="#0ea5a6" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="60,110 140,70 220,110 300,70 380,110 460,70"/>
+  </g>
+  <g fill="#0f172a" font-size="16" text-anchor="middle">
+    <text x="60"  y="135">CH₃</text>
+    <text x="140" y="60">CH₂</text>
+    <text x="220" y="135">CH₂</text>
+    <text x="300" y="60">CH₂</text>
+    <text x="380" y="135">CH₂</text>
+    <text x="460" y="60">CH₃</text>
+  </g>
+  <g fill="#64748b" font-size="13">
+    <text x="80" y="22">同系：相邻成员相差一个 -CH₂-</text>
+  </g>
+</svg>
+<figcaption>链状烷烃同系：…–CH₃–(CH₂)<tspan>n</tspan>–CH₃。</figcaption>
+</figure>
+
+                    </div>
+                    <div class="bg-green-50 border border-green-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-green-800 text-xl">饱和一元醇</h3>
+                         <p class="mt-3 text-slate-600 mono">CH₃OH (甲醇)</p>
+                         <p class="mt-1 text-slate-600 mono">CH₃CH₂OH (乙醇) +CH₂</p>
+                         <p class="mt-1 text-slate-600 mono">CH₃CH₂CH₂OH (丙醇) +CH₂</p>
+                         <p class="mt-2 text-slate-600">结构相似 (都含一个-OH)，分子组成依次差-CH₂-。</p>
+                          <!-- 图片占位符 -->
+                         
+<figure class="fig" aria-label="一元醇同系（甲醇→乙醇→丙醇）">
+<svg viewBox="0 0 680 160" xmlns="http://www.w3.org/2000/svg">
+  <g font-size="18" fill="#0f172a">
+    <text x="70"  y="40">CH₃</text><text x="105" y="40">OH</text>
+    <text x="270" y="40">CH₃–CH₂</text><text x="355" y="40" fill="#ef4444" font-weight="700">OH</text>
+    <text x="470" y="40">CH₃–CH₂–CH₂</text><text x="590" y="40" fill="#ef4444" font-weight="700">OH</text>
+  </g>
+  <g fill="#64748b" font-size="14">
+    <text x="40"  y="85">甲醇</text>
+    <text x="260" y="85">乙醇</text>
+    <text x="500" y="85">丙醇</text>
+  </g>
+  <g stroke="#ef4444" stroke-width="2">
+    <line x1="110" y1="45" x2="120" y2="60"/>
+    <line x1="360" y1="45" x2="370" y2="60"/>
+    <line x1="595" y1="45" x2="605" y2="60"/>
+  </g>
+  <g fill="#ef4444" font-size="13">
+    <text x="120" y="75">相同官能团 (-OH)</text>
+  </g>
+</svg>
+<figcaption>饱和一元醇同系：分子组成依次相差一个 -CH₂-。</figcaption>
+</figure>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 判断同系物的关键 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-red-500 rounded"></span>判断同系物的三个关键点</h2>
+                 <div class="mt-8 bg-red-50 border border-red-200 p-6 rounded-lg text-lg space-y-4">
+                    <p><strong>1. 属于同一类物质，具有相同通式：</strong><br> - 链状烷烃: <code>C<sub class="text-xs">n</sub>H<sub class="text-xs">2n+2</sub></code><br> - 饱和一元醇: <code>C<sub class="text-xs">n</sub>H<sub class="text-xs">2n+1</sub>OH</code><br> <span class="text-red-600 font-semibold">注意：</span>符合相同通式<strong class="text-red-600">不一定</strong>是同系物 (如 乙烯C₂H₄ vs 环丙烷C₃H₆)。但符合<code>C<sub class="text-xs">n</sub>H<sub class="text-xs">2n+2</sub></code>且n不同，<strong class="text-red-600">一定</strong>是同系物。</p>
+                    <p><strong>2. 结构相似 (重要前提)：</strong><br> - 不含官能团：碳骨架结构相似 (如都是链状)。<br> - 含有官能团：官能团的<strong class="text-red-600">种类</strong>和<strong class="text-red-600">个数</strong>必须相同。</p>
+                    <p><strong>3. 分子组成相差 n 个 -CH₂- (n≥1)。</strong></p>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 同分异构体概念 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>同分异构体 (Isomers) 的概念</h2>
+                 <div class="mt-8 bg-purple-50 border border-purple-200 p-8 rounded-lg text-lg">
+                    <p class="text-purple-800 leading-relaxed"><strong>定义：</strong>化合物具有<strong class="text-red-600">相同的分子式</strong>，但具有<strong class="text-red-600">不同结构</strong>的现象，称为<strong class="text-purple-700">同分异构现象</strong>。具有这种现象的化合物互称为<strong class="text-purple-700">同分异构体</strong>。</p>
+                </div>
+                 <div class="mt-6 text-xl text-slate-600 space-y-2">
+                    <p><strong>理解：</strong>就像用<strong class="text-purple-700">相同种类和数量</strong>的积木，搭出<strong class="text-purple-700">不同形状</strong>的模型。</p>
+                    <p><strong>关键：</strong></p>
+                    <ul class="list-disc list-inside ml-4 text-base">
+                        <li><strong class="text-red-600">分子式相同</strong> (原子种类、个数相同)。</li>
+                        <li><strong class="text-red-600">结构不同</strong> (原子连接方式或空间排布不同)。</li>
+                    </ul>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 同分异构体实例 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>同分异构体实例：丁烷 (C₄H₁₀)</h2>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-purple-50 border border-purple-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-purple-800 text-xl">正丁烷</h3>
+                         <!-- 图片占位符 -->
+                        
+<figure class="fig" aria-label="正丁烷骨架">
+<svg viewBox="0 0 320 150" xmlns="http://www.w3.org/2000/svg">
+  <g stroke="#7c3aed" stroke-width="3" fill="none" stroke-linecap="round">
+    <polyline points="40,90 100,60 160,90 220,60"/>
+  </g>
+  <g fill="#0f172a" font-size="14" text-anchor="middle">
+    <text x="40"  y="110">CH₃</text>
+    <text x="100" y="50">CH₂</text>
+    <text x="160" y="110">CH₂</text>
+    <text x="220" y="50">CH₃</text>
+  </g>
+</svg>
+<figcaption>正丁烷：无支链。</figcaption>
+</figure>
+
+                        <p class="mt-2 text-slate-600">碳链<strong class="text-red-600">无支链</strong>。</p>
+                    </div>
+                    <div class="bg-indigo-50 border border-indigo-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-indigo-800 text-xl">异丁烷</h3>
+                          <!-- 图片占位符 -->
+                         
+<figure class="fig" aria-label="异丁烷骨架">
+<svg viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg">
+  <g stroke="#6366f1" stroke-width="3" fill="none" stroke-linecap="round">
+    <polyline points="160,70 110,100"/>
+    <polyline points="160,70 210,100"/>
+    <polyline points="160,70 160,30"/>
+  </g>
+  <g fill="#0f172a" font-size="14" text-anchor="middle">
+    <text x="160" y="70" font-weight="700">C</text>
+    <text x="110" y="115">CH₃</text>
+    <text x="210" y="115">CH₃</text>
+    <text x="160" y="25">CH₃</text>
+  </g>
+</svg>
+<figcaption>异丁烷：中心碳连三条支链。</figcaption>
+</figure>
+
+                         <p class="mt-2 text-slate-600">碳链有<strong class="text-red-600">支链</strong>。</p>
+                    </div>
+                </div>
+                 <p class="mt-6 text-xl text-slate-600">正丁烷和异丁烷分子式均为C₄H₁₀，但<strong class="text-red-600">碳原子连接方式不同</strong>，互为同分异构体。</p>
+            </div>
+        </div>
+
+        <!-- 同分异构体特点 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>同分异构体的特点</h2>
+                <div class="mt-8 bg-purple-50 border border-purple-200 p-8 rounded-lg text-lg text-slate-700 space-y-4">
+                     <p>随着分子中碳原子数增多，烷烃的同分异构体数目<strong class="text-red-600">急剧增多</strong>。</p>
+                     <p class="text-sm text-slate-500 ml-4">- 甲烷(C₁), 乙烷(C₂), 丙烷(C₃)：无同分异构体 (只有1种结构)</p>
+                     <p class="text-sm text-slate-500 ml-4">- 丁烷(C₄)：2种</p>
+                     <p class="text-sm text-slate-500 ml-4">- 戊烷(C₅)：3种</p>
+                     <p class="text-sm text-slate-500 ml-4">- 己烷(C₆)：5种</p>
+                     <p>同分异构体由于<strong class="text-red-600">结构不同</strong>，导致其<strong class="text-red-600">物理性质</strong> (如熔沸点、密度) 和<strong class="text-red-600">化学性质</strong>通常存在<strong class="text-red-600">差异</strong>。</p>
+                     <p class="text-sm text-slate-500 ml-4">例如：乙醇(CH₃CH₂OH) 和 甲醚(CH₃OCH₃) 分子式均为C₂H₆O，但官能团不同，化学性质差异很大。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 正误判断练习 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-700 rounded"></span>概念辨析：正误判断练习</h2>
+                 <div class="mt-8 space-y-3 text-lg">
+                    <p class="bg-gray-50 p-3 rounded border">1. 甲烷和乙烷互为同系物。<span class="text-green-600 font-bold ml-4">(√)</span></p>
+                    <p class="bg-gray-50 p-3 rounded border">2. CH₃CH₂OH 和 HOCH₂CH₂OH 互为同系物。<span class="text-red-600 font-bold ml-4">(×)</span> <span class="text-sm text-slate-500">官能团个数不同</span></p>
+                    <p class="bg-gray-50 p-3 rounded border">3. C₃H₆ 和 C₄H₈ 可能互为同系物。<span class="text-green-600 font-bold ml-4">(√)</span> <span class="text-sm text-slate-500">可能都是烯烃或环烷烃</span></p>
+                     <p class="bg-gray-50 p-3 rounded border">4. 乙酸(CH₃COOH)和硬脂酸(C₁₇H₃₅COOH)互为同系物。<span class="text-green-600 font-bold ml-4">(√)</span></p>
+                     <p class="bg-gray-50 p-3 rounded border">5. 异戊烷和新戊烷互为同分异构体。<span class="text-green-600 font-bold ml-4">(√)</span> <span class="text-sm text-slate-500">分子式相同C₅H₁₂,结构不同</span></p>
+                     <p class="bg-gray-50 p-3 rounded border">6. CH₂FCl 和 CHFCl₂ 互为同分异构体。<span class="text-red-600 font-bold ml-4">(×)</span> <span class="text-sm text-slate-500">是同一种物质(甲烷四面体)</span></p>
+                     <p class="bg-gray-50 p-3 rounded border">7. 2-甲基丁烷 和 3-甲基丁烷 互为同分异构体。<span class="text-red-600 font-bold ml-4">(×)</span> <span class="text-sm text-slate-500">是同一种物质(异戊烷)</span></p>
+                     <p class="bg-gray-50 p-3 rounded border">8. 甘氨酸(C₂H₅NO₂)和硝基乙烷(C₂H₅NO₂)互为同分异构体。<span class="text-red-600 font-bold ml-4">(×)</span> <span class="text-sm text-slate-500">分子式不同(氢原子数)</span></p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 例题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>随堂练习 (一)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列各组物质中，互为同系物的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 甲烷 (CH₄) 与 乙烯 (C₂H₄)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 乙烷 (C₂H₆) 与 丁烷 (C₄H₁₀)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 苯 (C₆H₆) 与 乙苯 (C₈H₁₀)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 乙醇 (CH₃CH₂OH) 与 乙二醇 (HOCH₂CH₂OH)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (一)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B) 和 (C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>A. 甲烷是烷烃，乙烯是烯烃，结构不相似。<br>B. <strong class="text-green-700">乙烷和丁烷</strong>都是链状烷烃，结构相似，分子组成相差 2个-CH₂-，互为同系物。<br>C. <strong class="text-green-700">苯和乙苯</strong>都含有1个苯环，结构相似，分子组成相差 2个-CH₂- (C₈H₁₀ - C₆H₆ = C₂H₄)，互为同系物。<br>D. 乙醇含1个羟基，乙二醇含2个羟基，官能团个数不同，结构不相似。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>随堂练习 (二)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列各组物质中，互为同分异构体的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> ¹²C 与 ¹³C</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> O₂ 与 O₃</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> CH₃CH₂OH 与 CH₃OCH₃</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 正丁烷 与 丁烯</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (二)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>A. ¹²C 与 ¹³C 是同位素 (原子)。<br>B. O₂ 与 O₃ 是同素异形体 (单质)。<br>C. <strong class="text-green-700">乙醇和甲醚</strong>的分子式都是C₂H₆O，但结构不同 (官能团不同)，互为同分异构体。<br>D. 正丁烷(C₄H₁₀)和丁烯(C₄H₈)分子式不同。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>随堂练习 (三)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>分子式为 C₅H₁₂ 的链状烷烃共有多少种同分异构体？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 1种</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 2种</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 3种</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 4种</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (三)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>分子式为 C₅H₁₂ 的链状烷烃有三种不同的碳骨架结构：<br>1. 正戊烷 (直链)<br>2. 异戊烷 (主链4C，支链1C)<br>3. 新戊烷 (主链3C，支链2C)<br>因此共有<strong class="text-green-700">3种</strong>同分异构体。</p>
+                     <!-- 图片占位符 -->
+                    
+<figure class="fig" aria-label="C₅H₁₂ 的三种同分异构体">
+<svg viewBox="0 0 720 180" xmlns="http://www.w3.org/2000/svg">
+  <!-- 正戊烷 -->
+  <g transform="translate(40,20)" stroke="#0ea5a6" stroke-width="3" fill="none" stroke-linecap="round">
+    <polyline points="0,80 60,50 120,80 180,50 240,80"/>
+  </g>
+  <g transform="translate(40,20)" fill="#0f172a" font-size="12" text-anchor="middle">
+    <text x="0"   y="98">CH₃</text><text x="60"  y="40">CH₂</text><text x="120" y="98">CH₂</text>
+    <text x="180" y="40">CH₂</text><text x="240" y="98">CH₃</text>
+    <text x="120" y="130" fill="#64748b">正戊烷</text>
+  </g>
+  <!-- 异戊烷 -->
+  <g transform="translate(280,20)" stroke="#7c3aed" stroke-width="3" fill="none" stroke-linecap="round">
+    <polyline points="60,50 0,80 60,110 120,80 60,50"/>
+    <polyline points="60,50 60,20"/>
+  </g>
+  <g transform="translate(280,20)" fill="#0f172a" font-size="12" text-anchor="middle">
+    <text x="60" y="15">CH₃</text>
+    <text x="0"  y="98">CH₃</text><text x="120" y="98">CH₃</text>
+    <text x="60" y="125">CH</text>
+    <text x="60" y="145" fill="#64748b">异戊烷</text>
+  </g>
+  <!-- 新戊烷 -->
+  <g transform="translate(520,20)" stroke="#22c55e" stroke-width="3" fill="none" stroke-linecap="round">
+    <polyline points="60,50 20,80"/>
+    <polyline points="60,50 100,80"/>
+    <polyline points="60,50 60,20"/>
+    <polyline points="60,50 60,110"/>
+  </g>
+  <g transform="translate(520,20)" fill="#0f172a" font-size="12" text-anchor="middle">
+    <text x="60"  y="50" font-weight="700">C</text>
+    <text x="20"  y="95">CH₃</text>
+    <text x="100" y="95">CH₃</text>
+    <text x="60"  y="15">CH₃</text>
+    <text x="60"  y="125">CH₃</text>
+    <text x="60"  y="145" fill="#64748b">新戊烷</text>
+  </g>
+</svg>
+<figcaption>C₅H₁₂（链状烷烃）共有 3 种同分异构体。</figcaption>
+</figure>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>随堂练习 (四)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列关于同系物的说法，正确的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 同系物之间化学性质完全相同</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 同系物之间物理性质相似</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 结构相似，分子组成相差-CH₂-的整数倍</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 相对分子质量相差14的两种有机物一定是同系物</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (四)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>A. 同系物化学性质<strong class="text-green-700">相似</strong>，但不完全相同。<br>B. 同系物物理性质呈现<strong class="text-green-700">递变性</strong>，不是相似。<br>C. 这是同系物的<strong class="text-green-700">定义</strong>，正确。<br>D. 相对分子质量相差14的整数倍，<strong class="text-green-700">不一定</strong>是同系物，还需要满足结构相似的条件。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>随堂练习 (五)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列物质中，与CH₃CH₂CH₂OH互为同分异构体的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> CH₃CH₂OH</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> CH₃CH(OH)CH₃</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> CH₃CH₂CH₂CH₂OH</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> CH₃OCH₂CH₃</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (五)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B) 和 (D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>CH₃CH₂CH₂OH (1-丙醇) 的分子式为 C₃H₈O。<br>A. CH₃CH₂OH (乙醇) 分子式为 C₂H₆O，不同。<br>B. <strong class="text-green-700">CH₃CH(OH)CH₃</strong> (2-丙醇) 分子式为 C₃H₈O，且结构与1-丙醇不同 (羟基位置不同)，互为同分异构体。<br>C. CH₃CH₂CH₂CH₂OH (1-丁醇) 分子式为 C₄H₁₀O，不同。<br>D. <strong class="text-green-700">CH₃OCH₂CH₃</strong> (甲乙醚) 分子式为 C₃H₈O，且结构与1-丙醇不同 (官能团不同)，互为同分异构体。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

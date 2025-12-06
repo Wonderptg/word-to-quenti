@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>函数的奇偶性 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 400px; /* 保证内容较少时也有足够高度 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .cartoon-canvas {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            width: 100px;
+            height: 100px;
+        }
+
+        .graph-canvas {
+            border-radius: 0.5rem;
+            width: 250px;
+            height: 250px;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+
+            .section:last-child {
+                page-break-after: auto;
+            }
+            .cartoon-canvas {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- Section 1: Title -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">函数的奇偶性</h1>
+                <p class="text-2xl text-slate-600 mt-4">图像的对称之美</p>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 2: Intro -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">生活中的对称</h2>
+                <p class="mt-8 text-xl text-slate-700 leading-relaxed text-center">
+                    扑克牌K，旋转180度还是它自己 —— <strong class="text-red-600">中心对称</strong>
+                </p>
+                 <p class="mt-4 text-xl text-slate-700 leading-relaxed text-center">
+                    我们的脸，左右两边基本一样 —— <strong class="text-blue-600">轴对称</strong>
+                </p>
+                 <p class="mt-8 text-2xl text-center font-semibold">
+                    函数图像，当然也有这两种超酷的对称特性！
+                </p>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 3: Core Definition -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">核心定义</h2>
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 print:grid-cols-2 gap-6 text-lg">
+                    <div class="bg-blue-50 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-blue-700 text-xl">偶函数</h3>
+                        <p>图像关于 <strong class="text-blue-700">y轴</strong> 对称</p>
+                        <canvas id="even-func-graph" class="graph-canvas mx-auto mt-2"></canvas>
+                        <p class="font-mono text-xl mt-2">f(-x) = f(x)</p>
+                    </div>
+                    <div class="bg-red-50 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-red-700 text-xl">奇函数</h3>
+                        <p>图像关于 <strong class="text-red-700">原点</strong> 对称</p>
+                         <canvas id="odd-func-graph" class="graph-canvas mx-auto mt-2"></canvas>
+                         <p class="font-mono text-xl mt-2">f(-x) = -f(x)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 4: Judgement Method Step 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">判断方法 (一)：看定义域</h2>
+                <div class="mt-6 bg-purple-50 p-6 rounded-lg text-lg">
+                    <h3 class="font-bold text-xl text-purple-800">第一步：查户口 —— 定义域是否对称？</h3>
+                    <p class="mt-2">函数的定义域必须关于<strong class="text-red-600">原点对称</strong>。</p>
+                    <p class="mt-4">如果不对称，函数就<strong class="text-red-600">既不是奇函数，也不是偶函数</strong>（非奇非偶）。</p>
+                    <p class="text-sm mt-2 text-slate-600">例：f(x) = √(x-1) 的定义域是 [1, +∞)，不对称，所以是非奇非偶函数。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 5: Judgement Method Step 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">判断方法 (二)：算关系式</h2>
+                 <div class="mt-6 bg-purple-50 p-6 rounded-lg text-lg">
+                    <h3 class="font-bold text-xl text-purple-800">第二步：验身份 —— 计算 f(-x)</h3>
+                    <p class="mt-2">在定义域对称的前提下，将x换成-x，化简后与f(x)比较：</p>
+                    <ul class="mt-4 list-disc list-inside space-y-2">
+                        <li>如果 f(-x) = f(x)，那么它是 <strong class="text-blue-600">偶函数</strong>。</li>
+                        <li>如果 f(-x) = -f(x)，那么它是 <strong class="text-red-600">奇函数</strong>。</li>
+                        <li>如果二者都不相等，那就是非奇非偶函数啦。</li>
+                    </ul>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 6: Example 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-emerald-500 pb-2">实例演练 (偶函数)</h2>
+                <p class="mt-6 text-xl">判断 f(x) = |x-1| + |x+1| 的奇偶性。</p>
+                <div class="mt-4 bg-emerald-50 p-6 rounded-lg text-lg space-y-3">
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 7: Example 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-emerald-500 pb-2">实例演练 (奇函数)</h2>
+                <p class="mt-6 text-xl">判断 g(x) = (x³)/(x² + 1) 的奇偶性。</p>
+                <div class="mt-4 bg-emerald-50 p-6 rounded-lg text-lg space-y-3">
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 8: Properties -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">性质与结论：武功秘籍</h2>
+                 <ul class="mt-6 list-disc list-inside space-y-4 text-lg">
+                    <li><strong>常见函数：</strong>x的奇次幂是奇函数，偶次幂是偶函数。|x|是偶函数。</li>
+                    <li><strong>运算法则：</strong>把“奇”当负号，“偶”当正号。
+                        <ul class="list-circle list-inside ml-4 text-base">
+                            <li>奇 × 奇 → 偶</li>
+                            <li>奇 × 偶 → 奇</li>
+                            <li>偶 + 偶 → 偶</li>
+                            <li>奇 + 奇 → 奇</li>
+                        </ul>
+                    </li>
+                    <li class="font-bold text-red-600"><strong>必杀技：</strong>如果一个奇函数在 x=0 处有定义，那么 f(0) = 0！</li>
+                 </ul>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 9: Application 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2">综合应用：求参数</h2>
+                <p class="mt-6 text-xl">已知 g(x) = ax⁷ + bx⁵ + 3x - 4，且 g(2) = 10，求 g(-2)。</p>
+                 <div class="mt-4 bg-teal-50 p-6 rounded-lg text-lg">
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 10: Application 2 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2">综合应用：求解析式</h2>
+                <p class="mt-6 text-xl">已知 f(x) 是R上的偶函数，当 x ≥ 0 时，f(x) = x² - 2x。求 f(x) 的完整解析式。</p>
+                <div class="mt-4 bg-teal-50 p-6 rounded-lg text-lg">
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 11: Summary -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">总结</h2>
+                <p class="mt-6 text-xl text-slate-700">今天关于函数奇偶性的内容就到这里。我们掌握了：</p>
+                <ul class="mt-4 list-disc list-inside space-y-3 text-lg">
+                    <li>奇偶函数的定义和图像特征。</li>
+                    <li>“定义域优先”的判断法则。</li>
+                    <li>实例演练和常见技巧。</li>
+                    <li>f(0)=0和运算法则等超有用性质。</li>
+                    <li>利用奇偶性解决求参数和求解析式的问题。</li>
+                </ul>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Draw cartoon for all small canvases
+            const canvases = document.querySelectorAll('.cartoon-canvas');
+            canvases.forEach((canvas, index) => {
+                const ctx = canvas.getContext('2d');
+                drawCartoon(ctx, index, canvas.width, canvas.height); 
+            });
+
+            const evenCanvas = document.getElementById('even-func-graph');
+            if(evenCanvas) drawFuncGraph(evenCanvas.getContext('2d'), 'even');
+            
+            const oddCanvas = document.getElementById('odd-func-graph');
+            if(oddCanvas) drawFuncGraph(oddCanvas.getContext('2d'), 'odd');
+        });
+
+        function drawFuncGraph(ctx, type) {
+            const w = ctx.canvas.width;
+            const h = ctx.canvas.height;
+            const xMin = -3, xMax = 3;
+            const yMin = -9, yMax = 9;
+
+            const toCanvasX = (x) => (x - xMin) / (xMax - xMin) * w;
+            const toCanvasY = (y) => h - (y - yMin) / (yMax - yMin) * h;
+            
+            ctx.clearRect(0, 0, w, h);
+            ctx.fillStyle = type === 'even' ? '#eff6ff' : '#fee2e2';
+            ctx.fillRect(0,0,w,h);
+
+            // Draw axes
+            ctx.strokeStyle = '#a8a29e';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(0, toCanvasY(0));
+            ctx.lineTo(w, toCanvasY(0));
+            ctx.moveTo(toCanvasX(0), 0);
+            ctx.lineTo(toCanvasX(0), h);
+            ctx.stroke();
+
+            // Draw function
+            ctx.strokeStyle = type === 'even' ? '#3b82f6' : '#ef4444';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            for(let x = xMin; x <= xMax; x += 0.1) {
+                let y = (type === 'even') ? x*x : x*x*x/3; // scale x^3 to fit
+                if (x === xMin) {
+                    ctx.moveTo(toCanvasX(x), toCanvasY(y));
+                } else {
+                    ctx.lineTo(toCanvasX(x), toCanvasY(y));
+                }
+            }
+            ctx.stroke();
+        }
+
+        function drawCartoon(ctx, index, w, h) {
+            ctx.clearRect(0, 0, w, h);
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 2;
+
+            switch (index % 10) {
+                case 0: // King of Hearts
+                    ctx.fillStyle = '#ef4444';
+                    ctx.font = 'bold 30px Arial';
+                    ctx.fillText('K', w*0.4, h*0.4);
+                    ctx.beginPath();
+                    ctx.arc(w/2, h*0.6, w*0.2, 0, Math.PI);
+                    ctx.lineTo(w/2, h*0.9);
+                    ctx.closePath();
+                    ctx.fill();
+                    break;
+                case 1: // Face
+                    ctx.strokeStyle = '#f59e0b';
+                    ctx.beginPath();
+                    ctx.arc(w/2, h/2, w*0.4, 0, Math.PI * 2);
+                    ctx.moveTo(w/2, h*0.1);
+                    ctx.lineTo(w/2, h*0.9);
+                    ctx.stroke();
+                    break;
+                case 2: // Gears
+                case 3: // Brain
+                case 4: // Detective
+                case 5: // Thumbs up
+                    ctx.fillStyle = '#fde047';
+                    ctx.strokeStyle = 'black';
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.3, h*0.9);
+                    ctx.lineTo(w*0.3, h*0.5);
+                    ctx.arc(w*0.5, h*0.5, w*0.2, Math.PI, 0);
+                    ctx.lineTo(w*0.7, h*0.9);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                    break;
+                default: // Book
+                    ctx.fillStyle = '#a855f7';
+                    ctx.fillRect(w * 0.2, h * 0.2, w * 0.6, h * 0.7);
+                    ctx.strokeStyle = 'white';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.moveTo(w * 0.3, h * 0.4);
+                    ctx.lineTo(w * 0.7, h * 0.4);
+                    ctx.moveTo(w * 0.3, h * 0.6);
+                    ctx.lineTo(w * 0.7, h * 0.6);
+                    ctx.stroke();
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
+

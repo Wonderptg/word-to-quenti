@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>分子晶体与共价晶体</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$','$$'], ['\\[','\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <!-- MathJax Library -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        /* 基础字体 */
+        body { font-family: "Microsoft YaHei", "SimHei", sans-serif; }
+        
+        /* 打印优化核心样式 */
+        @media print {
+            @page {
+                size: landscape; /* 强制横向 */
+                margin: 0;
+            }
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                background-color: white;
+            }
+            .no-print { display: none !important; }
+            
+            .slide-container {
+                display: block !important;
+                height: auto !important;
+                overflow: visible !important;
+            }
+            
+            .slide {
+                display: flex !important;
+                break-after: page;
+                page-break-after: always;
+                height: 100vh;
+                width: 100vw;
+                border: none;
+                margin: 0;
+                padding: 2rem 3rem; /* 打印时的内边距 */
+                box-sizing: border-box;
+            }
+        }
+
+        /* 屏幕显示样式 */
+        .slide {
+            display: none;
+            height: 100vh;
+            width: 100%;
+            flex-direction: column;
+            justify-content: center;
+            background-color: white;
+            padding: 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slide.active {
+            display: flex;
+        }
+
+        /* 强调框样式 */
+        .concept-box {
+            background-color: #eff6ff; /* blue-50 */
+            border-left: 6px solid #3b82f6; /* blue-500 */
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .highlight-box {
+            background-color: #fdf2f8; /* pink-50 */
+            border-left: 6px solid #db2777; /* pink-600 */
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* 选项样式 */
+        .option-item {
+            padding: 1rem 1.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1.25rem;
+        }
+        .option-item:hover {
+            background-color: #f3f4f6;
+            border-color: #9ca3af;
+        }
+
+        /* SVG 通用样式 */
+        .atom { stroke: #000; stroke-width: 1; }
+        .bond-covalent { stroke: #374151; stroke-width: 3; }
+        .bond-inter { stroke: #9ca3af; stroke-width: 2; stroke-dasharray: 4; }
+        .atom-c { fill: #374151; } /* Carbon */
+        .atom-o { fill: #ef4444; } /* Oxygen */
+        .atom-si { fill: #3b82f6; } /* Silicon */
+        .atom-h { fill: #e5e7eb; stroke: #9ca3af; } /* Hydrogen */
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- 导航栏 (打印隐藏) -->
+    <div class="no-print fixed bottom-6 right-6 z-50 flex gap-4 bg-white p-3 rounded-xl shadow-2xl border border-gray-200">
+        <button onclick="prevSlide()" class="px-5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-bold transition">上一页</button>
+        <span id="page-indicator" class="px-4 py-2 font-mono text-lg flex items-center font-bold text-blue-600">1 / 1</span>
+        <button onclick="nextSlide()" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold transition">下一页</button>
+        <button onclick="window.print()" class="px-5 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-bold transition flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+            打印课件
+        </button>
+    </div>
+
+    <div class="slide-container">
+
+        <!-- P1: 封面 -->
+        <div class="slide active">
+            <div class="flex-1 flex flex-col justify-center items-center text-center">
+                <!-- 原图位置已移除 -->
+                <h1 class="text-6xl font-extrabold text-slate-900 mb-6 tracking-tight">分子晶体与共价晶体</h1>
+                <h2 class="text-3xl text-blue-600 font-medium mb-12">微观结构决定宏观性质</h2>
+                <div class="w-32 h-2 bg-blue-500 rounded-full"></div>
+            </div>
+        </div>
+
+        <!-- P2: 分子晶体 - 概念 -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-slate-800 mb-8 border-b-4 border-blue-200 pb-4">一、 分子晶体 (Molecular Crystal)</h3>
+            <div class="space-y-8 text-2xl">
+                <div class="concept-box">
+                    <p class="font-bold mb-2">定义：</p>
+                    <p>分子之间通过<span class="text-red-600 font-bold">分子间作用力</span>（范德华力、氢键）结合形成的晶体。</p>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-8">
+                    <div class="bg-gray-50 p-6 rounded border">
+                        <p class="font-bold text-xl mb-4">构成微粒：</p>
+                        <p class="text-3xl text-center text-blue-700">分子</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded border">
+                        <p class="font-bold text-xl mb-4">粒子间作用力：</p>
+                        <p class="text-3xl text-center text-blue-700">分子间作用力</p>
+                        <p class="text-sm text-center text-gray-500 mt-2">(范德华力 / 氢键)</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <p class="font-bold text-xl text-pink-700">⚠️ 特别注意：</p>
+                    <p>分子内部通常存在共价键，但<span class="font-bold">稀有气体</span>（单原子分子）晶体中既无共价键，也无其他化学键，仅存在范德华力。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- P3: 常见的分子晶体 -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-slate-800 mb-8 border-b-4 border-blue-200 pb-4">二、 常见的分子晶体</h3>
+            <div class="flex gap-12 h-full">
+                <div class="w-1/2 text-2xl space-y-6">
+                    <ul class="list-disc list-inside space-y-4 text-gray-800">
+                        <li><span class="font-bold">所有非金属氢化物：</span> $H_2O, H_2S, NH_3, CH_4, HCl$ 等。</li>
+                        <li><span class="font-bold">部分非金属单质：</span> 卤素($X_2$), $O_2, N_2, P_4, S_8, C_{60}$, 稀有气体等。</li>
+                        <li><span class="font-bold">部分非金属氧化物：</span> $CO_2, SO_2, SO_3, P_4O_{10}$ 等。</li>
+                        <li><span class="font-bold">几乎所有的酸：</span> $H_2SO_4, HNO_3, H_3PO_4$ 等。</li>
+                        <li><span class="font-bold">绝大多数有机物：</span> 乙醇、冰醋酸、苯、蔗糖等。</li>
+                    </ul>
+                </div>
+                <div class="w-1/2 flex justify-center items-center">
+                    <!-- 示意图：各种分子 -->
+                    <svg viewBox="0 0 300 300" class="w-full">
+                        <!-- CO2 -->
+                        <g transform="translate(50, 50)">
+                            <circle cx="0" cy="0" r="10" class="atom-o"/>
+                            <circle cx="30" cy="0" r="8" class="atom-c"/>
+                            <circle cx="60" cy="0" r="10" class="atom-o"/>
+                            <text x="30" y="30" font-size="14" text-anchor="middle">CO₂</text>
+                        </g>
+                        <!-- H2O -->
+                        <g transform="translate(200, 50)">
+                            <circle cx="0" cy="0" r="10" class="atom-o"/>
+                            <circle cx="-10" cy="15" r="6" class="atom-h"/>
+                            <circle cx="10" cy="15" r="6" class="atom-h"/>
+                            <text x="0" y="40" font-size="14" text-anchor="middle">H₂O</text>
+                        </g>
+                        <!-- P4 -->
+                        <g transform="translate(100, 150)">
+                            <polygon points="30,0 0,50 60,50" fill="none" stroke="#d97706" stroke-width="2"/>
+                            <line x1="30" y1="0" x2="30" y2="30" stroke="#d97706" stroke-width="2"/>
+                            <line x1="0" y1="50" x2="30" y2="30" stroke="#d97706" stroke-width="2"/>
+                            <line x1="60" y1="50" x2="30" y2="30" stroke="#d97706" stroke-width="2"/>
+                            <circle cx="30" cy="0" r="6" fill="#f59e0b"/>
+                            <circle cx="0" cy="50" r="6" fill="#f59e0b"/>
+                            <circle cx="60" cy="50" r="6" fill="#f59e0b"/>
+                            <circle cx="30" cy="30" r="6" fill="#f59e0b"/>
+                            <text x="30" y="70" font-size="14" text-anchor="middle">P₄</text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- P4: 分子晶体的物理性质 -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-slate-800 mb-8 border-b-4 border-blue-200 pb-4">三、 分子晶体的物理性质</h3>
+            <div class="space-y-8 text-2xl">
+                <div class="grid grid-cols-2 gap-8">
+                    <div class="bg-blue-50 p-6 rounded-lg">
+                        <h4 class="font-bold text-blue-800 mb-2">1. 熔沸点较低</h4>
+                        <p class="text-gray-700">原因：熔化或气化时，破坏的是微弱的<span class="font-bold">分子间作用力</span>，而非化学键。</p>
+                        <p class="text-sm text-gray-500 mt-2">（注：分子间作用力越强，熔沸点越高）</p>
+                    </div>
+                    <div class="bg-blue-50 p-6 rounded-lg">
+                        <h4 class="font-bold text-blue-800 mb-2">2. 硬度较小</h4>
+                        <p class="text-gray-700">原因：分子间结合力弱，容易发生相对位移或形变。</p>
+                    </div>
+                    <div class="bg-blue-50 p-6 rounded-lg">
+                        <h4 class="font-bold text-blue-800 mb-2">3. 导电性</h4>
+                        <p class="text-gray-700">固态和熔融态一般<span class="text-red-600 font-bold">不导电</span>。</p>
+                        <p class="text-sm text-gray-500 mt-2">（部分溶于水后，因与水反应或电离可导电，如 HCl, NH₃）</p>
+                    </div>
+                    <div class="bg-blue-50 p-6 rounded-lg">
+                        <h4 class="font-bold text-blue-800 mb-2">4. 溶解性</h4>
+                        <p class="text-gray-700">遵循“相似相容”原理。</p>
+                        <p class="text-sm text-gray-500 mt-2">（如：碘易溶于四氯化碳，难溶于水）</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- P5: 晶体结构特征：密堆积与非密堆积 -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-slate-800 mb-8 border-b-4 border-blue-200 pb-4">四、 分子晶体的结构特征</h3>
+            <div class="flex gap-12 h-full">
+                <div class="w-1/2 space-y-6 text-xl">
+                    <div class="concept-box">
+                        <p class="font-bold text-xl mb-2">1. 分子密堆积</p>
+                        <p><strong>适用：</strong> 仅存在范德华力（无方向性）。</p>
+                        <p><strong>特征：</strong> 一个分子周围有 <span class="text-red-600 font-bold">12</span> 个紧邻分子。</p>
+                        <p><strong>例子：</strong> 干冰 ($CO_2$)、碘 ($I_2$)、$O_2$、$C_{60}$。</p>
+                    </div>
+                    <div class="highlight-box">
+                        <p class="font-bold text-xl mb-2">2. 分子非密堆积</p>
+                        <p><strong>适用：</strong> 存在<span class="text-red-600 font-bold">氢键</span>（有方向性、饱和性）。</p>
+                        <p><strong>特征：</strong> 空间利用率低，留有空隙。</p>
+                        <p><strong>例子：</strong> 冰 ($H_2O$)、HF。</p>
+                    </div>
+                </div>
+                <div class="w-1/2 flex flex-col justify-center items-center">
+                    <!-- SVG: 干冰晶胞 -->
+                    <svg viewBox="0 0 200 200" class="w-64 h-64 border rounded bg-white">
+                        <text x="100" y="20" font-size="12" text-anchor="middle">干冰晶胞 (面心立方堆积)</text>
+                        <!-- Cube -->
+                        <rect x="50" y="50" width="100" height="100" fill="none" stroke="#9ca3af" stroke-width="1"/>
+                        <line x1="50" y1="50" x2="80" y2="20" stroke="#9ca3af" stroke-width="1"/>
+                        <line x1="150" y1="50" x2="180" y2="20" stroke="#9ca3af" stroke-width="1"/>
+                        <line x1="150" y1="150" x2="180" y2="120" stroke="#9ca3af" stroke-width="1"/>
+                        <line x1="80" y1="20" x2="180" y2="20" stroke="#9ca3af" stroke-width="1"/>
+                        <line x1="180" y1="20" x2="180" y2="120" stroke="#9ca3af" stroke-width="1"/>
+                        
+                        <!-- CO2 Molecules (Simplified as dots) -->
+                        <!-- Corners -->
+                        <circle cx="50" cy="50" r="4" class="atom-c"/>
+                        <circle cx="150" cy="50" r="4" class="atom-c"/>
+                        <circle cx="50" cy="150" r="4" class="atom-c"/>
+                        <circle cx="150" cy="150" r="4" class="atom-c"/>
+                        <circle cx="80" cy="20" r="4" class="atom-c"/>
+                        <circle cx="180" cy="20" r="4" class="atom-c"/>
+                        <circle cx="180" cy="120" r="4" class="atom-c"/>
+                        <!-- Faces -->
+                        <circle cx="100" cy="50" r="4" class="atom-c" fill="#ef4444"/>
+                        <circle cx="50" cy="100" r="4" class="atom-c" fill="#ef4444"/>
+                        <circle cx="100" cy="100" r="4" class="atom-c" fill="#ef4444"/>
+                    </svg>
+                    <p class="text-sm mt-2">配位数 = 12</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- P6: 冰的晶体结构 -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-slate-800 mb-8 border-b-4 border-blue-200 pb-4">五、 典型案例：冰 (Ice)</h3>
+            <div class="flex gap-12 h-full">
+                <div class="w-1/2 space-y-6 text-xl">
+                    <p><strong>1. 氢键的方向性：</strong></p>
+                    <p>每个水分子与周围 <span class="text-red-600 font-bold">4</span> 个水分子形成氢键，构成四面体骨架结构。</p>
+                    
+                    <p><strong>2. 密度反常 ($H_2O(s) < H_2O(l)$)：</strong></p>
+                    <p>冰中氢键使分子排列疏松，存在较大空隙。融化为液态水时，部分氢键断裂，分子进入空隙，体积缩小，密度增大。</p>
+                    <p class="text-sm text-gray-500">（4℃时水的密度最大）</p>
+                </div>
+                <div class="w-1/2 flex justify-center">
+                    <!-- SVG: 冰的结构 -->
+                    <svg viewBox="0 0 300 300" class="w-full bg-white rounded border">
+                        <text x="150" y="20" font-size="14" text-anchor="middle">冰的四面体氢键网络</text>
+                        <!-- Central Water -->
+                        <circle cx="150" cy="150" r="12" class="atom-o"/>
+                        
+                        <!-- Surrounding 4 Waters -->
+                        <circle cx="150" cy="50" r="10" class="atom-o"/>
+                        <circle cx="50" cy="220" r="10" class="atom-o"/>
+                        <circle cx="250" cy="220" r="10" class="atom-o"/>
+                        <circle cx="150" cy="150" r="15" fill="none" stroke="#2563eb" stroke-width="1" stroke-dasharray="2"/> <!-- Depth hint -->
+                        
+                        <!-- Hydrogen Bonds -->
+                        <line x1="150" y1="138" x2="150" y2="60" class="bond-inter"/>
+                        <line x1="142" y1="158" x2="58" y2="212" class="bond-inter"/>
+                        <line x1="158" y1="158" x2="242" y2="212" class="bond-inter"/>
+                        
+                        <!-- Labels -->
+                        <text x="160" y="100" font-size="12" fill="#9ca3af">氢键</text>
+                        <text x="150" y="155" font-size="10" fill="white" text-anchor="middle">O</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- P7: 共价晶体 - 概念 -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-slate-800 mb-8 border-b-4 border-blue-200 pb-4">六、 共价晶体 (Covalent Crystal)</h3>
+            <div class="space-y-8 text-2xl">
+                <div class="concept-box">
+                    <p class="font-bold mb-2">定义：</p>
+                    <p>相邻原子之间以<span class="text-red-600 font-bold">共价键</span>相结合，形成三维网状骨架结构的晶体。</p>
+                    <p class="text-sm text-gray-500 mt-2">（曾用名：原子晶体）</p>
+                </div>
+
+                <table class="w-full text-center border-collapse border border-gray-300">
+                    <tr class="bg-blue-100">
+                        <th class="p-4 border">比较项目</th>
+                        <th class="p-4 border">分子晶体</th>
+                        <th class="p-4 border">共价晶体</th>
+                    </tr>
+                    <tr>
+                        <td class="p-4 border font-bold">构成微粒</td>
+                        <td class="p-4 border">分子</td>
+                        <td class="p-4 border"><span class="text-red-600">原子</span></td>
+                    </tr>
+                    <tr>
+                        <td class="p-4 border font-bold">微粒间作用力</td>
+                        <td class="p-4 border">范德华力 / 氢键</td>
+                        <td class="p-4 border"><span class="text-red-600">共价键</span></td>
+                    </tr>
+                    <tr>
+                        <td class="p-4 border font-bold">熔沸点</td>
+                        <td class="p-4 border">较低</td>
+                        <td class="p-4 border">很高</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- P8: 常见的共价晶体 -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-slate-800 mb-8 border-b-4 border-blue-200 pb-4">七、 常见的共价晶体</h3>
+            <div class="space-y-6 text-2xl">
+                <p class="font-bold text-blue-800">记忆口诀：主要是 IVA 族元素及其化合物</p>
+                
+                <div class="grid grid-cols-2 gap-8 mt-6">
+                    <div class="bg-green-50 p-6 rounded-lg border-l-8 border-green-500">
+                        <h4 class="font-bold text-xl mb-4">1. 单质</h4>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>金刚石 (Diamond, C)</li>
+                            <li>单晶硅 (Si)</li>
+                            <li>晶体硼 (B)</li>
+                            <li>锗 (Ge)</li>
+                            <li>灰锡</li>
+                        </ul>
+                    </div>
+                    <div class="bg-green-50 p-6 rounded-lg border-l-8 border-green-500">
+                        <h4 class="font-bold text-xl mb-4">2. 化合物</h4>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>碳化硅 (SiC, 金刚砂)</li>
+                            <li>二氧化硅 ($SiO_2$, 石英/水晶)</li>
+                            <li>氮化硼 (BN)</li>
+                            <li>氮化铝 (AlN)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- P9: 典型结构：金刚石 -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-slate-800 mb-8 border-b-4 border-blue-200 pb-4">八、 典型结构：金刚石 (Diamond)</h3>
+            <div class="flex gap-12 h-full">
+                <div class="w-1/2 space-y-6 text-xl">
+                    <ul class="list-disc list-inside space-y-3 text-gray-700">
+                        <li><strong>杂化方式：</strong> 碳原子均为 $sp^3$ 杂化。</li>
+                        <li><strong>键角：</strong> $109^\circ 28'$。</li>
+                        <li><strong>键长：</strong> 所有 C-C 键长相等。</li>
+                        <li><strong>最小环：</strong> <span class="text-red-600 font-bold">六元环</span> (椅式结构)。</li>
+                        <li><strong>微粒关系：</strong>
+                            <ul class="list-none pl-8 mt-2">
+                                <li>- 每个C周围有4个C。</li>
+                                <li>- 1 mol 金刚石含有 <span class="text-red-600 font-bold">2 mol</span> C-C 键。</li>
+                                <li class="text-sm text-gray-500">(计算：$1 \times 4 \times \frac{1}{2} = 2$)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="w-1/2 flex justify-center">
+                    <!-- SVG: 金刚石结构 -->
+                    <svg viewBox="0 0 300 300" class="w-full bg-white rounded border">
+                        <!-- Tetrahedral Unit -->
+                        <line x1="150" y1="150" x2="150" y2="50" class="bond-covalent"/>
+                        <line x1="150" y1="150" x2="50" y2="220" class="bond-covalent"/>
+                        <line x1="150" y1="150" x2="250" y2="220" class="bond-covalent"/>
+                        <line x1="150" y1="150" x2="180" y2="180" class="bond-covalent" opacity="0.5"/> <!-- Back bond -->
+                        
+                        <circle cx="150" cy="150" r="10" class="atom-c"/>
+                        <circle cx="150" cy="50" r="10" class="atom-c"/>
+                        <circle cx="50" cy="220" r="10" class="atom-c"/>
+                        <circle cx="250" cy="220" r="10" class="atom-c"/>
+                        <circle cx="180" cy="180" r="10" class="atom-c" opacity="0.5"/>
+                        
+                        <text x="160" y="140" font-size="14">C</text>
+                        <text x="100" y="250" font-size="12" fill="gray">正四面体结构</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- P10: 典型结构：二氧化硅 -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-slate-800 mb-8 border-b-4 border-blue-200 pb-4">九、 典型结构：二氧化硅 ($SiO_2$)</h3>
+            <div class="flex gap-12 h-full">
+                <div class="w-1/2 space-y-6 text-xl">
+                    <div class="highlight-box">
+                        <p class="font-bold">结构想象：</p>
+                        <p>在单晶硅的 Si-Si 键之间插入一个 O 原子。</p>
+                    </div>
+                    <ul class="list-disc list-inside space-y-3 text-gray-700">
+                        <li><strong>配位数：</strong> 1个Si接4个O，1个O接2个Si。</li>
+                        <li><strong>原子个数比：</strong> Si : O = 1 : 2。</li>
+                        <li><strong>最小环：</strong> <span class="text-red-600 font-bold">12元环</span> (6个Si + 6个O)。</li>
+                        <li><strong>键数计算：</strong>
+                            <ul class="list-none pl-8 mt-2">
+                                <li>- 1 mol $SiO_2$ 含有 <span class="text-red-600 font-bold">4 mol</span> Si-O 键。</li>
+                                <li class="text-sm text-gray-500">(计算：Si周围4个键，不共用，1x4=4)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="w-1/2 flex justify-center">
+                    <!-- SVG: SiO2结构 -->
+                    <svg viewBox="0 0 300 300" class="w-full bg-white rounded border">
+                        <!-- Si Center -->
+                        <circle cx="150" cy="150" r="12" class="atom-si"/>
+                        <text x="142" y="155" font-size="12" fill="white">Si</text>
+                        
+                        <!-- 4 Oxygens -->
+                        <line x1="150" y1="150" x2="150" y2="80" class="bond-covalent"/>
+                        <line x1="150" y1="150" x2="80" y2="200" class="bond-covalent"/>
+                        <line x1="150" y1="150" x2="220" y2="200" class="bond-covalent"/>
+                        
+                        <circle cx="150" cy="80" r="8" class="atom-o"/>
+                        <circle cx="80" cy="200" r="8" class="atom-o"/>
+                        <circle cx="220" cy="200" r="8" class="atom-o"/>
+                        
+                        <!-- Connecting to other Si (simplified) -->
+                        <line x1="150" y1="80" x2="120" y2="50" class="bond-covalent" stroke-dasharray="2"/>
+                        <line x1="150" y1="80" x2="180" y2="50" class="bond-covalent" stroke-dasharray="2"/>
+                        
+                        <text x="170" y="90" font-size="12" fill="red">O</text>
+                        <text x="80" y="250" font-size="12" fill="gray">Si-O-Si 连接</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- P11: 例题 (无解析) -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">【思考题】晶体类型的判断</h3>
+            <div class="text-2xl space-y-6">
+                <p>下表列出了四种物质的熔沸点，请推断它们分别属于什么晶体类型？</p>
+                <table class="w-full text-center border border-gray-400 text-xl">
+                    <tr class="bg-gray-200">
+                        <th class="p-3 border">物质</th>
+                        <th class="p-3 border">熔点(℃)</th>
+                        <th class="p-3 border">沸点(℃)</th>
+                        <th class="p-3 border">导电性</th>
+                    </tr>
+                    <tr>
+                        <td class="p-3 border">A</td>
+                        <td class="p-3 border">-114</td>
+                        <td class="p-3 border">78</td>
+                        <td class="p-3 border">不导电</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 border">B</td>
+                        <td class="p-3 border">3550</td>
+                        <td class="p-3 border">4827</td>
+                        <td class="p-3 border">不导电</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 border">C</td>
+                        <td class="p-3 border">801</td>
+                        <td class="p-3 border">1465</td>
+                        <td class="p-3 border">熔融导电</td>
+                    </tr>
+                </table>
+                <div class="mt-auto text-gray-400 text-lg">（提示：根据熔沸点高低和导电性判断）</div>
+            </div>
+        </div>
+
+        <!-- P12: 练习题 1 (题目) -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">【巩固练习 1】分子晶体性质</h3>
+            <div class="flex flex-col justify-center h-full space-y-6">
+                <p class="text-3xl font-bold mb-4">1. 下列关于分子晶体的说法中，正确的是：</p>
+                <div class="space-y-4 text-2xl">
+                    <div class="option-item">A. 分子晶体中一定含有共价键</div>
+                    <div class="option-item">B. 分子晶体熔化时一定破坏共价键</div>
+                    <div class="option-item">C. 分子晶体中分子间作用力越大，化学性质越稳定</div>
+                    <div class="option-item">D. 分子晶体的熔沸点通常较低</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- P13: 练习题 1 (解析) -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-green-700 mb-6 border-b-2 border-blue-200">【答案与解析 1】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6 text-2xl">
+                <div class="bg-green-100 p-6 rounded border-l-8 border-green-600">
+                    <p class="font-bold">正确答案：D</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded">
+                    <p class="font-bold text-gray-700 mb-2">解析：</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>A错：稀有气体（如 He, Ne）是分子晶体，但单原子分子内无化学键。</li>
+                        <li>B错：分子晶体熔化破坏的是<span class="text-red-600">分子间作用力</span>，不破坏共价键。</li>
+                        <li>C错：化学性质稳定性取决于化学键（键能），物理性质（熔沸点）取决于分子间作用力。</li>
+                        <li>D对：分子间作用力较弱，故熔沸点通常较低。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- P14: 练习题 2 (题目) -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">【巩固练习 2】晶体类型判断</h3>
+            <div class="flex flex-col justify-center h-full space-y-6">
+                <p class="text-3xl font-bold mb-4">2. 下列物质固态时属于共价晶体的是：</p>
+                <div class="space-y-4 text-2xl">
+                    <div class="option-item">A. 碘 ($I_2$)</div>
+                    <div class="option-item">B. 苛性钠 ($NaOH$)</div>
+                    <div class="option-item">C. 水晶 ($SiO_2$)</div>
+                    <div class="option-item">D. 干冰 ($CO_2$)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- P15: 练习题 2 (解析) -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-green-700 mb-6 border-b-2 border-blue-200">【答案与解析 2】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6 text-2xl">
+                <div class="bg-green-100 p-6 rounded border-l-8 border-green-600">
+                    <p class="font-bold">正确答案：C</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded">
+                    <p class="font-bold text-gray-700 mb-2">解析：</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>A (碘)：分子晶体。</li>
+                        <li>B (NaOH)：离子晶体。</li>
+                        <li>C (SiO₂)：典型的共价晶体（原子晶体）。</li>
+                        <li>D (干冰)：分子晶体。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- P16: 练习题 3 (题目) -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">【巩固练习 3】结构特征</h3>
+            <div class="flex flex-col justify-center h-full space-y-6">
+                <p class="text-3xl font-bold mb-4">3. 干冰晶体是一种面心立方结构，关于其配位数的说法正确的是：</p>
+                <div class="space-y-4 text-2xl">
+                    <div class="option-item">A. 每个CO₂分子周围有 4 个紧邻的CO₂分子</div>
+                    <div class="option-item">B. 每个CO₂分子周围有 6 个紧邻的CO₂分子</div>
+                    <div class="option-item">C. 每个CO₂分子周围有 8 个紧邻的CO₂分子</div>
+                    <div class="option-item">D. 每个CO₂分子周围有 12 个紧邻的CO₂分子</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- P17: 练习题 3 (解析) -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-green-700 mb-6 border-b-2 border-blue-200">【答案与解析 3】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6 text-2xl">
+                <div class="bg-green-100 p-6 rounded border-l-8 border-green-600">
+                    <p class="font-bold">正确答案：D</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded">
+                    <p class="font-bold text-gray-700 mb-2">解析：</p>
+                    <p>干冰属于分子密堆积，结构类似金属铜的面心立方最密堆积。在面心立方结构中，每个粒子周围距离最近且相等的粒子数为 <span class="text-red-600 font-bold">12</span> 个（同层4个，上层4个，下层4个）。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- P18: 练习题 4 (题目) -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">【巩固练习 4】键数计算</h3>
+            <div class="flex flex-col justify-center h-full space-y-6">
+                <p class="text-3xl font-bold mb-4">4. 1 mol 二氧化硅 ($SiO_2$) 晶体中含有 Si-O 键的数目是：</p>
+                <div class="space-y-4 text-2xl">
+                    <div class="option-item">A. 1 $N_A$</div>
+                    <div class="option-item">B. 2 $N_A$</div>
+                    <div class="option-item">C. 4 $N_A$</div>
+                    <div class="option-item">D. 8 $N_A$</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- P19: 练习题 4 (解析) -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-green-700 mb-6 border-b-2 border-blue-200">【答案与解析 4】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6 text-2xl">
+                <div class="bg-green-100 p-6 rounded border-l-8 border-green-600">
+                    <p class="font-bold">正确答案：C</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded">
+                    <p class="font-bold text-gray-700 mb-2">解析：</p>
+                    <p>在 SiO₂ 晶体中，每个 Si 原子与 4 个 O 原子形成 4 个 Si-O 键。这 4 个键完全属于该 Si 原子（从中心原子的角度看）。</p>
+                    <p>所以，1 mol SiO₂ 含有 1 mol Si，对应 <span class="text-red-600 font-bold">4 mol</span> Si-O 键。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- P20: 练习题 5 (题目) -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">【巩固练习 5】性质比较</h3>
+            <div class="flex flex-col justify-center h-full space-y-6">
+                <p class="text-3xl font-bold mb-4">5. 下列物质熔沸点由高到低排列正确的是：</p>
+                <div class="space-y-4 text-2xl">
+                    <div class="option-item">A. 金刚石 > 晶体硅 > 碳化硅</div>
+                    <div class="option-item">B. 晶体硅 > 碳化硅 > 金刚石</div>
+                    <div class="option-item">C. 金刚石 > 碳化硅 > 晶体硅</div>
+                    <div class="option-item">D. 碳化硅 > 金刚石 > 晶体硅</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- P21: 练习题 5 (解析) -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-green-700 mb-6 border-b-2 border-blue-200">【答案与解析 5】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6 text-2xl">
+                <div class="bg-green-100 p-6 rounded border-l-8 border-green-600">
+                    <p class="font-bold">正确答案：C</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded">
+                    <p class="font-bold text-gray-700 mb-2">解析：</p>
+                    <p>对于结构相似的共价晶体，<span class="font-bold">原子半径越小，键长越短，键能越大，熔沸点越高</span>。</p>
+                    <p>原子半径：Si > C。</p>
+                    <p>键长：Si-Si > Si-C > C-C。</p>
+                    <p>键能：C-C > Si-C > Si-Si。</p>
+                    <p>故熔点：金刚石 > 碳化硅 > 晶体硅。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- P22: 结束页 -->
+        <div class="slide text-center">
+            <h2 class="text-5xl font-bold text-blue-900 mb-8">课程结束</h2>
+            <p class="text-3xl text-gray-600 mb-12">请同学们课后及时复习，对比两种晶体的区别！</p>
+            <div class="w-24 h-24 bg-blue-600 rounded-full mx-auto flex items-center justify-center text-white text-4xl animate-bounce">
+                👋
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const indicator = document.getElementById('page-indicator');
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+            indicator.textContent = `${currentSlide + 1} / ${slides.length}`;
+            window.scrollTo(0, 0);
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+
+        // Initialize
+        updateSlide();
+    </script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+{
+  "timestamp": "2025-12-06T11:45:45.319Z",
+  "inputDir": "chem_1_37",
+  "studySetId": "cmiu6aug001tg3oodswzgrzr0",
+  "studySetUrl": "http://cika.dzexam.cn/cmiu6aug001tg3oodswzgrzr0",
+  "totalFiles": 36,
+  "successCount": 36,
+  "failCount": 0,
+  "totalCards": 395,
+  "results": [
+    {
+      "file": "1.物质的组成和性质分类.html",
+      "success": true,
+      "cards": 14,
+      "error": null
+    },
+    {
+      "file": "2.分散系及其分类.html",
+      "success": true,
+      "cards": 12,
+      "error": null
+    },
+    {
+      "file": "3.酸、碱、盐性质+物质的转化.html",
+      "success": true,
+      "cards": 13,
+      "error": null
+    },
+    {
+      "file": "4.电解质与电离方程式.html",
+      "success": true,
+      "cards": 16,
+      "error": null
+    },
+    {
+      "file": "5.离子反应与离子方程式书写.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "6.氧化还原反应念.html",
+      "success": true,
+      "cards": 10,
+      "error": null
+    },
+    {
+      "file": "7.氧化剂与还原剂.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "8.氧化还原反应强弱规律.html",
+      "success": true,
+      "cards": 15,
+      "error": null
+    },
+    {
+      "file": "9.活泼金属单质-钠.html",
+      "success": true,
+      "cards": 14,
+      "error": null
+    },
+    {
+      "file": "10.氧化钠与过氧化钠.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "11.碳酸钠与碳酸氢钠.html",
+      "success": true,
+      "cards": 15,
+      "error": null
+    },
+    {
+      "file": "12.氯气.html",
+      "success": true,
+      "cards": 16,
+      "error": null
+    },
+    {
+      "file": "13.物质的量+阿伏加德罗常数+摩尔质量+摩尔体积.html",
+      "success": true,
+      "cards": 12,
+      "error": null
+    },
+    {
+      "file": "14.阿伏加德罗定律.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "15.物质的量浓度.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "16.铁单质+铁的氧化物+铁的氢氧化物.html",
+      "success": true,
+      "cards": 14,
+      "error": null
+    },
+    {
+      "file": "17.铁三角.html",
+      "success": true,
+      "cards": 22,
+      "error": null
+    },
+    {
+      "file": "18.铝及其化合物.html",
+      "success": true,
+      "cards": 16,
+      "error": null
+    },
+    {
+      "file": "19.原子结构.html",
+      "success": true,
+      "cards": 17,
+      "error": null
+    },
+    {
+      "file": "20.元素周期表.html",
+      "success": true,
+      "cards": 12,
+      "error": null
+    },
+    {
+      "file": "21.元素周期律（上）.html",
+      "success": true,
+      "cards": 12,
+      "error": null
+    },
+    {
+      "file": "22.元素周期律（下）.html",
+      "success": true,
+      "cards": 14,
+      "error": null
+    },
+    {
+      "file": "23.化学键（上）.html",
+      "success": true,
+      "cards": 13,
+      "error": null
+    },
+    {
+      "file": "24.化学键（下）.html",
+      "success": true,
+      "cards": 15,
+      "error": null
+    },
+    {
+      "file": "25.硫单质+硫酸.html",
+      "success": true,
+      "cards": 15,
+      "error": null
+    },
+    {
+      "file": "26.二氧化硫的性质.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "27.氮及其重要化合物.html",
+      "success": true,
+      "cards": 16,
+      "error": null
+    },
+    {
+      "file": "28.氨、铵盐与硝酸.html",
+      "success": true,
+      "cards": 14,
+      "error": null
+    },
+    {
+      "file": "29.硅与无机非金属材料.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "30.硅及其重要化合物.html",
+      "success": true,
+      "cards": 16,
+      "error": null
+    },
+    {
+      "file": "31.化学反应与热能.html",
+      "success": true,
+      "cards": 11,
+      "error": null
+    },
+    {
+      "file": "32.化学反应与电能.html",
+      "success": true,
+      "cards": 10,
+      "error": null
+    },
+    {
+      "file": "33.化学反应速率.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "34.烃、甲烷与烷烃.html",
+      "success": true,
+      "cards": 15,
+      "error": null
+    },
+    {
+      "file": "35.同系物与同分异构体.html",
+      "success": true,
+      "cards": 13,
+      "error": null
+    },
+    {
+      "file": "36.乙醇.html",
+      "success": true,
+      "cards": 13,
+      "error": null
+    }
+  ]
+}

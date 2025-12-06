@@ -1,0 +1,424 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>统计学进阶：独立性检验与非线性回归 PPT</title>
+ <script src="https://cdn.tailwindcss.com"></script>
+ 
+ <!-- MathJax Configuration -->
+ <script>
+ window.MathJax = {
+ tex: {
+ inlineMath: [['$', '$'], ['\\(', '\\)']],
+ displayMath: [['$$', '$$'], ['\\[', '\\]']],
+ processEscapes: true
+ },
+ svg: { fontCache: 'global' }
+ };
+ </script>
+ <script id="MathJax-script" async src="https://cdn.bootcdn.net/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+ <style>
+ html, body {
+ margin: 0;
+ padding: 0;
+ font-family: 'Noto Serif SC', serif;
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
+ background-color: #f1f5f9;
+ }
+ 
+ #presentation-container {
+ max-width: 56rem;
+ margin: 2rem auto;
+ background-color: white;
+ border-radius: 0.5rem;
+ box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+ }
+
+ .section {
+ width: 100%;
+ box-sizing: border-box;
+ padding: 3rem 2rem;
+ position: relative; 
+ min-height: 520px;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+ text-align: center;
+ }
+ 
+ .section:not(:last-child) {
+ border-bottom: 1px solid #e5e7eb;
+ }
+ 
+ .formula-box {
+ background-color: #f8fafc;
+ border-left: 4px solid #3b82f6;
+ padding: 1.5rem;
+ margin-top: 1.5rem;
+ border-radius: 0.25rem;
+ font-size: 1.25rem;
+ line-height: 1.8;
+ overflow-x: auto;
+ text-align: center;
+ width: 100%;
+ max-width: 90%;
+ box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+ }
+
+ .list-disc {
+ text-align: left;
+ display: inline-block;
+ }
+
+ .option-item {
+ background-color: #f8fafc;
+ padding: 1rem 1.5rem;
+ margin: 0.5rem 0;
+ border-radius: 0.5rem;
+ text-align: left;
+ width: 100%;
+ max-width: 40rem;
+ transition: background-color 0.2s;
+ }
+ 
+ .option-item.correct {
+ background-color: #eff6ff;
+ border-left: 4px solid #3b82f6;
+ }
+
+ @media print {
+ @page {
+ size: landscape;
+ margin: 0;
+ }
+
+ body, html {
+ background-color: white;
+ -webkit-print-color-adjust: exact;
+ print-color-adjust: exact;
+ }
+
+ #presentation-container {
+ margin: 0;
+ padding: 0;
+ border: none;
+ box-shadow: none;
+ width: 100%;
+ max-width: 100%;
+ }
+ 
+ .section {
+ height: 100vh;
+ width: 100vw;
+ page-break-after: always;
+ padding: 2rem;
+ border-bottom: none;
+ }
+ 
+ .section:last-child {
+ page-break-after: auto;
+ }
+ }
+ </style>
+</head>
+<body>
+
+ <div id="presentation-container">
+ 
+ <!-- Slide 1: Title -->
+ <div class="section">
+ <h1 class="text-4xl font-bold text-slate-800 mb-6">统计学进阶</h1>
+ <h2 class="text-2xl text-blue-600 font-medium">独立性检验与非线性回归</h2>
+ <div class="mt-12 text-gray-500">
+ <p>探索事件关联的本质与化曲为直的智慧</p>
+ </div>
+ </div>
+
+ <!-- Slide 2: Independence Definition -->
+ <div class="section">
+ <h3 class="text-2xl font-bold text-slate-800 mb-8">回顾：独立事件的定义</h3>
+ <p class="text-xl text-slate-600 mb-6">如果事件 $A$ 和 $B$ 独立，那么：</p>
+ <div class="formula-box">
+ $$ P(AB) = P(A) \cdot P(B) $$
+ </div>
+ <p class="text-lg text-slate-500 mt-8">思考：能不能直接用这个等式去检验两个事件是否独立？</p>
+ </div>
+
+ <!-- Slide 3: Example Scenario -->
+ <div class="section">
+ <h3 class="text-2xl font-bold text-slate-800 mb-8">📊 案例：性别与运动喜好</h3>
+ <p class="text-lg text-slate-600 mb-6">我们调查了 <strong>110位</strong> 学生，数据如下：</p>
+ 
+ <div class="bg-slate-50 p-6 rounded-lg w-full max-w-2xl">
+ <ul class="text-xl text-slate-700 text-left space-y-4">
+ <li class="flex justify-between border-b pb-2">
+ <span><strong>男生 (50人)</strong></span>
+ <span>20个喜欢，30个不喜欢</span>
+ </li>
+ <li class="flex justify-between pt-2">
+ <span><strong>女生 (60人)</strong></span>
+ <span>40个喜欢，20个不喜欢</span>
+ </li>
+ </ul>
+ </div>
+ </div>
+
+ <!-- Slide 4: Why Equality Fails -->
+ <div class="section">
+ <h3 class="text-2xl font-bold text-slate-800 mb-6">为什么不能直接用 $P(AB) = P(A)P(B)$？</h3>
+ 
+ <div class="text-lg text-slate-600 space-y-4 mb-6 text-left w-full max-w-3xl">
+ <p>设 $A$="喜欢运动", $B$="男生"：</p>
+ <ul class="list-decimal list-inside pl-4 space-y-2">
+ <li>$P(A) = 60/110 = 6/11$</li>
+ <li>$P(B) = 50/110 = 5/11$</li>
+ <li>$P(AB) = 20/110 = 2/11$</li>
+ </ul>
+ </div>
+
+ <div class="formula-box">
+ $$ P(A)P(B) = \frac{30}{121} \approx 0.248 \neq \frac{2}{11} \approx 0.182 $$
+ </div>
+
+ <p class="mt-6 text-red-600 font-bold">原因：抽样调查存在随机波动和误差，等号几乎不可能严格成立。</p>
+ </div>
+
+ <!-- Slide 5: Contingency Table SVG -->
+ <div class="section">
+ <h3 class="text-2xl font-bold text-slate-800 mb-4">引入工具：2x2 列联表</h3>
+ <div class="w-full max-w-xl flex justify-center">
+ <svg width="500" height="320" viewBox="0 0 500 320" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+ </defs>
+ <rect x="100" y="50" width="400" height="50" class="header-rect" fill="#e2e8f0" stroke="#64748b" />
+ <rect x="0" y="100" width="100" height="200" class="header-rect" fill="#e2e8f0" stroke="#64748b" />
+ <text x="200" y="75" class="label-text" font-family="sans-serif" font-size="14" text-anchor="middle" dominant-baseline="middle">类 1 (如: 喜欢)</text>
+ <text x="300" y="75" class="label-text" font-family="sans-serif" font-size="14" text-anchor="middle" dominant-baseline="middle">类 2 (如: 不喜欢)</text>
+ <text x="400" y="75" class="label-text" font-family="sans-serif" font-size="14" text-anchor="middle" dominant-baseline="middle">合计</text>
+ <text x="50" y="150" class="label-text" font-family="sans-serif" font-size="14" text-anchor="middle" dominant-baseline="middle">组 1 (如: 男)</text>
+ <text x="50" y="225" class="label-text" font-family="sans-serif" font-size="14" text-anchor="middle" dominant-baseline="middle">组 2 (如: 女)</text>
+ <text x="50" y="285" class="label-text" font-family="sans-serif" font-size="14" text-anchor="middle" dominant-baseline="middle">合计</text>
+ <rect x="100" y="100" width="100" height="100" class="cell-rect" fill="none" stroke="#64748b"/>
+ <rect x="200" y="100" width="100" height="100" class="cell-rect" fill="none" stroke="#64748b"/>
+ <rect x="300" y="100" width="100" height="100" class="cell-rect" fill="none" stroke="#64748b"/>
+ <rect x="100" y="200" width="100" height="70" class="cell-rect" fill="none" stroke="#64748b"/>
+ <rect x="200" y="200" width="100" height="70" class="cell-rect" fill="none" stroke="#64748b"/>
+ <rect x="300" y="200" width="100" height="70" class="cell-rect" fill="none" stroke="#64748b"/>
+ <rect x="100" y="270" width="100" height="50" class="cell-rect" style="stroke-dasharray: 4;" fill="none" stroke="#64748b"/>
+ <rect x="200" y="270" width="100" height="50" class="cell-rect" style="stroke-dasharray: 4;" fill="none" stroke="#64748b"/>
+ <rect x="300" y="270" width="100" height="50" class="cell-rect" style="fill:#f1f8e9;" fill="#f1f8e9" stroke="#64748b"/>
+ <text x="150" y="150" class="value-text" font-family="sans-serif" font-size="20" text-anchor="middle" dominant-baseline="middle">a</text>
+ <text x="250" y="150" class="value-text" font-family="sans-serif" font-size="20" text-anchor="middle" dominant-baseline="middle">b</text>
+ <text x="350" y="150" class="sum-text" font-family="sans-serif" font-size="16" text-anchor="middle" dominant-baseline="middle">a+b</text>
+ <text x="150" y="235" class="value-text" font-family="sans-serif" font-size="20" text-anchor="middle" dominant-baseline="middle">c</text>
+ <text x="250" y="235" class="value-text" font-family="sans-serif" font-size="20" text-anchor="middle" dominant-baseline="middle">d</text>
+ <text x="350" y="235" class="sum-text" font-family="sans-serif" font-size="16" text-anchor="middle" dominant-baseline="middle">c+d</text>
+ <text x="150" y="295" class="sum-text" font-family="sans-serif" font-size="16" text-anchor="middle" dominant-baseline="middle">a+c</text>
+ <text x="250" y="295" class="sum-text" font-family="sans-serif" font-size="16" text-anchor="middle" dominant-baseline="middle">b+d</text>
+ <text x="350" y="295" class="value-text" style="font-size:24px; fill:#2e7d32; font-weight:bold;" text-anchor="middle" dominant-baseline="middle">n</text>
+ <text x="250" y="30" class="axis-label" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold">变量 X (列)</text>
+ <text x="20" y="200" class="axis-label" transform="rotate(-90, 20, 200)" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold">变量 Y (行)</text>
+ </svg>
+ </div>
+ </div>
+
+ <!-- Slide 6: Chi-Square Formula -->
+ <div class="section">
+ <h3 class="text-2xl font-bold text-slate-800 mb-6">卡方检验 ($\chi^2$) 计算公式</h3>
+ 
+ <div class="formula-box mb-8">
+ $$ \chi^2 = \frac{n(ad - bc)^2}{(a+b)(c+d)(a+c)(b+d)} $$
+ </div>
+
+ <div class="text-lg text-slate-600 space-y-3">
+ <p><strong>分子：</strong>$n$ 乘以 $(ad-bc)^2$ （交叉项之积的差的平方）</p>
+ <p><strong>分母：</strong>行和与列和的乘积</p>
+ </div>
+ </div>
+
+ <!-- Slide 7: Interpretation -->
+ <div class="section">
+ <h3 class="text-2xl font-bold text-slate-800 mb-6">如何解读结果？</h3>
+ <p class="text-lg text-slate-600 mb-6">基本逻辑：<strong>$\chi^2$ 越大，独立性假设越不成立（越相关）。</strong></p>
+
+ <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
+ <div class="bg-blue-50 p-6 rounded-lg">
+ <h4 class="font-bold text-blue-800 mb-2">95% 把握有关</h4>
+ <p class="text-slate-700">$\chi^2 > 3.841$</p>
+ <p class="text-sm text-slate-500">显著性水平 5%</p>
+ </div>
+ <div class="bg-green-50 p-6 rounded-lg">
+ <h4 class="font-bold text-green-800 mb-2">99% 把握有关</h4>
+ <p class="text-slate-700">$\chi^2 > 6.635$</p>
+ <p class="text-sm text-slate-500">显著性水平 1%</p>
+ </div>
+ </div>
+ 
+ <p class="mt-8 text-sm text-slate-500">注：6.635 是"百年一遇"的临界值，超过它说明大概率不是巧合。</p>
+ </div>
+
+ <!-- Slide 8: Non-linear Regression -->
+ <div class="section">
+ <h3 class="text-2xl font-bold text-slate-800 mb-6">非线性回归：化曲为直</h3>
+ <p class="text-xl text-slate-600 mb-8">当数据呈现 $y = b\sqrt{x} + a$ 的曲线特征时，如何求解？</p>
+ 
+ <div class="bg-white border-2 border-slate-200 rounded-lg p-8">
+ <p class="text-lg font-bold text-slate-700 mb-4">换元法</p>
+ <p class="text-2xl text-slate-800 mb-4">令 $u = \sqrt{x}$</p>
+ <div class="flex items-center justify-center space-x-4 text-xl">
+ <span>$y = b\sqrt{x} + a$</span>
+ <span class="text-blue-500 text-3xl">$\rightarrow$</span>
+ <span>$y = bu + a$</span>
+ </div>
+ </div>
+ 
+ <p class="mt-8 text-slate-500">核心思想：将复杂问题转化为我们擅长的线性问题处理。</p>
+ </div>
+
+ <!-- Quiz 1 -->
+ <div class="section">
+ <div class="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-bold mb-6">小测验 1/5</div>
+ <h3 class="text-2xl font-bold text-slate-800 mb-8">在独立性检验中，如果计算得到的卡方值 $\chi^2$ 越大，说明什么？</h3>
+ <div class="flex flex-col items-center w-full">
+ <div class="option-item">A. 两个事件相关的可能性越小</div>
+ <div class="option-item">B. 两个事件相关的可能性越大</div>
+ <div class="option-item">C. 两个事件一定独立</div>
+ <div class="option-item">D. 计算肯定出错了</div>
+ </div>
+ </div>
+
+ <!-- Answer 1 -->
+ <div class="section">
+ <h3 class="text-xl text-slate-400 mb-8">在独立性检验中，如果计算得到的卡方值 $\chi^2$ 越大，说明什么？</h3>
+ <div class="flex flex-col items-center w-full mb-8">
+ <div class="option-item correct">
+ <span class="font-bold text-blue-700 mr-2">✓</span> 
+ B. 两个事件相关的可能性越大
+ </div>
+ </div>
+ <div class="text-slate-600 max-w-2xl">
+ <p><strong>解析：</strong>卡方值衡量的是实际观测值与"假设独立时"的理论值之间的偏离程度。偏离越大（$\chi^2$ 越大），说明独立的假设越不成立，即两者相关的可能性越大。</p>
+ </div>
+ </div>
+
+ <!-- Quiz 2 -->
+ <div class="section">
+ <div class="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-bold mb-6">小测验 2/5</div>
+ <h3 class="text-2xl font-bold text-slate-800 mb-8">2x2 列联表中，卡方 $\chi^2$ 的计算公式分母是什么？</h3>
+ <div class="flex flex-col items-center w-full">
+ <div class="option-item">A. 样本总数 $n$ 的平方</div>
+ <div class="option-item">B. 交叉项之积的差 $(ad-bc)^2$</div>
+ <div class="option-item">C. 所有行和与列和的乘积</div>
+ <div class="option-item">D. 样本总数 $n$ 乘以行和</div>
+ </div>
+ </div>
+
+ <!-- Answer 2 -->
+ <div class="section">
+ <h3 class="text-xl text-slate-400 mb-8">2x2 列联表中，卡方 $\chi^2$ 的计算公式分母是什么？</h3>
+ <div class="flex flex-col items-center w-full mb-8">
+ <div class="option-item correct">
+ <span class="font-bold text-blue-700 mr-2">✓</span> 
+ C. 所有行和与列和的乘积
+ </div>
+ </div>
+ <div class="text-slate-600 max-w-2xl">
+ <p><strong>解析：</strong>分母是 $(a+b)(c+d)(a+c)(b+d)$，即表格最右侧和最下侧四个合计数据的乘积。</p>
+ </div>
+ </div>
+
+ <!-- Quiz 3 -->
+ <div class="section">
+ <div class="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-bold mb-6">小测验 3/5</div>
+ <h3 class="text-2xl font-bold text-slate-800 mb-8">如果 $\chi^2 > 6.635$（对应显著性水平 1%），我们的结论通常是？</h3>
+ <div class="flex flex-col items-center w-full">
+ <div class="option-item">A. 有 1% 的把握认为两事件有关</div>
+ <div class="option-item">B. 有 99% 的把握认为两事件无关</div>
+ <div class="option-item">C. 有 99% 的把握认为两事件有关</div>
+ <div class="option-item">D. 两事件绝对有关，不可能出错</div>
+ </div>
+ </div>
+
+ <!-- Answer 3 -->
+ <div class="section">
+ <h3 class="text-xl text-slate-400 mb-8">如果 $\chi^2 > 6.635$（对应显著性水平 1%），我们的结论通常是？</h3>
+ <div class="flex flex-col items-center w-full mb-8">
+ <div class="option-item correct">
+ <span class="font-bold text-blue-700 mr-2">✓</span> 
+ C. 有 99% 的把握认为两事件有关
+ </div>
+ </div>
+ <div class="text-slate-600 max-w-2xl">
+ <p><strong>解析：</strong>$\chi^2$ 超过 1% 的临界值，意味着假设它们独立而出错的概率小于 1%，反过来说，我们有 99% 的把握认为它们是相关的。</p>
+ </div>
+ </div>
+
+ <!-- Quiz 4 -->
+ <div class="section">
+ <div class="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-bold mb-6">小测验 4/5</div>
+ <h3 class="text-2xl font-bold text-slate-800 mb-8">处理非线性回归问题（如 $y = b\sqrt{x} + a$）的核心思想是什么？</h3>
+ <div class="flex flex-col items-center w-full">
+ <div class="option-item">A. 直接放弃，无法计算</div>
+ <div class="option-item">B. 使用更高级的非线性方程组求解</div>
+ <div class="option-item">C. 通过换元（如令 $u=\sqrt{x}$）转化为线性回归</div>
+ <div class="option-item">D. 忽略数据的非线性特征，强行用直线拟合</div>
+ </div>
+ </div>
+
+ <!-- Answer 4 -->
+ <div class="section">
+ <h3 class="text-xl text-slate-400 mb-8">处理非线性回归问题（如 $y = b\sqrt{x} + a$）的核心思想是什么？</h3>
+ <div class="flex flex-col items-center w-full mb-8">
+ <div class="option-item correct">
+ <span class="font-bold text-blue-700 mr-2">✓</span> 
+ C. 通过换元（如令 $u=\sqrt{x}$）转化为线性回归
+ </div>
+ </div>
+ <div class="text-slate-600 max-w-2xl">
+ <p><strong>解析：</strong>化曲为直是解决此类问题的关键。通过引入中间变量，将非线性关系转化为线性关系，再利用最小二乘法求解。</p>
+ </div>
+ </div>
+
+ <!-- Quiz 5 -->
+ <div class="section">
+ <div class="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-bold mb-6">小测验 5/5</div>
+ <h3 class="text-2xl font-bold text-slate-800 mb-8">为什么我们不能直接通过比较 $P(AB)$ 和 $P(A)P(B)$ 是否相等来判断独立性？</h3>
+ <div class="flex flex-col items-center w-full">
+ <div class="option-item">A. 因为公式本身是错误的</div>
+ <div class="option-item">B. 因为抽样带来的随机误差使得等号几乎不可能严格成立</div>
+ <div class="option-item">C. 因为概率无法计算</div>
+ <div class="option-item">D. 因为只有样本量无限大时才能计算</div>
+ </div>
+ </div>
+
+ <!-- Answer 5 -->
+ <div class="section">
+ <h3 class="text-xl text-slate-400 mb-8">为什么我们不能直接通过比较 $P(AB)$ 和 $P(A)P(B)$ 是否相等来判断独立性？</h3>
+ <div class="flex flex-col items-center w-full mb-8">
+ <div class="option-item correct">
+ <span class="font-bold text-blue-700 mr-2">✓</span> 
+ B. 因为抽样带来的随机误差使得等号几乎不可能严格成立
+ </div>
+ </div>
+ <div class="text-slate-600 max-w-2xl">
+ <p><strong>解析：</strong>现实中的统计数据是基于抽样的，总是伴随着随机波动。即使两个事件本质独立，样本数据算出的频率也很难精确满足概率乘法公式，因此需要卡方检验这种容忍误差的方法。</p>
+ </div>
+ </div>
+
+ <!-- Closing -->
+ <div class="section">
+ <h2 class="text-3xl font-bold text-slate-800 mb-6">课程结束</h2>
+ <p class="text-xl text-slate-600">感谢聆听</p>
+ </div>
+
+ </div>
+
+</body>
+</html>

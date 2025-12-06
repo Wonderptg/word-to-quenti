@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>玩转角度的魔术：两角和与差 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0.25rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">玩转角度的魔术</h1>
+                <p class="text-2xl text-slate-600 mt-4">两角和与差的三角函数</p>
+                <p class="mt-8 text-xl text-cyan-600 font-semibold">"sin(105°) 到底等于多少？"</p>
+            </div>
+        </div>
+
+        <!-- 公式推导 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-8">推导 (一): 余弦的秘密</h2>
+                <p class="text-lg mb-4">一切始于“<strong class="text-blue-600">基石公式</strong>”——两角差的余弦公式。</p>
+                <div class="formula-box text-center text-xl mb-4">cos(α - β) = cosαcosβ + sinαsinβ</div>
+                <p class="text-lg mb-4">要得到 <code>cos(α + β)</code>，只需将上方公式中的 <code>β</code> 替换为 <code>-β</code> 即可。</p>
+                <div class="bg-slate-50 p-4 rounded-lg text-lg">
+                    <code>cos(α + β) = cos(α - (-β))</code><br>
+                    <code>= cosαcos(-β) + sinαsin(-β)</code><br>
+                    <p class="mt-2">根据诱导公式 <code>cos(-β) = cosβ</code> 和 <code class="text-red-500">sin(-β) = -sinβ</code>，可得：</p>
+                    <code class="text-blue-600 font-bold mt-2 block">= cosαcosβ - sinαsinβ</code>
+                </div>
+            </div>
+        </div>
+
+        <!-- 公式推导 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-8">推导 (二): 从余弦到正弦的桥梁</h2>
+                <p class="text-lg mb-4">利用重要的“桥梁”公式 <code>sinθ = cos(90° - θ)</code>，我们可以从余弦推导出正弦。</p>
+                <p class="text-lg mb-4">推导 <code>sin(α + β)</code> 的过程如下：</p>
+                <div class="bg-slate-50 p-4 rounded-lg text-lg space-y-2">
+                   <p><code>sin(α + β) = cos[90° - (α + β)]</code></p>
+                   <p>将括号内变形，以套用已知的余弦差角公式：</p>
+                   <p><code>= cos[(90° - α) - β]</code></p>
+                   <p>展开后，再次使用诱导公式：</p>
+                   <p><code>= cos(90°-α)cosβ + sin(90°-α)sinβ</code></p>
+                   <p><code class="text-blue-600 font-bold">= sinαcosβ + cosαsinβ</code></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 公式推导 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-8">推导 (三): 补全最后的拼图</h2>
+                <p class="text-lg mb-4">最后一个公式 <code>sin(α - β)</code>，可以通过替换法轻松得到。</p>
+                <p class="text-lg mb-4">在刚刚推导出的 <code>sin(α + β)</code> 公式中，将 <code>β</code> 替换为 <code>-β</code>：</p>
+                <div class="bg-slate-50 p-4 rounded-lg text-lg space-y-2">
+                    <p><code>sin(α - β) = sin(α + (-β))</code></p>
+                    <p><code>= sinαcos(-β) + cosαsin(-β)</code></p>
+                    <p>利用诱导公式化简：</p>
+                    <p><code class="text-blue-600 font-bold">= sinαcosβ - cosαsinβ</code></p>
+                </div>
+                 <p class="text-lg mt-8">至此，四个核心公式全部推导完毕！</p>
+            </div>
+        </div>
+
+        <!-- 公式总结 -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-4">四大核心公式</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-red-600">余弦公式 (cos): 同名相乘，符号相反</h3>
+                        <div class="formula-box">
+                            cos(α - β) = cosαcosβ + sinαsinβ<br>
+                            cos(α + β) = cosαcosβ - sinαsinβ
+                        </div>
+                    </div>
+                     <div>
+                        <h3 class="text-xl font-bold text-sky-600">正弦公式 (sin): 异名相乘，符号相同</h3>
+                        <div class="formula-box">
+                            sin(α + β) = sinαcosβ + cosαsinβ<br>
+                            sin(α - β) = sinαcosβ - cosαsinβ
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 应用一：公式正用 (1) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-amber-500 pb-2">应用一：公式正用——拆角求值</h2>
+                <div class="mt-6 text-lg bg-amber-50 p-6 rounded-lg">
+                    <p class="font-bold">求 sin(105°) 的值：</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 应用一：公式正用 (2) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-amber-500 pb-2">应用一：公式正用——拆角求值</h2>
+                 <div class="mt-6 text-lg bg-amber-50 p-6 rounded-lg">
+                    <p class="font-bold">求 cos(165°) 的值：</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 应用二：公式逆用 (1) -->
+        <div class="section">
+              <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2">应用二：公式逆用——看结构化简</h2>
+                <div class="mt-6 text-lg bg-emerald-50 p-6 rounded-lg">
+                    <p class="font-bold">计算: sin(50°)cos(20°) - cos(50°)sin(20°)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 应用二：公式逆用 (2) -->
+        <div class="section">
+              <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2">应用二：公式逆用——看结构化简</h2>
+                <div class="mt-6 text-lg bg-emerald-50 p-6 rounded-lg">
+                    <p class="font-bold">计算: cos(80°)cos(35°) + cos(10°)sin(35°)</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 应用三：灵活运用 -->
+        <div class="section">
+              <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2">应用三：灵活运用——凑角与整体思想</h2>
+                <div class="mt-6 text-lg bg-violet-50 p-6 rounded-lg">
+                    <p class="font-bold">已知 sin(α - 30°) = 1/3，求 cos(α + 60°) 的值。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (1/4)</h2>
+                <div class="space-y-3 text-base md:text-lg">
+                    <div class="bg-gray-50 p-3 rounded-lg"><strong>1.</strong> cos(15°) 的值是？<br/>(A) (√6+√2)/4 (B) (√6-√2)/4 (C) (√3-1)/2 (D) √2/2</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (2/4)</h2>
+                <div class="space-y-3 text-base md:text-lg">
+                    <div class="bg-gray-50 p-3 rounded-lg"><strong>2.</strong> sin(47°)cos(17°) - cos(47°)sin(17°) 的值是？<br/>(A) 1/2 (B) √2/2 (C) √3/2 (D) cos(30°)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (3/4)</h2>
+                <div class="space-y-3 text-base md:text-lg">
+                    <div class="bg-gray-50 p-3 rounded-lg"><strong>3.</strong> 下列恒等式中，正确的是？<br/>(A) cos(α-β)=cosαcosβ-sinαsinβ (B) cos(α+β)=cosαcosβ+sinαsinβ (C) sin(α-β)=sinαcosβ-cosαsinβ (D) sin(α+β)=sinαsinβ+cosαcosβ</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (4/4)</h2>
+                <div class="space-y-3 text-base md:text-lg">
+                    <div class="bg-gray-50 p-3 rounded-lg"><strong>4.</strong> 化简 cos(x+y)cos(y) + sin(x+y)sin(y) 的结果是？<br/>(A) cos(x) (B) cos(x+2y) (C) sin(x) (D) sin(x+2y)</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题解析 -->
+        <div class="section">
+              <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析</h2>
+                <div class="space-y-3 text-base">
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>1. 答案：A</strong></p>
+                        <p><strong>解析：</strong>cos(15°) = cos(45°-30°) = cos45°cos30° + sin45°sin30° = (√2/2)(√3/2) + (√2/2)(1/2) = (√6+√2)/4。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>2. 答案：A</strong></p>
+                        <p><strong>解析：</strong>结构为 sin(α-β)，等于 sin(47°-17°) = sin(30°) = 1/2。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>3. 答案：C</strong></p>
+                        <p><strong>解析：</strong>A,B选项cos公式符号反了。C选项sin公式正确。D选项是余弦公式的结构，张冠李戴了。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>4. 答案：A</strong></p>
+                        <p><strong>解析：</strong>结构为cos(X-Y)，其中X=x+y, Y=y。原式 = cos((x+y)-y) = cos(x)。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 总结 -->
+        <div class="section">
+              <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8">课堂总结：三板斧</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-lg">
+                    <div class="bg-sky-100 p-6 rounded-lg">
+                        <h3 class="font-bold text-2xl mb-2">正用</h3>
+                        <p>拆分非特殊角进行计算。</p>
+                    </div>
+                    <div class="bg-amber-100 p-6 rounded-lg">
+                         <h3 class="font-bold text-2xl mb-2">逆用</h3>
+                         <p>观察结构，合并同类项。</p>
+                    </div>
+                    <div class="bg-emerald-100 p-6 rounded-lg">
+                         <h3 class="font-bold text-2xl mb-2">活用</h3>
+                         <p>寻找角度关系，凑角或整体代换。</p>
+                    </div>
+                </div>
+                 <p class="mt-12 text-2xl text-slate-700">掌握角度魔术，玩转三角变换！</p>
+            </div>
+        </div>
+
+    </div>
+    
+</body>
+</html>
+

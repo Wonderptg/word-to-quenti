@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>向量数量积 (优化版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- 引入 KaTeX 用于渲染数学公式 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" xintegrity="sha384-n8MVd4RsNIU07LdHXMA0Y5z8peoCadkNdFDubdCdeDGEAESPABJgRXSMAgTflat0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" xintegrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmImewaVAP" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" xintegrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false}
+                ]
+            });
+        });
+    </script>
+
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 2.5rem 2rem;
+            position: relative; 
+            min-height: 550px; /* 保持一个舒适的视觉高度 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border-radius: 0.25rem;
+            font-size: 1.25rem; /* 调整公式大小 */
+            line-height: 1.8;
+            overflow-x: auto;
+        }
+        
+        .katex-display {
+            font-size: 1.4em !important; /* 增大 KaTeX 显示模式字体 */
+        }
+
+        .golden-rule {
+            background-color: #fffde7;
+            border: 2px dashed #facc15;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ca8a04;
+            border-radius: 0.5rem;
+        }
+
+        .warning-box {
+             background-color: #fff7ed;
+             border-left: 4px solid #fb923c;
+             padding: 1.5rem;
+             border-radius: 0.25rem;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            #presentation-container {
+                margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%;
+            }
+            .section {
+                height: 100vh; width: 100vw; page-break-after: always; display: flex; flex-direction: column;
+                justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none;
+            }
+            .section:last-child { page-break-after: auto; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="presentation-container">
+    
+    <!-- 1. 标题页 -->
+    <div class="section">
+        <div class="w-full max-w-4xl mx-auto text-center">
+            <h1 class="text-5xl font-bold text-slate-800 mb-4">向量数量积</h1>
+            <p class="text-3xl text-slate-600 mt-4">读懂向量的“内心戏”</p>
+            <p class="mt-12 text-xl text-cyan-700 font-semibold italic">"一个向量在多大程度上影响了另一个向量？"</p>
+        </div>
+    </div>
+    
+    <!-- 2. 引入情景 -->
+    <div class="section">
+        <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">思考：河边拉船</h2>
+        <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8">
+            <div class="w-full md:w-1/2 text-lg text-slate-700 space-y-4">
+                <p>你在河边拉一艘小船，绳子的拉力 $ \vec{F} $ 和船前进的方向 $ \vec{s} $ 之间有一个夹角 $\theta$。</p>
+                <p>你使出的力 $ \vec{F} $，是不是都用在了让船前进上？</p>
+                <p class="font-bold text-indigo-700">不！只有一部分力是“有效”的。</p>
+                <p>那么，如何衡量这个“有效”的程度呢？这就要用到我们今天的主角——<strong>数量积</strong>。</p>
+            </div>
+            <div class="w-full md:w-1/2">
+                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120" class="rounded-lg bg-slate-50 border">
+                    <!-- water -->
+                    <path d="M0 120 C40 110, 60 130, 100 120 S 160 110, 200 120 V 100 H 0 Z" fill="#a5f3fc"/>
+                    <!-- boat -->
+                    <path d="M40 90 L60 70 H 120 L 140 90 Z" fill="#facc15" stroke="#ca8a04" stroke-width="1"/>
+                    <rect x="85" y="60" width="10" height="10" fill="#eab308"/>
+                    <!-- force vector -->
+                    <line x1="90" y1="65" x2="160" y2="35" stroke="#ef4444" stroke-width="2" marker-end="url(#arrowhead)"/>
+                    <text x="162" y="35" font-family="serif" font-style="italic" fill="#ef4444">F</text>
+                    <!-- direction vector -->
+                    <line x1="90" y1="80" x2="180" y2="80" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead-blue)"/>
+                    <text x="182" y="85" font-family="serif" font-style="italic" fill="#2563eb">s</text>
+                    <!-- angle -->
+                    <path d="M110 80 A 20 20 0 0 1 104.2 62.4" fill="none" stroke="#333" stroke-width="1"/>
+                    <text x="115" y="70" fill="#333" font-size="8">θ</text>
+                    <defs>
+                        <marker id="arrowhead" markerWidth="5" markerHeight="3.5" refX="5" refY="1.75" orient="auto"><polygon points="0 0, 5 1.75, 0 3.5" fill="#ef4444"/></marker>
+                        <marker id="arrowhead-blue" markerWidth="5" markerHeight="3.5" refX="5" refY="1.75" orient="auto"><polygon points="0 0, 5 1.75, 0 3.5" fill="#2563eb"/></marker>
+                    </defs>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. 核心定义：数量积 -->
+    <div class="section">
+         <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">核心定义：数量积</h2>
+         <div class="w-full max-w-4xl mx-auto text-center">
+             <p class="text-xl text-slate-700">向量 $ \vec{a} $ 和向量 $ \vec{b} $ 的数量积 (也称点乘) 定义为：</p>
+             <div class="formula-box">$$ \vec{a} \cdot \vec{b} = |\vec{a}| |\vec{b}| \cos\theta $$</div>
+             <div class="text-xl bg-amber-100 p-4 rounded-lg font-bold text-amber-800 mt-6">
+                 注意：数量积的结果是一个<strong class="text-red-600">数值 (标量)</strong>，不是向量！
+             </div>
+         </div>
+    </div>
+    
+    <!-- 4. 反向应用：求夹角 -->
+    <div class="section">
+        <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">反向应用：求夹角</h2>
+        <div class="w-full max-w-4xl mx-auto text-center">
+            <p class="text-xl text-slate-700">将公式变形，我们就得到了求解两个向量夹角的强大工具：</p>
+            <div class="formula-box">$$ \cos\theta = \frac{\vec{a} \cdot \vec{b}}{|\vec{a}| |\vec{b}|} $$</div>
+            <p class="mt-8 text-lg text-slate-600">通过计算数量积和两个向量的模长，我们就能知道这两个向量的“相对姿态”。</p>
+        </div>
+    </div>
+    
+    <!-- 5. 几何大坑：夹角到底是谁？ -->
+    <div class="section">
+        <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">几何大坑：夹角到底是谁？</h2>
+        <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8">
+            <div class="w-full md:w-1/2 text-lg text-slate-700 space-y-4">
+                <p>要正确求解向量夹角，请牢记一个核心原则：</p>
+                <p class="p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 font-bold text-xl">看夹角，必共起点！</p>
+                <p>如果向量起点不同，必须通过平移使它们的起点重合。</p>
+                <p><strong>示例：</strong>求正方形ABCD中 $\vec{AB}$ 与 $\vec{CA}$ 的夹角。</p>
+                <p class="text-base">如图所示，$\vec{AB}$ 与 $\vec{CA}$ 起点不同。我们将 $\vec{CA}$ 平移，使起点与A重合。平移后，易知其与 $\vec{AB}$ 的夹角为 $135^\circ$。</p>
+            </div>
+            <div class="w-full md:w-1/2 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 250" class="rounded-lg bg-slate-50 border">
+                    <!-- Square ABCD -->
+                    <rect x="100" y="100" width="100" height="100" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
+                    <text x="95" y="95" font-size="12">A</text>
+                    <text x="205" y="95" font-size="12">B</text>
+                    <text x="205" y="205" font-size="12">C</text>
+                    <text x="95" y="205" font-size="12">D</text>
+                    
+                    <!-- Original Vector AB -->
+                    <line x1="100" y1="100" x2="200" y2="100" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrow-blue-2)"/>
+                    <text x="140" y="90" fill="#2563eb" font-weight="bold">$\vec{AB}$</text>
+                    
+                    <!-- Original Vector CA -->
+                    <line x1="200" y1="200" x2="100" y2="100" stroke="#ef4444" stroke-width="2.5" marker-end="url(#arrow-red-2)"/>
+                    <text x="155" y="165" fill="#ef4444" font-weight="bold">$\vec{CA}$</text>
+                    
+                    <!-- Translated Vector (from C to A, now starting at A) -->
+                    <line x1="100" y1="100" x2="0" y2="0" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="4 4" marker-end="url(#arrow-red-2)"/>
+                    <text x="20" y="30" fill="#ef4444" font-size="10">(平移后)</text>
+                    
+                    <!-- Angle Arc -->
+                    <path d="M 130 100 A 30 30 0 1 0 79 79" fill="none" stroke="#333" stroke-width="1.5" />
+                    <text x="90" y="80" font-size="12">135°</text>
+
+                    <defs>
+                        <marker id="arrow-blue-2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb" /></marker>
+                        <marker id="arrow-red-2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ef4444" /></marker>
+                    </defs>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. 几何意义 -->
+    <div class="section">
+        <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">几何意义：正负晴雨表</h2>
+        <div class="w-full max-w-4xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center text-lg">
+                <div class="bg-emerald-50 p-6 rounded-lg border border-emerald-200">
+                    <h3 class="font-bold text-emerald-700">$ \vec{a} \cdot \vec{b} > 0 $</h3>
+                    <p class="mt-2 text-slate-600">$ \Leftrightarrow $ 夹角 $\theta$ 为<strong>锐角</strong> ($0^\circ \le \theta < 90^\circ$)</p>
+                </div>
+                 <div class="bg-rose-50 p-6 rounded-lg border border-rose-200">
+                    <h3 class="font-bold text-rose-700">$ \vec{a} \cdot \vec{b} < 0 $</h3>
+                    <p class="mt-2 text-slate-600">$ \Leftrightarrow $ 夹角 $\theta$ 为<strong>钝角</strong> ($90^\circ < \theta \le 180^\circ$)</p>
+                </div>
+                 <div class="bg-sky-50 p-6 rounded-lg border border-sky-200">
+                    <h3 class="font-bold text-sky-700">$ \vec{a} \cdot \vec{b} = 0 $</h3>
+                    <p class="mt-2 text-slate-600">$ \Leftrightarrow $ 夹角 $\theta$ 为<strong>直角</strong> ($\theta = 90^\circ$)</p>
+                </div>
+            </div>
+            <div class="golden-rule">
+                黄金法则：$ \vec{a} \perp \vec{b} \iff \vec{a} \cdot \vec{b} = 0 $
+                 <p class="text-sm font-normal mt-2 text-slate-600">(当 $ \vec{a} $ 和 $ \vec{b} $ 都是非零向量时)</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 7. 运算定律 -->
+    <div class="section">
+        <h2 class="text-3xl font-bold text-slate-800 text-center mb-8">运算定律</h2>
+        <div class="w-full max-w-4xl mx-auto space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-center">
+                <!-- 交换律 -->
+                <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
+                    <h3 class="text-2xl font-semibold text-blue-800">交换律</h3>
+                    <p class="mt-4 text-lg">$$ \vec{a} \cdot \vec{b} = \vec{b} \cdot \vec{a} $$</p>
+                </div>
+                <!-- 分配律 -->
+                <div class="bg-green-50 p-6 rounded-lg border border-green-200">
+                    <h3 class="text-2xl font-semibold text-green-800">分配律</h3>
+                    <p class="mt-4 text-lg">$$ (\vec{a} + \vec{b}) \cdot \vec{c} = \vec{a} \cdot \vec{c} + \vec{b} \cdot \vec{c} $$</p>
+                </div>
+            </div>
+            <!-- 结合律警告 -->
+            <div class="warning-box p-6">
+                <p class="font-bold text-xl text-orange-800">【高能预警】不满足结合律！</p>
+                <p class="mt-4 text-lg text-red-600">$$ (\vec{a} \cdot \vec{b})\vec{c} \neq \vec{a} \cdot (\vec{b} \cdot \vec{c}) $$</p>
+                <p class="mt-4 text-slate-600 text-base"><strong>原因：</strong>左边结果与 $\vec{c}$ 共线，右边结果与 $\vec{a}$ 共线。除非 $\vec{a}$ 与 $\vec{c}$ 共线，否则两者方向不同。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 8. 核心技巧(一)：终极桥梁 -->
+    <div class="section">
+        <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">核心技巧(一)：终极桥梁</h2>
+        <div class="w-full max-w-4xl mx-auto text-center">
+            <p class="text-xl text-slate-700">一个向量与自身的数量积，等于其模长的平方。</p>
+            <p class="text-lg text-slate-500 mt-2">因为向量与自身的夹角为 $0^\circ$，且 $\cos 0^\circ = 1$。</p>
+            <div class="mt-4 formula-box">$$ \vec{a} \cdot \vec{a} = |\vec{a}||\vec{a}|\cos 0^\circ = |\vec{a}|^2 $$</div>
+            <p class="mt-8 text-2xl font-bold text-violet-700">这个公式是连接“数量积”与“模长”的关键！</p>
+        </div>
+    </div>
+
+    <!-- 9. 核心技巧(二)：向量的完全平方公式 -->
+    <div class="section">
+        <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">核心技巧(二)：向量的完全平方公式</h2>
+        <div class="w-full max-w-4xl mx-auto">
+            <p class="text-lg text-slate-700">利用上面的桥梁，我们可以推导出向量的完全平方公式：</p>
+            <div class="mt-2 formula-box text-center text-base">$$ |\vec{a} \pm \vec{b}|^2 = |\vec{a}|^2 \pm 2(\vec{a}\cdot\vec{b}) + |\vec{b}|^2 $$</div>
+            <p class="mt-6 text-lg text-slate-700">这个公式是后续进行模长计算的基础。</p>
+        </div>
+    </div>
+    
+    <!-- 10. 核心技巧(三)：解题示例 -->
+    <div class="section">
+        <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">核心技巧(三)：解题示例</h2>
+        <div class="w-full max-w-4xl mx-auto">
+            <p class="text-2xl text-center font-bold text-violet-700">“求模长，先平方”</p>
+            <p class="mt-6 text-lg text-slate-700"><strong>应用：</strong>遇到求复杂向量模长的问题，可以先计算它的平方。</p>
+            <div class="mt-4 bg-violet-50 p-4 rounded-lg border border-violet-200">
+                <p class="font-bold text-violet-800">例题：</p>
+                <p>已知 $|\vec{a}|=1, |\vec{b}|=1$, 夹角为$60^\circ$, 求 $|\vec{a}+2\vec{b}|$。</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 11. 概念拓展：投影 -->
+    <div class="section">
+        <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">概念拓展：投影</h2>
+        <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8">
+            <div class="w-full md:w-1/2">
+                <p class="text-lg text-slate-700 mb-4">投影，就是向量 $\vec{a}$ 在向量 $\vec{b}$ 方向上的“影子”。</p>
+                <p class="text-slate-600">投影的<strong>长度</strong>（一个数值）是：$|\vec{a}|\cos\theta$</p>
+                <p class="text-slate-600 mt-2">投影<strong>向量</strong>（一个向量）是：</p>
+                <div class="formula-box text-sm">$$ \text{proj}_{\vec{b}} \vec{a} = \left( \frac{\vec{a} \cdot \vec{b}}{|\vec{b}|^2} \right) \vec{b} $$</div>
+            </div>
+            <div class="w-full md:w-1/2">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" class="rounded-lg bg-slate-50 border">
+                    <!-- Vector b -->
+                    <line x1="10" y1="80" x2="190" y2="80" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead-b)"/>
+                    <text x="100" y="95" fill="#2563eb" font-style="italic">$\vec{b}$</text>
+                    <!-- Vector a -->
+                    <line x1="30" y1="80" x2="100" y2="20" stroke="#ef4444" stroke-width="2" marker-end="url(#arrowhead-a)"/>
+                    <text x="105" y="25" fill="#ef4444" font-style="italic">$\vec{a}$</text>
+                    <!-- Projection -->
+                    <line x1="30" y1="80" x2="100" y2="80" stroke="#16a34a" stroke-width="3" stroke-dasharray="4 2" marker-end="url(#arrowhead-proj)"/>
+                    <text x="55" y="75" fill="#16a34a" font-weight="bold">投影</text>
+                    <!-- Dashed line -->
+                    <line x1="100" y1="20" x2="100" y2="80" stroke="#9ca3af" stroke-width="1" stroke-dasharray="2 2"/>
+                    <rect x="95" y="75" width="5" height="5" fill="none" stroke="#9ca3af" stroke-width="1"/>
+                    <defs>
+                        <marker id="arrowhead-a" markerWidth="5" markerHeight="3.5" refX="5" refY="1.75" orient="auto"><polygon points="0 0, 5 1.75, 0 3.5" fill="#ef4444"/></marker>
+                        <marker id="arrowhead-b" markerWidth="5" markerHeight="3.5" refX="5" refY="1.75" orient="auto"><polygon points="0 0, 5 1.75, 0 3.5" fill="#2563eb"/></marker>
+                        <marker id="arrowhead-proj" markerWidth="5" markerHeight="3.5" refX="5" refY="1.75" orient="auto"><polygon points="0 0, 5 1.75, 0 3.5" fill="#16a34a"/></marker>
+                    </defs>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- 12. 随堂练习 (一) -->
+    <div class="section">
+        <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (一)</h2>
+        <div class="w-full max-w-4xl mx-auto space-y-4 text-base md:text-lg">
+            <div class="bg-gray-50 p-4 rounded-lg border">
+                <strong>1.</strong> 关于向量数量积，说法正确的是？
+                <ul class="list-none pl-5 mt-2 space-y-1 text-gray-700">
+                    <li>(A) 两个向量的数量积是一个向量。</li>
+                    <li>(B) 两个向量的数量积是一个标量（一个数）。</li>
+                    <li>(C) 向量的数量积满足结合律。</li>
+                    <li>(D) 如果 $\vec{a} \cdot \vec{b} = 0$，那么 $\vec{a}$ 或 $\vec{b}$ 中必有一个是零向量。</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 13. 练习题解析 (一) -->
+    <div class="section">
+         <div class="w-full max-w-4xl mx-auto">
+             <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析 (一)</h2>
+             <div class="space-y-4 text-base">
+                <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
+                    <p><strong>1. 答案：B</strong></p>
+                    <p class="mt-2 pt-2 border-t border-emerald-200"><strong>解析：</strong>根据定义，数量积是一个标量。不满足结合律。当a,b非零时，a·b=0也可能因为a⊥b。</p>
+                </div>
+             </div>
+         </div>
+    </div>
+
+    <!-- 14. 随堂练习 (二) -->
+    <div class="section">
+        <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (二)</h2>
+        <div class="w-full max-w-4xl mx-auto space-y-4 text-base md:text-lg">
+            <div class="bg-gray-50 p-4 rounded-lg border">
+                <strong>2.</strong> 对非零向量 $\vec{a},\vec{b}$，“$\vec{a}\perp\vec{b}$”是“$\vec{a}\cdot\vec{b}=0$”的什么条件？
+                <ul class="list-none pl-5 mt-2 space-y-1 text-gray-700">
+                    <li>(A) 充分不必要条件</li>
+                    <li>(B) 必要不充分条件</li>
+                    <li>(C) 充要条件</li>
+                    <li>(D) 既不充分也不必要条件</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 15. 练习题解析 (二) -->
+    <div class="section">
+         <div class="w-full max-w-4xl mx-auto">
+             <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析 (二)</h2>
+             <div class="space-y-4 text-base">
+                <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
+                    <p><strong>2. 答案：C</strong></p>
+                    <p class="mt-2 pt-2 border-t border-emerald-200"><strong>解析：</strong>对于非零向量，垂直与数量积为零是等价的，互为充要条件。</p>
+                </div>
+             </div>
+         </div>
+    </div>
+
+    <!-- 16. 随堂练习 (三) -->
+    <div class="section">
+        <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (三)</h2>
+        <div class="w-full max-w-4xl mx-auto space-y-4 text-base md:text-lg">
+            <div class="bg-gray-50 p-4 rounded-lg border">
+                <strong>3.</strong> 已知$|\vec{a}|=8, |\vec{b}|=3$, 夹角为$120^\circ$, 则$\vec{a}\cdot\vec{b}$的值是？
+                 <ul class="list-none pl-5 mt-2 space-y-1 text-gray-700">
+                    <li>(A) 24</li>
+                    <li>(B) 12</li>
+                    <li>(C) -12</li>
+                    <li>(D) -24</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 17. 练习题解析 (三) -->
+    <div class="section">
+         <div class="w-full max-w-4xl mx-auto">
+             <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析 (三)</h2>
+             <div class="space-y-4 text-base">
+                <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
+                    <p><strong>3. 答案：C</strong></p>
+                    <p class="mt-2 pt-2 border-t border-emerald-200"><strong>解析：</strong>$\vec{a}\cdot\vec{b} = |\vec{a}||\vec{b}|\cos\theta = 8 \cdot 3 \cdot \cos(120^\circ) = 24 \cdot (-0.5) = -12$。</p>
+                </div>
+             </div>
+         </div>
+    </div>
+
+    <!-- 18. 随堂练习 (四) -->
+    <div class="section">
+        <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (四)</h2>
+        <div class="w-full max-w-4xl mx-auto space-y-4 text-base md:text-lg">
+            <div class="bg-gray-50 p-4 rounded-lg border">
+                <strong>4.</strong> 在边长为1的正方形ABCD中, 向量 $\vec{AB}$ 与 $\vec{BD}$ 的夹角是？
+                 <ul class="list-none pl-5 mt-2 space-y-1 text-gray-700">
+                    <li>(A) 45°</li>
+                    <li>(B) 90°</li>
+                    <li>(C) 135°</li>
+                    <li>(D) 180°</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 19. 练习题解析 (四) -->
+    <div class="section">
+         <div class="w-full max-w-4xl mx-auto">
+             <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析 (四)</h2>
+             <div class="space-y-4 text-base">
+                <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
+                    <p><strong>4. 答案：C</strong></p>
+                    <p class="mt-2 pt-2 border-t border-emerald-200"><strong>解析：</strong>求夹角必须共起点。将$\vec{AB}$平移至与$\vec{BD}$共起点B，变为向量$\vec{FB}$(F在AB反向延长线上)。$\angle FBD = 180^\circ - \angle ABD = 180^\circ - 45^\circ = 135^\circ$。</p>
+                </div>
+             </div>
+         </div>
+    </div>
+    
+    <!-- 20. 总结 -->
+     <div class="section bg-indigo-50">
+        <h2 class="text-3xl font-bold text-indigo-800 text-center mb-8">本章总结</h2>
+        <div class="w-full max-w-4xl mx-auto space-y-4 text-lg">
+            <div class="bg-white p-4 rounded-lg shadow"><strong>核心公式：</strong>$ \vec{a} \cdot \vec{b} = |\vec{a}| |\vec{b}| \cos\theta $，结果是<strong>一个数</strong>。</div>
+            <div class="bg-white p-4 rounded-lg shadow"><strong>核心思想：</strong> 数量积是解决<strong>角度</strong>、<strong>垂直</strong>、<strong>长度</strong>三大问题的万能钥匙。</div>
+            <div class="bg-white p-4 rounded-lg shadow text-amber-700 font-bold"><strong>黄金法则：</strong>$ \vec{a} \perp \vec{b} \iff \vec{a} \cdot \vec{b} = 0 $</div>
+            <div class="bg-white p-4 rounded-lg shadow text-violet-700 font-bold"><strong>解题大招：</strong> <strong>求模长，先平方！</strong></div>
+            <div class="bg-white p-4 rounded-lg shadow"><strong>一个新概念：</strong> <strong>投影</strong>，就是向量在一个方向上的“影子”。</div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
+

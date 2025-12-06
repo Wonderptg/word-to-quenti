@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>直线方程的点斜式与两点式 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']]
+            }
+        };
+    </script>
+    <!-- MathJax Library -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0.25rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.25rem;
+            line-height: 1.8;
+            overflow-x: auto;
+            text-align: center;
+        }
+
+        /* 几何草图样式 (已移除，但保留了占位CSS以防万一) */
+        #geometryCanvas {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background-color: #ffffff;
+            touch-action: none; 
+            margin: 1rem auto;
+            display: none; /* 隐藏 Canvas */
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">直线方程</h1>
+                <p class="text-2xl text-slate-600 mt-4">点斜式与两点式</p>
+                <p class="mt-8 text-xl text-cyan-600 font-semibold">"鸟枪换炮，告别待定系数法！"</p>
+            </div>
+        </div>
+
+        <!-- 核心一：点斜式 -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-4">核心(一)：点斜式 (Point-Slope Form)</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <p class="text-lg text-center">确定一条直线需要什么条件？ → <strong>一个点 + 一个方向(斜率)</strong></p>
+                <p class="text-lg mt-4">设直线经过定点 \(P_1(x_1, y_1)\)，斜率为 \(k\)。对于直线上任意一点 \(P(x, y)\)，根据斜率定义：</p>
+                 <p class="text-center text-lg"> \(k = \frac{y - y_1}{x - x_1}\) </p>
+                 <p class="text-lg mt-2">变形得到：</p>
+                <div class="formula-box text-2xl my-4">
+                    \(y - y_1 = k(x - x_1)\)
+                </div>
+                 <p class="mt-4 text-center text-xl font-bold text-red-600">这是高中求直线方程最重要的方法！</p>
+                 <p class="text-center mt-2 text-base">一般式：\(Ax + By + C = 0\)</p>
+            </div>
+        </div>
+        
+        <!-- 点斜式应用1 (仅保留题目) -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-2 mb-4">点斜式应用(一)：斜率藏起来了 (垂直)</h2>
+            <div class="w-full max-w-4xl mx-auto text-base">
+                 <div class="bg-sky-50 p-4 rounded-lg">
+                     <p class="font-bold text-lg">练习1：</p>
+                     <p>求经过点 \(A(3, 1)\)，且与直线 \(L_2: x + 2y - 4 = 0\) <strong>垂直</strong>的直线 \(L_1\) 的方程。</p>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 点斜式应用2 (仅保留题目) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2">点斜式应用(二)：点和斜率都藏起来了</h2>
+                 <div class="text-base bg-emerald-50 p-4 rounded-lg">
+                     <p class="font-bold text-lg">练习2：</p>
+                     <p>求线段 \(A(1, 0)\) 和 \(B(3, 6)\) 的<strong>垂直平分线</strong>的方程。</p>
+                 </div>
+             </div>
+        </div>
+
+        <!-- 核心二：两点式 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2">核心(二)：两点式 (Two-Point Form)</h2>
+                 <p class="mt-4 text-center text-lg">如果题目只给了两个点 \(P_1(x_1, y_1)\) 和 \(P_2(x_2, y_2)\) 怎么办？</p>
+                 <div class="mt-4 text-xl text-center bg-violet-50 p-4 rounded-lg font-bold text-violet-800">
+                     送分题！先算斜率，再用点斜式！
+                 </div>
+                 <ol class="list-decimal list-inside mt-4 text-lg space-y-2">
+                     <li><strong>计算斜率：</strong> \(k = \frac{y_2 - y_1}{x_2 - x_1}\)</li>
+                     <li><strong>套用点斜式：</strong> \(y - y_1 = k(x - x_1)\)</li>
+                 </ol>
+                 <p class="text-center text-sm mt-4">(两点式公式 \(y - y_1 = \frac{y_2 - y_1}{x_2 - x_1} (x - x_1)\) 本质就是这两步的合并)</p>
+             </div>
+        </div>
+
+        <!-- 终极Boss：综合挑战 (纯文字，已移除几何草图) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-red-600 pb-2 mb-4">终极Boss：综合挑战</h2>
+                <div class="space-y-3 text-lg bg-red-50 p-4 rounded-lg">
+                    <p class="font-bold text-xl text-red-700">题目：</p>
+                    <p>在 \(\triangle ABC\) 中，顶点 \(A\) 的坐标是 \((1, 6)\)。</p>
+                    <p>\(AC\) 边上的**高** \(BD\) 所在的直线方程是 \(x - y = 0\)。</p>
+                    <p>\(AB\) 边上的**中线** \(CM\) 所在的直线方程是 \(y = 8\)。</p>
+                    <p><strong>求：</strong> \(BC\) 边所在的直线方程。</p>
+                </div>
+                
+                <!-- 几何草图分析部分已移除 -->
+            </div>
+        </div>
+        
+        <!-- 随堂练习 1/4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-12">随堂练习 (1/4)</h2>
+                <div class="text-lg md:text-xl bg-gray-50 p-6 rounded-lg shadow-lg min-h-[150px] flex flex-col justify-center">
+                    <p class="text-2xl font-bold mb-4 text-slate-700">1. 基础概念题</p>
+                    <p>“点斜式”方程 \(y - y_1 = k(x - x_1)\) 是我们求直线的“杀手锏”。请问它最适合在哪种情况下使用？</p>
+                    <div class="grid grid-cols-2 gap-4 mt-6 text-base md:text-lg">
+                        <div class="p-2 border rounded-md"><strong>(A)</strong> 已知直线经过两个点</div>
+                        <div class="p-2 border rounded-md"><strong>(B)</strong> 已知直线的斜率和一个截距</div>
+                        <div class="p-2 border rounded-md"><strong>(C)</strong> 已知直线经过的一个点和它的斜率</div>
+                        <div class="p-2 border rounded-md"><strong>(D)</strong> 只知道直线的斜率</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 2/4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-12">随堂练习 (2/4)</h2>
+                <div class="text-lg md:text-xl bg-gray-50 p-6 rounded-lg shadow-lg min-h-[150px] flex flex-col justify-center">
+                    <p class="text-2xl font-bold mb-4 text-slate-700">2. 代入计算题</p>
+                    <p>一条直线经过点 \(P(2, -1)\)，并且它的斜率 \(k=3\)，那么这条直线的方程是？</p>
+                    <div class="grid grid-cols-2 gap-4 mt-6 text-base md:text-lg">
+                        <div class="p-2 border rounded-md"><strong>(A)</strong> \(3x - y - 7 = 0\)</div>
+                        <div class="p-2 border rounded-md"><strong>(B)</strong> \(3x - y - 5 = 0\)</div>
+                        <div class="p-2 border rounded-md"><strong>(C)</strong> \(x - 3y - 5 = 0\)</div>
+                        <div class="p-2 border rounded-md"><strong>(D)</strong> \(3x + y - 5 = 0\)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 3/4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-12">随堂练习 (3/4)</h2>
+                <div class="text-lg md:text-xl bg-gray-50 p-6 rounded-lg shadow-lg min-h-[150px] flex flex-col justify-center">
+                    <p class="text-2xl font-bold mb-4 text-slate-700">3. 几何关系题</p>
+                    <p>求线段 \(AB\) 的“垂直平分线”方程时，我们把它拆解成了“垂直”和“平分”两步。这两步分别是为了帮我们找到什么？</p>
+                    <div class="grid grid-cols-2 gap-4 mt-6 text-base md:text-lg">
+                        <div class="p-2 border rounded-md"><strong>(A)</strong> 两个点</div>
+                        <div class="p-2 border rounded-md"><strong>(B)</strong> 两个斜率</div>
+                        <div class="p-2 border rounded-md"><strong>(C)</strong> 斜率和中点</div>
+                        <div class="p-2 border rounded-md"><strong>(D)</strong> 截距和中点</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 随堂练习 4/4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-12">随堂练习 (4/4)</h2>
+                <div class="text-lg md:text-xl bg-gray-50 p-6 rounded-lg shadow-lg min-h-[150px] flex flex-col justify-center">
+                    <p class="text-2xl font-bold mb-4 text-slate-700">4. 两点式思路题</p>
+                    <p>如果一条直线经过 \(A(1,4)\) 和 \(B(3,10)\) 两点，我们用“两点式”的思路求方程，第一步应该是先计算什么？</p>
+                    <div class="grid grid-cols-2 gap-4 mt-6 text-base md:text-lg">
+                        <div class="p-2 border rounded-md"><strong>(A)</strong> 它的 y 截距</div>
+                        <div class="p-2 border rounded-md"><strong>(B)</strong> 它的 x 截距</div>
+                        <div class="p-2 border rounded-md"><strong>(C)</strong> 它的斜率 \(k\)</div>
+                        <div class="p-2 border rounded-md"><strong>(D)</strong> A 点和 B 点的中点</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题解析 (保持不变，供用户参考) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析</h2>
+                 <div class="space-y-3 text-base">
+                     <div class="bg-emerald-50 p-3 rounded-lg">
+                         <p><strong>1. 答案：C</strong></p>
+                         <p><strong>解析：</strong>点斜式顾名思义，就是需要知道一个“点” \((x_1, y_1)\) 和一个“斜率” \(k\)。</p>
+                     </div>
+                     <div class="bg-emerald-50 p-3 rounded-lg">
+                         <p><strong>2. 答案：A</strong></p>
+                         <p><strong>解析：</strong>代入点斜式：\(y - (-1) = 3(x - 2) \implies y + 1 = 3x - 6 \implies 3x - y - 7 = 0\)。</p>
+                     </div>
+                     <div class="bg-emerald-50 p-3 rounded-lg">
+                         <p><strong>3. 答案：C</strong></p>
+                         <p><strong>解析：</strong>“垂直”用于确定斜率关系 (\(k_1 \cdot k_2 = -1\))。“平分”用于确定直线经过的中点坐标。</p>
+                     </div>
+                     <div class="bg-emerald-50 p-3 rounded-lg">
+                         <p><strong>4. 答案：C</strong></p>
+                         <p><strong>解析：</strong>两点式本质是点斜式，已知两点后，首要任务是计算出斜率 \(k = \frac{y_2-y_1}{x_2-x_1}\)。</p>
+                     </div>
+                 </div>
+             </div>
+        </div>
+
+        <!-- 总结页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-4 border-b-4 border-cyan-500 pb-2">课程总结：黄金搭档</h2>
+                <div class="mt-8 text-left space-y-4 text-xl">
+                    <p class="font-bold text-cyan-700">1. 点斜式 (最强武器):</p>
+                    <p class="formula-box text-xl">\(y - y_1 = k(x - x_1)\)</p>
+                    <p class="ml-4 text-lg">💡 <strong>用途：</strong> 知道**一个点**和**一个斜率**时使用。</p>
+
+                    <p class="font-bold text-cyan-700 mt-6">2. 两点式 (送分题):</p>
+                    <p class="ml-4 text-lg">💡 <strong>本质：</strong> 先计算斜率 \(k\)，再使用点斜式！</p>
+                    
+                    <p class="mt-8 text-2xl font-extrabold text-red-600">✨ 最终目标：</p>
+                    <p class="text-xl">所有求直线方程的题，不管条件藏得多深，你最终要找的，就是那对**黄金搭档：**</p>
+                    <p class="text-3xl font-extrabold text-amber-500">一个点，和一个斜率！</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 几何草图脚本已移除 -->
+</body>
+</html>

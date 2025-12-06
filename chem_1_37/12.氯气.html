@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>重要的非金属单质：氯气</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">重要的非金属单质：氯气</h1>
+                <p class="text-2xl text-slate-600 mt-2">—— Cl₂ 的性质与应用</p>
+            </div>
+        </div>
+
+        <!-- 原子结构与存在 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>氯元素的原子结构与存在</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg items-center">
+                    <div class="flex justify-center items-center p-4">
+                        <!-- 氯原子结构示意图 -->
+                        <svg width="220" height="220" viewBox="0 0 200 200">
+                            <defs>
+                                <radialGradient id="nucleusGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                                    <stop offset="0%" style="stop-color:#94a3b8;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#475569;stop-opacity:1" />
+                                </radialGradient>
+                            </defs>
+                            <!-- 电子轨道 -->
+                            <circle cx="100" cy="100" r="35" fill="none" stroke="#e2e8f0" stroke-width="2"/>
+                            <circle cx="100" cy="100" r="65" fill="none" stroke="#e2e8f0" stroke-width="2"/>
+                            <circle cx="100" cy="100" r="95" fill="none" stroke="#e2e8f0" stroke-width="2"/>
+                            <!-- 原子核 -->
+                            <circle cx="100" cy="100" r="18" fill="url(#nucleusGradient)"/>
+                            <text x="100" y="100" font-family="sans-serif" font-size="12" fill="white" text-anchor="middle" dy=".3em">Cl</text>
+                             <!-- 电子 -->
+                            <g fill="#38bdf8">
+                                <circle cx="100" cy="65" r="5" />
+                                <circle cx="100" cy="135" r="5" />
+                                <circle cx="100" cy="35" r="5" />
+                                <circle cx="100" cy="165" r="5" />
+                                <circle cx="35" cy="100" r="5" />
+                                <circle cx="165" cy="100" r="5" />
+                                <circle cx="53.1" cy="53.1" r="5" />
+                                <circle cx="146.9" cy="146.9" r="5" />
+                                <circle cx="53.1" cy="146.9" r="5" />
+                                <circle cx="146.9" cy="53.1" r="5" />
+                            </g>
+                            <g fill="#f43f5e">
+                                <circle cx="100" cy="5" r="5" />
+                                <circle cx="195" cy="100" r="5" />
+                                <circle cx="5" cy="100" r="5" />
+                                <circle cx="167" cy="167" r="5" />
+                                <circle cx="33" cy="33" r="5" />
+                                <circle cx="33" cy="167" r="5" />
+                                <circle cx="167" cy="33" r="5" />
+                            </g>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="bg-gray-50 border border-gray-200 p-6 rounded-lg text-center">
+                            <p class="text-lg">原子核内有17个质子</p>
+                            <p class="mt-4">最外层有<strong class="text-red-600">7</strong>个电子，反应中易<strong class="text-red-600">得到1个</strong>电子，形成稳定的Cl⁻离子。</p>
+                        </div>
+                        <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg mt-4">
+                            <h3 class="font-bold text-blue-800 text-xl">自然界中的存在</h3>
+                            <p class="mt-3">氯是重要的<strong class="text-blue-600">成盐元素</strong>，仅以<strong class="text-blue-600">化合态</strong>存在于海水、盐湖和岩矿中。</p>
+                            <p class="mt-2 text-sm text-slate-500">海水中离子含量：Cl⁻ > Na⁺ > Mg²⁺ > SO₄²⁻ > Ca²⁺</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 物理性质 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>氯气的物理性质</h2>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                     <ul class="text-xl space-y-4">
+                        <li><strong>颜色状态：</strong><strong class="text-yellow-600">黄绿色</strong>气体，有<strong class="text-red-500">刺激性</strong>气味，<strong class="text-red-500">有毒</strong>。</li>
+                        <li><strong>密度：</strong>比空气<strong class="text-teal-600">大</strong> (M=71 > 29)。</li>
+                        <li><strong>溶解性：</strong><strong class="text-teal-600">可溶</strong>于水 (1体积水约溶2体积氯气)。</li>
+                        <li><strong>液化：</strong>沸点较高，在加压下容易液化成<strong class="text-yellow-600">黄绿色</strong>的液氯 (纯净物)。</li>
+                     </ul>
+                     <div class="flex justify-center items-center">
+                        <!-- 储气罐示意图 -->
+                        <svg class="w-48 h-48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16 6V5.2C16 4.0799 16 3.51984 15.782 3.09202C15.5903 2.71569 15.2843 2.40973 14.908 2.21799C14.4802 2 13.9201 2 12.7999 2H11.2C10.0799 2 9.51984 2 9.09202 2.21799C8.71569 2.40973 8.40973 2.71569 8.21799 3.09202C8 3.51984 8 4.0799 8 5.2V6" stroke="#475569" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M18.5 9.5L19 6H5L5.5 9.5" stroke="#475569" stroke-width="1.5" stroke-linecap="round"/>
+                            <rect x="5" y="6" width="14" height="16" rx="2" fill="#fde047" stroke="#475569" stroke-width="1.5"/>
+                            <path d="M9 11H15" stroke="#a16207" stroke-width="1.5" stroke-linecap="round"/>
+                            <text x="12" y="17.5" font-family="monospace" font-size="5" fill="#a16207" text-anchor="middle" font-weight="bold">Cl₂</text>
+                            <path d="M12.5 2 L 14 4 L 12.5 6" stroke="#475569" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" transform="rotate(90 12.5 4)"/>
+                        </svg>
+                     </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 与氢气反应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>与氢气的反应</h2>
+                 <div class="mt-8 bg-orange-50 border border-orange-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-orange-800 text-xl">安静的燃烧：</h3>
+                    <p class="mt-3 text-lg">纯净的氢气可以在氯气中安静燃烧，发出独特的<strong class="text-orange-600">苍白色火焰</strong>，瓶口有白雾(盐酸小液滴)生成。</p>
+                    <p class="mono text-center bg-orange-100 p-3 rounded mt-3">H₂ + Cl₂ --(点燃)→ 2HCl</p>
+                 </div>
+                 <div class="mt-6 bg-red-50 border border-red-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-red-800 text-xl">危险的爆炸：</h3>
+                    <p class="mt-3 text-lg">H₂和Cl₂混合后，在<strong class="text-red-600">点燃</strong>或<strong class="text-red-600">强光照射</strong>下会发生爆炸。实验时需先点燃H₂再伸入Cl₂中。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 与金属反应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>与金属反应：体现强氧化性</h2>
+                 <p class="mt-8 text-xl text-slate-700">氯气能与大多数金属反应，将其氧化成<strong class="text-indigo-600">高价态</strong>的金属氯化物。</p>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <p class="mono">2Na + Cl₂ → 2NaCl</p>
+                        <p class="mt-2 text-slate-600">现象：剧烈燃烧，产生大量<strong class="text-gray-800">白烟</strong></p>
+                    </div>
+                    <div class="bg-amber-50 p-4 rounded-lg">
+                        <p class="mono">2Fe + 3Cl₂ → 2FeCl₃</p>
+                        <p class="mt-2 text-slate-600">现象：剧烈燃烧，产生<strong class="text-amber-800">棕褐色</strong>的烟</p>
+                    </div>
+                    <div class="bg-yellow-50 p-4 rounded-lg">
+                        <p class="mono">Cu + Cl₂ → CuCl₂</p>
+                        <p class="mt-2 text-slate-600">现象：剧烈燃烧，产生<strong class="text-yellow-800">棕黄色</strong>的烟</p>
+                    </div>
+                 </div>
+                 <p class="mt-6 text-lg text-center text-indigo-800 bg-indigo-50 p-4 rounded-lg">对比：Fe、Cu与S反应只生成低价的FeS和Cu₂S，说明氧化性：<strong class="text-indigo-600">Cl₂ > S</strong></p>
+            </div>
+        </div>
+
+        <!-- 与水反应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>与水的反应：新制氯水的诞生</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <p class="text-xl text-slate-700">溶于水中的<strong class="text-red-600">部分</strong>氯气会与水发生<strong class="text-red-600">可逆反应</strong>，生成盐酸和次氯酸。</p>
+                        <div class="mt-4 bg-cyan-50 border border-cyan-200 p-6 rounded-lg text-lg">
+                            <p class="font-bold text-cyan-800">化学方程式 (重要)：</p>
+                            <p class="mono text-center bg-cyan-100 p-3 rounded mt-2">Cl₂ + H₂O ⇌ HCl + HClO</p>
+                            <p class="font-bold text-cyan-800 mt-4">离子方程式 (重要)：</p>
+                            <p class="mono text-center bg-cyan-100 p-3 rounded mt-2">Cl₂ + H₂O ⇌ H⁺ + Cl⁻ + HClO</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-center items-center">
+                        <!-- 反应示意图 -->
+                        <svg class="w-full max-w-sm" viewBox="0 0 300 150">
+                            <!-- Cl2 molecule -->
+                            <g>
+                                <circle cx="45" cy="75" r="15" fill="#fde047" stroke="#ca8a04" stroke-width="1.5"/>
+                                <circle cx="75" cy="75" r="15" fill="#fde047" stroke="#ca8a04" stroke-width="1.5"/>
+                                <text x="60" y="110" text-anchor="middle" font-size="14" font-family="monospace">Cl₂</text>
+                            </g>
+                            <!-- H2O molecule -->
+                            <g>
+                                <circle cx="125" cy="75" r="18" fill="#f87171" stroke="#b91c1c" stroke-width="1.5"/>
+                                <circle cx="110" cy="55" r="9" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>
+                                <circle cx="140" cy="55" r="9" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>
+                                 <text x="125" y="110" text-anchor="middle" font-size="14" font-family="monospace">H₂O</text>
+                            </g>
+                            <!-- Plus sign -->
+                            <text x="100" y="80" text-anchor="middle" font-size="20">+</text>
+                            <!-- Reversible arrow -->
+                            <path d="M 160 70 L 190 70 L 185 65 M 190 70 L 185 75" stroke="#475569" stroke-width="1.5" fill="none"/>
+                            <path d="M 190 80 L 160 80 L 165 75 M 160 80 L 165 85" stroke="#475569" stroke-width="1.5" fill="none"/>
+                            <!-- Products -->
+                            <g>
+                                <rect x="205" y="50" width="90" height="50" rx="8" fill="#ecfeff" stroke="#06b6d4" stroke-width="1"/>
+                                <text x="250" y="70" text-anchor="middle" font-size="14" font-family="monospace">HCl + HClO</text>
+                                <text x="250" y="90" text-anchor="middle" font-size="12" fill="#64748b">(氯水)</text>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                <p class="mt-3 text-sm text-slate-500 text-center">*注：HClO是弱酸，在离子方程式中不拆开。</p>
+            </div>
+        </div>
+
+        <!-- 新制氯水成分 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-violet-500 rounded"></span>新制氯水的成分：三分子四离子</h2>
+                 <p class="mt-8 text-xl text-slate-700">新制氯水是混合物，成分复杂，决定了其多重性质。</p>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="font-bold text-violet-800 text-xl mb-3">三种分子</h3>
+                        <ul class="list-disc list-inside space-y-2 text-lg">
+                            <li>H₂O (最多)</li>
+                            <li>Cl₂</li>
+                            <li>HClO (次氯酸)</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-violet-800 text-xl mb-3">四种离子</h3>
+                         <ul class="list-disc list-inside space-y-2 text-lg">
+                            <li>H⁺ (来自HCl和HClO)</li>
+                            <li>Cl⁻ (来自HCl)</li>
+                            <li>ClO⁻ (来自HClO)</li>
+                            <li>OH⁻ (来自H₂O)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 次氯酸的性质 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-pink-500 rounded"></span>新制氯水的核心：次氯酸(HClO)</h2>
+                <div class="mt-8 space-y-4 text-lg">
+                    <p><strong>① 强氧化性 (漂白性)：</strong>将紫色石蕊溶液滴入新制氯水中，现象为<strong class="text-pink-600">先变红</strong>(酸性)，<strong class="text-pink-600">后褪色</strong>(HClO漂白)。</p>
+                    <p><strong>② 弱酸性：</strong>酸性比碳酸还弱。</p>
+                    <p><strong>③ 不稳定性：</strong>见光或受热易分解，是氯水需要避光、冷暗处、现用现配的原因。</p>
+                    <p class="mono text-center bg-pink-50 p-3 rounded">2HClO --(光照/加热)→ 2HCl + O₂↑</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 漂白原理探究 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-fuchsia-500 rounded"></span>漂白原理探究</h2>
+                 <p class="mt-8 text-xl text-slate-700">谁才是真正的“漂白能手”？</p>
+                 <div class="mt-8 bg-fuchsia-50 border border-fuchsia-200 p-6 rounded-lg text-lg">
+                    <p>实验对比发现：干燥的氯气不能使干燥的有色布条褪色，而湿润的有色布条可以被氯气褪色。</p>
+                    <p class="mt-4 font-bold text-fuchsia-800 text-2xl text-center">结论：真正具有漂白性的是<strong class="text-red-600">次氯酸(HClO)</strong>，而不是氯气(Cl₂)。</p>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 久置氯水 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>久置氯水：英雄迟暮</h2>
+                <p class="mt-8 text-xl text-slate-700">新制氯水长时间放置后，次氯酸会完全分解，最终变为<strong class="text-gray-600">稀盐酸</strong>。</p>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-cyan-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-cyan-800 text-center">新制氯水</h3>
+                        <ul class="mt-3 list-disc list-inside">
+                           <li>有酸性</li>
+                           <li>有漂白性</li>
+                           <li>有强氧化性</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-100 p-6 rounded-lg">
+                        <h3 class="font-bold text-gray-800 text-center">久置氯水</h3>
+                        <ul class="mt-3 list-disc list-inside">
+                           <li><strong class="text-red-600">仅有酸性</strong> (且酸性更强)</li>
+                           <li class="line-through text-slate-400">无漂白性</li>
+                           <li class="line-through text-slate-400">无强氧化性</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 与碱反应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-emerald-500 rounded"></span>与碱的反应：制备漂白剂</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                     <div class="space-y-6 text-lg">
+                        <div class="bg-emerald-50 border border-emerald-200 p-6 rounded-lg">
+                            <h3 class="font-bold text-emerald-800">与NaOH反应 (制漂白液/84消毒液)</h3>
+                            <p class="mt-2 text-slate-600">用于实验室尾气吸收。Cl₂发生歧化反应。</p>
+                            <p class="mono text-center bg-emerald-100 p-3 rounded mt-2">Cl₂ + 2NaOH = NaCl + NaClO + H₂O</p>
+                        </div>
+                         <div class="bg-emerald-50 border border-emerald-200 p-6 rounded-lg">
+                            <h3 class="font-bold text-emerald-800">与Ca(OH)₂反应 (制漂白粉)</h3>
+                            <p class="mt-2 text-slate-600">工业上用石灰乳制备漂白粉(混合物)。</p>
+                            <p class="mono text-center bg-emerald-100 p-3 rounded mt-2">2Cl₂ + 2Ca(OH)₂ = CaCl₂ + Ca(ClO)₂ + 2H₂O</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-center items-center">
+                        <!-- 制备消毒液示意图 -->
+                        <svg class="w-full max-w-sm" viewBox="0 0 300 200">
+                            <!-- Beaker with NaOH solution -->
+                            <path d="M 50 50 L 50 150 L 150 150 L 150 50" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="2"/>
+                            <path d="M 50 50 L 45 40 L 155 40 L 150 50" stroke="#0ea5e9" stroke-width="2" fill="none"/>
+                            <rect x="52" y="100" width="96" height="48" fill="#bae6fd"/>
+                            <text x="100" y="130" text-anchor="middle" font-size="14" font-family="monospace" fill="#0c4a6e">NaOH(aq)</text>
+
+                            <!-- Tube with Cl2 bubbles -->
+                            <path d="M 70 40 L 70 110" stroke="#64748b" stroke-width="2" fill="none"/>
+                            <circle cx="70" cy="120" r="5" fill="#fde047" stroke="#ca8a04"/>
+                            <circle cx="80" cy="130" r="4" fill="#fde047" stroke="#ca8a04"/>
+                            <circle cx="65" cy="135" r="3" fill="#fde047" stroke="#ca8a04"/>
+                            <text x="70" y="30" text-anchor="middle" font-size="14" font-family="monospace" fill="#ca8a04">Cl₂</text>
+
+                            <!-- Arrow -->
+                            <path d="M 170 100 L 200 100 L 195 95 M 200 100 L 195 105" stroke="#475569" stroke-width="2" fill="none"/>
+
+                            <!-- 84 Bottle -->
+                            <g transform="translate(220, 60)">
+                                <rect x="0" y="10" width="60" height="80" rx="5" fill="#f8fafc" stroke="#64748b" stroke-width="2"/>
+                                <rect x="15" y="0" width="30" height="10" rx="2" fill="#94a3b8" stroke="#64748b" stroke-width="2"/>
+                                <rect x="5" y="20" width="50" height="30" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="1.5" rx="3"/>
+                                <text x="30" y="40" text-anchor="middle" font-size="16" font-family="monospace" font-weight="bold" fill="#0369a1">84</text>
+                                <text x="30" y="65" text-anchor="middle" font-size="8" font-family="sans-serif" fill="#475569">消毒液</text>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 漂白粉原理 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-yellow-500 rounded"></span>漂白粉的起效与失效</h2>
+                 <div class="mt-8 bg-yellow-50 border border-yellow-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-yellow-800 text-xl">起效原理 (较强酸制较弱酸):</h3>
+                    <p class="mt-3 text-lg">漂白粉的有效成分Ca(ClO)₂与空气中的CO₂和水反应，生成具有漂白性的HClO。</p>
+                    <p class="mono text-center bg-yellow-100 p-3 rounded mt-2">Ca(ClO)₂ + CO₂ + H₂O = CaCO₃↓ + 2HClO</p>
+                 </div>
+                 <div class="mt-6 bg-red-50 border border-red-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-red-800 text-xl">久置失效原理:</h3>
+                    <p class="mt-3 text-lg">生成的HClO不稳定，见光分解，最终失去漂白效果。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 例题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (一)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>常温常压下，氯气的颜色是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 无色</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 黄绿色</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 棕褐色</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 苍白色</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (一)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>氯气是一种黄绿色的气体，这是其非常重要的物理性质，需要牢记。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (二)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>新制氯水不具备的性质是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 酸性</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 漂白性</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 强氧化性</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 碱性</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (二)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>新制氯水中含有盐酸(HCl)和次氯酸(HClO)，因此溶液显酸性，不具有碱性。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (三)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>能使湿润的有色布条褪色的物质是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 干燥的氯气</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 液氯</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 盐酸</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 新制氯水</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (三)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>干燥的氯气和液氯(纯净物Cl₂)本身没有漂白性。氯气与水反应生成次氯酸(HClO)才具有漂白性。因此，新制氯水可以使有色布条褪色。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (四)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>84消毒液的有效成分是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> NaCl</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> HClO</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> NaClO</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> Cl₂</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (四)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>84消毒液是漂白液，其有效成分是次氯酸钠(NaClO)，由氯气与氢氧化钠溶液反应制得。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (五)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>铁丝在氯气中燃烧，生成的产物是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> FeCl₂</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> FeO</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> Fe₂O₃</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> FeCl₃</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (五)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>氯气具有强氧化性，可以将变价金属氧化到较高的价态。铁与氯气反应时，会被氧化为+3价，生成氯化铁(FeCl₃)。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看，下节课再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>
+

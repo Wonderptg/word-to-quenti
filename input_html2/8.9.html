@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>双曲线 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <!-- MathJax Library -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0.25rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            overflow-x: auto;
+            text-align: center;
+        }
+        
+        .highlight-box {
+            background-color: #fffbe6;
+            border: 2px dashed #f59e0b;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">双曲线 (Hyperbola)</h1>
+                <p class="text-2xl text-slate-600 mt-4">椭圆的“反骨”亲兄弟</p>
+                <p class="mt-8 text-xl text-red-600 font-semibold">"有‘和’，那有没有‘差’呢？"</p>
+            </div>
+        </div>
+
+        <!-- 定义 -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-4">双曲线的定义</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <p class="text-lg">平面内，动点 $P$ 到两个定点 $F_1, F_2$（焦点）的距离之 <strong>差的绝对值</strong>，等于一个常数 $2a$ 的点的轨迹。</p>
+                
+                <div class="formula-box text-2xl font-bold text-red-600">
+                    $| |PF_1| - |PF_2| | = 2a$
+                </div>
+                
+                <p class="text-lg text-gray-500 mt-4">（条件：$2a$ 必须小于焦距 $|F_1F_2|$）</p>
+                <p class="text-lg mt-4">对比椭圆：$|PF_1| + |PF_2| = 2a$</p>
+            </div>
+        </div>
+        
+        <!-- 标准方程 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-2 mb-4">标准方程：“上户口”</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <p class="text-lg">设 $F_1(-c, 0), F_2(c, 0)$, $P(x, y)$。根据定义：</p>
+                <p class="text-sm font-mono text-center">$\sqrt{(x+c)^2 + y^2} - \sqrt{(x-c)^2 + y^2} = \pm 2a$</p>
+                <p class="text-lg mt-2 text-center">经过两次“移项平方”的“酷刑”后...</p>
+                <p class="text-lg mt-2">我们得到：$(c^2 - a^2)x^2 - a^2y^2 = a^2(c^2 - a^2)$</p>
+                <p class="text-lg mt-2">在双曲线中，$c > a$，所以 $c^2-a^2$ 是正数。</p>
+                <p class="text-lg mt-2">我们<strong>规定 $b^2 = c^2 - a^2$</strong>。</p>
+                <p class="text-lg mt-2">于是得到 $b^2x^2 - a^2y^2 = a^2b^2$。</p>
+                <p class="text-lg mt-2 text-center">两边同除以 $a^2b^2$，得到最终形态：</p>
+                <div class="formula-box text-2xl font-bold">
+                    $\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1$
+                </div>
+            </div>
+        </div>
+        
+        <!-- K.O.对决 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-red-500 pb-2 mb-4">K.O.对决：双曲线 vs. 椭圆</h2>
+            <div class="w-full max-w-5xl mx-auto text-sm md:text-base">
+                <table class="w-full border-collapse border border-gray-300">
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="border border-gray-300 p-2">对比项</th>
+                            <th class="border border-gray-300 p-2">椭圆 (和为定值)</th>
+                            <th class="border border-gray-300 p-2">双曲线 (差为定值)</th>
+                            <th class="border border-gray-300 p-2 text-red-600">猪猪点拨</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border border-gray-300 p-2"><strong>$a,b,c$ 关系</strong></td>
+                            <td class="border border-gray-300 p-2">$a^2 = b^2 + c^2$</td>
+                            <td class="border border-gray-300 p-2">$c^2 = a^2 + b^2$</td>
+                            <td class="border border-gray-300 p-2 text-red-600"><strong>椭圆 $a$ 最大，双曲线 $c$ 最大！</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-2"><strong>焦点在哪</strong></td>
+                            <td class="border border-gray-300 p-2">看分母 <strong>谁大</strong></td>
+                            <td class="border border-gray-300 p-2">看系数 <strong>谁正</strong></td>
+                            <td class="border border-gray-300 p-2 text-red-600">椭圆看大小，双曲线看正负！</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-2"><strong>方程 (焦在x)</strong></td>
+                            <td class="border border-gray-300 p-2">$\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$ ($a^2$大)</td>
+                            <td class="border border-gray-300 p-2">$\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1$ ($x^2$正)</td>
+                            <td class="border border-gray-300 p-2 text-red-600"><strong>$a^2$ 永远在正的那个下面！</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-2"><strong>方程 (焦在y)</strong></td>
+                            <td class="border border-gray-300 p-2">$\frac{y^2}{a^2} + \frac{x^2}{b^2} = 1$ ($a^2$大)</td>
+                            <td class="border border-gray-300 p-2">$\frac{y^2}{a^2} - \frac{x^2}{b^2} = 1$ ($y^2$正)</td>
+                            <td class="border border-gray-300 p-2 text-red-600">看见没？$y^2$ 跑前面去了！</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 快速练习 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-amber-500 pb-2">快速练习</h2>
+                 <div class="mt-4 text-base space-y-3">
+                     <div class="bg-gray-50 p-3 rounded-lg">
+                         <p><strong>1. $\frac{x^2}{25} + \frac{y^2}{16} = 1$</strong></p>
+                     </div>
+                     <div class="bg-gray-50 p-3 rounded-lg">
+                         <p><strong>2. $\frac{x^2}{25} - \frac{y^2}{16} = 1$</strong></p>
+                     </div>
+                     <div class="bg-gray-50 p-3 rounded-lg">
+                         <p><strong>3. $\frac{y^2}{16} - \frac{x^2}{25} = 1$</strong></p>
+                     </div>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 渐近线 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-indigo-500 pb-2">图形与性质：渐近线</h2>
+                 <div class="mt-4 text-lg">
+                     <p>如何快速画出双曲线 $\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1$？</p>
+                     <ol class="list-decimal list-inside ml-4">
+                         <li>在 $x$ 轴上点出 $\pm a$ (实轴顶点)。</li>
+                         <li>在 $y$ 轴上点出 $\pm b$ (虚轴端点)。</li>
+                         <li>用 $a, b$ 画一个矩形“小盒子”。</li>
+                         <li>画出盒子的对角线并无限延长。</li>
+                     </ol>
+                     
+                     <!-- SVG Diagram Start -->
+                     <div class="w-full my-4 flex justify-center">
+                        <svg viewBox="-120 -90 240 180" width="300" height="225" class="max-w-xs md:max-w-sm" aria-label="双曲线渐近线示意图">
+                            <!-- Axes -->
+                            <line x1="-115" y1="0" x2="115" y2="0" stroke="#9ca3af" stroke-width="1" />
+                            <line x1="0" y1="-85" x2="0" y2="85" stroke="#9ca3af" stroke-width="1" />
+                            <text x="112" y="-3" font-size="10" fill="#9ca3af" font-family="sans-serif">x</text>
+                            <text x="3" y="-80" font-size="10" fill="#9ca3af" font-family="sans-serif">y</text>
+
+                            <!-- Box -->
+                            <rect x="-80" y="-50" width="160" height="100" fill="none" stroke="#9ca3af" stroke-width="1" stroke-dasharray="4 2" />
+                            
+                            <!-- Asymptotes -->
+                            <line x1="-115" y1="-71.875" x2="115" y2="71.875" stroke="#4f46e5" stroke-width="1.5" stroke-dasharray="5 3" />
+                            <line x1="-115" y1="71.875" x2="115" y2="-71.875" stroke="#4f46e5" stroke-width="1.5" stroke-dasharray="5 3" />
+                            
+                            <!-- Hyperbola -->
+                            <path d="M 80 0 C 85 15, 95 35, 115 71.875 M 80 0 C 85 -15, 95 -35, 115 -71.875 M -80 0 C -85 15, -95 35, -115 71.875 M -80 0 C -85 -15, -95 -35, -115 -71.875" stroke="#3b82f6" stroke-width="2.5" fill="none" />
+                            
+                            <!-- Labels -->
+                            <text x="80" y="15" font-size="10" fill="#3b82f6" text-anchor="middle" font-family="sans-serif">a</text>
+                            <text x="-80" y="15" font-size="10" fill="#3b82f6" text-anchor="middle" font-family="sans-serif">-a</text>
+                            <text x="10" y="-50" font-size="10" fill="#6b7280" text-anchor="middle" font-family="sans-serif" dy="-2">b</text>
+                            <text x="10" y="50" font-size="10" fill="#6b7280" text-anchor="middle" font-family="sans-serif" dy="8">-b</text>
+                            
+                            <!-- Vertices -->
+                            <circle cx="80" cy="0" r="2" fill="#3b82f6" />
+                            <circle cx="-80" cy="0" r="2" fill="#3b82f6" />
+                        </svg>
+                     </div>
+                     <!-- SVG Diagram End -->
+                     
+                     <p class="mt-2">这两条虚线就是 <strong>渐近线</strong>！</p>
+                     <p>双曲线的“尾巴”会无限贴近它，但永不相交。</p>
+                     <div class="formula-box text-xl font-bold">
+                         渐近线方程： $y = \pm \frac{b}{a}x$
+                     </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 陷阱一 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-red-500 pb-2">陷阱一：左右两支</h2>
+                 <div class="mt-4 text-base bg-red-50 p-4 rounded-lg">
+                     <p class="font-bold text-lg">题：双曲线上一点 $P$，到左焦点 $F_1$ 的距离是15。已知 $a=4$，问 $P$ 到 $F_2$ 的距离是多少？</p>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 陷阱二 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-red-500 pb-2">陷阱二：定义辨析</h2>
+                 <div class="mt-4 text-base bg-red-50 p-4 rounded-lg">
+                     <p class="font-bold text-lg">题：$F_1(-3,0), F_2(3,0)$。动点 $P$ 满足 $|PF_1| - |PF_2| = 4$，问 $P$ 的轨迹是啥？</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1/4 -->
+        <div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (1/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                    <p class="font-semibold mb-2">1. 在双曲线中，三个参数 $a, b, c$ 满足的关系是？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) $a^2 = b^2 + c^2$</p>
+                        <p>(B) $c^2 = a^2 + b^2$</p>
+                        <p>(C) $b^2 = a^2 + c^2$</p>
+                        <p>(D) $a, b, c$ 大小不确定</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题 2/4 -->
+        <div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (2/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                    <p class="font-semibold mb-2">2. 双曲线方程 $\frac{y^2}{4} - \frac{x^2}{5} = 1$ 的焦点在哪个轴上？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) $x$ 轴</p>
+                        <p>(B) $y$ 轴</p>
+                        <p>(C) 都有可能</p>
+                        <p>(D) 无法判断</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3/4 -->
+        <div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (3/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                     <p class="font-semibold mb-2">3. 双曲线 $\frac{x^2}{16} - \frac{y^2}{9} = 1$ 的焦距（两个焦点之间的距离）是多少？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) 4</p>
+                        <p>(B) 5</p>
+                        <p>(C) 8</p>
+                        <p>(D) 10</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题 4/4 -->
+        <div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (4/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                     <p class="font-semibold mb-2">4. 已知定点 $F_1(-5,0), F_2(5,0)$，动点 $P$ 满足 $|PF_1| - |PF_2| = 6$，则点 $P$ 的轨迹是？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) 双曲线</p>
+                        <p>(B) 椭圆</p>
+                        <p>(C) 双曲线的右支</p>
+                        <p>(D) 双曲线的左支</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题解析 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析</h2>
+                <div class="space-y-3 text-base">
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>1. 答案：B</strong></p>
+                        <p><strong>解析：</strong>双曲线 $c$ 最大 (焦点到中心最远)，所以 $c^2 = a^2 + b^2$。椭圆是 $a$ 最大。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>2. 答案：B</strong></p>
+                        <p><strong>解析：</strong>双曲线不看分母大小，只看系数<strong>谁是正的</strong>。$\frac{y^2}{4}$ 是正的，所以焦点在 $y$ 轴上。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>3. 答案：D</strong></p>
+                        <p><strong>解析：</strong>$x^2$ 是正的，所以 $a^2=16$。$b^2=9$。
+                        <br>根据 $c^2 = a^2 + b^2 \implies c^2 = 16 + 9 = 25 \implies c=5$。
+                        <br>题目问的是<strong>焦距</strong>，即 $2c = 2 \times 5 = 10$。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>4. 答案：C</strong></p>
+                        <p><strong>解析：</strong>陷阱题！<strong>没有绝对值</strong>。$|PF_1| - |PF_2| = 6$ (正数)，意味着 $P$ 点到 $F_1$ 必须比到 $F_2$ <strong>更远</strong>。$F_1$ 在左，$F_2$ 在右，所以 $P$ 点一定在双曲线的<strong>右支</strong>上。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 总结 -->
+         <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8">总结</h2>
+                <p class="text-xl">咱就记住两件事儿：</p>
+                <ul class="list-disc list-inside text-left text-lg mt-4 space-y-2">
+                    <li><strong>$a,b,c$ 关系：</strong> 椭圆 $a$ 最大，双曲线 <strong>$c$ 最大</strong>！($c^2 = a^2 + b^2$)</li>
+                    <li><strong>焦点在哪：</strong> 椭圆看分母<strong>谁大</strong>，双曲线看系数<strong>谁正</strong>！</li>
+                </ul>
+                <p class="text-xl mt-6">把那张“K.O.对决表”背熟了，你就无敌了！</p>
+                
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

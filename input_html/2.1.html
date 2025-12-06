@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>不等式第一课：基本性质 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 400px; /* 保证内容较少时也有足够高度 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .cartoon-canvas {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            width: 100px;
+            height: 100px;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+
+            .section:last-child {
+                page-break-after: auto;
+            }
+            .cartoon-canvas {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- Section 1: Title -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">不等式？小 Case！</h1>
+                <p class="text-2xl text-slate-600 mt-4"> inequalities-01</p>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 2: Intro -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">开场白与引入</h2>
+                <p class="mt-8 text-xl text-slate-700 leading-relaxed text-center">
+                    今天我们来聊一个老朋友——不等式。
+                </p>
+                <div class="mt-6 bg-amber-50 p-6 rounded-lg text-lg text-center">
+                    <p class="text-2xl font-semibold">核心问题：</p>
+                    <p class="mt-2">如果已知 “A 比 B 大” (即 A>B)，<br>你还能顺藤摸瓜，知道些啥别的秘密呢？</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 3: Property 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">基本性质1：加加减减，方向不变！</h2>
+                <p class="mt-6 text-2xl font-mono text-center bg-slate-100 p-4 rounded-lg">如果 A > B, 那么 A±C > B±C</p>
+                <p class="mt-6 text-xl text-slate-700">
+                    <strong>口语解释：</strong> 就像你比同桌高，俩人同时踩高跷 (都加上C) 或同时掉坑里 (都减去C)，身高差的“方向”不变，你还是比他高。
+                </p>
+                <div class="mt-4 text-lg">
+                    <p><strong>例子：</strong> 已知 9 > 5</p>
+                    <p class="ml-4">→ 两边都加 3:  9+3 > 5+3  (12 > 8)</p>
+                    <p class="ml-4">→ 两边都减 4:  9−4 > 5−4  (5 > 1)</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 4: Property 2a -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">基本性质2：乘除运算，小心陷阱！</h2>
+                <div class="mt-6 bg-green-50 p-6 rounded-lg">
+                    <h3 class="font-bold text-green-700 text-2xl">a) 当 C 是正数时 (C > 0)</h3>
+                    <p class="mt-2 text-xl text-slate-700">如果 A > B, 两边同乘或除以一个<strong class="text-green-800">正数</strong>C, 不等号方向<strong class="text-green-800">不变</strong>。</p>
+                    <p class="mt-4 text-lg"><strong>例子：</strong> 已知 12 > 8</p>
+                    <p class="ml-4">→ 两边同乘 3: 12×3 > 8×3 (36 > 24)</p>
+                    <p class="ml-4">→ 两边同除以 4: 12÷4 > 8÷4 (3 > 2)</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 5: Property 2b -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-red-500 pb-2">基本性质2：乘除运算，小心陷阱！</h2>
+                 <div class="mt-6 bg-red-50 p-6 rounded-lg">
+                    <h3 class="font-bold text-red-700 text-2xl">b) 当 C 是负数时 (C < 0) - 重点!</h3>
+                    <p class="mt-2 text-xl text-slate-700">如果 A > B, 两边同乘或除以一个<strong class="text-red-800">负数</strong>C, 不等号方向<strong class="text-red-800">必须反转</strong>！</p>
+                    <p class="mt-4 text-lg"><strong>例子：</strong> 已知 6 > 3</p>
+                    <p class="ml-4">→ 两边同乘 -2: 6×(-2) < 3×(-2) (-12 < -6)</p>
+                    <p class="ml-4">→ 两边同除以 -3: 6÷(-3) < 3÷(-3) (-2 < -1)</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 5.5: Property 2c -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-gray-500 pb-2">基本性质2：乘除运算，小心陷阱！</h2>
+                 <div class="mt-6 bg-gray-50 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-700 text-2xl">c) 当 C = 0 时</h3>
+                    <p class="mt-2 text-xl text-slate-700">若乘以 0，则 A · 0 = B · 0 ⟹  0 = 0。</p>
+                    <p class="mt-4 text-xl text-slate-700">除以 0 <strong class="text-red-800">无意义</strong>。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 6: Property 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">基本性质3：两个不等式手拉手</h2>
+                <p class="mt-6 text-xl">假设我们有两个<strong class="text-blue-600">方向相同</strong>的不等式：A > B 且 X > Y</p>
+                <div class="mt-4 bg-blue-50 p-6 rounded-lg text-lg">
+                    <h3 class="font-bold text-blue-800 text-xl">a) 同向相加，强者恒强</h3>
+                    <p class="mt-2">A+X > B+Y (大的+大的 > 小的+小的)</p>
+                    <p class="mt-2"><strong>例:</strong> 8>3 且 6>2  =>  8+6 > 3+2  (14 > 5)</p>
+                </div>
+                 <div class="mt-4 bg-orange-50 p-6 rounded-lg text-lg">
+                    <h3 class="font-bold text-orange-800 text-xl">b) 同向同正相乘</h3>
+                    <p class="mt-2">如果 A,B,X,Y <strong class="text-orange-600">均为正数</strong>, 那么 A·X > B·Y</p>
+                    <p class="mt-2"><strong>例:</strong> 5>2 且 4>3  =>  5×4 > 2×3  (20 > 6)</p>
+                    <p class="text-sm mt-2 text-slate-500"><strong>注意：</strong>若不全是正数，结果不一定！</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 7: Property 4 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">基本性质4：正数世界的乘方与开方</h2>
+                <p class="mt-6 text-xl text-center">如果 A > B 且 A, B <strong class="text-green-600">均为正数</strong></p>
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                    <div class="bg-indigo-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-indigo-700 text-2xl">a) 乘方</h3>
+                        <p class="mt-2 text-xl">Aⁿ > Bⁿ</p>
+                        <p class="mt-2 text-base">例: 16 > 9 => 16² > 9² (256 > 81)</p>
+                    </div>
+                    <div class="bg-violet-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-violet-700 text-2xl">b) 开方</h3>
+                        <p class="mt-2 text-xl">ⁿ√A > ⁿ√B</p>
+                        <p class="mt-2 text-base">例: 16 > 9 => √16 > √9 (4 > 3)</p>
+                    </div>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 8: Application Title -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800">不等式性质的应用</h2>
+                 <p class="mt-6 text-2xl text-slate-600">解题演练</p>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 8.1: Application Type 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">题型一：选择题小杀手——特殊值法</h2>
+                <p class="mt-4 text-lg text-slate-600"><strong>策略：</strong>当直接判断困难时，代入满足条件的特殊数字进行检验，往往能快速排除错误选项。</p>
+                <div class="mt-4 bg-purple-50 p-4 rounded-lg text-base">
+                    <p><strong>例子：</strong>若 m < n < 0，则下列哪个一定成立？</p>
+                    <ul class="list-disc list-inside mt-2 space-y-1">
+                        <li><strong>A) m+p < n+p</strong> (两边加同个数，不变号，<strong class="text-green-600">成立！</strong>)</li>
+                        <li><strong>B) mp < np</strong> (p的正负未知，方向<strong class="text-red-600">不一定！</strong>)</li>
+                        <li><strong>C) m² > n²</strong> (m=-2, n=-1 => 4 > 1，<strong class="text-green-600">成立！</strong>)</li>
+                        <li><strong>D) 1/m > 1/n</strong> (m=-2, n=-1 => -1/2 > -1，<strong class="text-green-600">成立！</strong>)</li>
+                    </ul>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 8.2: Application Type 2a -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">题型二：比较大小 (作差法)</h2>
+                <div class="mt-4 bg-purple-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-purple-800 text-xl">常规武器：作差法！</h3>
+                    <p class="mt-2 text-base">比较 M 和 N ⟹ 计算 M−N。若差 > 0 则 M > N。</p>
+                    <p class="mt-2 text-base"><strong>例子 (配方法)：</strong>比较 a²+b²+2 与 2a+2b。</p>
+                    <p class="text-sm text-slate-600">作差：(a²+b²+2) − (2a+2b) = (a−1)²+(b−1)² ≥ 0。
+                    <br>因此，a²+b²+2 ≥ 2a+2b。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 8.3: Application Type 2b -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">题型二：比较大小 (平方比较法)</h2>
+                <div class="mt-4 bg-purple-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-purple-800 text-xl">特殊武器：平方比较法</h3>
+                    <p class="mt-2 text-base">对付<strong class="text-red-600">正数根号</strong>：若 M>0, N>0，则 M > N ⟺ M² > N²。</p>
+                    <p class="mt-2 text-base"><strong>例子：</strong>比较 √11+√5 与 √8+√7。</p>
+                    <p class="text-sm text-slate-600">两边平方：(√11+√5)² = 16+2√55，(√8+√7)² = 15+2√56。
+                    <br>问题转化为比较 16+2√55 和 15+2√56。
+                    </p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 8.4: Application Type 3a -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">题型三：求取值范围 (直接凑)</h2>
+                 <div class="mt-4 bg-purple-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-purple-800 text-xl">基本款：直接凑</h3>
+                    <p class="mt-2 text-base"><strong>例子：</strong>已知 −1 < a < 3 且 2 < b < 5。求 2a−3b 的范围。</p>
+                    <p class="text-base text-slate-600">
+                        1. 求 2a 的范围：-2 < 2a < 6。<br>
+                        2. 求 −3b 的范围：-15 < -3b < -6。<br>
+                        3. 同向相加：-17 < 2a-3b < 0。
+                    </p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 8.5: Application Type 3b -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">题型三：求取值范围 (换元法)</h2>
+                 <div class="mt-4 bg-purple-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-purple-800 text-xl">升级款：换元大法</h3>
+                     <p class="mt-2 text-base"><strong>例子：</strong>已知 0 < 2x−y < 3 且 1 < x+y < 4。求 5x−y 的范围。</p>
+                     <p class="text-base text-slate-600">
+                        1. 设 M=2x-y, N=x+y。<br>
+                        2. 解出 5x-y = 2M+N。<br>
+                        3. 求 2M+N 范围：0 < 2M < 6，1 < N < 4。<br>
+                        4. 相加得：1 < 2M+N < 10。所以 1 < 5x-y < 10。
+                    </p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 9: Problem 1 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">重点题型一：比较代数式大小</h2>
+                <div class="mt-6 text-lg">
+                    <p class="font-semibold">例题1．若 M = x² +y²+1 ， N=2(x+y-1) ，则 M 与 N 的大小关系为（&nbsp;&nbsp;&nbsp;&nbsp;）</p>
+                    <ul class="list-none pl-4 space-y-2 mt-2">
+                        <li>A． M < N</li>
+                        <li>B． M > N</li>
+                        <li>C． M = N</li>
+                        <li>D．不能确定</li>
+                    </ul>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 10: Problem 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">重点题型一：比较代数式大小</h2>
+                <div class="mt-6 text-lg">
+                    <p class="font-semibold">例题2．已知a,b ∈R ，则 5a²+b²+2 _______ 4ab+2a．（用“>”或“<”填空）</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 11: Answers Title -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800">答案与解析</h2>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 12: Answer 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">例题1 解析</h3>
+                <div class="mt-4 bg-slate-50 p-4 rounded-lg text-lg">
+                    <p><strong class="text-blue-600">【答案】B</strong></p>
+                    <p class="mt-2 text-slate-700">【解析】使用<strong class="text-red-600">作差法</strong>。
+                    <br>M - N = (x² + y² + 1) - 2(x + y - 1)
+                    <br>= x² + y² + 1 - 2x - 2y + 2
+                    <br>= (x² - 2x + 1) + (y² - 2y + 1) + 1
+                    <br>= (x-1)² + (y-1)² + 1
+                    <br>因为 (x-1)² ≥ 0 且 (y-1)² ≥ 0，所以 (x-1)² + (y-1)² + 1 > 0。
+                    <br>因此 M - N > 0, 即 M > N。故选B。
+                    </p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 13: Answer 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">例题2 解析</h3>
+                <div class="mt-4 bg-slate-50 p-4 rounded-lg text-lg">
+                    <p><strong class="text-blue-600">【答案】></strong></p>
+                    <p class="mt-2 text-slate-700">【解析】同样使用<strong class="text-red-600">作差法</strong>并配方。
+                    <br>(5a²+b²+2) - (4ab+2a)
+                    <br>= 5a² - 4ab + b² - 2a + 2
+                    <br>= (4a² - 4ab + b²) + (a² - 2a + 1) + 1
+                    <br>= (2a-b)² + (a-1)² + 1
+                    <br>因为 (2a-b)² ≥ 0 且 (a-1)² ≥ 0, 所以 (2a-b)² + (a-1)² + 1 > 0。
+                    <br>因此 5a²+b²+2 > 4ab+2a。
+                    </p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 14: Summary -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">课堂总结</h2>
+                <p class="mt-6 text-xl text-slate-700">今天咱们把不等式的核心性质过了一遍：</p>
+                <ul class="mt-4 list-disc list-inside space-y-3 text-lg">
+                    <li><strong>加减同数</strong>，方向不变。</li>
+                    <li><strong>乘除同数</strong>，正数不变号，<strong class="text-red-600">负数要变号</strong>！</li>
+                    <li><strong>同向不等式</strong>：可相加；<strong class="text-orange-600">同向且同正</strong>，方可相乘。</li>
+                    <li><strong>正数专属</strong>：乘方开方，方向不变。</li>
+                </ul>
+                <p class="mt-6 text-xl font-bold">解题方法：“作差法”是万能钥匙！</p>
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvases = document.querySelectorAll('.cartoon-canvas');
+            canvases.forEach((canvas, index) => {
+                const ctx = canvas.getContext('2d');
+                drawCartoon(ctx, index, canvas.width, canvas.height);
+            });
+        });
+
+        function drawCartoon(ctx, index, w, h) {
+            ctx.clearRect(0, 0, w, h);
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 2;
+
+            const mood = index % 4; 
+
+            switch (index % 10) {
+                case 0: // Scale balance
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.5, h*0.2); // vertical bar
+                    ctx.lineTo(w*0.5, h*0.8);
+                    ctx.moveTo(w*0.3, h*0.9); // base
+                    ctx.lineTo(w*0.7, h*0.9);
+                    ctx.moveTo(w*0.2, h*0.3); // beam
+                    ctx.lineTo(w*0.8, h*0.2);
+                    ctx.stroke();
+                    ctx.fillStyle = '#f59e0b'; // pan 1
+                    ctx.beginPath();
+                    ctx.arc(w*0.2, h*0.5, w*0.15, 0, Math.PI);
+                    ctx.fill();
+                     ctx.fillStyle = '#3b82f6'; // pan 2
+                    ctx.beginPath();
+                    ctx.arc(w*0.8, h*0.4, w*0.15, 0, Math.PI);
+                    ctx.fill();
+                    break;
+                case 1: // Arrow Up
+                    ctx.fillStyle = '#22c55e';
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.4, h*0.9);
+                    ctx.lineTo(w*0.4, h*0.3);
+                    ctx.lineTo(w*0.2, h*0.3);
+                    ctx.lineTo(w*0.5, h*0.05);
+                    ctx.lineTo(w*0.8, h*0.3);
+                    ctx.lineTo(w*0.6, h*0.3);
+                    ctx.lineTo(w*0.6, h*0.9);
+                    ctx.closePath();
+                    ctx.fill();
+                    break;
+                case 2: // Plus and Minus
+                    ctx.font = 'bold 50px Arial';
+                    ctx.fillStyle = '#22c55e';
+                    ctx.fillText('+', w*0.2, h*0.5);
+                    ctx.fillStyle = '#ef4444';
+                    ctx.fillText('-', w*0.6, h*0.5);
+                    break;
+                case 3: // Multiply and Divide
+                    ctx.font = 'bold 50px Arial';
+                    ctx.fillStyle = '#f59e0b';
+                    ctx.fillText('×', w*0.2, h*0.5);
+                    ctx.fillStyle = '#8b5cf6';
+                    ctx.fillText('÷', w*0.6, h*0.5);
+                    break;
+                case 4: // Sad face (for negative)
+                    ctx.fillStyle = '#fde047';
+                    ctx.beginPath();
+                    ctx.arc(w/2, h/2, w*0.4, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.stroke();
+                    ctx.fillStyle = 'black';
+                    ctx.beginPath();
+                    ctx.arc(w*0.35, h*0.4, w*0.05, 0, Math.PI*2);
+                    ctx.arc(w*0.65, h*0.4, w*0.05, 0, Math.PI*2);
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.arc(w/2, h*0.7, w*0.2, Math.PI, Math.PI*2);
+                    ctx.stroke();
+                    break;
+                case 5: // Handshake
+                    ctx.strokeStyle = '#a16207';
+                    ctx.lineWidth = 4;
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.1, h*0.5);
+                    ctx.quadraticCurveTo(w*0.3, h*0.3, w*0.5, h*0.5);
+                    ctx.moveTo(w*0.9, h*0.4);
+                    ctx.quadraticCurveTo(w*0.7, h*0.2, w*0.5, h*0.4);
+                    ctx.stroke();
+                    break;
+                case 6: // Power (x^n)
+                    ctx.font = 'bold 40px Arial';
+                    ctx.fillStyle = '#0ea5e9';
+                    ctx.fillText('x', w*0.3, h*0.6);
+                    ctx.font = 'bold 30px Arial';
+                    ctx.fillText('n', w*0.5, h*0.4);
+                    break;
+                 case 7: // Calculator
+                    ctx.fillStyle = '#475569';
+                    ctx.fillRect(w*0.2, h*0.1, w*0.6, h*0.8);
+                    ctx.fillStyle = '#cbd5e1';
+                    ctx.fillRect(w*0.25, h*0.15, w*0.5, h*0.2);
+                     for(let i=0; i<3; i++){
+                         for(let j=0; j<3; j++){
+                            ctx.fillStyle = '#94a3b8';
+                            ctx.fillRect(w*(0.25 + j*0.18), h*(0.4 + i*0.18), w*0.12, h*0.12);
+                         }
+                     }
+                    break;
+                case 8: // Magnifying glass
+                    ctx.strokeStyle = '#64748b';
+                    ctx.lineWidth = 5;
+                    ctx.beginPath();
+                    ctx.arc(w*0.45, h*0.45, w*0.3, 0, Math.PI * 2);
+                    ctx.moveTo(w*0.7, h*0.7);
+                    ctx.lineTo(w*0.9, h*0.9);
+                    ctx.stroke();
+                    break;
+                default: // A checkmark
+                    ctx.strokeStyle = '#16a34a';
+                    ctx.lineWidth = 8;
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.2, h*0.5);
+                    ctx.lineTo(w*0.4, h*0.7);
+                    ctx.lineTo(w*0.8, h*0.3);
+                    ctx.stroke();
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
+

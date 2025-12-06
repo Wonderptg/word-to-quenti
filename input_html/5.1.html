@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>旋转的奥秘：你好，任意角！ (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .cartoon-canvas {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            width: 100px;
+            height: 100px;
+        }
+
+        .graph-canvas {
+            border-radius: 0.5rem;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .answer-block {
+            padding: 1.25rem;
+            background-color: #fafafa;
+            border-left: 4px solid #8b5cf6;
+            margin-bottom: 1.5rem;
+            border-radius: 0.25rem;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+
+            /* New styles to preserve left-right layout on print */
+            .print-row-layout {
+                flex-direction: row !important;
+            }
+            /* We need to re-apply widths for print as md: prefix doesn't work */
+            .print-row-layout > .md\:w-1\/2 {
+                width: 50% !important;
+            }
+            .print-row-layout > .md\:w-2\/3 {
+                width: 66.666667% !important;
+            }
+            .print-row-layout > .md\:w-1\/3 {
+                width: 33.333333% !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">旋转的奥秘：你好，任意角！</h1>
+                <p class="text-2xl text-slate-600 mt-4">一个更广阔、更自由的角的王国</p>
+                <p class="mt-8 text-xl text-cyan-600 font-semibold">"1440度的角真的存在吗？"</p>
+            </div>
+        </div>
+
+        <!-- 从静态到动态 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row print:flex-row items-center gap-8 print-row-layout">
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-gray-500 pb-2">给角“松绑”：从静态到动态</h2>
+                    <p class="mt-6 text-xl text-slate-700 leading-relaxed">
+                        忘掉“两条射线的夹角”，我们用旋转来定义！
+                    </p>
+                    <ul class="list-decimal list-inside mt-4 space-y-2 text-lg">
+                        <li><strong>始边：</strong>光束的起始位置 (X轴正方向)。</li>
+                        <li><strong>终边：</strong>光束旋转后停止的位置。</li>
+                        <li><strong>角：</strong>从始边到终边的旋转量。</li>
+                    </ul>
+                </div>
+                <div class="md:w-1/2 flex justify-center items-center">
+                    <canvas id="angle-definition-canvas" class="graph-canvas" width="300" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 方向的意义 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row print:flex-row items-center gap-8 print-row-layout">
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-sky-500 pb-2">方向的意义：上楼还是下楼？</h2>
+                    <div class="mt-6 space-y-4 text-lg">
+                        <div class="bg-emerald-50 p-4 rounded-lg">
+                            <p class="font-bold text-emerald-700">正角 (+)</p>
+                            <p>逆时针旋转 (上楼)，角度为正。例如：+150° (终边在第二象限)。</p>
+                        </div>
+                        <div class="bg-rose-50 p-4 rounded-lg">
+                            <p class="font-bold text-rose-700">负角 (-)</p>
+                            <p>顺时针旋转 (下楼)，角度为负。例如：-60° (终边在第四象限)。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center items-center">
+                    <canvas id="angle-direction-canvas" class="graph-canvas" width="300" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 殊途同归 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">殊途同归：终点一样的不同旅程</h2>
+                <p class="mt-8 text-xl text-slate-700">
+                    45°, 405°, -315° ... 它们的终边完全重合！
+                </p>
+                <div class="mt-6 bg-amber-50 p-6 rounded-lg text-xl font-bold text-amber-800">
+                    所有与角 α 终边相同的角，都可以表示为：α + k · 360° (k为整数)
+                </div>
+                 <div class="mt-6 flex justify-center items-center">
+                    <canvas id="coterminal-angles-canvas" class="graph-canvas" width="300" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 打破思维定势 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-rose-500 pb-2 text-center">打破思维定势</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                    <div class="bg-violet-50 p-6 rounded-lg">
+                        <p class="font-bold text-xl mb-2">🤔 第二象限角 = 钝角？</p>
+                        <p>不一定！比如 130°+360° = 490°。终边在第二象限，但远大于180°。</p>
+                    </div>
+                    <div class="bg-violet-50 p-6 rounded-lg">
+                        <p class="font-bold text-xl mb-2">🤔 小于90°的角 = 锐角？</p>
+                        <p>不一定！比如 -200°。远小于90°，但终边在第二象限。</p>
+                    </div>
+                </div>
+                 <div class="mt-8 bg-red-100 p-4 rounded-lg text-center text-red-800 font-semibold text-xl">
+                    结论：角的象限只看终边，和角的大小是两回事！
+                </div>
+            </div>
+        </div>
+        
+        <!-- 实战演练：从图到公式 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row print:flex-row items-center gap-8 print-row-layout">
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">实战：从图到公式</h2>
+                    <p class="mt-6 text-xl text-slate-700 leading-relaxed">
+                        用数学语言描述阴影区域。
+                    </p>
+                </div>
+                <div class="md:w-1/2 flex justify-center items-center">
+                    <canvas id="region-to-formula-canvas" class="graph-canvas" width="300" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实战演练：从公式到图 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row print:flex-row items-center gap-8 print-row-layout">
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2">实战：从公式到图</h2>
+                    <p class="mt-6 text-lg text-slate-700">
+                        画出 {α | k·180°+30° ≤ α ≤ k·180°+90°, k∈Z} 的区域。
+                    </p>
+                    <ul class="list-disc list-inside mt-4 space-y-2 text-lg">
+                        <li>当 k=0: [30°, 90°] (第一象限)</li>
+                        <li>当 k=1: [210°, 270°] (第三象限)</li>
+                        <li>当 k=2: 回到第一象限...</li>
+                    </ul>
+                     <p class="mt-4 text-xl font-bold text-teal-600">最终图形：一个关于原点对称的“蝴蝶结”！</p>
+                </div>
+                <div class="md:w-1/2 flex justify-center items-center">
+                    <canvas id="formula-to-region-canvas" class="graph-canvas" width="300" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2 text-center mb-8">随堂练习 (1/4)</h2>
+                <div class="text-lg">
+                    <div class="bg-slate-50 p-5 rounded-lg">
+                        <p class="font-bold mb-2">1. 下列说法正确的是 ( )</p>
+                        <ul class="list-none space-y-1 pl-4">
+                            <li>A. 终边相同的角相等</li>
+                            <li>B. 相等的角终边相同</li>
+                            <li>C. 小于90°的角是锐角</li>
+                            <li>D. 第一象限的角是正角</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 随堂练习 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2 text-center mb-8">随堂练习 (2/4)</h2>
+                <div class="text-lg">
+                    <div class="bg-slate-50 p-5 rounded-lg">
+                        <p class="font-bold mb-2">2. 与2022°终边相同的角是 ( )</p>
+                        <ul class="list-none space-y-1 pl-4">
+                            <li>A. -488°</li>
+                            <li>B. -148°</li>
+                            <li>C. 142°</li>
+                            <li>D. 222°</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 随堂练习 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2 text-center mb-8">随堂练习 (3/4)</h2>
+                <div class="text-lg">
+                    <div class="bg-slate-50 p-5 rounded-lg">
+                        <p class="font-bold mb-2">3. 终边与直线 y = x 重合的角可表示为 ( )</p>
+                        <ul class="list-none space-y-1 pl-4">
+                            <li>A. 45° + k·180°, k∈Z</li>
+                            <li>B. 45° + k·360°, k∈Z</li>
+                            <li>C. 135° + k·180°, k∈Z</li>
+                            <li>D. 225° + k·360°, k∈Z</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 随堂练习 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2 text-center mb-8">随堂练习 (4/4)</h2>
+                <div class="text-lg">
+                    <div class="bg-slate-50 p-5 rounded-lg flex flex-col md:flex-row print:flex-row items-center gap-8 print-row-layout">
+                        <div class="md:w-2/3">
+                            <p class="font-bold mb-2">4. 已知角α的终边在右图阴影表示的范围内(不包含边界)，那么角α的集合是 ________.</p>
+                        </div>
+                        <div class="md:w-1/3 flex justify-center items-center">
+                            <canvas id="exercise-canvas" class="graph-canvas" width="200" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 答案解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2 text-center mb-8">随堂练习 - 答案解析</h2>
+                <!-- 答案 1 -->
+                <div class="answer-block">
+                    <h3 class="text-xl font-bold text-slate-700 mb-2">1. 答案：B</h3>
+                    <p class="text-lg text-slate-600">
+                        <strong>【详解】</strong>终边相同的角相差周角的整数倍，A不正确；相等的角终边一定相同，所以B正确；小于90°的角是锐角可以是负角，C错；第一象限的角是正角，也可以是负角，D错误。故选：B。
+                    </p>
+                </div>
+                <!-- 答案 2 -->
+                <div class="answer-block">
+                    <h3 class="text-xl font-bold text-slate-700 mb-2">2. 答案：D</h3>
+                    <p class="text-lg text-slate-600">
+                        <strong>【详解】</strong>∵ 2022° = 5 × 360° + 222°，∴ 与 2022°终边相同的角是 222°。故选：D。
+                    </p>
+                </div>
+                <!-- 答案 3 -->
+                <div class="answer-block">
+                    <h3 class="text-xl font-bold text-slate-700 mb-2">3. 答案：A</h3>
+                    <p class="text-lg text-slate-600">
+                        <strong>【详解】</strong>终边与直线 y = x 重合的角可表示为 45° + k·180°, k∈Z。故选：A。
+                    </p>
+                </div>
+                <!-- 答案 4 -->
+                <div class="answer-block">
+                    <h3 class="text-xl font-bold text-slate-700 mb-2">4. 答案：{α | k·360° + 45° < α < k·360° + 150°, k∈Z}</h3>
+                    <p class="text-lg text-slate-600">
+                        <strong>【详解】</strong>观察图形可知，阴影区域的右边界与x轴正方向成45°角，左边界与x轴负方向成30°角，即与x轴正方向成180°-30°=150°角。因为不包含边界，所以角的集合是 {α | k·360° + 45° < α < k·360° + 150°, k∈Z}。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 课堂总结 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8">课堂总结：三大核心</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-lg">
+                    <div class="bg-sky-100 p-6 rounded-lg">
+                        <h3 class="font-bold text-2xl mb-2">① 旋转定义一切</h3>
+                        <p>始边、终边、方向、度数。</p>
+                    </div>
+                    <div class="bg-amber-100 p-6 rounded-lg">
+                        <h3 class="font-bold text-2xl mb-2">② 终边相同 ≠ 角相同</h3>
+                        <p>相差 k·360°。</p>
+                    </div>
+                    <div class="bg-rose-100 p-6 rounded-lg">
+                        <h3 class="font-bold text-2xl mb-2">③ 打破定势</h3>
+                        <p>象限角与锐/钝角是两回事。</p>
+                    </div>
+                </div>
+                 <p class="mt-12 text-2xl text-slate-700">从现在起，在旋转中发现数学之美！</p>
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Helper to draw axes
+            function drawAxes(ctx) {
+                const w = ctx.canvas.width;
+                const h = ctx.canvas.height;
+                const midX = w / 2;
+                const midY = h / 2;
+
+                ctx.clearRect(0, 0, w, h);
+                ctx.fillStyle = '#f8fafc';
+                ctx.fillRect(0, 0, w, h);
+
+                ctx.strokeStyle = '#9ca3af';
+                ctx.lineWidth = 1;
+                // X-Axis
+                ctx.beginPath();
+                ctx.moveTo(0, midY);
+                ctx.lineTo(w, midY);
+                ctx.stroke();
+                // Y-Axis
+                ctx.beginPath();
+                ctx.moveTo(midX, 0);
+                ctx.lineTo(midX, h);
+                ctx.stroke();
+                
+                ctx.fillStyle = '#6b7280';
+                ctx.font = '12px Arial';
+                ctx.fillText('y', midX + 5, 12);
+                ctx.fillText('x', w - 12, midY - 5);
+            }
+
+            function drawAngle(ctx, angle, color, text) {
+                const w = ctx.canvas.width;
+                const h = ctx.canvas.height;
+                const midX = w / 2;
+                const midY = h / 2;
+                const radius = w * 0.35;
+                const rad = -angle * Math.PI / 180; // Correct for terminal line Y-inversion
+
+                // Terminal side
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(midX, midY);
+                ctx.lineTo(midX + radius * Math.cos(rad), midY + radius * Math.sin(rad));
+                ctx.stroke();
+
+                // Arc Drawing Logic
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1.5;
+                const arcRadius = (angle === 150) ? radius * 0.45 : (angle === -60 ? radius * 0.65 : radius * 0.5);
+                ctx.beginPath();
+
+                if (angle > 0) {
+                    ctx.arc(midX, midY, arcRadius, rad, 0, false);
+                } else {
+                    ctx.arc(midX, midY, arcRadius, 0, rad, false);
+                }
+                ctx.stroke();
+
+                // Arrowhead logic
+                const headlen = 8;
+                const endX = midX + arcRadius * Math.cos(rad);
+                const endY = midY + arcRadius * Math.sin(rad);
+                const tangentAngle = rad + (angle > 0 ? -Math.PI / 2 : Math.PI / 2);
+                
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(endX, endY);
+                ctx.lineTo(endX - headlen * Math.cos(tangentAngle - Math.PI / 6), endY - headlen * Math.sin(tangentAngle - Math.PI / 6));
+                ctx.lineTo(endX - headlen * Math.cos(tangentAngle + Math.PI / 6), endY - headlen * Math.sin(tangentAngle + Math.PI / 6));
+                ctx.closePath();
+                ctx.fill();
+
+                if (text) {
+                    ctx.fillStyle = color;
+                    ctx.font = 'bold 14px Arial';
+                    const textRadius = arcRadius + 15;
+                    const textX = midX + textRadius * Math.cos(rad / 2);
+                    const textY = midY + textRadius * Math.sin(rad / 2) + 5;
+                    ctx.fillText(text, textX, textY);
+                }
+            }
+
+            // Canvas 1: Angle Definition
+            const canvas1 = document.getElementById('angle-definition-canvas');
+            if(canvas1) {
+                const ctx = canvas1.getContext('2d');
+                drawAxes(ctx);
+                const midX = canvas1.width / 2;
+                const midY = canvas1.height / 2;
+                const radius = canvas1.width * 0.4;
+                
+                // Initial side (始边)
+                ctx.strokeStyle = '#3b82f6';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(midX, midY);
+                ctx.lineTo(midX + radius, midY);
+                ctx.stroke();
+                ctx.fillStyle = '#3b82f6';
+                ctx.font = 'bold 14px Noto Serif SC';
+                ctx.fillText('始边', midX + radius - 40, midY - 10);
+
+                // Terminal side (终边)
+                drawAngle(ctx, 120, '#ef4444');
+                ctx.fillStyle = '#ef4444';
+                ctx.fillText('终边', midX - radius*0.7, midY - radius*0.5);
+                ctx.font = 'bold 14px Arial';
+                ctx.fillText('120°', midX + (radius*0.5+15) * Math.cos(-120*Math.PI/180 / 2), midY + (radius*0.5+15) * Math.sin(-120*Math.PI/180 / 2)+5);
+            }
+
+            // Canvas 2: Angle Direction
+            const canvas2 = document.getElementById('angle-direction-canvas');
+            if(canvas2) {
+                const ctx = canvas2.getContext('2d');
+                drawAxes(ctx);
+                drawAngle(ctx, 150, '#10b981', '+150°');
+                drawAngle(ctx, -60, '#f43f5e', '-60°');
+            }
+
+            // Canvas 3: Co-terminal Angles
+            const canvas3 = document.getElementById('coterminal-angles-canvas');
+            if (canvas3) {
+                const ctx = canvas3.getContext('2d');
+                const w = canvas3.width;
+                const h = canvas3.height;
+                const midX = w / 2;
+                const midY = h / 2;
+                const radius = w * 0.35;
+                const rad45 = -45 * Math.PI / 180;
+                const headlen = 8; // Arrowhead length
+
+                drawAxes(ctx);
+                
+                // Terminal side
+                ctx.strokeStyle = '#f59e0b';
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.moveTo(midX, midY);
+                ctx.lineTo(midX + radius * Math.cos(rad45), midY + radius * Math.sin(rad45));
+                ctx.stroke();
+                
+                // Helper to draw arrowhead
+                const drawArrowhead = (ctx, x, y, angle, color) => {
+                    ctx.fillStyle = color;
+                    ctx.beginPath();
+                    ctx.moveTo(x, y);
+                    ctx.lineTo(x - headlen * Math.cos(angle - Math.PI / 6), y - headlen * Math.sin(angle - Math.PI / 6));
+                    ctx.lineTo(x - headlen * Math.cos(angle + Math.PI / 6), y - headlen * Math.sin(angle + Math.PI / 6));
+                    ctx.closePath();
+                    ctx.fill();
+                };
+
+                // --- 1. 45 deg arc ---
+                const r1 = radius * 0.3;
+                ctx.strokeStyle = '#3b82f6';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.arc(midX, midY, r1, 0, rad45, true); // From 0 to -45 CCW
+                ctx.stroke();
+                let endX = midX + r1 * Math.cos(rad45);
+                let endY = midY + r1 * Math.sin(rad45);
+                let tangentAngle = rad45 - Math.PI / 2; // Tangent for CCW
+                drawArrowhead(ctx, endX, endY, tangentAngle, '#3b82f6');
+                ctx.fillStyle = '#3b82f6';
+                ctx.font = 'bold 14px Arial';
+                ctx.fillText('45°', midX + r1 - 10, midY - 20);
+                
+                // --- 2. 405 deg arc ---
+                const r2 = radius * 0.55;
+                ctx.strokeStyle = '#10b981';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath(); // Full CCW circle
+                ctx.arc(midX, midY, r2, 0, 2 * Math.PI, true);
+                ctx.stroke();
+                endX = midX + r2 * Math.cos(rad45);
+                endY = midY + r2 * Math.sin(rad45);
+                tangentAngle = rad45 - Math.PI / 2; // Re-assign
+                drawArrowhead(ctx, endX, endY, tangentAngle, '#10b981');
+                ctx.fillStyle = '#10b981';
+                ctx.font = 'bold 14px Arial';
+                ctx.fillText('405°', midX + 20, midY - r2 - 5);
+
+                // --- 3. -315 deg arc ---
+                const r3 = radius * 0.8;
+                ctx.strokeStyle = '#ef4444';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.arc(midX, midY, r3, 0, rad45, false); // From 0 to -45 CW (long path)
+                ctx.stroke();
+                endX = midX + r3 * Math.cos(rad45);
+                endY = midY + r3 * Math.sin(rad45);
+                tangentAngle = rad45 + Math.PI / 2; // Re-assign
+                drawArrowhead(ctx, endX, endY, tangentAngle, '#ef4444');
+                ctx.fillStyle = '#ef4444';
+                ctx.font = 'bold 14px Arial';
+                ctx.fillText('-315°', midX - r3 + 10, midY + 35);
+            }
+
+            // Canvas 4: Region to Formula
+            const canvas4 = document.getElementById('region-to-formula-canvas');
+            if(canvas4) {
+                const ctx = canvas4.getContext('2d');
+                drawAxes(ctx);
+                const midX = canvas4.width / 2;
+                const midY = canvas4.height / 2;
+                const radius = canvas4.width * 0.4;
+                
+                // --- Shaded Region ---
+                ctx.fillStyle = 'rgba(59, 130, 246, 0.2)';
+                ctx.beginPath();
+                ctx.moveTo(midX, midY);
+                ctx.arc(midX, midY, radius, -240*Math.PI/180, -210*Math.PI/180, false);
+                ctx.closePath();
+                ctx.fill();
+
+                // --- Boundary Angles with Arcs ---
+                const drawBoundaryAngle = (angle, color, arcRadius, label) => {
+                    const rad = -angle * Math.PI / 180;
+                    
+                    // Terminal Line (Ray)
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.moveTo(midX, midY);
+                    ctx.lineTo(midX + radius * Math.cos(rad), midY + radius * Math.sin(rad));
+                    ctx.stroke();
+                    
+                    // Arc for rotation
+                    ctx.lineWidth = 1.5;
+                    ctx.beginPath();
+                    ctx.arc(midX, midY, arcRadius, rad, 0, false); // From rad to 0, Clockwise (represents a positive angle)
+                    ctx.stroke();
+
+                    // Label
+                    ctx.fillStyle = color;
+                    ctx.font = 'bold 14px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    // Position label near the middle of the arc
+                    const textRad = rad / 2;
+                    const textX = midX + (arcRadius + 15) * Math.cos(textRad);
+                    const textY = midY + (arcRadius + 15) * Math.sin(textRad);
+                    ctx.fillText(label, textX, textY);
+                };
+
+                // Draw 210 degree angle with a smaller arc
+                drawBoundaryAngle(210, '#3b82f6', radius * 0.5, '210°');
+                // Draw 240 degree angle with a larger arc
+                drawBoundaryAngle(240, '#8b5cf6', radius * 0.7, '240°');
+            }
+
+            // Canvas 5: Formula to Region
+            const canvas5 = document.getElementById('formula-to-region-canvas');
+            if(canvas5) {
+                const ctx = canvas5.getContext('2d');
+                drawAxes(ctx);
+                const midX = canvas5.width / 2;
+                const midY = canvas5.height / 2;
+                const radius = canvas5.width * 0.4;
+                
+                // --- Shaded Regions ---
+                // k=0: [30, 90]
+                ctx.fillStyle = 'rgba(20, 184, 166, 0.4)';
+                ctx.beginPath();
+                ctx.moveTo(midX, midY);
+                ctx.arc(midX, midY, radius, -90*Math.PI/180, -30*Math.PI/180, false);
+                ctx.closePath();
+                ctx.fill();
+
+                // k=1: [210, 270]
+                ctx.beginPath();
+                ctx.moveTo(midX, midY);
+                ctx.arc(midX, midY, radius, -270*Math.PI/180, -210*Math.PI/180, false);
+                ctx.closePath();
+                ctx.fill();
+
+                // --- Boundary Lines and Labels ---
+                const drawBoundaryLine = (angle, color, label) => {
+                    const rad = -angle * Math.PI / 180;
+                    
+                    // Terminal Line (Ray)
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 2.5;
+                    ctx.beginPath();
+                    ctx.moveTo(midX, midY);
+                    ctx.lineTo(midX + radius * Math.cos(rad), midY + radius * Math.sin(rad));
+                    ctx.stroke();
+
+                    // Label
+                    ctx.fillStyle = color;
+                    ctx.font = 'bold 14px Arial';
+                    
+                    const labelRadius = radius + 10; // Position the label's anchor point
+                    let textX = midX + labelRadius * Math.cos(rad);
+                    let textY = midY + labelRadius * Math.sin(rad);
+
+                    // Custom positioning for each label to ensure clarity
+                    // Default alignments
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+
+                    // Fine-tune position based on angle
+                    if (angle === 30) {
+                        ctx.textAlign = 'left';
+                        textX += 5;
+                    } else if (angle === 90) {
+                        ctx.textAlign = 'right';
+                        ctx.textBaseline = 'top';
+                        textX -= 5;
+                        textY += 5;
+                    } else if (angle === 210) {
+                        ctx.textAlign = 'left';
+                        ctx.textBaseline = 'bottom';
+                        textX += 0;
+                        textY -= 25;
+                    } else if (angle === 270) {
+                        ctx.textBaseline = 'top';
+                        textY += 8;
+                    }
+                    
+                    ctx.fillText(label, textX, textY);
+                };
+
+                // For k=0
+                drawBoundaryLine(30, '#0d9488', '30°');
+                drawBoundaryLine(90, '#0d9488', '90°');
+
+                // For k=1
+                drawBoundaryLine(210, '#115e59', '180°+30°');
+                drawBoundaryLine(270, '#115e59', '180°+90°');
+            }
+
+            // Canvas for exercise
+            const canvasEx = document.getElementById('exercise-canvas');
+            if(canvasEx) {
+                const ctx = canvasEx.getContext('2d');
+                const w = canvasEx.width;
+                const h = canvasEx.height;
+                const midX = w / 2;
+                const midY = h / 2;
+                const radius = w * 0.45;
+                
+                drawAxes(ctx);
+
+                // Shaded region
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+                ctx.beginPath();
+                ctx.moveTo(midX, midY);
+                ctx.arc(midX, midY, radius, -150*Math.PI/180, -45*Math.PI/180, false);
+                ctx.closePath();
+                ctx.fill();
+
+                // Dashed Boundary lines
+                ctx.strokeStyle = '#000';
+                ctx.lineWidth = 1;
+                ctx.setLineDash([4, 4]);
+
+                // 45 degree line
+                let rad45 = -45 * Math.PI / 180;
+                ctx.beginPath();
+                ctx.moveTo(midX, midY);
+                ctx.lineTo(midX + radius * Math.cos(rad45), midY + radius * Math.sin(rad45));
+                ctx.stroke();
+
+                // 150 degree line
+                let rad150 = -150 * Math.PI / 180;
+                ctx.beginPath();
+                ctx.moveTo(midX, midY);
+                ctx.lineTo(midX + radius * Math.cos(rad150), midY + radius * Math.sin(rad150));
+                ctx.stroke();
+                
+                ctx.setLineDash([]); // Reset to solid lines
+
+                // Angle arcs and labels
+                ctx.strokeStyle = '#000';
+                ctx.lineWidth = 1;
+                
+                // 45 degree arc and label
+                ctx.beginPath();
+                ctx.arc(midX, midY, radius * 0.4, 0, -45 * Math.PI / 180, true);
+                ctx.stroke();
+                ctx.fillStyle = '#000';
+                ctx.font = '12px Arial';
+                ctx.fillText('45°', midX + radius * 0.5, midY - 5);
+                
+                // 30 degree arc and label (from negative x-axis)
+                ctx.beginPath();
+                ctx.arc(midX, midY, radius * 0.4, -180 * Math.PI / 180, -150 * Math.PI / 180, false);
+                ctx.stroke();
+                ctx.fillText('30°', midX - radius * 0.5, midY - 5);
+            }
+
+        });
+    </script>
+</body>
+</html>
+

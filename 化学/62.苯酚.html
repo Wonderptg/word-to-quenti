@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>烃的衍生物：苯酚</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 MathJax 用于显示化学公式 -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                packages: ['base', 'ams', 'noerrors', 'noundefined']
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 全局样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        
+        /* 幻灯片容器 */
+        #presentation-container {
+            width: 100%;
+            max-width: 260mm; /* 接近A4宽度 */
+            margin: 2rem auto;
+            background-color: white;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        /* 单页样式 */
+        .section {
+            width: 100%;
+            height: 600px; /* 屏幕预览固定高度 */
+            box-sizing: border-box;
+            padding: 3rem 4rem;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            position: relative;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        /* 导航栏 */
+        #navigation {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            z-index: 50;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        /* 重点框样式 */
+        .highlight-box {
+            background-color: #f0fdf4;
+            border-left: 5px solid #16a34a;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            border-radius: 0.25rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .warn-box {
+            background-color: #fef2f2;
+            border-left: 5px solid #ef4444;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            border-radius: 0.25rem;
+        }
+
+        /* 打印专用样式 - 修复版 */
+        @media print {
+            @page { 
+                size: A4 landscape; /* A4 横向 */
+                margin: 0; 
+            }
+            html, body { 
+                background-color: white; 
+                height: auto !important; /* 允许高度自动扩展 */
+                width: 100%;
+                overflow: visible !important; /* 允许内容溢出，这样才能看到所有页面 */
+            }
+            #presentation-container { 
+                margin: 0; 
+                padding: 0; 
+                box-shadow: none; 
+                max-width: none; 
+                width: 100%;
+                border-radius: 0;
+                height: auto !important;
+                overflow: visible !important;
+            }
+            .section { 
+                display: flex !important; /* 强制显示所有页面 */
+                opacity: 1 !important; 
+                height: 100vh !important; /* 每一节强制占满一页视口高度 */
+                page-break-after: always; /* 每一节后强制分页 */
+                break-after: page; /* 兼容性写法 */
+                page-break-inside: avoid; /* 防止页面内部截断 */
+                padding: 2rem 3rem; /* 打印时的内边距 */
+            }
+            .section:last-child { 
+                page-break-after: auto; 
+            }
+            #navigation, #mathjax-loading { 
+                display: none !important; 
+            }
+            /* 隐藏不必要的滚动条 */
+            ::-webkit-scrollbar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 1. 封面 -->
+        <div class="section active">
+            <div class="w-full text-center">
+                <!-- 苯酚艺术图标 -->
+                <svg class="w-40 h-40 mx-auto text-pink-600 mb-8" viewBox="0 0 100 100">
+                    <path d="M50 20 L75 35 L75 65 L50 80 L25 65 L25 35 Z" fill="none" stroke="currentColor" stroke-width="3"/>
+                    <circle cx="50" cy="50" r="15" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <line x1="50" y1="20" x2="50" y2="5" stroke="currentColor" stroke-width="3"/>
+                    <text x="50" y="5" text-anchor="middle" fill="currentColor" font-size="14" font-weight="bold" dy="-5">OH</text>
+                </svg>
+                <h1 class="text-6xl font-bold text-slate-800 mb-6">苯酚 (Phenol)</h1>
+                <div class="w-32 h-2 bg-pink-500 mx-auto mb-8 rounded-full"></div>
+                <p class="text-3xl text-slate-600 tracking-widest">烃的衍生物 · 结构与性质</p>
+            </div>
+        </div>
+
+        <!-- 2. 定义与分类 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 border-b-4 border-pink-500 inline-block mb-8 pb-2">苯酚的定义</h2>
+            <div class="flex items-center justify-between gap-10">
+                <div class="w-1/2 text-xl text-slate-700 leading-relaxed">
+                    <p class="mb-6"><strong>定义：</strong>羟基 ($-\text{OH}$) 与<strong>苯环</strong>直接相连的化合物称为酚。</p>
+                    <div class="highlight-box">
+                        <p class="font-bold text-green-800 text-2xl mb-2">✔ 是酚</p>
+                        <p>羟基直接连在苯环上。</p>
+                    </div>
+                    <div class="warn-box">
+                        <p class="font-bold text-red-800 text-2xl mb-2">✘ 不是酚 (是醇)</p>
+                        <p>羟基连在侧链碳原子上 (如苯甲醇)。</p>
+                    </div>
+                </div>
+                <div class="w-1/2 flex flex-col items-center bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <svg width="350" height="200" viewBox="0 0 350 200">
+                        <!-- 苯酚结构 -->
+                        <g transform="translate(50, 50)">
+                            <path d="M30 10 L55 25 L55 55 L30 70 L5 55 L5 25 Z" fill="none" stroke="#db2777" stroke-width="3"/>
+                            <circle cx="30" cy="40" r="12" fill="none" stroke="#db2777" stroke-width="2"/>
+                            <line x1="30" y1="10" x2="30" y2="-10" stroke="#db2777" stroke-width="3"/>
+                            <text x="30" y="-15" text-anchor="middle" fill="#db2777" font-size="16" font-weight="bold">OH</text>
+                            <text x="30" y="100" text-anchor="middle" fill="#334155" font-size="16">苯酚 (酚)</text>
+                        </g>
+                        
+                        <!-- 分隔线 -->
+                        <line x1="175" y1="20" x2="175" y2="180" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5,5"/>
+
+                        <!-- 苯甲醇结构 -->
+                        <g transform="translate(220, 50)">
+                            <path d="M30 10 L55 25 L55 55 L30 70 L5 55 L5 25 Z" fill="none" stroke="#64748b" stroke-width="3"/>
+                            <circle cx="30" cy="40" r="12" fill="none" stroke="#64748b" stroke-width="2"/>
+                            <line x1="30" y1="10" x2="30" y2="-10" stroke="#64748b" stroke-width="3"/>
+                            <text x="30" y="-15" text-anchor="middle" fill="#64748b" font-size="16" font-weight="bold">CH₂OH</text>
+                            <text x="30" y="100" text-anchor="middle" fill="#334155" font-size="16">苯甲醇 (醇)</text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. 分子结构 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 border-b-4 border-pink-500 inline-block mb-8 pb-2">分子结构特征</h2>
+            <div class="grid grid-cols-2 gap-12">
+                <div class="text-xl text-slate-700 space-y-6">
+                    <ul class="list-disc pl-6 space-y-4">
+                        <li><strong>分子式：</strong> $\text{C}_6\text{H}_6\text{O}$</li>
+                        <li><strong>结构简式：</strong> 
+                            <span class="font-mono bg-slate-100 px-2 py-1 rounded">$\text{C}_6\text{H}_5\text{OH}$</span>
+                        </li>
+                        <li><strong>官能团：</strong> 酚羟基 ($-\text{OH}$)</li>
+                    </ul>
+                    <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
+                        <p class="font-bold text-blue-800 mb-2">关于共平面：</p>
+                        <p>苯环确定的平面上有12个原子<strong>一定</strong>共面。</p>
+                        <p class="mt-2">由于 $\text{O-H}$ 单键可以旋转，氢原子<strong>可能</strong>共面（最多13原子），也可能不共面。</p>
+                    </div>
+                </div>
+                <div class="flex items-center justify-center">
+                    <!-- 简单的球棍模型示意图 -->
+                    <svg width="300" height="300" viewBox="0 0 200 200">
+                        <!-- 苯环碳骨架 -->
+                        <polygon points="100,40 140,60 140,100 100,120 60,100 60,60" fill="#e2e8f0" stroke="#475569" stroke-width="2"/>
+                        <!-- 碳原子 (黑球) -->
+                        <circle cx="100" cy="40" r="8" fill="#333"/>
+                        <circle cx="140" cy="60" r="8" fill="#333"/>
+                        <circle cx="140" cy="100" r="8" fill="#333"/>
+                        <circle cx="100" cy="120" r="8" fill="#333"/>
+                        <circle cx="60" cy="100" r="8" fill="#333"/>
+                        <circle cx="60" cy="60" r="8" fill="#333"/>
+                        
+                        <!-- 氧原子 (红球) -->
+                        <line x1="100" y1="40" x2="100" y2="15" stroke="#999" stroke-width="3"/>
+                        <circle cx="100" cy="10" r="10" fill="#ef4444"/>
+                        
+                        <!-- 氢原子 (白球) -->
+                        <line x1="100" y1="10" x2="125" y2="5" stroke="#999" stroke-width="3"/>
+                        <circle cx="125" cy="5" r="5" fill="white" stroke="#333" stroke-width="1"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. 物理性质 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 border-b-4 border-pink-500 inline-block mb-8 pb-2">物理性质</h2>
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
+                <ul class="text-2xl text-slate-700 space-y-6 leading-relaxed">
+                    <li class="flex items-start">
+                        <span class="mr-3 text-pink-500">●</span>
+                        <span><strong>色态味：</strong>无色晶体，有特殊气味。放置时间长因氧化呈<span class="text-pink-500 font-bold">粉红色</span>。</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="mr-3 text-pink-500">●</span>
+                        <span><strong>溶解性：</strong>室温下溶解度不大（9.2g），但高于 <strong class="text-red-600">65℃</strong> 时与水<strong>混溶</strong>。易溶于酒精等有机溶剂。</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="mr-3 text-pink-500">●</span>
+                        <span><strong>毒性：</strong>有毒，对皮肤有强腐蚀性。</span>
+                    </li>
+                </ul>
+                <div class="mt-8 bg-red-50 p-4 rounded border border-red-200 flex items-center">
+                    <span class="text-3xl mr-4">🚑</span>
+                    <p class="text-red-800 text-xl"><strong>急救措施：</strong>若不慎沾到皮肤上，应立即用<strong>酒精</strong>洗涤，再用水冲洗。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. 化学性质：弱酸性 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 border-b-4 border-pink-500 inline-block mb-6 pb-2">化学性质：弱酸性</h2>
+            <p class="text-xl text-slate-600 mb-6">苯环的影响使羟基氢更活泼，能电离出 $\text{H}^+$，俗称“石炭酸”。</p>
+            
+            <div class="space-y-8">
+                <!-- 电离方程式 -->
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <p class="text-lg text-slate-500 mb-2">1. 电离方程式：</p>
+                    <div class="text-2xl font-mono text-center">
+                        $$ \text{C}_6\text{H}_5\text{OH} \rightleftharpoons \text{C}_6\text{H}_5\text{O}^- + \text{H}^+ $$
+                    </div>
+                </div>
+
+                <!-- 与NaOH反应 -->
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <p class="text-lg text-slate-500 mb-2">2. 与 NaOH 中和反应（浑浊变澄清）：</p>
+                    <div class="text-2xl font-mono text-center">
+                        $$ \text{C}_6\text{H}_5\text{OH} + \text{NaOH} \longrightarrow \text{C}_6\text{H}_5\text{ONa} + \text{H}_2\text{O} $$
+                    </div>
+                </div>
+
+                <!-- 强酸制弱酸 -->
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <p class="text-lg text-slate-500 mb-2">3. 苯酚钠加盐酸（澄清变浑浊）：</p>
+                    <div class="text-2xl font-mono text-center">
+                        $$ \text{C}_6\text{H}_5\text{ONa} + \text{HCl} \longrightarrow \text{C}_6\text{H}_5\text{OH} + \text{NaCl} $$
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. 重点：酸性强弱与CO2反应 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 border-b-4 border-pink-500 inline-block mb-6 pb-2">酸性比较与 $\text{CO}_2$ 反应</h2>
+            
+            <!-- 酸性轴 -->
+            <div class="mb-10 mt-4">
+                <svg width="100%" height="80" viewBox="0 0 800 80">
+                    <line x1="50" y1="40" x2="750" y2="40" stroke="#cbd5e1" stroke-width="4" marker-end="url(#arrow)"/>
+                    <circle cx="200" cy="40" r="8" fill="#3b82f6"/>
+                    <text x="200" y="70" text-anchor="middle" font-weight="bold" fill="#1e293b" font-size="18">碳酸 ($\text{H}_2\text{CO}_3$)</text>
+                    <text x="300" y="30" text-anchor="middle" fill="#94a3b8" font-size="20">></text>
+                    
+                    <circle cx="400" cy="40" r="8" fill="#db2777"/>
+                    <text x="400" y="70" text-anchor="middle" font-weight="bold" fill="#db2777" font-size="18">苯酚 ($\text{C}_6\text{H}_5\text{OH}$)</text>
+                    <text x="500" y="30" text-anchor="middle" fill="#94a3b8" font-size="20">></text>
+
+                    <circle cx="600" cy="40" r="8" fill="#10b981"/>
+                    <text x="600" y="70" text-anchor="middle" font-weight="bold" fill="#1e293b" font-size="18">碳酸氢根 ($\text{HCO}_3^-$)</text>
+                </svg>
+            </div>
+
+            <div class="bg-green-50 border border-green-200 rounded-xl p-6">
+                <h3 class="text-2xl font-bold text-green-800 mb-4">🧪 关键反应</h3>
+                <p class="text-xl mb-4">向苯酚钠溶液中通入 $\text{CO}_2$（<strong>无论少量或过量</strong>）：</p>
+                <div class="text-2xl font-mono text-center bg-white p-4 rounded border border-green-100 shadow-sm">
+                    $$ \text{C}_6\text{H}_5\text{ONa} + \text{H}_2\text{O} + \text{CO}_2 \longrightarrow \text{C}_6\text{H}_5\text{OH} + \mathbf{\text{NaHCO}_3} $$
+                </div>
+                <p class="mt-4 text-lg text-green-900">
+                    <strong>解释：</strong>苯酚酸性强于 $\text{HCO}_3^-$，但弱于 $\text{H}_2\text{CO}_3$。所以只能生成 $\text{NaHCO}_3$，不能生成 $\text{Na}_2\text{CO}_3$。
+                </p>
+            </div>
+        </div>
+
+        <!-- 7. 化学性质：取代反应 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 border-b-4 border-pink-500 inline-block mb-6 pb-2">化学性质：取代反应</h2>
+            <p class="text-xl text-slate-700 mb-4">与浓溴水反应，产生<strong>白色沉淀</strong>（灵敏，可用于定性/定量）。</p>
+
+            <div class="flex items-center justify-center gap-8 bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div class="text-2xl font-mono space-y-4 text-center w-full">
+                    <div class="flex items-center justify-center gap-4">
+                        <span>苯酚</span>
+                        <span>+</span>
+                        <span>3 $\text{Br}_2$</span>
+                        <span class="text-slate-400">$\longrightarrow$</span>
+                        <span class="font-bold text-pink-600">三溴苯酚 $\downarrow$</span>
+                        <span>+</span>
+                        <span>3 HBr</span>
+                    </div>
+                    
+                    <!-- 反应结构示意图 -->
+                    <svg width="600" height="180" viewBox="0 0 600 180" class="mx-auto mt-6">
+                        <!-- 反应物：苯酚 -->
+                        <g transform="translate(50, 80)">
+                            <polygon points="0,-30 26,-15 26,15 0,30 -26,15 -26,-15" fill="none" stroke="#333" stroke-width="2"/>
+                            <circle cx="0" cy="0" r="15" fill="none" stroke="#333" stroke-width="1"/>
+                            <text x="0" y="-40" text-anchor="middle" font-size="14">OH</text>
+                        </g>
+                        
+                        <text x="120" y="85" font-size="20" font-weight="bold">+</text>
+                        <text x="160" y="85" font-size="20">3 Br₂</text>
+                        <line x1="220" y1="80" x2="280" y2="80" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+
+                        <!-- 生成物：三溴苯酚 -->
+                        <g transform="translate(380, 80)">
+                            <polygon points="0,-30 26,-15 26,15 0,30 -26,15 -26,-15" fill="none" stroke="#db2777" stroke-width="2"/>
+                            <circle cx="0" cy="0" r="15" fill="none" stroke="#db2777" stroke-width="1"/>
+                            <text x="0" y="-40" text-anchor="middle" font-size="14" fill="#db2777" font-weight="bold">OH</text>
+                            
+                            <!-- 溴原子 -->
+                            <text x="40" y="-15" font-size="14" fill="#db2777" font-weight="bold">Br (邻)</text>
+                            <text x="-40" y="-15" font-size="14" fill="#db2777" font-weight="bold">Br (邻)</text>
+                            <text x="0" y="55" text-anchor="middle" font-size="14" fill="#db2777" font-weight="bold">Br (对)</text>
+                        </g>
+                        
+                        <text x="460" y="85" font-size="20" font-weight="bold">+</text>
+                        <text x="520" y="85" font-size="20">3 HBr</text>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="mt-6 bg-yellow-50 p-4 rounded border border-yellow-200">
+                <p class="text-lg text-yellow-800"><strong>注意：</strong>羟基对苯环的影响，使<strong>邻、对位</strong>的氢原子变得活泼，易被取代。</p>
+            </div>
+        </div>
+
+        <!-- 8. 显色与氧化 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 border-b-4 border-pink-500 inline-block mb-8 pb-2">显色反应与氧化反应</h2>
+            
+            <div class="grid grid-cols-2 gap-10 h-full">
+                <!-- 显色反应 -->
+                <div class="bg-purple-50 p-8 rounded-xl border border-purple-200 flex flex-col items-center">
+                    <h3 class="text-2xl font-bold text-purple-800 mb-4">显色反应</h3>
+                    <div class="text-center space-y-4">
+                        <p class="text-xl">苯酚 + $\text{FeCl}_3$ 溶液</p>
+                        <p class="text-4xl">↓</p>
+                        <p class="text-3xl font-bold text-purple-600 bg-white px-6 py-2 rounded shadow">显紫色</p>
+                        <p class="text-slate-600 mt-4">用途：检验酚羟基的存在。</p>
+                    </div>
+                    <!-- 试管示意图 -->
+                    <svg width="60" height="120" viewBox="0 0 60 120" class="mt-6">
+                        <path d="M10 0 L10 100 Q30 120 50 100 L50 0" fill="#d8b4fe" stroke="#9333ea" stroke-width="2" opacity="0.5"/>
+                        <rect x="10" y="20" width="40" height="80" fill="#a855f7" opacity="0.3"/>
+                    </svg>
+                </div>
+
+                <!-- 氧化反应 -->
+                <div class="bg-rose-50 p-8 rounded-xl border border-rose-200 flex flex-col items-center">
+                    <h3 class="text-2xl font-bold text-rose-800 mb-4">氧化反应</h3>
+                    <ul class="text-lg space-y-6 list-disc pl-5 text-slate-700">
+                        <li>
+                            <strong>空气氧化：</strong><br>
+                            常温下易被氧化，晶体由无色变为<span class="text-pink-500 font-bold">粉红色</span>。
+                        </li>
+                        <li>
+                            <strong>高锰酸钾：</strong><br>
+                            能使酸性 $\text{KMnO}_4$ 溶液<span class="font-bold">褪色</span>。
+                        </li>
+                        <li>
+                            <strong>加成反应（还原）：</strong><br>
+                            与 $\text{H}_2$ 加成生成环己醇。
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 9. 综合例题 (乙烯雌酚) - 题干 -->
+        <div class="section">
+            <div class="flex items-center mb-6">
+                <span class="bg-blue-600 text-white px-4 py-1 rounded text-lg font-bold mr-4">综合例题</span>
+                <h2 class="text-3xl font-bold text-slate-800">结构与性质推断</h2>
+            </div>
+            
+            <div class="bg-white p-8 rounded-lg shadow-sm border border-slate-200 text-xl leading-relaxed">
+                <p class="mb-6 font-bold">题目：乙烯雌酚是人工合成的激素药物，结构简式如下。下列说法<span class="text-red-600 underline">错误</span>的是？</p>
+                
+                <!-- 结构简式示意图 -->
+                <div class="flex justify-center mb-8">
+                    <svg width="300" height="120" viewBox="0 0 300 120">
+                        <!-- 左苯环 -->
+                        <g transform="translate(60,60)">
+                            <polygon points="-20,-20 0,-30 20,-20 20,0 0,10 -20,0" fill="none" stroke="#333" stroke-width="2"/>
+                            <circle cx="0" cy="-10" r="10" fill="none" stroke="#333" stroke-width="1"/>
+                            <text x="-35" y="-10" font-size="14" font-weight="bold">HO</text>
+                        </g>
+                        <!-- 中间双键 -->
+                        <line x1="80" y1="60" x2="120" y2="60" stroke="#333" stroke-width="2"/>
+                        <line x1="80" y1="65" x2="120" y2="65" stroke="#333" stroke-width="2"/>
+                        <text x="100" y="40" text-anchor="middle" font-size="12">乙基</text>
+                        <text x="100" y="90" text-anchor="middle" font-size="12">乙基</text>
+                        
+                        <!-- 右苯环 -->
+                        <g transform="translate(140,60)">
+                            <polygon points="-20,-20 0,-30 20,-20 20,0 0,10 -20,0" fill="none" stroke="#333" stroke-width="2"/>
+                            <circle cx="0" cy="-10" r="10" fill="none" stroke="#333" stroke-width="1"/>
+                            <text x="30" y="-5" font-size="14" font-weight="bold">OH</text>
+                        </g>
+                    </svg>
+                </div>
+
+                <div class="space-y-4 text-lg">
+                    <p class="p-3 border rounded hover:bg-slate-50">A. 该物质能发生取代、加成、氧化反应</p>
+                    <p class="p-3 border rounded hover:bg-slate-50">B. 该物质可分别与 $\text{NaOH}$ 和 $\text{NaHCO}_3$ 溶液反应</p>
+                    <p class="p-3 border rounded hover:bg-slate-50">C. 1mol 该物质最多与 5mol $\text{Br}_2$ 反应</p>
+                    <p class="p-3 border rounded hover:bg-slate-50">D. 该分子中最多有 18 个碳原子共平面</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 10. 综合例题 - 解析 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-green-700 border-b-4 border-green-500 inline-block mb-6 pb-2">综合例题：解析</h2>
+            
+            <div class="bg-green-50 p-8 rounded-xl border border-green-100 h-full overflow-y-auto">
+                <p class="text-2xl font-bold text-green-900 mb-6">正确答案：B</p>
+                
+                <div class="space-y-6 text-lg text-slate-800">
+                    <div>
+                        <p class="font-bold text-green-800">A. 正确</p>
+                        <p>含酚羟基（邻位H可取代，可氧化）、含碳碳双键（可加成、氧化）、含苯环（可加成）。</p>
+                    </div>
+                    <div class="bg-white p-4 rounded border border-green-200">
+                        <p class="font-bold text-red-600">B. 错误 (关键点)</p>
+                        <p>酚羟基显酸性，可以与 $\text{NaOH}$ 中和。</p>
+                        <p><strong>但是：</strong>酸性 $\text{C}_6\text{H}_5\text{OH} < \text{H}_2\text{CO}_3$，不能与 $\text{NaHCO}_3$ 反应放出 $\text{CO}_2$。能与 $\text{NaHCO}_3$ 反应的是羧基 ($-\text{COOH}$)。</p>
+                    </div>
+                    <div>
+                        <p class="font-bold text-green-800">C. 正确</p>
+                        <p>苯环上酚羟基的<strong>邻位</strong>氢原子共4个，消耗 4mol $\text{Br}_2$（取代）；</p>
+                        <p>1个碳碳双键消耗 1mol $\text{Br}_2$（加成）；合计 5mol。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 11. 基础巩固 1 -->
+        <div class="section">
+            <div class="flex items-center mb-6">
+                <span class="bg-orange-500 text-white px-4 py-1 rounded text-lg font-bold mr-4">基础巩固 1/5</span>
+            </div>
+            <div class="bg-white p-10 rounded-lg shadow-sm border border-slate-200 text-2xl">
+                <p class="font-bold text-slate-800 mb-10">下列物质中，属于酚类的是？</p>
+                <div class="space-y-6">
+                    <div class="p-6 border border-slate-300 rounded-lg bg-slate-50 flex items-center gap-4">
+                        <span class="font-bold text-slate-500">A.</span>
+                        <span>$\text{C}_6\text{H}_5-\text{CH}_2\text{OH}$</span>
+                    </div>
+                    <div class="p-6 border border-slate-300 rounded-lg bg-slate-50 flex items-center gap-4">
+                        <span class="font-bold text-slate-500">B.</span>
+                        <span>$\text{C}_6\text{H}_5-\text{OH}$</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 解析 1 -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-green-700 border-b-4 border-green-500 inline-block mb-6 pb-2">解析 1</h2>
+             <div class="bg-green-50 p-8 rounded-xl text-xl text-slate-800">
+                 <p class="font-bold text-3xl mb-6">答案：B</p>
+                 <p><strong>解析：</strong></p>
+                 <p class="mb-4">A 是苯甲醇，羟基连在侧链上，属于醇。</p>
+                 <p>B 是苯酚，羟基直接连在苯环上，属于酚。</p>
+             </div>
+        </div>
+
+        <!-- 12. 基础巩固 2 -->
+        <div class="section">
+            <div class="flex items-center mb-6">
+                <span class="bg-orange-500 text-white px-4 py-1 rounded text-lg font-bold mr-4">基础巩固 2/5</span>
+            </div>
+            <div class="bg-white p-10 rounded-lg shadow-sm border border-slate-200 text-2xl">
+                <p class="font-bold text-slate-800 mb-10">除去苯中混有的少量苯酚，正确的方法是？</p>
+                <div class="space-y-6">
+                    <div class="p-6 border border-slate-300 rounded-lg bg-slate-50">A. 加入浓溴水，过滤</div>
+                    <div class="p-6 border border-slate-300 rounded-lg bg-slate-50">B. 加入 $\text{NaOH}$ 溶液，分液</div>
+                </div>
+            </div>
+        </div>
+        <!-- 解析 2 -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-green-700 border-b-4 border-green-500 inline-block mb-6 pb-2">解析 2</h2>
+             <div class="bg-green-50 p-8 rounded-xl text-xl text-slate-800">
+                 <p class="font-bold text-3xl mb-6">答案：B</p>
+                 <p><strong>解析：</strong></p>
+                 <p class="mb-4">A 错：三溴苯酚沉淀溶于苯，无法过滤分离。</p>
+                 <p>B 对：苯酚与 $\text{NaOH}$ 反应生成溶于水的苯酚钠，而苯不溶于水，分层后分液即可。</p>
+             </div>
+        </div>
+
+        <!-- 13. 基础巩固 3 -->
+        <div class="section">
+            <div class="flex items-center mb-6">
+                <span class="bg-orange-500 text-white px-4 py-1 rounded text-lg font-bold mr-4">基础巩固 3/5</span>
+            </div>
+            <div class="bg-white p-10 rounded-lg shadow-sm border border-slate-200 text-2xl">
+                <p class="font-bold text-slate-800 mb-10">苯酚沾到皮肤上，应立即用什么清洗？</p>
+                <div class="space-y-6">
+                    <div class="p-6 border border-slate-300 rounded-lg bg-slate-50">A. 稀 $\text{NaOH}$ 溶液</div>
+                    <div class="p-6 border border-slate-300 rounded-lg bg-slate-50">B. 酒精</div>
+                </div>
+            </div>
+        </div>
+        <!-- 解析 3 -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-green-700 border-b-4 border-green-500 inline-block mb-6 pb-2">解析 3</h2>
+             <div class="bg-green-50 p-8 rounded-xl text-xl text-slate-800">
+                 <p class="font-bold text-3xl mb-6">答案：B</p>
+                 <p><strong>解析：</strong></p>
+                 <p class="mb-4">苯酚易溶于有机溶剂（如酒精）。NaOH 对皮肤也有腐蚀性，不适合直接用于皮肤清洗。</p>
+             </div>
+        </div>
+
+        <!-- 14. 基础巩固 4 -->
+        <div class="section">
+            <div class="flex items-center mb-6">
+                <span class="bg-orange-500 text-white px-4 py-1 rounded text-lg font-bold mr-4">基础巩固 4/5</span>
+            </div>
+            <div class="bg-white p-10 rounded-lg shadow-sm border border-slate-200 text-2xl">
+                <p class="font-bold text-slate-800 mb-10">下列关于苯酚与浓溴水反应的描述，正确的是？</p>
+                <div class="space-y-6">
+                    <div class="p-6 border border-slate-300 rounded-lg bg-slate-50">A. 生成白色沉淀，取代了苯环上的3个氢原子</div>
+                    <div class="p-6 border border-slate-300 rounded-lg bg-slate-50">B. 需要加热和催化剂</div>
+                </div>
+            </div>
+        </div>
+        <!-- 解析 4 -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-green-700 border-b-4 border-green-500 inline-block mb-6 pb-2">解析 4</h2>
+             <div class="bg-green-50 p-8 rounded-xl text-xl text-slate-800">
+                 <p class="font-bold text-3xl mb-6">答案：A</p>
+                 <p><strong>解析：</strong></p>
+                 <p class="mb-4">苯酚与浓溴水反应非常灵敏，<strong>无需加热和催化剂</strong>，直接在邻位和对位发生取代，生成三溴苯酚白色沉淀。</p>
+             </div>
+        </div>
+
+         <!-- 15. 基础巩固 5 -->
+         <div class="section">
+            <div class="flex items-center mb-6">
+                <span class="bg-orange-500 text-white px-4 py-1 rounded text-lg font-bold mr-4">基础巩固 5/5</span>
+            </div>
+            <div class="bg-white p-10 rounded-lg shadow-sm border border-slate-200 text-2xl">
+                <p class="font-bold text-slate-800 mb-10">能用来检验苯酚存在的试剂是？</p>
+                <div class="space-y-6">
+                    <div class="p-6 border border-slate-300 rounded-lg bg-slate-50">A. 石蕊试液</div>
+                    <div class="p-6 border border-slate-300 rounded-lg bg-slate-50">B. $\text{FeCl}_3$ 溶液</div>
+                </div>
+            </div>
+        </div>
+        <!-- 解析 5 -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-green-700 border-b-4 border-green-500 inline-block mb-6 pb-2">解析 5</h2>
+             <div class="bg-green-50 p-8 rounded-xl text-xl text-slate-800">
+                 <p class="font-bold text-3xl mb-6">答案：B</p>
+                 <p><strong>解析：</strong></p>
+                 <p class="mb-4">A 错：苯酚酸性太弱，不能使酸碱指示剂（如石蕊）变色。</p>
+                 <p>B 对：苯酚遇 $\text{FeCl}_3$ 显<strong>紫色</strong>，是特征反应。</p>
+             </div>
+        </div>
+
+        <!-- 16. 结束页 -->
+        <div class="section">
+            <div class="w-full text-center">
+                <h2 class="text-5xl font-bold text-slate-800 mb-8">本节课结束</h2>
+                <p class="text-2xl text-slate-600 mb-12">下节课预告：醛与酮</p>
+                <div class="inline-block bg-pink-100 text-pink-800 px-6 py-3 rounded-full text-lg">
+                    记得复习苯酚的弱酸性与特殊取代反应哦！
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- 导航按钮 -->
+    <div id="navigation">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded-full transition-all disabled:opacity-50">
+            ← 上一页
+        </button>
+        <span id="page-indicator" class="text-slate-700 font-mono font-bold text-lg"></span>
+        <button id="nextBtn" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full transition-all disabled:opacity-50">
+            下一页 →
+        </button>
+    </div>
+
+    <!-- 脚本逻辑 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                sections.forEach((section) => {
+                    section.classList.remove('active');
+                });
+
+                sections[pageIndex].classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+                
+                window.scrollTo(0, 0);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>函数三要素 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 400px; /* 保证内容较少时也有足够高度 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .cartoon-canvas {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            width: 100px;
+            height: 100px;
+        }
+
+        .graph-svg {
+            width: 100%;
+            height: auto;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.25rem;
+            max-width: 200px;
+            margin: 0 auto;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+
+            .section:last-child {
+                page-break-after: auto;
+            }
+            .cartoon-canvas {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- Section 1: Title -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">函数三要素</h1>
+                <p class="text-2xl text-slate-600 mt-4">全面解析函数世界</p>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 2: Intro -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">揭开函数的神秘面纱</h2>
+                <p class="mt-8 text-xl text-slate-700 leading-relaxed">
+                    函数就像一个“魔法自动售货机”，本质上就是一个“<strong class="text-red-600">输入-处理-输出</strong>”的过程。
+                </p>
+                <div class="mt-6 bg-amber-50 p-6 rounded-lg text-lg">
+                    <p class="font-semibold text-xl">定义一个处理过程 f(x) = 2x - 3</p>
+                    <ul class="list-disc list-inside mt-2 space-y-1">
+                        <li>输入 5，输出 f(5) = 2*5 - 3 = 7</li>
+                        <li>输入 0，输出 f(0) = 2*0 - 3 = -3</li>
+                        <li>输入 (a+1)，输出 f(a+1) = 2(a+1) - 3 = 2a - 1</li>
+                    </ul>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 3: Three Elements -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">函数三要素</h2>
+                <div class="mt-6 space-y-4">
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-blue-700 text-xl">定义域 (Domain)</h3>
+                        <p class="mt-1">“原料”的范围，即自变量x的合法取值集合。</p>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-green-700 text-xl">对应法则 (Rule of Correspondence)</h3>
+                        <p class="mt-1">“处理程序f”，决定如何计算。</p>
+                    </div>
+                    <div class="bg-red-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-red-700 text-xl">值域 (Range)</h3>
+                        <p class="mt-1">“产品”的范围，即所有可能输出的f(x)的集合。</p>
+                    </div>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 4: Domain Rules -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">函数的“准入规则”——求定义域</h2>
+                <p class="mt-6 text-xl">求定义域就像机场安检，有几条明确的规定：</p>
+                <ul class="mt-4 list-disc list-inside space-y-3 text-lg">
+                    <li><strong>分母不能为零！</strong> (如 1/(x-2) 中 x≠2)</li>
+                    <li><strong>偶次根号下面必须大于等于零！</strong> (如 √(x-1) 中 x≥1)</li>
+                    <li><strong>一个数的零次幂，底数不能是零！</strong> (如 (x-4)⁰ 中 x≠4)</li>
+                </ul>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 5: Comprehensive Example -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">综合安检：多规则叠加</h2>
+                <p class="mt-6 text-xl">当一个函数同时包含多种情况时，我们需要同时满足所有安检规则。</p>
+                <p class="mt-2 text-xl font-semibold text-center">例如，求函数 f(x) = √(x-1) / (x²-9) 的定义域：</p>
+                <div class="mt-4 bg-indigo-50 p-6 rounded-lg text-lg">
+                    <p><strong>我们来分析：</strong></p>
+                    <ol class="list-decimal list-inside mt-2 space-y-2">
+                        <li>看到根号 √(x-1)，安检员立刻亮灯：x-1 ≥ 0，解出来 <strong>x ≥ 1</strong>。</li>
+                        <li>看到分母 x²-9，安检员再次亮灯：x²-9 ≠ 0，解出来 <strong>x ≠ 3 且 x ≠ -3</strong>。</li>
+                    </ol>
+                    <p class="mt-4">这两个条件必须<strong>同时满足</strong>！我们画个数轴，x 要大于等于1，同时还要把 3 和 -3 这两个点挖掉。-3 本来就不在范围内，所以我们最终的定义域就是：</p>
+                    <p class="mt-2 text-center font-bold text-xl text-red-600">[1, 3) U (3, +∞)</p>
+                    <p class="mt-2 text-right">搞定！</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 6: Abstract Function Domain -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">抽象函数定义域：以不变应万变</h2>
+                 <p class="mt-6 text-xl">如果 f(x) 的定义域是 (0, 9]，求 f(x²) 的定义域？</p>
+                 <div class="mt-4 bg-purple-50 p-6 rounded-lg text-lg">
+                    <p class="font-bold text-purple-700">黄金法则：同一个函数f，对括号里装的东西的要求，是永远不变的！</p>
+                    <p class="mt-4">f(x)要求括号里的x满足 0 < x ≤ 9。</p>
+                    <p>那么f(x²)就要求括号里的x²满足 <strong class="text-red-600">0 < x² ≤ 9</strong>。</p>
+                    <p class="mt-2">解这个不等式：x² > 0 ⟹ x ≠ 0；x² ≤ 9 ⟹ -3 ≤ x ≤ 3。</p>
+                    <p class="mt-2 font-bold">最终定义域：[-3, 0) U (0, 3]。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 7: Method 1 - Undetermined Coefficients -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2">手段一：待定系数法</h2>
+                <div class="mt-6 bg-teal-50 p-6 rounded-lg text-lg space-y-4">
+                    <div>
+                        <h3 class="font-bold text-teal-800">案情简介：</h3>
+                        <p>已经知道罪犯是“一次函数”或“二次函数”这种明确的身份。</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-teal-800">侦破思路：</h3>
+                        <p>先把他的标准像画出来（比如设 f(x)=ax+b），然后根据线索（题目条件）去确定 a 和 b 的值。</p>
+                    </div>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 8: Case 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-sky-500 pb-2">案例练习：待定系数法</h2>
+                <div class="mt-6 bg-sky-50 p-8 rounded-lg text-xl text-center">
+                    <p>已知 f(x) 是一次函数，且满足 <strong>2f(x+1) - f(x) = x+3</strong>，求 f(x)。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 9: Method 2 - Substitution -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2">手段二：换元法</h2>
+                <div class="mt-6 bg-teal-50 p-6 rounded-lg text-lg space-y-4">
+                    <div>
+                        <h3 class="font-bold text-teal-800">案情简介：</h3>
+                        <p>f 括号里被塞进一个很复杂的“伪装”，比如 f(1/x + 1)。</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-teal-800">侦破思路：</h3>
+                        <p>把这个复杂的伪装，直接起个新名字 t，然后想办法用 t 去表示式子里其他所有部分。</p>
+                    </div>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 10: Case 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-sky-500 pb-2">案例练习：换元法</h2>
+                <div class="mt-6 bg-sky-50 p-8 rounded-lg text-xl text-center">
+                    <p>已知 <strong>f(1/x + 1) = 2/x² + 3</strong>，求 f(x)。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 11: Method 3 - Holistic Substitution -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2">手段三：整体代换法</h2>
+                <div class="mt-6 bg-teal-50 p-6 rounded-lg text-lg space-y-4">
+                    <div>
+                        <h3 class="font-bold text-teal-800">案情简介：</h3>
+                        <p>换元后，发现用新名字 t 去表示其他部分特别困难，但其他部分和这个“伪装”长得很像，像亲兄弟。</p>
+                    </div>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 12: Case 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-sky-500 pb-2">案例练习：整体代换法</h2>
+                <div class="mt-6 bg-sky-50 p-8 rounded-lg text-xl text-center">
+                    <p>已知 <strong>f(x+2√x) = x² + 4x√x + 4x - 1</strong>，求 f(x)。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 13: Method 4 - System of Equations -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2">手段四：构造方程组法</h2>
+                <div class="mt-6 bg-teal-50 p-6 rounded-lg text-lg space-y-4">
+                    <div>
+                        <h3 class="font-bold text-teal-800">案情简介：</h3>
+                        <p>式子里同时出现了 f(x) 和它的“影子”，比如 f(1/x)。一个方程，两个未知，解不了。</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-teal-800">侦破思路：</h3>
+                        <p>我们就再制造一个方程！把原式中所有的 x 都换成它的“影子” 1/x，得到一个新方程，然后联立求解！</p>
+                    </div>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 14: Case 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-sky-500 pb-2">案例练习：构造方程组法</h2>
+                <div class="mt-6 bg-sky-50 p-8 rounded-lg text-xl text-center">
+                    <p>已知 <strong>f(x) + 3f(1/x) = 2x</strong>，求 f(x)。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 15: Piecewise Functions -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-orange-500 pb-2">挑战升级：分段函数</h2>
+                <div class="mt-6 text-lg text-center space-y-1">
+                    <p>f(x) = { x+3, x < 0 }</p>
+                    <p>f(x) = { -x², &nbsp;x ≥ 0 }</p>
+                </div>
+                 <div class="mt-6 bg-orange-50 p-6 rounded-lg">
+                    <p class="text-lg"><strong>求 f(f(-4))：</strong></p>
+                    <p>先算内层 f(-4) = -4+3 = -1。</p>
+                    <p>再算外层 f(-1) = -1+3 = 2。最终答案是2。</p>
+                    <p class="text-lg mt-4"><strong>若 f(a) = -9, 求a:</strong></p>
+                    <p>分情况讨论：若a<0, a+3=-9, a=-12 (符合)。若a≥0, -a²=-9, a=3或a=-3 (舍去-3)。所以a=-12或3。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 16: Problems Title -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800">课堂练习</h2>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 17: Problem 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">题型一：求函数的定义域</h2>
+                 <div class="mt-6 text-lg">
+                    <p class="font-semibold">例题1．函数 f(x) = √(2-x²) / x 的定义域为__________．</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 18: Problem 2.1 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">题型二：函数的值域 (角度一)</h2>
+                <div class="mt-6 text-lg">
+                    <p class="font-semibold">函数 f(x) = 2x+1, x∈[0,1] 的值域是？</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 19: Problem 2.2 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">题型二：函数的值域 (角度二)</h2>
+                <div class="mt-6 text-lg">
+                    <p class="font-semibold">函数 f(x) = √(-x²+2x+3) 的值域是？</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 20: Problem 2.3 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">题型二：函数的值域 (角度三)</h2>
+                <div class="mt-6 text-lg">
+                    <p class="font-semibold">函数 f(x) = 2x / (x+1) 的值域是？</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 21: Problem Type 3 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">题型三：函数的三种表示法的应用</h2>
+                <div class="mt-6 text-lg">
+                    <p class="font-semibold">例题1．已知函数y=f(x)的对应关系如下表，函数y=g(x)的图象为如图所示的曲线ABC，其中A(1,3)，B(2,1)，C(3,2)，则f(g(2))=( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )．</p>
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-8 mt-4">
+                        <table class="table-auto border-collapse border border-slate-400">
+                            <thead>
+                                <tr>
+                                    <th class="border border-slate-300 px-4 py-2">x</th>
+                                    <th class="border border-slate-300 px-4 py-2">1</th>
+                                    <th class="border border-slate-300 px-4 py-2">2</th>
+                                    <th class="border border-slate-300 px-4 py-2">3</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border border-slate-300 px-4 py-2 font-semibold">f(x)</td>
+                                    <td class="border border-slate-300 px-4 py-2 text-center">2</td>
+                                    <td class="border border-slate-300 px-4 py-2 text-center">3</td>
+                                    <td class="border border-slate-300 px-4 py-2 text-center">0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <svg viewBox="0 0 100 80" class="w-48 h-auto border border-slate-300 rounded">
+                            <g transform="translate(10, 70) scale(1, -1)">
+                                <!-- Axes -->
+                                <line x1="0" y1="-5" x2="0" y2="65" stroke="black" stroke-width="0.5"></line>
+                                <polygon points="0,65 -2,60 2,60" fill="black"></polygon>
+                                <line x1="-5" y1="0" x2="85" y2="0" stroke="black" stroke-width="0.5"></line>
+                                <polygon points="85,0 80,-2 80,2" fill="black"></polygon>
+                                <text x="82" y="8" font-size="6" transform="scale(1, -1)">x</text>
+                                <text x="3" y="-62" font-size="6" transform="scale(1, -1)">y</text>
+                                <text x="-4" y="8" font-size="6" transform="scale(1, -1)">O</text>
+                                <!-- Ticks and Labels -->
+                                <line x1="20" y1="-2" x2="20" y2="2" stroke="black" stroke-width="0.5"></line>
+                                <text x="19" y="8" font-size="5" transform="scale(1, -1)">1</text>
+                                <line x1="40" y1="-2" x2="40" y2="2" stroke="black" stroke-width="0.5"></line>
+                                <text x="39" y="8" font-size="5" transform="scale(1, -1)">2</text>
+                                <line x1="60" y1="-2" x2="60" y2="2" stroke="black" stroke-width="0.5"></line>
+                                <text x="59" y="8" font-size="5" transform="scale(1, -1)">3</text>
+                                <line x1="-2" y1="20" x2="2" y2="20" stroke="black" stroke-width="0.5"></line>
+                                <text x="-8" y="-18" font-size="5" transform="scale(1, -1)">1</text>
+                                <line x1="-2" y1="40" x2="2" y2="40" stroke="black" stroke-width="0.5"></line>
+                                <text x="-8" y="-38" font-size="5" transform="scale(1, -1)">2</text>
+                                <line x1="-2" y1="60" x2="2" y2="60" stroke="black" stroke-width="0.5"></line>
+                                <text x="-8" y="-58" font-size="5" transform="scale(1, -1)">3</text>
+                                <!-- Points and Curve -->
+                                <path d="M 20 60 Q 30 30 40 20 T 60 40" stroke="#3b82f6" fill="none" stroke-width="1"></path>
+                                <circle cx="20" cy="60" r="1" fill="red"></circle>
+                                <text x="22" y="-62" font-size="5" transform="scale(1,-1)">A</text>
+                                <circle cx="40" cy="20" r="1" fill="red"></circle>
+                                <text x="42" y="-18" font-size="5" transform="scale(1,-1)">B</text>
+                                <circle cx="60" cy="40" r="1" fill="red"></circle>
+                                <text x="62" y="-42" font-size="5" transform="scale(1,-1)">C</text>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="mt-4">
+                        <p>A．3 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B．2 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C．1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D．0</p>
+                    </div>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 22: Problem Type 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">题型四：分段函数的求值</h2>
+                <div class="mt-6 text-lg">
+                    <p class="font-semibold">例题1．已知函数f(x) = 
+                        <span style="font-size: 2em; vertical-align: middle; line-height: 1;">{</span>
+                        <span class="text-left inline-block align-middle">
+                            x+3, &nbsp;x < 1 <br>
+                            x²+1, &nbsp;x ≥ 1
+                        </span>
+                        ，则f(f(-2))=( &nbsp;&nbsp;&nbsp; )
+                    </p>
+                     <div class="mt-4">
+                        <p>A．3 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B．2 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C．1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D．0</p>
+                    </div>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 23: Answers Title -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800">答案与解析</h2>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 24: Answers 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <div class="space-y-4 text-lg">
+                    <div class="bg-slate-50 p-3 rounded-lg"><p><strong>题型一：</strong>【答案】[-√2, 0) U (0, √2]。由 2-x²≥0 且 x≠0 解得。</p></div>
+                    <div class="bg-slate-50 p-3 rounded-lg"><p><strong>题型二 (角度一)：</strong>【答案】[1, 3]。一次函数，代入端点即可。</p></div>
+                    <div class="bg-slate-50 p-3 rounded-lg"><p><strong>题型二 (角度二)：</strong>【答案】[0, 2]。二次函数-x²+2x+3 = -(x-1)²+4 ≤ 4，所以根号下取值范围是[0,4]，开方后是[0,2]。</p></div>
+                    <div class="bg-slate-50 p-3 rounded-lg"><p><strong>题型二 (角度三)：</strong>【答案】(-∞, 2) U (2, +∞)。f(x) = 2 - 2/(x+1)，因为 2/(x+1)≠0，所以函数值取不到2。</p></div>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 25: Answers 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <div class="space-y-4 text-lg">
+                    <div class="bg-slate-50 p-3 rounded-lg"><p><strong>题型三：</strong>【答案】B。观察函数y=g(x)的图象得 g(2)=1，由表格知 f(1)=2，所以 f(g(2)) = f(1) = 2。</p></div>
+                    <div class="bg-slate-50 p-3 rounded-lg"><p><strong>题型四：</strong>【答案】B。因为 -2 < 1，所以 f(-2) = -2+3 = 1。因为 1 ≥ 1，所以 f(f(-2)) = f(1) = 1²+1 = 2。</p></div>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 26: Summary -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">总结</h2>
+                <p class="mt-6 text-xl text-slate-700">今天我们和f(x)交上了朋友：</p>
+                <ul class="mt-4 list-disc list-inside space-y-3 text-lg">
+                    <li>掌握了它最核心的<strong>“要变一起变”</strong>法则。</li>
+                    <li>学会了用<strong>“换元法”</strong>这个神器来解密函数。</li>
+                    <li>玩了函数嵌套的酷炫操作。</li>
+                </ul>
+                <p class="mt-6 text-xl font-bold">理解了规则，它就是你解决数学问题的好帮手！</p>
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Draw cartoon for all small canvases
+            const canvases = document.querySelectorAll('.cartoon-canvas');
+            canvases.forEach((canvas, index) => {
+                const ctx = canvas.getContext('2d');
+                drawCartoon(ctx, index, canvas.width, canvas.height); 
+            });
+        });
+
+        function drawCartoon(ctx, index, w, h) {
+            ctx.clearRect(0, 0, w, h);
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 2;
+
+            switch (index) {
+                case 0: // Title - f(x) text
+                    ctx.font = 'bold 40px Arial';
+                    ctx.fillStyle = '#3b82f6';
+                    ctx.fillText('f(x)', w*0.2, h*0.7);
+                    break;
+                case 1: // Intro - Vending machine
+                    ctx.fillStyle = '#e2e8f0';
+                    ctx.fillRect(w*0.2, h*0.1, w*0.6, h*0.8);
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.fillRect(w*0.3, h*0.2, w*0.4, h*0.3);
+                    ctx.fillStyle = 'red';
+                    ctx.beginPath();
+                    ctx.arc(w*0.7, h*0.6, w*0.1, 0, Math.PI*2);
+                    ctx.fill();
+                    break;
+                case 2: // Elements - Gears
+                    ctx.font = 'bold 20px Arial';
+                    ctx.fillStyle = 'black';
+                    ctx.fillText('x', w*0.1, h*0.2);
+                    ctx.fillText('f(x)', w*0.7, h*0.2);
+                    ctx.strokeStyle = '#f59e0b';
+                    ctx.beginPath();
+                    ctx.arc(w*0.3, h*0.5, w*0.2, 0, Math.PI*2);
+                    ctx.moveTo(w*0.7, h*0.5);
+                    ctx.arc(w*0.7, h*0.5, w*0.2, 0, Math.PI*2);
+                    ctx.stroke();
+                    break;
+                case 3: // Domain Rules - Lock
+                    ctx.fillStyle = '#fde047';
+                    ctx.fillRect(w*0.3, h*0.4, w*0.4, h*0.4);
+                    ctx.beginPath();
+                    ctx.arc(w*0.5, h*0.4, w*0.2, Math.PI, 0);
+                    ctx.stroke();
+                    ctx.fillStyle = "white";
+                    ctx.beginPath();
+                    ctx.arc(w*0.5, h*0.6, w*0.05, 0, Math.PI * 2);
+                    ctx.fill();
+                    break;
+                case 4: // Comprehensive - Checkmark
+                    ctx.strokeStyle = '#22c55e';
+                    ctx.lineWidth = 8;
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.2, h*0.5);
+                    ctx.lineTo(w*0.4, h*0.7);
+                    ctx.lineTo(w*0.8, h*0.3);
+                    ctx.stroke();
+                    break;
+                case 6: // Method 1
+                case 8: // Method 2
+                case 10: // Method 3
+                case 12: // Method 4
+                     ctx.strokeStyle = '#0284c7';
+                    ctx.lineWidth = 4;
+                    ctx.beginPath();
+                    ctx.arc(w*0.4, h*0.4, w*0.3, 0, Math.PI*2);
+                    ctx.moveTo(w*0.6, h*0.6);
+                    ctx.lineTo(w*0.8, h*0.8);
+                    ctx.stroke();
+                    break;
+                case 7: // Case 1
+                case 9: // Case 2
+                case 11: // Case 3
+                case 13: // Case 4
+                    ctx.fillStyle = '#fefce8';
+                    ctx.strokeStyle = '#eab308';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.2, h*0.2);
+                    ctx.lineTo(w*0.8, h*0.2);
+                    ctx.lineTo(w*0.7, h*0.8);
+                    ctx.lineTo(w*0.3, h*0.8);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.3, h*0.35);
+                    ctx.lineTo(w*0.7, h*0.35);
+                    ctx.moveTo(w*0.3, h*0.5);
+                    ctx.lineTo(w*0.7, h*0.5);
+                    ctx.moveTo(w*0.3, h*0.65);
+                    ctx.lineTo(w*0.7, h*0.65);
+                    ctx.stroke();
+                    break;
+                default: // Default - Thumbs up
+                    ctx.fillStyle = '#fde047';
+                    ctx.strokeStyle = 'black';
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.3, h*0.9);
+                    ctx.lineTo(w*0.3, h*0.5);
+                    ctx.arc(w*0.5, h*0.5, w*0.2, Math.PI, 0);
+                    ctx.lineTo(w*0.7, h*0.9);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
+

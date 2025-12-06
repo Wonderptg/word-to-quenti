@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>直线的交点与距离公式 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration for LaTeX rendering -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <!-- MathJax Library -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base styles */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-osx-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0.25rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            overflow-x: auto;
+            text-align: center;
+        }
+
+        /* Print-specific styles for landscape mode */
+        @media print {
+            @page {
+                size: landscape; /* Use landscape orientation */
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh; /* Make each section occupy one full page height */
+                width: 100vw;
+                page-break-after: always; /* Force page break after each section */
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 (Title Page) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">直线的交点与距离</h1>
+                <p class="text-2xl text-slate-600 mt-4">解析几何的计算基础</p>
+                <p class="mt-8 text-xl text-cyan-600 font-semibold">"今天，我们来啃硬骨头！"</p>
+            </div>
+        </div>
+
+        <!-- 热身复习 1/2: 求交点坐标 -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-8">热身复习 (1/2)：求交点坐标</h2>
+            <div class="w-full max-w-3xl mx-auto p-6 rounded-lg bg-gray-50 shadow-xl">
+                <h3 class="font-bold text-2xl text-center text-slate-700 mb-4">方法：联立方程组</h3>
+                <p class="mt-4 text-xl text-center">两条不平行的直线，其交点坐标即为它们方程组的解。</p>
+                
+                <div class="bg-white p-4 rounded-lg mt-6">
+                    <p class="text-lg font-semibold text-gray-700">例：求 $L_1: x-y-1=0$ 与 $L_2: x+2y-7=0$ 的交点。</p>
+                    <div class="formula-box text-base mt-2 bg-white border-blue-300 border-l-4 text-left">
+                        $$\begin{cases} x-y-1=0 \quad (1) \\ x+2y-7=0 \quad (2) \end{cases}$$
+                        $(2) - (1)$ 得 $3y - 6 = 0$，解得 $y=2$。
+                        <br/>将 $y=2$ 代入 $(1)$，得 $x-2-1=0$，解得 $x=3$。
+                    </div>
+                    <p class="text-xl mt-4 font-bold text-center text-emerald-600">交点坐标是 $(3, 2)$。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 热身复习 2/2: 两点间距离 -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-8">热身复习 (2/2)：两点间距离</h2>
+            <div class="w-full max-w-3xl mx-auto p-6 rounded-lg bg-gray-50 shadow-xl">
+                <h3 class="font-bold text-2xl text-center text-slate-700 mb-4">原理：勾股定理</h3>
+                <p class="mt-4 text-xl text-center">设 $P(x_{1},y_{1})$ 和 $Q(x_{2},y_{2})$，两点间的距离 d 为：</p>
+                 <div class="formula-box text-3xl my-4 border-blue-500">
+                    $$d = \sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}$$
+                 </div>
+                 <div class="bg-white p-4 rounded-lg mt-6">
+                    <p class="text-lg font-semibold text-gray-700">例：求 $A(1,5)$ 与 $B(4,1)$ 的距离。</p>
+                    <div class="formula-box text-base mt-2 bg-white border-blue-300 border-l-4 text-left">
+                        $$d = \sqrt{(4-1)^2 + (1-5)^2} = \sqrt{3^2 + (-4)^2} = \sqrt{9+16} = 5$$
+                    </div>
+                    <p class="text-xl mt-4 font-bold text-center text-emerald-600">距离 $d=5$。</p>
+                </div>
+            </div>
+        </div>
+
+        
+        <!-- 点到直线距离 (Point to Line Distance) - 核心公式与背景 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2 mb-4">核心新知(一)：点到直线距离</h2>
+                 <p class="text-lg">点 $P(x_0, y_0)$ 到直线 $L: Ax+By+C=0$ 的距离 d 为：</p>
+                 <div class="formula-box text-2xl my-4">
+                    $d = \frac{|Ax_0 + By_0 + C|}{\sqrt{A^2 + B^2}}$
+                 </div>
+                 <div class="mt-4 text-xl bg-amber-100 p-4 rounded-lg text-amber-800">
+                    <p class="font-bold">记忆口诀：</p>
+                    <p>分子：<strong>点代入，取绝对</strong></p>
+                    <p>分母：<strong>系数平方和开根号</strong></p>
+                </div>
+                 <p class="mt-4 text-lg text-red-600 font-bold">使用前提：直线方程必须化为一般式 $Ax+By+C=0$！</p>
+                 <p class="mt-4 text-base text-gray-700"><strong><span class="text-emerald-600">推导提示：</span></strong>此公式是利用直线法向量 $\vec{n}=(A,B)$，通过向量投影法得到的。</p>
+            </div>
+        </div>
+        
+        <!-- 公式推导：思路一 (几何法) -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-rose-500 pb-2 mb-8">推导思路对比 (1/2)：笨办法 (几何法)</h2>
+            <div class="w-full max-w-4xl mx-auto text-left">
+                <p class="text-lg text-gray-700 mb-4">此思路虽然直观，但**计算量大**，步骤繁琐：</p>
+                <ol class="list-decimal list-inside space-y-2 text-xl bg-rose-50 p-6 rounded-lg">
+                    <li>求直线 $L$ 斜率 $k_L$。</li>
+                    <li>确定垂线斜率 $k_{\perp}$。</li>
+                    <li>写出垂线方程。</li>
+                    <li>联立方程组，求出垂足 $Q$ 坐标。</li>
+                    <li>计算 $P, Q$ **两点间距离** $|PQ|$。</li>
+                </ol>
+                <div class="mt-8 text-2xl text-center font-bold text-red-600 bg-red-100 p-4 rounded-lg">
+                    结论：思路是通的，但计算量大到爆炸！
+                </div>
+            </div>
+        </div>
+        
+        <!-- 公式推导：思路二 (巧办法/引子) -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-teal-500 pb-2 mb-8">推导思路对比 (2/2)：巧办法 (知识铺垫)</h2>
+            <div class="w-full max-w-4xl mx-auto text-center pt-8">
+                 <p class="text-xl font-semibold text-teal-600 mb-10 p-4 bg-teal-50 rounded-lg shadow-md inline-block">
+                    我们初中学 $y=kx+b$，$k$ 是斜率。那高中学的 $Ax+By+C=0$ 里的 $A$ 和 $B$ 是干嘛的？
+                 </p>
+                 <!-- 底部留白，方便课堂演示 -->
+            </div>
+        </div>
+        
+        <!-- 点线距离：基础应用 (例1) - 只保留题目，用于课堂练习 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2 mb-4">点线距离：基础应用 (例1)</h2>
+                 <div class="mt-4 text-base bg-emerald-50 p-4 rounded-lg">
+                    <p class="font-bold text-2xl text-center">例1：求点 $P(2,-1)$ 到直线 $y=x+4$ 的距离。</p>
+                    <!-- 仅保留题目，解题步骤将在课堂上演示 -->
+                </div>
+                 <p class="mt-4 text-center text-lg text-gray-700">请同学们在黑板上展示：① 化一般式； ② 套用公式； ③ 计算结果。</p>
+            </div>
+        </div>
+        
+        <!-- 平行线间距离 (Distance Between Parallel Lines) 1/2: 公式与陷阱 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-rose-500 pb-2 mb-4">核心新知(二) (1/2)：平行线间距离</h2>
+                <p class="mt-4 text-lg">两条平行线 $L_1: Ax+By+C_1=0$ 和 $L_2: Ax+By+C_2=0$ 之间的距离 d 为：</p>
+                 <div class="formula-box text-2xl my-4">
+                     $d = \frac{|C_1 - C_2|}{\sqrt{A^2 + B^2}}$
+                 </div>
+                 <p class="mt-2 text-lg"><strong>记忆：</strong>分子是常数项之差取绝对值，分母不变。</p>
+                 <div class="mt-4 text-xl text-center bg-red-100 p-6 rounded-lg font-bold text-red-800">
+                   超级陷阱！<br>
+                   使用此公式前，必须确保两条直线的 A, B 系数<strong class="text-red-600">完全一样</strong>！
+                </div>
+            </div>
+        </div>
+        
+        <!-- 平行线间距离 (Distance Between Parallel Lines) 2/2: 陷阱题示例 - 删除解题步骤 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-rose-500 pb-2 mb-4">核心新知(二) (2/2)：陷阱题示例</h2>
+                <div class="mt-8 text-xl text-center bg-red-50 p-6 rounded-lg font-bold text-red-800">
+                   例 (陷阱题): 求 $L_1: x-3y+5=0$ 和 $L_2: 2x-6y-8=0$ 距离。
+                </div>
+                 <p class="mt-6 text-xl text-center text-red-600 font-bold">⚠️ 提示：A、B系数不一致！使用前需要做什么预处理？</p>
+                 <p class="mt-4 text-center text-lg text-gray-700">请同学们在黑板上展示：① 化系数一致； ② 套用公式； ③ 计算结果。</p>
+            </div>
+        </div>
+
+
+        <!-- 随堂练习 1/4 (Q1) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (1/4)</h2>
+                <div class="space-y-6 text-base md:text-xl">
+                    <!-- Q1 -->
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-xl">
+                        <p class="font-bold text-2xl mb-4">1. 点 P(1,0) 到直线 $3x+4y-5=0$ 的距离是？</p>
+                        <div class="grid grid-cols-2 gap-4 text-lg">
+                            <p>(A) 1</p>
+                            <p>(B) 2/5</p>
+                            <p>(C) 3/5</p>
+                            <p>(D) 5</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 2/4 (Q2) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (2/4)</h2>
+                <div class="space-y-6 text-base md:text-xl">
+                    <!-- Q2 -->
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-xl">
+                        <p class="font-bold text-2xl mb-4">2. 点 A(2,3) 和点 B(5,-1) 之间的距离是？</p>
+                        <div class="grid grid-cols-2 gap-4 text-lg">
+                            <p>(A) 3</p>
+                            <p>(B) 4</p>
+                            <p>(C) 5</p>
+                            <p>(D) $\sqrt{7}$</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 3/4 (Q3) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (3/4)</h2>
+                <div class="space-y-6 text-base md:text-xl">
+                    <!-- Q3 -->
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-xl">
+                        <p class="font-bold text-2xl mb-4">3. 直线 $L_1: x+y+1=0$ 和 $L_2: 2x+2y+6=0$ 之间的距离是？</p>
+                        <div class="grid grid-cols-2 gap-4 text-lg">
+                            <p>(A) 5</p>
+                            <p>(B) $5/\sqrt{2}$</p>
+                            <p>(C) $\sqrt{2}$</p>
+                            <p>(D) 4</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 4/4 (Q4) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (4/4)</h2>
+                <div class="space-y-6 text-base md:text-xl">
+                    <!-- Q4 -->
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-xl">
+                        <p class="font-bold text-2xl mb-4">4. 使用点到直线距离公式前，必须对直线方程做什么预处理？</p>
+                        <div class="grid grid-cols-1 gap-4 text-lg">
+                            <p>(A) 化为点斜式</p>
+                            <p>(B) 化为一般式</p>
+                            <p>(C) 求出斜率</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题解析 (Answer Key) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析</h2>
+                <div class="space-y-3 text-base">
+                    <!-- A1 -->
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>1. 答案：B</strong></p>
+                        <p><strong>解析：</strong>套用点线距离公式。$d = |3(1)+4(0)-5| / \sqrt{3^2+4^2} = |-2|/5 = 2/5$。</p>
+                    </div>
+                    <!-- A2 -->
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>2. 答案：C</strong></p>
+                        <p><strong>解析：：</strong>套用两点距离公式。$d = \sqrt{(5-2)^2+(-1-3)^2} = \sqrt{3^2+(-4)^2} = \sqrt{9+16} = 5$。</p>
+                    </div>
+                    <!-- A3 -->
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>3. 答案：C</strong></p>
+                        <p><strong>解析：：</strong>陷阱！先将 $L_1$ 变为 $2x+2y+2=0$。再用平行线距离公式。$d = |2-6| / \sqrt{2^2+2^2} = 4 / \sqrt{8} = 4 / (2\sqrt{2}) = \sqrt{2}$。</p>
+                    </div>
+                    <!-- A4 -->
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>4. 答案：B</strong></p>
+                        <p><strong>解析：：</strong>点到直线距离公式是基于一般式 $Ax+By+C=0$ 推导的，使用前必须化为该形式。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 课堂总结与作业 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-indigo-500 pb-2 mb-6">课堂总结与思考题</h2>
+                
+                <div class="space-y-4">
+                    <div class="bg-indigo-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-xl text-indigo-700 mb-2">知识回顾</h3>
+                        <ul class="list-disc list-inside space-y-1 text-lg">
+                            <li>交点：联立方程组。</li>
+                            <li>两点距离：勾股定理 $d = \sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}$。</li>
+                            <li>点线距离：$d = \frac{|Ax_0 + By_0 + C|}{\sqrt{A^2 + B^2}}$ (需一般式)。</li>
+                            <li>平行线距离：$d = \frac{|C_1 - C_2|}{\sqrt{A^2 + B^2}}$ (需 $A, B$ 系数完全一致)。</li>
+                             <li><strong>几何妙用：</strong>遇到含参直线，先找定点！</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-yellow-50 p-4 rounded-lg border-2 border-yellow-300">
+                        <h3 class="font-bold text-xl text-yellow-800 mb-3">作业/思考题：等距线</h3>
+                        <p class="text-lg">已知两条平行线 $L_1: x+y-2=0$ 和 $L_2: x+y+6=0$。</p>
+                        <p class="mt-2">求一条直线 $L$，使得 $L$ 到 $L_1$ 和 $L_2$ 的距离相等。</p>
+                        <p class="mt-3 text-sm text-gray-600"><strong>提示：</strong>直线 $L$ 必定与 $L_1, L_2$ 平行，可设为 $x+y+C=0$。利用距离公式列出方程 $|C - (-2)| = |C - 6|$ 即可求解 $C$。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

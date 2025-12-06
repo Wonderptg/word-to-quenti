@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>晶胞：结构与计算</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$','$$'], ['\\[','\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <!-- MathJax Library -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        /* 基础字体 */
+        body { font-family: "Microsoft YaHei", "SimHei", sans-serif; }
+        
+        /* 打印优化核心样式 */
+        @media print {
+            @page {
+                size: landscape; /* 强制横向 */
+                margin: 0;
+            }
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                background-color: white;
+            }
+            .no-print { display: none !important; }
+            
+            .slide-container {
+                display: block !important;
+                height: auto !important;
+                overflow: visible !important;
+            }
+            
+            .slide {
+                display: flex !important;
+                break-after: page;
+                page-break-after: always;
+                height: 100vh;
+                width: 100vw;
+                border: none;
+                margin: 0;
+                padding: 2rem 3rem;
+                box-sizing: border-box;
+            }
+        }
+
+        /* 屏幕显示样式 */
+        .slide {
+            display: none;
+            height: 100vh;
+            width: 100%;
+            flex-direction: column;
+            justify-content: center;
+            background-color: white;
+            padding: 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slide.active {
+            display: flex;
+        }
+
+        /* 强调框样式 */
+        .concept-box {
+            background-color: #eff6ff;
+            border-left: 6px solid #3b82f6;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .highlight-box {
+            background-color: #fff7ed;
+            border-left: 6px solid #f97316;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* 选项样式 */
+        .option-item {
+            padding: 1rem 1.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1.25rem;
+        }
+        .option-item:hover {
+            background-color: #f3f4f6;
+            border-color: #9ca3af;
+        }
+
+        /* SVG 通用样式 */
+        .atom { stroke: #000; stroke-width: 1; }
+        .bond { stroke: #9ca3af; stroke-width: 2; }
+        .cube-edge { stroke: #374151; stroke-width: 2; fill: none; }
+        .cube-edge-hidden { stroke: #9ca3af; stroke-width: 1; fill: none; stroke-dasharray: 4; }
+        
+        /* Atom Colors */
+        .atom-red { fill: #ef4444; }
+        .atom-blue { fill: #3b82f6; }
+        .atom-green { fill: #10b981; }
+        .atom-gray { fill: #e5e7eb; }
+        .atom-yellow { fill: #facc15; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- 导航栏 (打印隐藏) -->
+    <div class="no-print fixed bottom-6 right-6 z-50 flex gap-4 bg-white p-3 rounded-xl shadow-2xl border border-gray-200">
+        <button onclick="prevSlide()" class="px-5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-bold transition">上一页</button>
+        <span id="page-indicator" class="px-4 py-2 font-mono text-lg flex items-center font-bold text-blue-600">1 / 1</span>
+        <button onclick="nextSlide()" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold transition">下一页</button>
+        <button onclick="window.print()" class="px-5 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-bold transition flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+            打印课件
+        </button>
+    </div>
+
+    <div class="slide-container">
+
+        <!-- P1: 封面 -->
+        <div class="slide active">
+            <div class="flex-1 flex flex-col justify-center items-center text-center">
+                <div class="mb-10">
+                    <!-- 立方晶胞图标 -->
+                    <svg width="160" height="160" viewBox="0 0 200 200">
+                        <path d="M50 50 L150 50 L150 150 L50 150 Z" fill="none" stroke="#2563eb" stroke-width="4"/>
+                        <path d="M150 50 L180 20 L80 20 L50 50" fill="none" stroke="#2563eb" stroke-width="4"/>
+                        <path d="M180 20 L180 120 L150 150" fill="none" stroke="#2563eb" stroke-width="4"/>
+                        <!-- Atoms -->
+                        <circle cx="50" cy="50" r="8" class="atom-blue"/>
+                        <circle cx="150" cy="50" r="8" class="atom-blue"/>
+                        <circle cx="150" cy="150" r="8" class="atom-blue"/>
+                        <circle cx="50" cy="150" r="8" class="atom-blue"/>
+                        <circle cx="80" cy="20" r="8" class="atom-blue"/>
+                        <circle cx="180" cy="20" r="8" class="atom-blue"/>
+                        <circle cx="180" cy="120" r="8" class="atom-blue"/>
+                        <circle cx="115" cy="85" r="12" class="atom-red"/> <!-- Center -->
+                    </svg>
+                </div>
+                <h1 class="text-6xl font-extrabold text-slate-900 mb-6 tracking-tight">晶体结构与性质：晶胞</h1>
+                <h2 class="text-3xl text-blue-600 font-medium mb-12">描述晶体结构的基本单元与均摊法计算</h2>
+                <div class="w-32 h-2 bg-blue-500 rounded-full"></div>
+            </div>
+        </div>
+
+        <!-- P2: 晶胞的定义与特点 -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-slate-800 mb-8 border-b-4 border-blue-200 pb-4">一、 晶胞 (Unit Cell)</h3>
+            <div class="space-y-8 text-2xl">
+                <div class="concept-box">
+                    <p class="font-bold mb-4 text-3xl">定义：</p>
+                    <p>描述晶体结构的基本单元。晶体可看作是无数个晶胞在空间中堆积而成的。</p>
+                </div>
+                
+                <div class="highlight-box">
+                    <p class="font-bold mb-4 text-3xl text-orange-700">三大特点：</p>
+                    <ul class="list-disc list-inside space-y-3 text-gray-800">
+                        <li>通常是<span class="font-bold">平行六面体</span>（最常见为立方体）。</li>
+                        <li><span class="font-bold text-red-600">无隙并置</span>：相邻晶胞之间没有任何间隙，共用面、棱、顶点。</li>
+                        <li><span class="font-bold">取向相同</span>：所有晶胞的排列方向完全一致，内部结构完全相同。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- P3: 均摊法原理 -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-slate-800 mb-8 border-b-4 border-blue-200 pb-4">二、 晶胞计算核心：均摊法</h3>
+            <div class="flex gap-12 h-full">
+                <div class="w-1/2 space-y-6 text-xl">
+                    <p class="font-bold text-2xl mb-4">原理：</p>
+                    <p>晶胞界面的粒子由多个晶胞共用。计算时，只能算该粒子<span class="text-red-600 font-bold">真正属于</span>该晶胞的那一份。</p>
+                    
+                    <table class="w-full text-center border-collapse border border-gray-300 mt-6">
+                        <tr class="bg-blue-600 text-white">
+                            <th class="p-3 border">位置</th>
+                            <th class="p-3 border">共用晶胞数</th>
+                            <th class="p-3 border">均摊份额</th>
+                        </tr>
+                        <tr>
+                            <td class="p-3 border font-bold">顶点 (Vertex)</td>
+                            <td class="p-3 border">8</td>
+                            <td class="p-3 border font-bold text-red-600">1/8</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="p-3 border font-bold">棱上 (Edge)</td>
+                            <td class="p-3 border">4</td>
+                            <td class="p-3 border font-bold text-red-600">1/4</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 border font-bold">面上 (Face)</td>
+                            <td class="p-3 border">2</td>
+                            <td class="p-3 border font-bold text-red-600">1/2</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="p-3 border font-bold">体内 (Body)</td>
+                            <td class="p-3 border">1</td>
+                            <td class="p-3 border font-bold text-red-600">1</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="w-1/2 flex justify-center items-center">
+                    <!-- SVG: 均摊法示意 -->
+                    <svg viewBox="0 0 300 300" class="w-full">
+                        <!-- Cube frame -->
+                        <rect x="80" y="80" width="140" height="140" fill="none" stroke="#9ca3af" stroke-width="2"/>
+                        <path d="M80 80 L130 30 L270 30 L220 80" fill="none" stroke="#9ca3af" stroke-width="2"/>
+                        <path d="M270 30 L270 170 L220 220" fill="none" stroke="#9ca3af" stroke-width="2"/>
+                        
+                        <!-- Vertex Atom (1/8) -->
+                        <circle cx="80" cy="80" r="20" class="atom-red" opacity="0.8"/>
+                        <text x="30" y="70" fill="#dc2626" font-weight="bold">顶点 (1/8)</text>
+                        
+                        <!-- Edge Atom (1/4) -->
+                        <circle cx="150" cy="80" r="20" class="atom-blue" opacity="0.8"/>
+                        <text x="130" y="60" fill="#2563eb" font-weight="bold">棱上 (1/4)</text>
+                        
+                        <!-- Face Atom (1/2) -->
+                        <circle cx="150" cy="150" r="20" class="atom-green" opacity="0.8"/>
+                        <text x="130" y="155" fill="#059669" font-weight="bold">面上 (1/2)</text>
+                        
+                        <!-- Body Atom (1) -->
+                        <circle cx="175" cy="125" r="20" class="atom-yellow" opacity="0.9"/>
+                        <text x="180" y="130" fill="#ca8a04" font-weight="bold">体内 (1)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- P4: 典型晶胞 - 钠 (体心立方) -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-slate-800 mb-8 border-b-4 border-blue-200 pb-4">三、 典型金属晶胞：钠 (Na)</h3>
+            <div class="flex gap-12 h-full">
+                <div class="w-1/2 space-y-6 text-xl">
+                    <div class="concept-box">
+                        <p class="font-bold text-2xl text-purple-800">体心立方堆积 (BCC)</p>
+                    </div>
+                    <ul class="list-disc list-inside space-y-4 text-gray-700">
+                        <li><strong>位置：</strong> 8个顶点 + 1个 体心。</li>
+                        <li><strong>计算：</strong>
+                            $$N = 8 \times \frac{1}{8} + 1 \times 1 = 2$$
+                        </li>
+                        <li>即每个晶胞含有 <span class="font-bold text-red-600">2个</span> 钠原子。</li>
+                        <li><strong>配位数：</strong> <span class="font-bold">8</span> (体心原子与8个顶点原子接触)。</li>
+                    </ul>
+                </div>
+                <div class="w-1/2 flex justify-center">
+                    <!-- SVG: Na BCC -->
+                    <svg viewBox="0 0 300 300" class="w-full">
+                        <!-- Back Hidden Lines -->
+                        <path d="M100 50 L200 50 L200 150" class="cube-edge-hidden"/>
+                        <path d="M100 50 L100 150" class="cube-edge-hidden"/>
+                        
+                        <!-- Front Cube -->
+                        <rect x="50" y="100" width="100" height="100" class="cube-edge"/>
+                        <path d="M50 100 L100 50" class="cube-edge"/>
+                        <path d="M150 100 L200 50" class="cube-edge"/>
+                        <path d="M150 200 L200 150" class="cube-edge"/>
+                        
+                        <!-- Atoms (Corners) -->
+                        <circle cx="50" cy="100" r="12" class="atom-gray"/>
+                        <circle cx="150" cy="100" r="12" class="atom-gray"/>
+                        <circle cx="50" cy="200" r="12" class="atom-gray"/>
+                        <circle cx="150" cy="200" r="12" class="atom-gray"/>
+                        <circle cx="100" cy="50" r="12" class="atom-gray"/>
+                        <circle cx="200" cy="50" r="12" class="atom-gray"/>
+                        <circle cx="100" cy="150" r="12" class="atom-gray"/>
+                        <circle cx="200" cy="150" r="12" class="atom-gray"/>
+                        
+                        <!-- Body Center Atom -->
+                        <circle cx="125" cy="125" r="15" class="atom-red"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- P5: 典型金属晶胞 - 铜 (面心立方) -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-slate-800 mb-8 border-b-4 border-blue-200 pb-4">四、 典型金属晶胞：铜 (Cu)</h3>
+            <div class="flex gap-12 h-full">
+                <div class="w-1/2 space-y-6 text-xl">
+                    <div class="concept-box">
+                        <p class="font-bold text-2xl text-green-800">面心立方最密堆积 (FCC)</p>
+                    </div>
+                    <ul class="list-disc list-inside space-y-4 text-gray-700">
+                        <li><strong>位置：</strong> 8个顶点 + 6个 面心。</li>
+                        <li><strong>计算：</strong>
+                            $$N = 8 \times \frac{1}{8} + 6 \times \frac{1}{2} = 4$$
+                        </li>
+                        <li>每个晶胞含有 <span class="font-bold text-red-600">4个</span> 铜原子。</li>
+                        <li><strong>配位数：</strong> <span class="font-bold">12</span> (同层4个+上层4个+下层4个)。</li>
+                    </ul>
+                </div>
+                <div class="w-1/2 flex justify-center">
+                    <!-- SVG: Cu FCC -->
+                    <svg viewBox="0 0 300 300" class="w-full">
+                        <!-- Back Hidden -->
+                        <path d="M100 50 L200 50 L200 150" class="cube-edge-hidden"/>
+                        <path d="M100 50 L100 150" class="cube-edge-hidden"/>
+                        
+                        <!-- Frame -->
+                        <rect x="50" y="100" width="100" height="100" class="cube-edge"/>
+                        <path d="M50 100 L100 50" class="cube-edge"/>
+                        <path d="M150 100 L200 50" class="cube-edge"/>
+                        <path d="M150 200 L200 150" class="cube-edge"/>
+
+                        <!-- Face Atoms (Green) -->
+                        <circle cx="100" cy="100" r="12" class="atom-green" opacity="0.9"/> <!-- Top -->
+                        <circle cx="100" cy="200" r="12" class="atom-green" opacity="0.9"/> <!-- Bottom -->
+                        <circle cx="50" cy="150" r="12" class="atom-green" opacity="0.9"/> <!-- Left -->
+                        <circle cx="200" cy="100" r="12" class="atom-green" opacity="0.9"/> <!-- Right -->
+                        <circle cx="100" cy="150" r="12" class="atom-green" opacity="0.9"/> <!-- Front -->
+                        <circle cx="150" cy="100" r="12" class="atom-green" opacity="0.9"/> <!-- Back -->
+
+                        <!-- Corner Atoms (Gray) -->
+                        <circle cx="50" cy="100" r="10" class="atom-gray"/>
+                        <circle cx="150" cy="100" r="10" class="atom-gray"/>
+                        <circle cx="50" cy="200" r="10" class="atom-gray"/>
+                        <circle cx="150" cy="200" r="10" class="atom-gray"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- P6: 离子晶体 - 氯化钠 (NaCl) -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-slate-800 mb-8 border-b-4 border-blue-200 pb-4">五、 离子晶体：氯化钠 (NaCl)</h3>
+            <div class="flex gap-12 h-full">
+                <div class="w-1/2 space-y-6 text-xl">
+                    <div class="highlight-box">
+                        <p class="font-bold">结构特征：</p>
+                        <p>$Na^+$ 和 $Cl^-$ 互相穿插。</p>
+                    </div>
+                    <p><strong>计算：</strong></p>
+                    <ul class="list-disc list-inside text-gray-700">
+                        <li>$Cl^-$ (顶点+面心)：
+                            $$8 \times \frac{1}{8} + 6 \times \frac{1}{2} = 4$$
+                        </li>
+                        <li>$Na^+$ (棱心+体心)：
+                            $$12 \times \frac{1}{4} + 1 \times 1 = 4$$
+                        </li>
+                    </ul>
+                    <p class="mt-4 font-bold text-blue-700">化学式比：$Na^+ : Cl^- = 4:4 = 1:1$</p>
+                    <p><strong>配位数：</strong> 6 (正八面体中心)。</p>
+                </div>
+                <div class="w-1/2 flex justify-center">
+                    <!-- SVG: NaCl -->
+                    <svg viewBox="0 0 300 300" class="w-full">
+                        <rect x="50" y="50" width="200" height="200" class="cube-edge" stroke-width="1"/>
+                        <line x1="150" y1="50" x2="150" y2="250" class="cube-edge" stroke-width="1"/>
+                        <line x1="50" y1="150" x2="250" y2="150" class="cube-edge" stroke-width="1"/>
+                        
+                        <!-- Large Cl (Green) Corners & Face centers -->
+                        <circle cx="50" cy="50" r="10" class="atom-green"/>
+                        <circle cx="250" cy="50" r="10" class="atom-green"/>
+                        <circle cx="50" cy="250" r="10" class="atom-green"/>
+                        <circle cx="250" cy="250" r="10" class="atom-green"/>
+                        <circle cx="150" cy="150" r="10" class="atom-green"/> <!-- Face center front -->
+                        <circle cx="150" cy="50" r="10" class="atom-green"/> <!-- Edge center top? No this is Na pos in other lattice. Simplified 2D view -->
+                        
+                        <!-- Let's do simplified 2D slice -->
+                        <text x="100" y="280" font-size="14">绿色：Cl⁻ (大) / 蓝色：Na⁺ (小)</text>
+                        
+                        <!-- Small Na (Blue) Edge centers & Body center -->
+                        <circle cx="150" cy="50" r="6" class="atom-blue"/>
+                        <circle cx="50" cy="150" r="6" class="atom-blue"/>
+                        <circle cx="250" cy="150" r="6" class="atom-blue"/>
+                        <circle cx="150" cy="250" r="6" class="atom-blue"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- P7: “大BOSS” - 金刚石 (C) -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-slate-800 mb-8 border-b-4 border-blue-200 pb-4">六、 “大BOSS”晶胞：金刚石 (Diamond)</h3>
+            <div class="flex gap-12 h-full">
+                <div class="w-1/2 space-y-6 text-xl">
+                    <div class="concept-box bg-gray-100 border-gray-600">
+                        <p class="font-bold text-2xl">结构分析</p>
+                        <p>面心立方 (FCC) + 4个体内空隙填充</p>
+                    </div>
+                    <ul class="list-disc list-inside space-y-3 text-gray-700">
+                        <li><strong>框架：</strong> 8顶点 + 6面心 (与铜类似)。</li>
+                        <li><strong>填充：</strong> 内部有 <span class="font-bold text-red-600">4个</span> 碳原子。</li>
+                        <li><strong>特征：</strong> “一前一后，交错填充”。</li>
+                        <li><strong>计算：</strong>
+                            $$N = 8 \times \frac{1}{8} + 6 \times \frac{1}{2} + 4 = 8$$
+                        </li>
+                        <li><strong>空间利用率：</strong> 只有50%的四面体空隙被填充。</li>
+                    </ul>
+                </div>
+                <div class="w-1/2 flex justify-center">
+                    <!-- SVG: Diamond -->
+                    <svg viewBox="0 0 300 300" class="w-full">
+                        <!-- Cube Frame -->
+                        <rect x="50" y="100" width="150" height="150" class="cube-edge" stroke-opacity="0.3"/>
+                        <path d="M50 100 L100 50 L250 50 L200 100" class="cube-edge" stroke-opacity="0.3"/>
+                        <path d="M250 50 L250 200 L200 250" class="cube-edge" stroke-opacity="0.3"/>
+                        
+                        <!-- FCC Atoms (Gray) -->
+                        <circle cx="50" cy="100" r="6" class="atom-gray"/>
+                        <circle cx="200" cy="100" r="6" class="atom-gray"/>
+                        <circle cx="50" cy="250" r="6" class="atom-gray"/>
+                        <circle cx="200" cy="250" r="6" class="atom-gray"/>
+                        <circle cx="125" cy="175" r="6" class="atom-gray"/> <!-- Face Front -->
+                        
+                        <!-- Inner 4 Atoms (Black) -->
+                        <!-- Simplified positions representation -->
+                        <circle cx="100" cy="125" r="8" class="atom-blue"/>
+                        <circle cx="150" cy="200" r="8" class="atom-blue"/>
+                        <circle cx="175" cy="100" r="8" class="atom-blue"/>
+                        <circle cx="100" cy="200" r="8" class="atom-blue"/>
+                        
+                        <text x="80" y="280" font-size="14">蓝色为体内4个原子</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- P8: 萤石 (CaF2) -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-slate-800 mb-8 border-b-4 border-blue-200 pb-4">七、 萤石 (CaF₂)</h3>
+            <div class="flex gap-12 h-full">
+                <div class="w-1/2 space-y-6 text-xl">
+                    <div class="concept-box">
+                        <p class="font-bold">与金刚石的联系：</p>
+                        <p>金刚石只填了一半空隙，而萤石把<span class="font-bold text-red-600">8个</span>四面体空隙全填满了！</p>
+                    </div>
+                    <ul class="list-disc list-inside space-y-4 text-gray-700">
+                        <li><strong>$Ca^{2+}$：</strong> 构成面心立方框架。
+                            $$N(Ca) = 8 \times \frac{1}{8} + 6 \times \frac{1}{2} = 4$$
+                        </li>
+                        <li><strong>$F^-$：</strong> 填充在全部8个四面体空隙中。
+                            $$N(F) = 8$$
+                        </li>
+                        <li><strong>比例：</strong> $Ca:F = 4:8 = 1:2$。</li>
+                    </ul>
+                </div>
+                <div class="w-1/2 flex justify-center items-center">
+                    <div class="bg-yellow-50 p-8 rounded-xl text-center border border-yellow-300">
+                        <p class="text-4xl font-bold text-yellow-800 mb-4">8个内部原子</p>
+                        <p class="text-xl">想象一个正方体内部划分成8个小正方体，每个小正方体中心都有一个 $F^-$。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- P9: 六方最密堆积 -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-slate-800 mb-8 border-b-4 border-blue-200 pb-4">八、 六方最密堆积 (Mg, Zn)</h3>
+            <div class="flex gap-12 h-full">
+                <div class="w-1/2 space-y-6 text-xl">
+                    <p class="font-bold text-2xl">均摊规则变了！</p>
+                    <ul class="list-disc list-inside space-y-4 text-gray-700">
+                        <li><strong>顶点：</strong> 共用6个晶胞 $\rightarrow$ 均摊 <span class="font-bold text-red-600">1/6</span>。</li>
+                        <li><strong>计算：</strong>
+                            <ul class="list-none pl-8 mt-2">
+                                <li>- 顶点 (12个): $12 \times 1/6 = 2$</li>
+                                <li>- 面心 (上下2个): $2 \times 1/2 = 1$</li>
+                                <li>- 体内 (3个): $3 \times 1 = 3$</li>
+                            </ul>
+                        </li>
+                        <li><strong>总数：</strong> $$N = 2 + 1 + 3 = 6$$</li>
+                        <li><strong>配位数：</strong> <span class="font-bold text-blue-600">12</span> (上3 + 周6 + 下3)。</li>
+                    </ul>
+                </div>
+                <div class="w-1/2 flex justify-center">
+                    <!-- SVG: Hexagonal -->
+                    <svg viewBox="0 0 300 300" class="w-full">
+                        <!-- Hexagon Top -->
+                        <polygon points="100,50 150,20 200,50 200,100 150,130 100,100" fill="none" stroke="#374151" stroke-width="2"/>
+                        <!-- Verticals -->
+                        <line x1="100" y1="50" x2="100" y2="200" class="cube-edge"/>
+                        <line x1="200" y1="50" x2="200" y2="200" class="cube-edge"/>
+                        <line x1="150" y1="130" x2="150" y2="280" class="cube-edge"/>
+                        <line x1="100" y1="100" x2="100" y2="250" class="cube-edge"/>
+                        <line x1="200" y1="100" x2="200" y2="250" class="cube-edge"/>
+                        <!-- Bottom -->
+                        <polygon points="100,200 150,170 200,200 200,250 150,280 100,250" fill="none" stroke="#374151" stroke-width="2"/>
+                        
+                        <!-- Body Atoms -->
+                        <circle cx="150" cy="150" r="10" class="atom-red"/>
+                        <circle cx="120" cy="140" r="10" class="atom-red"/>
+                        <circle cx="180" cy="140" r="10" class="atom-red"/>
+                        
+                        <text x="90" y="290" font-size="14">六棱柱：顶点12个，面心2个，体内3个</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- P10: 例题1 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">【例题 1】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6">
+                <p class="text-3xl font-bold mb-4">1. 下列关于晶胞的叙述，正确的是：</p>
+                <div class="space-y-4 text-2xl">
+                    <div class="option-item">A. 晶胞是晶体中最小的原子</div>
+                    <div class="option-item">B. 晶胞中不可能含有其他晶胞的微粒</div>
+                    <div class="option-item">C. 晶胞是描述晶体结构的基本单元，通常是平行六面体</div>
+                    <div class="option-item">D. 不同的晶胞一定是形状不同的</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- A1 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-green-700 mb-6 border-b-2 border-green-200">【答案与解析 1】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6 text-2xl">
+                <div class="bg-green-100 p-6 rounded border-l-8 border-green-600">
+                    <p class="font-bold">正确答案：C</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded">
+                    <p class="font-bold text-gray-700 mb-2">解析：</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>A错：晶胞是结构单元，不是原子。</li>
+                        <li>B错：晶胞通过“无隙并置”堆积，面、棱、顶点上的微粒被相邻晶胞共用。</li>
+                        <li>C对：这是晶胞的标准定义。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- P11: 例题2 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">【例题 2】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6">
+                <p class="text-3xl font-bold mb-4">2. 金属钠采用体心立方堆积，其配位数是：</p>
+                <div class="space-y-4 text-2xl">
+                    <div class="option-item">A. 4</div>
+                    <div class="option-item">B. 6</div>
+                    <div class="option-item">C. 8</div>
+                    <div class="option-item">D. 12</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- A2 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-green-700 mb-6 border-b-2 border-green-200">【答案与解析 2】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6 text-2xl">
+                <div class="bg-green-100 p-6 rounded border-l-8 border-green-600">
+                    <p class="font-bold">正确答案：C</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded">
+                    <p class="font-bold text-gray-700 mb-2">解析：</p>
+                    <p>体心立方堆积（BCC）中，体心的原子与立方体8个顶点的原子紧密接触，因此配位数为 <span class="font-bold text-red-600">8</span>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- P12: 例题3 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">【例题 3】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6">
+                <p class="text-3xl font-bold mb-4">3. 在金刚石晶胞中，含有多少个碳原子？</p>
+                <div class="space-y-4 text-2xl">
+                    <div class="option-item">A. 4</div>
+                    <div class="option-item">B. 6</div>
+                    <div class="option-item">C. 8</div>
+                    <div class="option-item">D. 12</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- A3 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-green-700 mb-6 border-b-2 border-green-200">【答案与解析 3】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6 text-2xl">
+                <div class="bg-green-100 p-6 rounded border-l-8 border-green-600">
+                    <p class="font-bold">正确答案：C</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded">
+                    <p class="font-bold text-gray-700 mb-2">解析：</p>
+                    <p>金刚石晶胞结构 = 面心立方框架 + 内部4个原子。</p>
+                    <p>$$N = 8 \times \frac{1}{8} (\text{顶点}) + 6 \times \frac{1}{2} (\text{面心}) + 4 (\text{体内}) = 1 + 3 + 4 = 8$$</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- P13: 例题4 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">【例题 4】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6">
+                <p class="text-3xl font-bold mb-4">4. 氯化钠(NaCl)晶体中，与一个 $Na^+$ 距离最近且相等的 $Cl^-$ 有几个？</p>
+                <div class="space-y-4 text-2xl">
+                    <div class="option-item">A. 4</div>
+                    <div class="option-item">B. 6</div>
+                    <div class="option-item">C. 8</div>
+                    <div class="option-item">D. 12</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- A4 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-green-700 mb-6 border-b-2 border-green-200">【答案与解析 4】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6 text-2xl">
+                <div class="bg-green-100 p-6 rounded border-l-8 border-green-600">
+                    <p class="font-bold">正确答案：B</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded">
+                    <p class="font-bold text-gray-700 mb-2">解析：</p>
+                    <p>NaCl晶体中，若以体心的 $Na^+$ 为例，它处于上下左右前后6个面心的 $Cl^-$ 包围之中（正八面体空隙），故配位数为 <span class="font-bold text-red-600">6</span>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- P14: 例题5 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">【例题 5】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6">
+                <p class="text-3xl font-bold mb-4">5. 六方最密堆积晶胞（如镁、锌）中，一个晶胞内含有的原子数目是：</p>
+                <div class="space-y-4 text-2xl">
+                    <div class="option-item">A. 2</div>
+                    <div class="option-item">B. 4</div>
+                    <div class="option-item">C. 6</div>
+                    <div class="option-item">D. 12</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- A5 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-green-700 mb-6 border-b-2 border-green-200">【答案与解析 5】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6 text-2xl">
+                <div class="bg-green-100 p-6 rounded border-l-8 border-green-600">
+                    <p class="font-bold">正确答案：C</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded">
+                    <p class="font-bold text-gray-700 mb-2">解析：</p>
+                    <p>六棱柱晶胞均摊：</p>
+                    <ul class="list-disc list-inside">
+                        <li>顶点 (12个)：$12 \times 1/6 = 2$</li>
+                        <li>面心 (2个)：$2 \times 1/2 = 1$</li>
+                        <li>体内 (3个)：$3 \times 1 = 3$</li>
+                        <li>总计：$2 + 1 + 3 = 6$</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- P15: 结束页 -->
+        <div class="slide text-center">
+            <h2 class="text-5xl font-bold text-blue-900 mb-8">课程结束</h2>
+            <p class="text-3xl text-gray-600 mb-12">下节课预告：晶体密度计算与配位数深入</p>
+            <div class="w-24 h-24 bg-blue-600 rounded-full mx-auto flex items-center justify-center text-white text-4xl animate-bounce">
+                👋
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const indicator = document.getElementById('page-indicator');
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+            indicator.textContent = `${currentSlide + 1} / ${slides.length}`;
+            window.scrollTo(0, 0);
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+
+        // Initialize
+        updateSlide();
+    </script>
+</body>
+</html>

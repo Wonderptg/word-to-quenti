@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<!-- The language of the document is set to Simplified Chinese -->
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>辅助角公式 (可打印版)</title>
+    
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts for custom typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- MathJax for rendering LaTeX math formulas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- Internal CSS for custom styles -->
+    <style>
+        /* Basic body and html styling */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        /* Main container for the presentation content */
+        #presentation-container {
+            max-width: 56rem; /* 896px */
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        /* Styling for each section/slide */
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        /* Styling for code/formula blocks */
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border-radius: 0.25rem;
+            font-size: 1.1rem;
+            line-height: 2.5;
+            overflow-x: auto;
+        }
+        
+        /* Styling for the canvas element */
+        .graph-canvas {
+            border-radius: 0.5rem;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Print-specific styles */
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            /* Each section becomes a full page when printing */
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- This is the main container for all the content -->
+    <div id="presentation-container">
+        
+        <!-- Section 1: Title Page -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">“合二为一”的魔术</h1>
+                <p class="text-2xl text-slate-600 mt-4">辅助角公式</p>
+                <p class="mt-8 text-xl text-cyan-600 font-semibold">"\( f(x) = 3\sin x + 4\cos x \) 的最大值是多少？"</p>
+                <p class="mt-4 text-slate-500">是 7 吗？</p>
+            </div>
+        </div>
+
+        <!-- Section 2: Formula Derivation (Updated) -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-4">它是怎么来的？—— 拆解公式的秘密</h2>
+            <div class="w-full max-w-3xl mx-auto text-lg space-y-4">
+                <p>灵感来源于两角和公式的“逆向思维”：我们想把 \( a\sin x + b\cos x \) 凑成 \( R(\sin x \cos\phi + \cos x \sin\phi) \) 的形式。</p>
+                <p>以 \( f(x) = \sin x - \cos x \) 为例：</p>
+            </div>
+        </div>
+        
+        <!-- Section 3: Geometric Method with Canvas -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-4">几何绝招：画点法</h2>
+            <div class="w-full max-w-4xl mx-auto flex justify-center items-center">
+                <!-- Canvas element for drawing the geometric representation -->
+                <canvas id="aux-angle-canvas" class="graph-canvas" width="300" height="300"></canvas>
+            </div>
+            <p class="mt-4 text-lg text-center text-gray-700"><strong>记忆技巧：</strong>对于任何 \(a\sin x + b\cos x\)，就在坐标系画出点 \(P(a, b)\)。<br>原点到P的距离就是系数 \(R\)，向量 \(\vec{OP}\) 与x轴正半轴的夹角就是辅助角 \(\phi\)。</p>
+        </div>
+        
+        <!-- Section 4: Application 1 - Finding Max/Min Values -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-amber-500 pb-2">应用一：轻松搞定最值和值域</h2>
+                <div class="mt-6 text-lg bg-amber-50 p-6 rounded-lg">
+                    <p class="font-bold">求 \( f(x) = 3\sin x + 4\cos x \) 的最值。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: Application 2 - Restricted Domain -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2">应用二：解决定义域受限难题</h2>
+                <div class="mt-6 text-lg bg-emerald-50 p-6 rounded-lg">
+                    <p class="font-bold">求 \( g(x) = 2\sin x + 2\sqrt{3}\cos x \) 在 \( x\in[0, \frac{\pi}{2}] \) 上的值域。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 6: Application 3 (New Section) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-2">应用三：作为化简“组合拳”的最后一击</h2>
+                <div class="mt-6 text-lg bg-sky-50 p-6 rounded-lg">
+                    <p class="font-bold">化简 \( h(x) = 4\sin x \cos x - 2\cos^2 x + 1 \)。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 7: Practice Problem 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (1/4)</h2>
+                <div class="text-lg md:text-xl">
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <p class="mb-4"><strong>1.</strong> 将 \( f(x)=5\sin x−12\cos x \) 化为 \(R\sin(x+\phi)\) 形式, R的值是？</p>
+                        <div class="space-y-2">
+                            <p>(A) 7</p>
+                            <p>(B) 12</p>
+                            <p>(C) 13</p>
+                            <p>(D) 17</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 8: Practice Problem 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (2/4)</h2>
+                <div class="text-lg md:text-xl">
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <p class="mb-4"><strong>2.</strong> 函数 \( f(x)=\sin x+\sqrt{3}\cos x \) 的最大值是？</p>
+                        <div class="space-y-2">
+                           <p>(A) 1</p>
+                           <p>(B) \(\sqrt{3}\)</p>
+                           <p>(C) 2</p>
+                           <p>(D) \(1+\sqrt{3}\)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 9: Practice Problem 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (3/4)</h2>
+                <div class="text-lg md:text-xl">
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <p class="mb-4"><strong>3.</strong> \( \cos x − \sin x \) 可以化简为？</p>
+                         <div class="space-y-2">
+                           <p>(A) \(\sqrt{2}\sin(x+\frac{\pi}{4})\)</p>
+                           <p>(B) \(\sqrt{2}\sin(x-\frac{\pi}{4})\)</p>
+                           <p>(C) \(\sqrt{2}\sin(x+\frac{3\pi}{4})\)</p>
+                           <p>(D) \(2\sin(x+\frac{3\pi}{4})\)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 10: Practice Problem 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (4/4)</h2>
+                <div class="text-lg md:text-xl">
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <p class="mb-4"><strong>4.</strong> 对于函数 \(f(x)=4\sin x+3\cos x\)，使用辅助角公式将其合并为一个正弦函数后，新函数的最小正周期是？</p>
+                        <div class="space-y-2">
+                           <p>(A) \(\pi\)</p>
+                           <p>(B) \(2\pi\)</p>
+                           <p>(C) \(5\pi\)</p>
+                           <p>(D) 周期会改变</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 11: Answers to Practice Problems -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析</h2>
+                <div class="space-y-3 text-base">
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>1. 答案：C</strong></p>
+                        <p><strong>解析：</strong>\(R = \sqrt{a^2+b^2} = \sqrt{5^2+(-12)^2} = \sqrt{25+144} = \sqrt{169} = 13\)。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>2. 答案：C</strong></p>
+                        <p><strong>解析：</strong>\(R = \sqrt{1^2+(\sqrt{3})^2} = 2\)。函数可化为 \(2\sin(x+\phi)\)，最大值为2。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>3. 答案：C</strong></p>
+                        <p><strong>解析：</strong>标准形式 \(-1\sin x+1\cos x\)。\(a=-1, b=1, R=\sqrt{2}\)。\(\cos\phi=-\frac{1}{\sqrt{2}}, \sin\phi=\frac{1}{\sqrt{2}}\), \(\phi\)在第二象限，为 \(\frac{3\pi}{4}\)。所以化为 \(\sqrt{2}\sin(x+\frac{3\pi}{4})\)。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>4. 答案：B</strong></p>
+                        <p><strong>解析：</strong>辅助角公式只改变振幅和相位，不改变角频率 \(\omega\)。原函数 \(\omega=1\), 周期 \(T=\frac{2\pi}{1}=2\pi\)。合并后 \(\omega\) 不变，周期依然是 \(2\pi\)。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 12: Summary (New Section) -->
+        <div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                 <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">总结一下</h2>
+                 <ul class="text-xl space-y-6">
+                    <li class="p-4 bg-blue-50 border-l-4 border-blue-500 rounded"><strong>核心操作：</strong>提出“魔法数字” \(\sqrt{a^2+b^2}\)。</li>
+                    <li class="p-4 bg-green-50 border-l-4 border-green-500 rounded"><strong>记忆技巧：</strong>画出点 \((a,b)\)，距离是系数R，角度是 \(\phi\)。</li>
+                    <li class="p-4 bg-amber-50 border-l-4 border-amber-500 rounded"><strong>两大用途：</strong>直接求最值；在限定定义域时，通过“换元三步法”精确求解。</li>
+                    <li class="p-4 bg-purple-50 border-l-4 border-purple-500 rounded"><strong>一个思路：</strong>在复杂化简中，它通常作为降次、统一角度之后的“最后一击”。</li>
+                 </ul>
+            </div>
+        </div>
+
+    </div>
+    
+    <!-- JavaScript to draw the graph on the canvas -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Find the canvas element
+            const canvas = document.getElementById('aux-angle-canvas');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                const w = canvas.width;
+                const h = canvas.height;
+                // Define center of the coordinate system
+                const centerX = w * 0.3;
+                const centerY = h * 0.7;
+                // Define example values for a and b
+                const a = 120;
+                const b = 90;
+                
+                // Clear the canvas before drawing
+                ctx.clearRect(0,0,w,h);
+                
+                // Draw Axes
+                ctx.strokeStyle = '#9ca3af';
+                ctx.lineWidth = 1;
+                // X-Axis
+                ctx.beginPath();
+                ctx.moveTo(0, centerY);
+                ctx.lineTo(w, centerY);
+                ctx.stroke();
+                // Y-Axis
+                ctx.beginPath();
+                ctx.moveTo(centerX, 0);
+                ctx.lineTo(centerX, h);
+                ctx.stroke();
+                // Axis labels
+                ctx.fillStyle = '#6b7280';
+                ctx.font = '14px Arial';
+                ctx.fillText('b', centerX - 20, 15);
+                ctx.fillText('a', w - 15, centerY + 18);
+                
+                // Coordinates for Point P(a,b)
+                const Px = centerX + a;
+                const Py = centerY - b; // Y is inverted in canvas
+                
+                // Draw the point P
+                ctx.fillStyle = '#ef4444';
+                ctx.beginPath();
+                ctx.arc(Px, Py, 5, 0, 2*Math.PI);
+                ctx.fill();
+                ctx.font = 'bold 14px Arial';
+                ctx.fillText('P(a, b)', Px + 8, Py + 5);
+                
+                // Draw the vector OP (from Origin to P)
+                ctx.strokeStyle = '#ef4444';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(Px, Py);
+                ctx.stroke();
+                
+                // Draw the dashed lines for the right-angle triangle
+                ctx.strokeStyle = '#a1a1aa';
+                ctx.setLineDash([2,2]);
+                ctx.beginPath();
+                ctx.moveTo(Px, Py);
+                ctx.lineTo(Px, centerY);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                
+                // Labels for sides 'a' and 'b'
+                ctx.fillStyle = 'black';
+                ctx.font = '14px Noto Serif SC';
+                ctx.fillText('b', Px + 5, centerY - b/2);
+                ctx.fillText('a', centerX + a/2, centerY + 18);
+                
+                // Label for R (hypotenuse)
+                const R = Math.sqrt(a*a + b*b);
+                ctx.fillStyle = '#1d4ed8';
+                ctx.save();
+                ctx.translate(centerX + a/2, centerY - b/2);
+                ctx.rotate(-Math.atan2(b,a));
+                ctx.fillText('R', -10, -5);
+                ctx.restore();
+                
+                // Draw the angle arc for φ (phi)
+                ctx.strokeStyle = '#1d4ed8';
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, 30, 0, -Math.atan2(b,a), true);
+                ctx.stroke();
+                ctx.fillText('φ', centerX + 35, centerY - 15);
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+

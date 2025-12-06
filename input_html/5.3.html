@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>弧长与扇形面积 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .graph-canvas {
+            border-radius: 0.5rem;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            /* Specific override for the core formulas section to maintain row layout */
+            #core-formulas-section {
+                flex-direction: row;
+            }
+            #core-formulas-section > div { /* Target the inner container */
+                flex-direction: row; /* Force it to be a row for its children */
+            }
+            
+            /* Specific override for the hexagon section */
+            #hexagon-section {
+                flex-direction: row; /* Make the section a row container */
+            }
+            #hexagon-section > div { /* Target the inner w-full container */
+                flex-direction: row; /* Ensure it's also a row */
+            }
+            #hexagon-section > div > div:last-child { /* Target the canvas's container */
+                justify-content: flex-end; /* Align the canvas to the right */
+            }
+
+            .section:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">弧长与扇形面积</h1>
+                <p class="text-2xl text-slate-600 mt-4">更优雅、更强大的计算工具</p>
+                <p class="mt-8 text-xl text-cyan-600 font-semibold">"从扫地机器人到汽车雨刮器，扇形无处不在"</p>
+            </div>
+        </div>
+
+        <!-- 新增：引入与直觉建立 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-gray-500 pb-2">温故知新：从钟表说起</h2>
+                <div class="mt-8 text-xl text-slate-700 leading-relaxed space-y-4">
+                    <p>时针走一整圈，是360度。</p>
+                    <p>如果时针从12点走到了4点，它扫过的角度是 <span class="font-bold text-cyan-600">120度</span>。</p>
+                    <p>这个扇形的面积占整个圆形钟面的多少呢？很简单，就是它角度占的比例：</p>
+                    <p class="text-2xl font-bold bg-gray-100 p-4 rounded-lg mt-4">120° / 360° = 1/3</p>
+                    <p class="mt-4">所以，这段弧长是整个周长的 <strong>1/3</strong>，这块扇形面积也是整个圆面积的 <strong>1/3</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 回顾旧方法 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-gray-500 pb-2">旧方法的本质：按比例分配</h2>
+                <p class="mt-6 text-xl text-slate-700 leading-relaxed">
+                    基于刚刚的钟表例子，我们可以总结出初中的核心公式：
+                </p>
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <p class="font-bold">弧长 l = (n/360) ⋅ 2πr</p>
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <p class="font-bold">面积 S = (n/360) ⋅ πr²</p>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+        <!-- 核心公式 -->
+        <div id="core-formulas-section" class="section">
+            <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8">
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-emerald-500 pb-2">弧度制下的核心公式</h2>
+                    <p class="mt-4 text-red-600 font-bold text-lg">纪律：角 α 的单位必须是弧度！</p>
+                    <div class="mt-4 space-y-3">
+                        <div class="bg-emerald-50 p-3 rounded-lg text-xl"><strong>1. l = αr</strong> (由定义 α=l/r 变形得)</div>
+                        <div class="bg-emerald-50 p-3 rounded-lg text-xl"><strong>2. S = ½αr²</strong> (按比例 α/2π 得)</div>
+                        <div class="bg-amber-50 p-3 rounded-lg text-xl"><strong>3. S = ½lr</strong> (三角形类比法)</div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center items-center">
+                    <canvas id="sector-formulas-canvas" class="graph-canvas" width="300" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 实例1：雷达扫描 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-2">例1：基础计算——雷达扫描</h2>
+                <div class="mt-6 text-lg bg-sky-50 p-6 rounded-lg">
+                    <p>一个雷达扫描半径40公里，扫过135°扇形。求弧长和面积？</p>
+                    
+                </div>
+            </div>
+        </div>
+        
+        <!-- 实例2：庭院设计 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2">例2：逆向思维——庭院设计</h2>
+                 <div class="mt-6 text-lg bg-violet-50 p-6 rounded-lg">
+                    <p>一块扇形草坪，面积18平方米，弧长9米。求半径和圆心角？</p>
+                    
+                </div>
+            </div>
+        </div>
+        
+        <!-- 实例3：几何结合 -->
+        <div id="hexagon-section" class="section">
+            <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8">
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-rose-500 pb-2">例3：几何结合——蜂巢</h2>
+                    <p class="mt-6 text-lg text-slate-700 leading-relaxed">
+                        在一个边长为 6 厘米的正六边形 ABCDEF 中，我们以顶点 A 为圆心，以对角线 AC 的长度为半径，画一段圆弧，交点分别在边 AB 和 AF 的延长线上。求这段圆弧的长度？
+                    </p>
+                </div>
+                <div class="md:w-1/2 flex justify-center items-center">
+                    <canvas id="hexagon-arc-canvas" class="graph-canvas" width="300" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">实战练习 (1/4)</h2>
+                <div class="text-lg">
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <p class="text-xl"><strong>1.</strong> 已知扇形的周长为15cm，圆心角为3rad，则此扇形的弧长为( )</p>
+                        <p class="mt-4 text-lg">A. 3cm &nbsp;&nbsp;&nbsp; B. 6cm &nbsp;&nbsp;&nbsp; C. 9cm &nbsp;&nbsp;&nbsp; D. 12cm</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">实战练习 (2/4)</h2>
+                <div class="text-lg">
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <p class="text-xl"><strong>2.</strong> 已知扇形的弧长为4π/3，圆心角为40°，则该扇形的半径为( )</p>
+                        <p class="mt-4 text-lg">A. 2 &nbsp;&nbsp;&nbsp; B. 3 &nbsp;&nbsp;&nbsp; C. 6 &nbsp;&nbsp;&nbsp; D. 8</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">实战练习 (3/4)</h2>
+                <div class="text-lg">
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <p class="text-xl"><strong>3.</strong> 已知扇形的圆心角为60°，弧长为2π，则该扇形的面积为( )</p>
+                        <p class="mt-4 text-lg">A. 3π &nbsp;&nbsp;&nbsp; B. 6π &nbsp;&nbsp;&nbsp; C. 5π &nbsp;&nbsp;&nbsp; D. 4π</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">实战练习 (4/4)</h2>
+                <div class="text-lg">
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <p class="text-xl"><strong>4.</strong> 一个扇形的弧长为2，圆心角为1rad，则该扇形的面积为( )</p>
+                        <p class="mt-4 text-lg">A. 2 &nbsp;&nbsp;&nbsp; B. 3 &nbsp;&nbsp;&nbsp; C. 4 &nbsp;&nbsp;&nbsp; D. 5</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题解析 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析</h2>
+                <div class="space-y-3 text-base">
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>1. 答案：C (9cm)</strong></p>
+                        <p><strong>解析：</strong>周长 C = 2r + l = 15。又 l = αr = 3r。代入得 2r + 3r = 15 => 5r=15 => r=3。所以 l = 3*3=9cm。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>2. 答案：C (6)</strong></p>
+                        <p><strong>解析：</strong>先换算角度，40° = 40 * (π/180) = 2π/9 rad。由 l = αr 得 r = l/α = (4π/3) / (2π/9) = (4π/3) * (9/2π) = 6。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>3. 答案：B (6π)</strong></p>
+                        <p><strong>解析：</strong>60° = π/3 rad。先求半径 r = l/α = 2π / (π/3) = 6。再求面积 S = ½lr = ½ * 2π * 6 = 6π。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>4. 答案：A (2)</strong></p>
+                        <p><strong>解析：</strong>先求半径 r = l/α = 2 / 1 = 2。再求面积 S = ½lr = ½ * 2 * 2 = 2。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 课堂总结 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8">课堂总结</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-lg">
+                    <div class="bg-emerald-100 p-6 rounded-lg">
+                        <h3 class="font-bold text-2xl mb-2">l = αr</h3>
+                    </div>
+                    <div class="bg-emerald-100 p-6 rounded-lg">
+                         <h3 class="font-bold text-2xl mb-2">S = ½αr²</h3>
+                    </div>
+                    <div class="bg-amber-100 p-6 rounded-lg">
+                         <h3 class="font-bold text-2xl mb-2">S = ½lr</h3>
+                         <p>(三角形类比)</p>
+                    </div>
+                </div>
+                 <p class="mt-12 text-2xl text-red-600 font-bold">最重要的纪律：用这套公式，角 α 必须是弧度！</p>
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function drawSector(ctx, angleRad, radius) {
+                const midX = ctx.canvas.width / 2;
+                const midY = ctx.canvas.height / 2;
+                
+                ctx.save();
+                // Fill Sector
+                ctx.fillStyle = 'rgba(59, 130, 246, 0.2)';
+                ctx.beginPath();
+                ctx.moveTo(midX, midY);
+                ctx.arc(midX, midY, radius, 0, -angleRad, true);
+                ctx.closePath();
+                ctx.fill();
+
+                // Radius Lines
+                ctx.strokeStyle = '#ef4444';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(midX, midY);
+                ctx.lineTo(midX + radius, midY);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(midX, midY);
+                ctx.lineTo(midX + radius * Math.cos(-angleRad), midY + radius * Math.sin(-angleRad));
+                ctx.stroke();
+
+                // Arc
+                ctx.strokeStyle = '#3b82f6';
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.arc(midX, midY, radius, 0, -angleRad, true);
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            function drawHexagonArc(canvas) {
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                const w = canvas.width;
+                const h = canvas.height;
+                const midX = w / 2;
+                const midY = h / 2;
+                const side = w / 5; // Make side length relative to canvas width
+
+                ctx.clearRect(0,0,w,h);
+                ctx.save();
+                ctx.translate(midX, midY);
+
+                // Draw Hexagon
+                ctx.strokeStyle = '#6b7280';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                for (let i = 0; i < 7; i++) {
+                    const angle = Math.PI / 3 * i - Math.PI/6;
+                    ctx.lineTo(side * Math.cos(angle), side * Math.sin(angle));
+                }
+                ctx.stroke();
+                
+                // Calculate vertices
+                const A = {x: side * Math.cos(-Math.PI/6), y: side * Math.sin(-Math.PI/6)};
+                const B = {x: side * Math.cos(Math.PI/6), y: side * Math.sin(Math.PI/6)};
+                const C = {x: side * Math.cos(Math.PI/2), y: side * Math.sin(Math.PI/2)};
+                const F = {x: side * Math.cos(-Math.PI/2), y: side * Math.sin(-Math.PI/2)};
+                
+                const radiusAC = Math.sqrt(Math.pow(C.x - A.x, 2) + Math.pow(C.y - A.y, 2));
+
+                // Draw extension lines for AB and AF
+                ctx.save();
+                ctx.strokeStyle = '#a8a29e'; // stone-400
+                ctx.lineWidth = 1;
+                ctx.setLineDash([3, 3]);
+
+                // Extend lines from A through B and F
+                const extensionScale = 2.5;
+                const endB_ext = { x: A.x + (B.x - A.x) * extensionScale, y: A.y + (B.y - A.y) * extensionScale };
+                const endF_ext = { x: A.x + (F.x - A.x) * extensionScale, y: A.y + (F.y - A.y) * extensionScale };
+                
+                ctx.beginPath();
+                ctx.moveTo(B.x, B.y);
+                ctx.lineTo(endB_ext.x, endB_ext.y);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(F.x, F.y);
+                ctx.lineTo(endF_ext.x, endF_ext.y);
+                ctx.stroke();
+                ctx.restore();
+
+                // Correctly calculate the angles for the arc based on vectors
+                const angle_AB_ext = Math.atan2(B.y - A.y, B.x - A.x);
+                const angle_AF_ext = Math.atan2(F.y - A.y, F.x - A.x);
+                
+                // Draw Arc
+                ctx.strokeStyle = '#ef4444';
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.arc(A.x, A.y, radiusAC, angle_AB_ext, angle_AF_ext);
+                ctx.stroke();
+
+                // Draw intersection points M and N
+                const M = {x: A.x + radiusAC * Math.cos(angle_AB_ext), y: A.y + radiusAC * Math.sin(angle_AB_ext)};
+                const N = {x: A.x + radiusAC * Math.cos(angle_AF_ext), y: A.y + radiusAC * Math.sin(angle_AF_ext)};
+
+                ctx.fillStyle = '#ef4444'; // red-500
+                ctx.beginPath();
+                ctx.arc(M.x, M.y, 4, 0, 2 * Math.PI);
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.arc(N.x, N.y, 4, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                // Labels
+                const fontSize = w / 25; // Scale font size
+                ctx.fillStyle = 'black';
+                ctx.font = `bold ${fontSize}px Arial`;
+                ctx.fillText('A', A.x - fontSize * 1.3, A.y + fontSize * 0.6);
+                ctx.fillText('B', B.x + fontSize * 0.3, B.y + fontSize);
+                ctx.fillText('C', C.x - fontSize * 0.3, C.y + fontSize);
+                ctx.fillText('F', F.x - fontSize, F.y - fontSize * 0.3);
+                ctx.fillText('M', M.x - fontSize * 0.3, M.y + fontSize * 1.3);
+                ctx.fillText('N', N.x - fontSize * 1.3, N.y - fontSize * 0.3);
+
+                ctx.restore();
+            }
+
+            // Canvas 1: Sector Formulas
+            const canvas1 = document.getElementById('sector-formulas-canvas');
+            if(canvas1) {
+                const ctx = canvas1.getContext('2d');
+                const midX = canvas1.width / 2;
+                const midY = canvas1.height / 2;
+                const radius = canvas1.width * 0.4;
+                const angle = 1.5; // rad
+
+                ctx.clearRect(0,0,canvas1.width, canvas1.height);
+                drawSector(ctx, angle, radius);
+                
+                // Labels
+                ctx.fillStyle = '#ef4444';
+                ctx.font = 'bold 16px Noto Serif SC';
+                ctx.fillText('r', midX + radius * 0.5, midY - 5);
+                ctx.fillStyle = '#3b82f6';
+                ctx.fillText('l', midX + radius * 0.8, midY - radius*0.4);
+                ctx.fillStyle = 'black';
+                ctx.fillText('α', midX + 20, midY - 20);
+                ctx.fillText('S', midX + 30, midY + 40);
+            }
+
+            // Canvas 2: Hexagon Arc
+            const canvas2 = document.getElementById('hexagon-arc-canvas');
+            drawHexagonArc(canvas2);
+
+        });
+    </script>
+</body>
+</html>
+

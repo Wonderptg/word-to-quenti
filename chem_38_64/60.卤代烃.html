@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>有机化学基础：卤代烃</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        
+        /* 表格样式 */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+        }
+        .styled-table th, .styled-table td {
+            border: 1px solid #cbd5e1;
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+        .styled-table thead {
+            background-color: #f8fafc;
+        }
+        .styled-table th {
+            font-weight: 700;
+            color: #334155;
+            text-align: center;
+        }
+        .styled-table tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+        .styled-table tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">有机化学基础：卤代烃</h1>
+            </div>
+        </div>
+        
+        <!-- 卤代烃的重要性 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>卤代烃：有机的“桥梁”</h2>
+                <p class="mt-8 text-xl text-slate-700">卤代烃在有机合成中起着<strong class="text-red-600">承先启后</strong>的“桥梁”作用。</p>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <p class="text-lg text-slate-700 text-center">石油裂解 → <strong class="text-gray-600">烷烃</strong> (性质稳定)</p>
+                    <p class="text-2xl text-center font-bold text-gray-600 my-2">↓</p>
+                    <p class="text-lg text-slate-700 text-center mono">光照/卤代</p>
+                    <p class="text-2xl text-center font-bold text-gray-600 my-2">↓</p>
+                    <p class="text-lg text-slate-700 text-center"><strong class="text-blue-600">卤代烃</strong> (承先启后)</p>
+                    <p class="text-2xl text-center font-bold text-gray-600 my-2">↙ &nbsp; &nbsp; ↘</p>
+                    <div class="flex justify-around">
+                        <p class="text-lg text-slate-700 text-center"><strong class="text-green-600">醇类</strong> (水解)</p>
+                        <p class="text-lg text-slate-700 text-center"><strong class="text-orange-600">烯类</strong> (消去)</p>
+                    </div>
+                </div>
+                <p class="mt-4 text-xl text-slate-700">它是推断的<strong class="text-red-600">突破口</strong>，必须掌握！</p>
+            </div>
+        </div>
+
+        <!-- 卤代烃的定义与分类 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>卤代烃：定义与分类</h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-indigo-50 border border-indigo-200 p-4 rounded-lg">
+                        <strong class="font-bold text-indigo-700 text-xl">定义：</strong>
+                        <p class="mt-2 text-lg text-slate-700">烃分子中的 H 原子被<strong class="text-indigo-600">卤素原子 (F, Cl, Br, I)</strong> 取代后的产物。</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="font-bold text-gray-700 text-xl">官能团：</strong>
+                        <p class="mt-2 text-lg text-slate-700">碳卤键 (<code>-X</code>)</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="font-bold text-gray-700 text-xl">分类：</strong>
+                        <p class="mt-2 text-lg text-slate-700">· <strong class="text-blue-600">饱和卤代烃</strong> (如：CH₃CH₂Br)</p>
+                        <p class="mt-2 text-lg text-slate-700">· <strong class="text-red-600">不饱和卤代烃</strong> (如：CH₂=CHCl)</p>
+                        <p class="mt-2 text-lg text-slate-700">· <strong class="text-green-600">芳香卤代烃</strong> (如：C₆H₅-CH₂Cl)</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 卤代烃的命名 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>卤代烃的命名</h2>
+                <p class="mt-8 text-xl text-slate-700">采用系统命名法，将卤素原子作为<strong class="text-red-600">取代基</strong>。</p>
+                 <div class="mt-8 space-y-3 text-lg">
+                    <p class="p-3 rounded-md bg-white border mono"><code>CH₃-CHCl-CH₂-CH₃</code> → <strong class="text-blue-600">2-氯丁烷</strong></p>
+                    <p class="p-3 rounded-md bg-white border mono"><code>CH₂=CHCl</code> → <strong class="text-blue-600">氯乙烯</strong></p>
+                    <p class="p-3 rounded-md bg-white border mono"><code>CF₂=CF₂</code> → <strong class="text-blue-600">四氟乙烯</strong> (聚四氟乙烯单体)</p>
+                    <p class="p-3 rounded-md bg-white border mono"><code>BrCH₂-CH₂Br</code> → <strong class="text-blue-600">1,2-二溴乙烷</strong> (必须标明位置)</p>
+                    <p class="p-3 rounded-md bg-white border mono"><code>C₆H₅-CH₂Cl</code> → <strong class="text-blue-600">氯甲基苯</strong> (或 苄氯)</p>
+                    <p class="p-3 rounded-md bg-white border mono"><code>CH₃-C₆H₄-Cl (邻)</code> → <strong class="text-blue-600">2-氯甲苯</strong> (或 邻氯甲苯)</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 卤代烃的物理性质 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>卤代烃的物理性质</h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full">状态</strong><p class="mt-2 text-lg">少数为气体（一氯甲烷, 一氯乙烷, 氯乙烯），<strong class="text-blue-600">大多为液体或固体</strong>。</p></div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full">溶解性</strong><p class="mt-2 text-lg"><strong class="text-red-600">不溶于水</strong>，易溶于有机溶剂（相似相容）。</p></div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full">密度</strong><p class="mt-2 text-lg">除少数一氟/一氯代物外，<strong class="text-red-600">密度均比水大</strong>。随C原子增多，密度<strong class="text-blue-600">减小</strong>。</p></div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full">熔沸点</strong><p class="mt-2 text-lg">比同碳数烃<strong class="text-blue-600">高</strong>（相对分子质量大，范德华力强）。随C原子增多，熔沸点<strong class="text-blue-600">升高</strong>。</p></div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 溴乙烷：结构与极性 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>重点物质：溴乙烷 (CH₃CH₂Br)</h2>
+                <p class="mt-8 text-xl text-slate-700">无色液体，沸点 38.4°C，密度比水大，难溶于水。</p>
+                <div class="mt-8 bg-teal-50 border border-teal-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-teal-800 text-xl">关键结构：C-Br 键</h3>
+                    <p class="mt-3 text-slate-600 text-lg"><strong>电负性：</strong> <code>Br (2.8) > C (2.5)</code></p>
+                    <p class="mt-2 text-slate-600 text-lg">电子对偏向 Br，形成<strong class="text-red-600">强极性共价键</strong>。</p>
+                    <p class="mono mt-4 text-center text-xl font-bold">
+                        C<sup>δ+</sup> — Br<sup>δ-</sup>
+                    </p>
+                    <p class="mt-4 text-lg text-slate-700"><strong>结果：</strong>C-Br 键<strong class="text-red-600">键长较长、键能较小、极性强</strong>，易断裂。带部分正电的 C 原子易受 <code>OH⁻</code> 等负电基团的攻击，发生<strong class="text-blue-600">取代反应</strong>。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 化学性质 (一)：水解取代反应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>化学性质 (一)：水解取代反应</h2>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">反应条件 (重点)：</h3>
+                    <p class="text-2xl mt-2 text-center text-red-900">NaOH 水溶液，加热</p>
+                </div>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <p class="mono text-center text-xl">CH₃CH₂Br + NaOH --(H₂O/△)→ CH₃CH₂OH + NaBr</p>
+                    <p class="mt-4 text-lg text-slate-700"><strong>历程：</strong><code>C-Br</code> 键断裂，<code>Br</code> 被 <code>-OH</code> <strong class="text-red-600">取代</strong>，生成乙醇和溴化钠。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实验：检验卤代烃中的卤素 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>实验：检验卤代烃中的卤素</h2>
+                <p class="mt-8 text-xl text-slate-700">如何证明 <code>CH₃CH₂Br</code> 中含有<strong class="text-red-600">溴元素</strong>？</g></p>
+                 <div class="mt-8 space-y-3 text-lg">
+                    <p class="p-3 rounded-md bg-white border"><strong>第 1 步：水解</strong><br/>
+                       加入 <code>NaOH</code> 溶液并<strong class="text-red-600">加热</strong>，使 <code>-Br</code> 脱落变为 <code>Br⁻</code> 离子。</p>
+                    <p class="p-3 rounded-md bg-red-100 border border-red-300"><strong class="font-bold text-red-700">第 2 步：酸化 (关键)</strong><br/>
+                       加入<strong class="text-red-600">足量稀硝酸 (HNO₃)</strong>，中和掉上一步剩余的 <code>NaOH</code>。（防止 <code>Ag⁺ + OH⁻</code> 生成沉淀干扰）</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>第 3 步：检验</strong><br/>
+                       加入 <code>AgNO₃</code> 溶液，若生成<strong class="text-yellow-500">淡黄色沉淀</strong> (AgBr)，则证明原物质含溴元素。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 化学性质 (二)：消去反应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>化学性质 (二)：消去反应</h2>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">反应条件 (重点)：</h3>
+                    <p class="text-2xl mt-2 text-center text-red-900">NaOH 乙醇溶液，加热</p>
+                </div>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <p class="mono text-center text-xl">CH₃CH₂Br + NaOH --(乙醇/△)→ CH₂=CH₂↑ + NaBr + H₂O</p>
+                    <p class="mt-4 text-lg text-slate-700"><strong>历程：</strong>脱去 <code>-Br</code> 原子和<strong class="text-red-600">相邻碳 (β-C)</strong> 上的 <code>-H</code> 原子，形成<strong class="text-red-600">碳碳双键</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 消去反应 vs 加成反应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>消去反应 vs 加成反应</h2>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-red-800 text-2xl">消去反应</h3>
+                        <p class="mt-3 text-slate-600">脱去小分子，不饱和度<strong class="text-red-700">增加</strong>。</p>
+                        <p class="mono mt-2">C-C → C=C</p>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-blue-800 text-2xl">加成反应</h3>
+                        <p class="mt-3 text-slate-600">加上小分子，不饱和度<strong class="text-blue-700">减小</strong>。</p>
+                        <p class="mono mt-2">C=C → C-C</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 消去实验 (除杂) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>消去实验 (除杂)</h2>
+                <p class="mt-8 text-xl text-slate-700">用 1-溴丁烷制备 1-丁烯，并通过酸性KMnO₄检验：</p>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">问题：</h3>
+                    <p>加热时，<strong class="text-red-900">乙醇 (溶剂) 易挥发</strong>，乙醇蒸气<strong class="text-red-900">也能</strong>使KMnO₄褪色，产生干扰。</p>
+                </div>
+                 <div class="mt-8 bg-green-50 border border-green-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-green-800 text-xl">除杂操作：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">将生成的气体先通入<strong class="text-blue-600">水</strong>中（洗气）。</p>
+                    <p class="mt-2 text-slate-600 text-lg"><strong>原理：</strong>乙醇极易溶于水而被吸收，1-丁烯难溶于水，从而被提纯，排除干扰。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 消去反应的规律 (一) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>消去反应的规律 (一)</h2>
+                <p class="mt-8 text-xl text-slate-700"><strong class="text-red-600">不能</strong>发生消去反应的情况：</p>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                        <strong>1. 只有一个碳：</strong>
+                        <p class="mono mt-2 text-lg text-slate-700">如 <code>CH₃Cl</code> (无法形成双键)</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                        <strong>2. 邻位碳 (β-C) 上没有 H：</strong>
+                        <p class="mono mt-2 text-lg text-slate-700">如 <code>(CH₃)₃C-CH₂Cl</code> (β-C 上全为甲基)</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                        <strong>3. 卤素原子直接连在苯环上：</strong>
+                        <p class="mono mt-2 text-lg text-slate-700">如 <code>C₆H₅-Cl</code> (氯苯)</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 消去反应的规律 (二) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>消去反应的规律 (二)</h2>
+                <p class="mt-8 text-xl text-slate-700">当 α-C 两侧的 β-C 上都有 H 时，可能产生<strong class="text-red-600">不同产物</strong>。</p>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <p class="text-lg text-slate-700 text-center mono">CH₃-CHCl-CH₂-CH₃ (2-氯丁烷)</p>
+                    <p class="text-2xl text-center font-bold text-gray-600 my-2">↙ &nbsp; &nbsp; ↘</p>
+                    <div class="flex justify-around">
+                        <p class="text-lg text-slate-700 text-center"><strong>消去 C1 的 H (左消)：</strong><br/> <code class="text-blue-600">CH₂=CH-CH₂-CH₃</code> (1-丁烯)</p>
+                        <p class="text-lg text-slate-700 text-center"><strong>消去 C3 的 H (右消)：</strong><br/> <code class="text-red-600">CH₃-CH=CH-CH₃</code> (2-丁烯)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 水解 vs 消去 (总结) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>水解 vs 消去 (总结)</h2>
+                <div class="mt-8 overflow-x-auto">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>反应类型</th>
+                                <th class="text-blue-600">水解 (取代)</th>
+                                <th class="text-red-600">消去</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold">反应条件</td>
+                                <td><code>NaOH</code> <strong class="text-blue-600">水溶液</strong>, 加热</td>
+                                <td><code>NaOH</code> <strong class="text-red-600">乙醇溶液</strong>, 加热</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">官能团变化</td>
+                                <td><code>-X</code> → <code>-OH</code></td>
+                                <td><code>-X</code> 和 <code>β-H</code> 脱去 → <code>C=C</code></td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">产物</td>
+                                <td>醇</td>
+                                <td>烯</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 有机合成应用 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>有机合成应用 (示例)</h2>
+                <p class="mt-8 text-xl text-slate-700">如何实现 <code>CH₃CH₂Br</code> → <code>HO-CH₂-CH₂-OH</code> (乙二醇) ?</p>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <p class="text-lg text-slate-700 mono">
+                        CH₃CH₂Br <br/>
+                        <span class="text-red-600">↓ (NaOH/乙醇/△, 消去)</span> <br/>
+                        CH₂=CH₂ <br/>
+                        <span class="text-blue-600">↓ (+Br₂, 加成)</span> <br/>
+                        BrCH₂-CH₂Br <br/>
+                        <span class="text-green-600">↓ (NaOH/H₂O/△, 水解)</span> <br/>
+                        HO-CH₂-CH₂-OH
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（一）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">卤代烃 <code>CH₃CH₂Br</code> 发生水解反应所需的条件是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> NaOH 乙醇溶液，加热</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> NaOH 水溶液，加热</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 浓硫酸，170°C</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 光照</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（一）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>卤代烃的水解（取代）反应，条件是<strong class="text-red-600">NaOH 水溶液，加热</strong>。(A) 是消去反应的条件。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（二）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">卤代烃 <code>CH₃CH₂Br</code> 发生消去反应所需的条件是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> NaOH 乙醇溶液，加热</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> NaOH 水溶液，加热</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 浓硫酸，170°C</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 光照</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（二）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(A)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>卤代烃的消去反应，条件是<strong class="text-red-600">NaOH 乙醇溶液，加热</strong>。(B) 是水解反应的条件。(C) 是乙醇的消去反应条件。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（三）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700"><code>CH₃CH₂Br</code> 发生水解反应，生成的有机产物是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(A)</strong> CH₂=CH₂ (乙烯)</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(B)</strong> CH₃COOH (乙酸)</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(C)</strong> CH₃CH₂OH (乙醇)</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(D)</strong> CH₃CHO (乙醛)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（三）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>水解反应是 <code>-Br</code> 原子被 <code>-OH</code> 羟基<strong class="text-red-600">取代</strong>，因此产物是<strong class="text-blue-600">乙醇</strong>。(A) 是消去反应的产物。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（四）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700"><code>CH₃CH₂Br</code> 发生消去反应，生成的有机产物是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(A)</strong> CH₂=CH₂ (乙烯)</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(B)</strong> CH₃COOH (乙酸)</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(C)</strong> CH₃CH₂OH (乙醇)</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(D)</strong> CH≡CH (乙炔)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（四）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(A)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>消去反应是脱去 <code>-Br</code> 和<strong class="text-red-600">相邻碳</strong>上的 <code>-H</code>，形成<strong class="text-red-600">碳碳双键</strong>，因此产物是<strong class="text-blue-600">乙烯</strong>。(C) 是水解反应的产物。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（五）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">下列卤代烃中，<strong class="text-red-600">不能</strong>发生消去反应的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(A)</strong> CH₃Cl</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(B)</strong> CH₃CH₂Cl</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(C)</strong> CH₃CHClCH₃</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(D)</strong> CH₃CH₂CH₂Cl</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 5 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（五）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(A)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>消去反应的条件之一是分子中<strong class="text-red-600">至少有两个碳原子</strong>。<br/>(A) <code>CH₃Cl</code>（一氯甲烷）只有一个碳原子，无法形成 C=C 双键，不能发生消去反应。<br/>(B)、(C)、(D) 均满足消去条件（有 β-H）。</p>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                 </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看！请务必区分水解和消去的不同条件！</p>
+                <p class="mt-4 text-2xl text-slate-600">下节课再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- 导航控件 -->
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <!-- JS 逻辑 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

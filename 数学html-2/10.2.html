@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>导数切线问题大通关 (演示版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <!-- MathJax Library -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 64rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 4rem;
+            position: relative; 
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            page-break-after: always;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 6px solid #3b82f6;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border-radius: 0.25rem;
+            font-size: 1.25rem;
+            line-height: 1.8;
+            overflow-x: auto;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .highlight-box {
+            background-color: #fffbe6;
+            border: 2px dashed #f59e0b;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-size: 1.1rem;
+            margin-top: 1.5rem;
+        }
+
+        .image-placeholder {
+            background-color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 1.2rem;
+            border-radius: 0.5rem;
+            margin: 1.5rem auto;
+            overflow: hidden;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0mm;
+            }
+
+            body, html {
+                width: 100%;
+                height: 100%;
+                background-color: white;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            #presentation-container {
+                margin: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+                width: 100% !important;
+                max-width: none !important;
+            }
+            
+            .section {
+                height: 100vh !important;
+                width: 100vw !important;
+                max-width: none !important;
+                min-height: 0 !important;
+                page-break-after: always !important;
+                break-after: page !important;
+                page-break-inside: avoid !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                align-items: center !important;
+                padding: 1cm !important;
+                border-bottom: none !important;
+            }
+
+            .section > div {
+                width: 90% !important;
+                max-width: 100% !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-6xl font-bold text-slate-800 mb-6">导数切线问题大通关</h1>
+                <p class="text-3xl text-slate-600 mt-4">攻克导数板块的“必考钉子户”</p>
+                <div class="mt-12 p-6 bg-blue-50 rounded-xl inline-block">
+                    <p class="text-2xl text-blue-800 font-semibold">"从小白到压轴，三种考法一次讲透"</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第一关：在某点 -->
+        <div class="section">
+             <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-green-500 pb-4 mb-8">🟢 第一关：送分题——“在某点”</h2>
+            <div class="w-full max-w-5xl mx-auto grid grid-cols-2 gap-8 items-center">
+                <div>
+                    <p class="text-xl mb-4"><strong>核心标志：</strong> “求曲线在点 P 处的切线”</p>
+                    <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500 mb-6">
+                        <p class="text-lg font-bold text-green-900">护身符：</p>
+                        <ul class="list-disc list-inside text-lg text-green-800">
+                            <li>这点肯定在曲线上</li>
+                            <li>这点就是切点</li>
+                        </ul>
+                    </div>
+                    <p class="text-lg"><strong>例题 1：</strong> $f(x) = x^3 - 3x$，求在 $A(2, 2)$ 处的切线。</p>
+                    <div class="space-y-2 mt-4 text-lg">
+                        <p>1. 验算：$2^3 - 3\times2 = 2$ (在曲线上)</p>
+                        <p>2. 求导：$f'(x) = 3x^2 - 3 \implies k = f'(2) = 9$</p>
+                        <p>3. 结论：$y - 2 = 9(x - 2)$</p>
+                    </div>
+                </div>
+                <div class="image-placeholder h-80 bg-slate-50 border border-slate-200 rounded-xl overflow-hidden">
+                    <!-- SVG: y=x^3-3x at (2,2) 
+                         Updated for better accuracy.
+                         Scale: X=50px/unit, Y=15px/unit. Origin(200,150).
+                    -->
+                    <svg viewBox="0 0 400 300" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                        <!-- 坐标轴 -->
+                        <line x1="200" y1="20" x2="200" y2="280" stroke="#94a3b8" stroke-width="2" />
+                        <line x1="20" y1="150" x2="380" y2="150" stroke="#94a3b8" stroke-width="2" />
+                        <text x="385" y="150" font-size="12" fill="#94a3b8">x</text>
+                        <text x="205" y="20" font-size="12" fill="#94a3b8">y</text>
+                        
+                        <!-- 曲线 y = x^3 - 3x 
+                             Passing through (-1,2), (0,0), (1,-2), (2,2)
+                        -->
+                        <path d="M 90,210 C 110,130 130,120 150,120 S 190,140 200,150 S 230,180 250,180 S 290,170 300,120 Q 305,95 315,70" 
+                              fill="none" stroke="#3b82f6" stroke-width="3" />
+                        
+                        <!-- 点 A(2,2) -> SVG(300, 120) -->
+                        <circle cx="300" cy="120" r="5" fill="#1e40af" />
+                        <text x="315" y="125" font-size="16" font-weight="bold" fill="#1e40af">A(2,2)</text>
+                        
+                        <!-- 切线 y = 9x - 16 
+                             Slope 9 is steep. 
+                             Line segment from x=1.6 to x=2.3
+                        -->
+                        <line x1="280" y1="174" x2="315" y2="79.5" stroke="#ef4444" stroke-width="2" stroke-dasharray="4" />
+                        <text x="180" y="220" font-size="14" fill="#ef4444">切线 k=9</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 第二关：过某点 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-amber-500 pb-4 mb-8">🟡 第二关：陷阱题——“过某点”</h2>
+            <div class="w-full max-w-5xl mx-auto grid grid-cols-2 gap-8 items-center">
+                <div>
+                    <div class="highlight-box mb-6">
+                        <p class="font-bold text-xl text-amber-800">警报：“过”这点，不一定是切点！</p>
+                    </div>
+                    <p class="text-lg mb-2"><strong>例题 2：</strong> 过点 $P(1, -3)$ 做 $f(x) = x^2$ 的切线。</p>
+                    <p class="text-base text-gray-500 mb-4">（验算：$1^2 = 1 \neq -3$，点在曲线外！）</p>
+                    
+                    <div class="space-y-3 text-lg">
+                        <p><strong>核心大招：设切点 $(m, m^2)$</strong></p>
+                        <div class="p-3 bg-gray-50 rounded border border-gray-200">
+                            <p class="font-bold text-sm text-gray-600">列方程（双重斜率）：</p>
+                            $$2m = \frac{m^2 - (-3)}{m - 1}$$
+                        </div>
+                        <p>解得 $m=3$ 或 $m=-1$。</p>
+                        <p class="font-bold text-amber-700">结论：有两条切线！</p>
+                    </div>
+                </div>
+                
+                <div class="image-placeholder h-80 bg-slate-50 border border-slate-200 rounded-xl overflow-hidden">
+                    <!-- SVG: External Point Tangents 
+                         Accurate Calculation:
+                         Origin: (180, 280) for (0,0). Scale: 20px/unit.
+                         P(1, -3) -> (200, 340)
+                         Point A(-1, 1) -> (160, 260)
+                         Point B(3, 9) -> (240, 100)
+                         Tangent 1: y = -2x - 1 (Through P and A)
+                         Tangent 2: y = 6x - 9 (Through P and B)
+                    -->
+                    <svg viewBox="0 0 400 400" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
+                            </marker>
+                        </defs>
+                        
+                        <!-- Axes -->
+                        <line x1="20" y1="280" x2="380" y2="280" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)" />
+                        <text x="370" y="300" fill="#94a3b8">x</text>
+                        <line x1="180" y1="380" x2="180" y2="20" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)" />
+                        <text x="190" y="30" fill="#94a3b8">y</text>
+
+                        <!-- Parabola y=x^2 from x=-3 to x=3 -->
+                        <path d="M 120,100 Q 180,460 240,100" fill="none" stroke="#3b82f6" stroke-width="3" />
+
+                        <!-- Point P(1, -3) -->
+                        <circle cx="200" cy="340" r="5" fill="#dc2626" />
+                        <text x="210" y="355" font-size="14" font-weight="bold" fill="#dc2626">P(1, -3)</text>
+
+                        <!-- Tangent Point A(-1, 1) -->
+                        <circle cx="160" cy="260" r="5" fill="#1e40af" />
+                        <text x="60" y="265" font-size="14" font-weight="bold" fill="#1e40af">切点A(-1, 1)</text>
+
+                        <!-- Tangent Point B(3, 9) -->
+                        <circle cx="240" cy="100" r="5" fill="#1e40af" />
+                        <text x="250" y="105" font-size="14" font-weight="bold" fill="#1e40af">切点B(3, 9)</text>
+
+                        <!-- Tangent Lines -->
+                        <!-- Tangent 1 (P to A extended) -->
+                        <line x1="200" y1="340" x2="130" y2="200" stroke="#ef4444" stroke-width="2" stroke-dasharray="5,5" />
+                        <!-- Tangent 2 (P to B) -->
+                        <line x1="200" y1="340" x2="245" y2="70" stroke="#ef4444" stroke-width="2" stroke-dasharray="5,5" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第三关：公切线 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-rose-500 pb-4 mb-8">🔴 第三关：BOSS题——“公切线”</h2>
+            <div class="w-full max-w-5xl mx-auto grid grid-cols-2 gap-8 items-center">
+                <div>
+                    <p class="text-lg mb-4"><strong>例题 3：</strong> $f(x) = x^2$ 和 $g(x) = -(x-2)^2 - 1$ 的公切线。</p>
+                    
+                    <div class="space-y-4 text-lg">
+                        <div class="p-4 bg-rose-50 rounded-lg border-l-4 border-rose-500">
+                            <p class="font-bold text-rose-900">关键：设两个切点！</p>
+                            <p>设 $f(x)$ 切点 $A(m, m^2)$</p>
+                            <p>设 $g(x)$ 切点 $B(n, \dots)$</p>
+                        </div>
+                        <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+                            <p class="font-bold text-gray-700">认亲大会（列方程组）：</p>
+                            <ul class="list-decimal list-inside space-y-2 mt-2">
+                                <li><strong>斜率相等：</strong> $k_A = k_B$</li>
+                                <li><strong>截距相等：</strong> $b_A = b_B$</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="image-placeholder h-80 bg-slate-50 border border-slate-200 rounded-xl overflow-hidden">
+                    <!-- SVG: Common Tangent -->
+                    <!-- Origin: (80, 120), Scale: 50px/unit -->
+                    <svg viewBox="0 0 400 300" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <marker id="arrow-boss" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
+                            </marker>
+                        </defs>
+
+                        <!-- Axes -->
+                        <line x1="20" y1="120" x2="380" y2="120" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-boss)" />
+                        <text x="370" y="140" fill="#94a3b8">x</text>
+                        <line x1="80" y1="290" x2="80" y2="10" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-boss)" />
+                        <text x="90" y="20" fill="#94a3b8">y</text>
+
+                        <!-- Curve 1: f(x) = x^2 -->
+                        <path d="M 30,70 Q 80,170 130,70 T 160,-8" fill="none" stroke="#3b82f6" stroke-width="3" />
+                        <text x="130" y="60" font-size="14" fill="#3b82f6" font-weight="bold">f(x)=x²</text>
+
+                        <!-- Curve 2: g(x) = -(x-2)^2 - 1 -->
+                        <path d="M 105,282.5 Q 180,57.5 255,282.5" fill="none" stroke="#059669" stroke-width="3" />
+                        <text x="260" y="270" font-size="14" fill="#059669" font-weight="bold">g(x)=-(x-2)²-1</text>
+
+                        <!-- Common Tangent -->
+                        <!-- Line passing through A(-0.225, 0.05) and B(2.225, -1.05) -->
+                        <line x1="20" y1="96" x2="300" y2="222" stroke="#ef4444" stroke-width="2" stroke-dasharray="5,5" />
+
+                        <!-- Points and Labels -->
+                        <circle cx="69" cy="117.5" r="5" fill="#ef4444" />
+                        <text x="75" y="110" font-size="14" font-weight="bold" fill="#ef4444">切点 m</text>
+
+                        <circle cx="191" cy="172.5" r="5" fill="#ef4444" />
+                        <text x="170" y="200" font-size="14" font-weight="bold" fill="#ef4444">切点 n</text>
+                        
+                        <!-- Title for Line -->
+                        <text x="250" y="210" font-size="14" fill="#ef4444">公切线</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <div class="bg-indigo-600 text-white px-4 py-1 rounded-t-lg inline-block font-bold">课堂小测 1/4</div>
+                <div class="bg-white border-2 border-gray-200 p-8 rounded-b-lg rounded-tr-lg shadow-lg">
+                    <h3 class="text-3xl font-bold text-slate-800 mb-6">题目 1</h3>
+                    <p class="text-2xl mb-8">题目若描述“求曲线在点 P 处的切线”，下列哪个说法是正确的？</p>
+                    <div class="space-y-4 text-xl">
+                        <div class="p-4 border border-gray-200 rounded hover:bg-gray-50 cursor-pointer">(A) 点 P 不一定是切点</div>
+                        <div class="p-4 border border-gray-200 rounded hover:bg-gray-50 cursor-pointer">(B) 点 P 一定是切点，且在曲线上</div>
+                        <div class="p-4 border border-gray-200 rounded hover:bg-gray-50 cursor-pointer">(C) 需要设切点求解</div>
+                        <div class="p-4 border border-gray-200 rounded hover:bg-gray-50 cursor-pointer">(D) 点 P 可能在曲线外</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 解析 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-400 mb-4">题目 1 解析</h3>
+                <div class="bg-green-50 border-l-8 border-green-500 p-8 rounded shadow-sm">
+                    <p class="text-3xl font-bold text-green-800 mb-6">✅ 正确答案：(B)</p>
+                    <div class="text-xl leading-relaxed text-slate-700">
+                        <p><strong>关键词：</strong> “在...处”</p>
+                        <p class="mt-4">这通常是“送分题”的标志。</p>
+                        <p class="mt-2">它明确告知了：该点<strong>必定是切点</strong>，且<strong>必定在曲线上</strong>。</p>
+                        <p class="mt-4 text-green-700 font-bold">策略：直接求导，代入该点坐标即可。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <div class="bg-indigo-600 text-white px-4 py-1 rounded-t-lg inline-block font-bold">课堂小测 2/4</div>
+                <div class="bg-white border-2 border-gray-200 p-8 rounded-b-lg rounded-tr-lg shadow-lg">
+                    <h3 class="text-3xl font-bold text-slate-800 mb-6">题目 2</h3>
+                    <p class="text-2xl mb-8">遇到“过点 P 做曲线的切线”这类问题，首选的解题步骤是？</p>
+                    <div class="space-y-4 text-xl">
+                        <div class="p-4 border border-gray-200 rounded hover:bg-gray-50 cursor-pointer">(A) 直接求导代入点 P</div>
+                        <div class="p-4 border border-gray-200 rounded hover:bg-gray-50 cursor-pointer">(B) 直接写点斜式方程</div>
+                        <div class="p-4 border border-gray-200 rounded hover:bg-gray-50 cursor-pointer">(C) 设切点坐标为 $(m, f(m))$</div>
+                        <div class="p-4 border border-gray-200 rounded hover:bg-gray-50 cursor-pointer">(D) 联立直线与曲线方程</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 解析 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-400 mb-4">题目 2 解析</h3>
+                <div class="bg-green-50 border-l-8 border-green-500 p-8 rounded shadow-sm">
+                    <p class="text-3xl font-bold text-green-800 mb-6">✅ 正确答案：(C)</p>
+                    <div class="text-xl leading-relaxed text-slate-700">
+                        <p><strong>关键词：</strong> “过点 P”</p>
+                        <p class="mt-4">这意味着点 P <strong>不一定</strong>是切点（可能是曲线外的点）。</p>
+                        <div class="bg-white p-4 mt-4 border border-green-200 rounded">
+                            <p class="font-bold text-center text-amber-700 text-2xl">口诀：不知切点，必设切点！</p>
+                        </div>
+                        <p class="mt-4">第一步必须设切点 $(m, f(m))$，然后利用导数和斜率公式建立方程。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <div class="bg-indigo-600 text-white px-4 py-1 rounded-t-lg inline-block font-bold">课堂小测 3/4</div>
+                <div class="bg-white border-2 border-gray-200 p-8 rounded-b-lg rounded-tr-lg shadow-lg">
+                    <h3 class="text-3xl font-bold text-slate-800 mb-6">题目 3 (计算题)</h3>
+                    <p class="text-2xl mb-8">已知函数 $f(x) = x^2$，则曲线在点 $(1, 1)$ 处的切线斜率 $k$ 是多少？</p>
+                    <div class="space-y-4 text-xl">
+                        <div class="p-4 border border-gray-200 rounded hover:bg-gray-50 cursor-pointer">(A) 1</div>
+                        <div class="p-4 border border-gray-200 rounded hover:bg-gray-50 cursor-pointer">(B) 2</div>
+                        <div class="p-4 border border-gray-200 rounded hover:bg-gray-50 cursor-pointer">(C) 3</div>
+                        <div class="p-4 border border-gray-200 rounded hover:bg-gray-50 cursor-pointer">(D) 4</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 解析 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-400 mb-4">题目 3 解析</h3>
+                <div class="bg-green-50 border-l-8 border-green-500 p-8 rounded shadow-sm">
+                    <p class="text-3xl font-bold text-green-800 mb-6">✅ 正确答案：(B)</p>
+                    <div class="text-xl leading-relaxed text-slate-700">
+                        <p>1. <strong>验证：</strong> 点 $(1,1)$ 在曲线上 ($1^2=1$)。</p>
+                        <p>2. <strong>求导：</strong> $f'(x) = 2x$。</p>
+                        <p>3. <strong>代入：</strong> 将 $x=1$ 代入导函数。</p>
+                        <div class="formula-box bg-white mt-4 text-2xl font-bold">
+                            $k = f'(1) = 2 \times 1 = 2$
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <div class="bg-indigo-600 text-white px-4 py-1 rounded-t-lg inline-block font-bold">课堂小测 4/4</div>
+                <div class="bg-white border-2 border-gray-200 p-8 rounded-b-lg rounded-tr-lg shadow-lg">
+                    <h3 class="text-3xl font-bold text-slate-800 mb-6">题目 4</h3>
+                    <p class="text-2xl mb-8">解决两个不同函数的“公切线”问题，通常使用的方法是？</p>
+                    <div class="space-y-4 text-xl">
+                        <div class="p-4 border border-gray-200 rounded hover:bg-gray-50 cursor-pointer">(A) 分别设两个切点，列方程组</div>
+                        <div class="p-4 border border-gray-200 rounded hover:bg-gray-50 cursor-pointer">(B) 只设一个切点</div>
+                        <div class="p-4 border border-gray-200 rounded hover:bg-gray-50 cursor-pointer">(C) 求两个函数的交点</div>
+                        <div class="p-4 border border-gray-200 rounded hover:bg-gray-50 cursor-pointer">(D) 直接画图求解</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 解析 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-400 mb-4">题目 4 解析</h3>
+                <div class="bg-green-50 border-l-8 border-green-500 p-8 rounded shadow-sm">
+                    <p class="text-3xl font-bold text-green-800 mb-6">✅ 正确答案：(A)</p>
+                    <div class="text-xl leading-relaxed text-slate-700">
+                        <p>公切线连接两个不同的曲线，切点位置通常不同。</p>
+                        <p class="mt-4 font-bold">标准步骤：</p>
+                        <ol class="list-decimal list-inside mt-2 space-y-2">
+                            <li>设两个切点 $m$ 和 $n$。</li>
+                            <li>分别写出两条切线方程。</li>
+                            <li>利用<strong>“同一条直线”</strong>原理（斜率相同，截距相同）列方程组求解。</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 总结页 -->
+         <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-5xl font-bold text-slate-800 mb-10">通关总结：核心逻辑</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                    <div class="bg-green-50 p-6 rounded-xl border border-green-100">
+                        <h3 class="text-2xl font-bold text-green-800 mb-4">1. 看到“在”</h3>
+                        <p class="text-lg">最幸福！<br>直接求导，代入求值。</p>
+                    </div>
+                    <div class="bg-amber-50 p-6 rounded-xl border border-amber-100">
+                        <h3 class="text-2xl font-bold text-amber-800 mb-4">2. 看到“过”</h3>
+                        <p class="text-lg">是陷阱！<br><strong>必设切点 $m$</strong>，列方程求解。</p>
+                    </div>
+                    <div class="bg-rose-50 p-6 rounded-xl border border-rose-100">
+                        <h3 class="text-2xl font-bold text-rose-800 mb-4">3. 公切线</h3>
+                        <p class="text-lg">大BOSS！<br><strong>设两个切点 $m, n$</strong>，令 $k=k, b=b$。</p>
+                    </div>
+                </div>
+                <p class="text-2xl mt-12 text-slate-500 font-semibold">敢设未知数，敢列方程，导数切线没那么可怕。</p>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>硅与无机非金属材料</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        
+        /* 反应示意图容器样式 */
+        .reaction-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                   <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9.75l-9-5.25M12 12.75v9.75" />
+                 </svg>
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">硅与无机非金属材料</h1>
+                <p class="text-2xl text-slate-600 mt-2">—— 从传统到现代</p>
+            </div>
+        </div>
+
+        <!-- 引言 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-slate-500 rounded"></span>引言：不可或缺的材料</h2>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-8 rounded-lg text-lg text-slate-700 space-y-4">
+                    <p>许多无机非金属材料含有<strong class="text-red-600">硅(Si)</strong>和<strong class="text-red-600">氧(O)</strong>元素，是构成我们世界的基础。</p>
+                    <p>随着科技发展，新型无机非金属材料在<strong class="text-blue-600">航空航天、信息、新能源</strong>等高技术领域扮演着关键角色。</p>
+                    <p>本节课我们将系统学习<strong class="text-teal-600">传统硅酸盐材料</strong>和<strong class="text-purple-600">新型无机非金属材料</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 硅酸盐结构 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-700 rounded"></span>硅酸盐的基本结构：硅氧四面体</h2>
+                 <p class="mt-8 text-xl text-slate-700">硅酸盐材料的基本结构单元是<strong class="text-gray-800">硅氧四面体 ([SiO₄])</strong>。</p>
+                 <div class="mt-8 bg-gray-100 border border-gray-300 p-8 rounded-lg text-center">
+                     <!-- SVG: 硅氧四面体示意图 -->
+                     <svg class="w-full max-w-xs h-40 mx-auto mb-4" viewBox="0 0 200 200">
+                        <!-- 四面体轮廓 -->
+                        <path d="M100 20 L40 180 L160 180 Z" fill="#e5e7eb" stroke="#4b5563" stroke-width="1"/>
+                        <path d="M100 20 L160 180 M100 20 L40 180" stroke="#4b5563" stroke-width="1"/>
+                        <line x1="40" y1="180" x2="160" y2="180" stroke="#4b5563" stroke-width="1"/>
+                        <!-- 氧原子 (O) - 顶点 -->
+                        <circle cx="100" cy="20" r="12" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+                        <circle cx="40" cy="180" r="12" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+                        <circle cx="160" cy="180" r="12" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+                        <circle cx="100" cy="120" r="12" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+                        <!-- 硅原子 (Si) - 中心 -->
+                        <circle cx="100" cy="100" r="8" fill="#1f2937" stroke="#374151" stroke-width="2"/>
+                        <!-- 连线到中心 -->
+                        <line x1="100" y1="20" x2="100" y2="100" stroke="#4b5563" stroke-width="1"/>
+                        <line x1="40" y1="180" x2="100" y2="100" stroke="#4b5563" stroke-width="1"/>
+                        <line x1="160" y1="180" x2="100" y2="100" stroke="#4b5563" stroke-width="1"/>
+                        <line x1="100" y1="120" x2="100" y2="100" stroke="#4b5563" stroke-width="1"/>
+                        <!-- 标签 -->
+                        <text x="100" y="104" font-size="10" text-anchor="middle" fill="white">Si</text>
+                        <text x="100" y="24" font-size="10" text-anchor="middle" fill="white">O</text>
+                        <text x="40" y="184" font-size="10" text-anchor="middle" fill="white">O</text>
+                        <text x="160" y="184" font-size="10" text-anchor="middle" fill="white">O</text>
+                        <text x="100" y="124" font-size="10" text-anchor="middle" fill="white">O</text>
+                     </svg>
+                    <p class="mt-4 text-lg text-slate-700">硅原子位于中心，四个氧原子位于顶点。</p>
+                    <p class="mt-2 text-lg text-slate-700">四面体可以通过<strong class="text-red-600">共用顶角氧原子</strong>相互连接，形成链状、层状或<strong class="text-red-600">空间网状结构</strong>。</p>
+                 </div>
+                 <p class="mt-6 text-xl text-slate-600"><strong>结构决定性质：</strong>这种结构导致硅酸盐通常具有<strong class="text-red-600">硬度高、熔点高、难溶于水、化学性质稳定、耐腐蚀</strong>等特点。</p>
+            </div>
+        </div>
+
+        <!-- 传统材料 - 陶瓷 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-amber-500 rounded"></span>传统材料：陶瓷 (Ceramics)</h2>
+                 <div class="mt-8 bg-amber-50 border border-amber-200 p-6 rounded-lg text-lg space-y-3">
+                    <p><strong>主要原料：</strong><strong class="text-amber-700">黏土</strong> (主要成分为含水铝硅酸盐)。</p>
+                    <p><strong>制备原理：</strong>高温烧结。</p>
+                    <p><strong>主要成分：</strong>复杂的硅酸盐。</p>
+                    <p><strong>特点：</strong>抗氧化、抗酸碱腐蚀、耐高温、绝缘。</p>
+                    <p><strong>应用：</strong>建筑材料 (瓷砖)、绝缘子、日用器皿 (碗盘)、卫生洁具 (马桶)。</p>
+                     <!-- SVG: 陶瓷罐和绝缘子 -->
+                     <div class="reaction-diagram mt-4 space-x-8">
+                        <svg class="w-24 h-24 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 2v20M5 10H19M5 15H19M12 2a4 4 0 00-4 4v4h8V6a4 4 0 00-4-4z"/>
+                            <path d="M7 10h10v10H7z"/>
+                        </svg>
+                        <svg class="w-24 h-24 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 2v20M5 10H19M5 15H19M12 2a4 4 0 00-4 4v4h8V6a4 4 0 00-4-4z"/>
+                            <path d="M7 10h10v10H7z"/>
+                        </svg>
+                    </div>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 传统材料 - 玻璃 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>传统材料：玻璃 (Glass)</h2>
+                 <div class="mt-8 bg-sky-50 border border-sky-200 p-6 rounded-lg text-lg space-y-3">
+                    <p><strong>主要原料：</strong><strong class="text-sky-700">石英砂 (SiO₂)、纯碱 (Na₂CO₃)、石灰石 (CaCO₃)</strong>。</p>
+                    <p><strong>制备原理：</strong>高温下熔融反应。</p>
+                    <p class="mono text-center font-bold text-base md:text-xl">Na₂CO₃ + SiO₂ <span class="text-slate-500">(高温)</span> → Na₂SiO₃ + CO₂↑</p>
+                    <p class="mono text-center font-bold text-base md:text-xl">CaCO₃ + SiO₂ <span class="text-slate-500">(高温)</span> → CaSiO₃ + CO₂↑</p>
+                    <p><strong>主要成分：</strong>Na₂SiO₃, CaSiO₃, SiO₂ (混合物)。</p>
+                    <p><strong>特点：</strong>无固定熔点，是<strong class="text-red-600">非晶体</strong>。</p>
+                    <p><strong>应用：</strong>建筑材料 (窗户)、光学仪器 (镜片)、容器。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 特种玻璃 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>形形色色的特种玻璃</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg border">
+                        <h3 class="font-bold text-gray-700">光学玻璃</h3>
+                        <p class="mt-2 text-sm text-slate-600">加入铅(Pb)化合物，用于制造镜片、棱镜。</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg border">
+                        <h3 class="font-bold text-blue-700">耐高温玻璃</h3>
+                        <p class="mt-2 text-sm text-slate-600">加入硼(B)酸盐，耐化学腐蚀，耐温度骤变，用于实验室仪器。</p>
+                    </div>
+                    <div class="bg-purple-50 p-4 rounded-lg border">
+                        <h3 class="font-bold text-purple-700">彩色玻璃</h3>
+                        <p class="mt-2 text-sm text-slate-600">加入过渡金属氧化物 (如 CoO显蓝色, Cr₂O₃显绿色)。</p>
+                    </div>
+                </div>
+                 <!-- SVG: 多色玻璃示例 -->
+                <div class="reaction-diagram mt-6 space-x-4">
+                    <svg class="w-20 h-20" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="45" fill="#3b82f6" opacity="0.6"/>
+                    </svg>
+                    <svg class="w-20 h-20" viewBox="0 0 100 100">
+                        <rect x="5" y="5" width="90" height="90" rx="10" fill="#facc15" opacity="0.6"/>
+                    </svg>
+                     <svg class="w-20 h-20" viewBox="0 0 100 100">
+                        <polygon points="50 5, 95 95, 5 95" fill="#10b981" opacity="0.6"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 传统材料 - 水泥 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-600 rounded"></span>传统材料：水泥 (Cement)</h2>
+                <div class="mt-8 bg-gray-100 border border-gray-300 p-6 rounded-lg text-lg space-y-3">
+                    <p><strong>主要原料：</strong><strong class="text-gray-700">石灰石 (CaCO₃)、黏土</strong>。</p>
+                    <p><strong>制备原理：</strong>高温煅烧 (水泥回转窑)，加入石膏调节硬化速率。</p>
+                    <p><strong>主要成分：</strong>硅酸三钙 (3CaO·SiO₂), 硅酸二钙 (2CaO·SiO₂), 铝酸三钙 (3CaO·Al₂O₃)。</p>
+                    <p><strong>特点：</strong><strong class="text-red-600">水硬性</strong> (加水搅拌后能在空气或水中硬化)。</p>
+                    <p><strong>应用：</strong>与沙子、碎石混合制成<strong class="text-red-600">混凝土</strong>，用于建筑、水利工程。</p>
+                     <!-- SVG: 水泥搅拌与硬化 -->
+                    <div class="reaction-diagram mt-4">
+                        <svg class="w-24 h-24 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 22a10 10 0 0010-10H2a10 10 0 0010 10z"/>
+                            <path d="M12 2a10 10 0 0110 10M12 2a10 10 0 00-10 10M12 22V2"/>
+                            <path d="M10 17L14 13M14 17L10 13"/>
+                        </svg>
+                    </div>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 新型材料 - 晶体硅 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-600 rounded"></span>新型材料：晶体硅 (Crystalline Silicon)</h2>
+                <p class="mt-8 text-xl text-slate-700">硅(Si)是地壳中含量第二的元素，其单质是最重要的<strong class="text-purple-700">半导体材料</strong>。</p>
+                 <div class="mt-8 bg-purple-50 border border-purple-200 p-6 rounded-lg text-lg space-y-3">
+                    <h3 class="font-bold text-purple-800 text-xl">高纯硅的制备 (简化流程):</h3>
+                    <p class="mono text-center text-base md:text-xl font-bold">① SiO₂ + 2C <span class="text-slate-500">(高温)</span> → Si(粗) + 2CO↑</p>
+                    <p class="mono text-center text-base md:text-xl font-bold">② Si(粗) + 3HCl <span class="text-slate-500">(300°C)</span> → SiHCl₃ + H₂</p>
+                    <p class="mono text-center text-base md:text-xl font-bold">③ SiHCl₃ + H₂ <span class="text-slate-500">(1100°C)</span> → Si(高纯) + 3HCl</p>
+                    <h3 class="font-bold text-purple-800 text-xl mt-4">主要应用:</h3>
+                    <ul class="list-disc list-inside ml-4 text-slate-600">
+                        <li><strong class="text-red-600">半导体芯片</strong> (计算机、手机)</li>
+                        <li><strong class="text-red-600">硅太阳能电池</strong> (光伏发电)</li>
+                    </ul>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 新型材料 - 二氧化硅 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-600 rounded"></span>新型材料：二氧化硅 (SiO₂) 的新应用</h2>
+                 <p class="mt-8 text-xl text-slate-700">除了作为传统玻璃和制硅的原料，高纯度的SiO₂在现代科技中有着重要应用。</p>
+                 <div class="mt-8 bg-cyan-50 border border-cyan-200 p-6 rounded-lg text-lg">
+                    <h3 class="font-bold text-cyan-800 text-xl">光导纤维 (Optical Fiber)</h3>
+                    <p class="mt-3 text-slate-600">利用高纯度SiO₂制成，俗称<strong class="text-cyan-700">光纤</strong>。</p>
+                    <p class="mt-2 text-slate-600">原理：利用光在光纤内部的<strong class="text-red-600">全反射</strong>原理传输信号。</p>
+                    <p class="mt-2 text-slate-600">优点：传输容量大、损耗低、抗干扰性强。</p>
+                    <p class="mt-2 text-slate-600">应用：现代<strong class="text-red-600">通信</strong>的基石 ("信息高速公路")。</p>
+                    <p class="mt-1 text-red-600 font-semibold">注意：光纤<strong class="text-red-600">导光</strong>不导电，是绝缘体。</p>
+                    <!-- SVG: 光纤传输示意图 -->
+                    <div class="reaction-diagram mt-4">
+                        <svg class="w-24 h-24 text-cyan-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 14h18M7 21l3-6M17 21l-3-6"/>
+                            <path d="M7 3a4 4 0 00-4 4v10a4 4 0 004 4h10a4 4 0 004-4V7a4 4 0 00-4-4H7z"/>
+                        </svg>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 新型材料 - 新型陶瓷 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-lime-600 rounded"></span>新型材料：新型陶瓷</h2>
+                 <p class="mt-8 text-xl text-slate-700">突破了传统硅酸盐体系，具有特殊的光、热、电、磁等性能。</p>
+                 <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                     <div class="bg-lime-50 border border-lime-200 p-4 rounded-lg">
+                         <h3 class="font-bold text-lime-800">碳化硅 (SiC)</h3>
+                         <p class="mt-2 text-sm text-slate-600">俗称金刚砂，结构类似金刚石。<br>特点：<strong class="text-red-600">硬度大、熔点高、耐高温</strong>。<br>应用：磨料、轴承、耐高温材料。</p>
+                     </div>
+                      <div class="bg-teal-50 border border-teal-200 p-4 rounded-lg">
+                         <h3 class="font-bold text-teal-800">氮化硅 (Si₃N₄)</h3>
+                         <p class="mt-2 text-sm text-slate-600">特点：润滑性、耐磨损、抗腐蚀、<strong class="text-red-600">耐高温</strong>。<br>应用：轴承、模具、发动机部件。</p>
+                     </div>
+                      <div class="bg-indigo-50 border border-indigo-200 p-4 rounded-lg">
+                         <h3 class="font-bold text-indigo-800">其他新型陶瓷</h3>
+                         <p class="mt-2 text-sm text-slate-600"><strong>压电陶瓷：</strong>机械能 ⇌ 电能转化。<br><strong>透明陶瓷：</strong>(如Al₂O₃) 光学应用。<br><strong>生物陶瓷：</strong>(如Al₂O₃) 人工关节、骨骼。</p>
+                     </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 新型材料 - 碳纳米材料 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-800 rounded"></span>新型材料：碳纳米材料</h2>
+                 <p class="mt-8 text-xl text-slate-700">指维度在纳米尺度 (1-100 nm) 的碳材料。</p>
+                 <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6 text-lg">
+                     <div class="bg-gray-100 border border-gray-300 p-4 rounded-lg text-center">
+                         <h3 class="font-bold text-gray-800">石墨烯 (Graphene)</h3>
+                         <p class="mt-2 text-sm text-slate-600">单层石墨片。<br>特点：<strong class="text-red-600">导电性极强</strong>、强度高、透光。<br>应用：电池、显示屏、传感器。</p>
+                         <!-- SVG: 石墨烯蜂窝结构 -->
+                         <svg class="w-full h-12 mx-auto mt-2" viewBox="0 0 100 50">
+                            <circle cx="20" cy="25" r="3" fill="#374151"/>
+                            <circle cx="40" cy="25" r="3" fill="#374151"/>
+                            <circle cx="60" cy="25" r="3" fill="#374151"/>
+                            <circle cx="80" cy="25" r="3" fill="#374151"/>
+                            <line x1="20" y1="25" x2="40" y2="25" stroke="#4b5563" stroke-width="1"/>
+                            <line x1="40" y1="25" x2="60" y2="25" stroke="#4b5563" stroke-width="1"/>
+                            <line x1="60" y1="25" x2="80" y2="25" stroke="#4b5563" stroke-width="1"/>
+                            <path d="M30 10 L40 25 L30 40 L20 25 Z" fill="none" stroke="#6b7280" stroke-width="1"/>
+                            <path d="M50 10 L60 25 L50 40 L40 25 Z" fill="none" stroke="#6b7280" stroke-width="1"/>
+                         </svg>
+                     </div>
+                      <div class="bg-gray-100 border border-gray-300 p-4 rounded-lg text-center">
+                         <h3 class="font-bold text-gray-800">碳纳米管 (CNT)</h3>
+                         <p class="mt-2 text-sm text-slate-600">石墨片卷成的管状物。<br>特点：强度高、导电/导热性好。<br>应用：复合材料、场发射显示器。</p>
+                         <!-- SVG: 碳纳米管结构 -->
+                         <svg class="w-full h-12 mx-auto mt-2" viewBox="0 0 100 50">
+                            <path d="M10 10 Q 50 0, 90 10" fill="none" stroke="#4b5563" stroke-width="2"/>
+                            <path d="M10 40 Q 50 50, 90 40" fill="none" stroke="#4b5563" stroke-width="2"/>
+                            <path d="M10 10 L10 40 M90 10 L90 40" stroke="#4b5563" stroke-width="2"/>
+                            <ellipse cx="50" cy="25" rx="30" ry="10" fill="none" stroke="#9ca3af" stroke-width="1" stroke-dasharray="2,2"/>
+                         </svg>
+                     </div>
+                      <div class="bg-gray-100 border border-gray-300 p-4 rounded-lg text-center">
+                         <h3 class="font-bold text-gray-800">富勒烯 (Fullerene)</h3>
+                         <p class="mt-2 text-sm text-slate-600">如 C₆₀ (足球烯)。<br>特点：笼状分子结构。<br>应用：超导、催化剂、<strong class="text-red-600">药物载体</strong>。</p>
+                          <!-- SVG: C60 结构 -->
+                          <svg class="w-full h-12 mx-auto mt-2" viewBox="0 0 100 50">
+                            <circle cx="50" cy="25" r="20" fill="#374151"/>
+                            <rect x="35" y="10" width="30" height="30" rx="5" fill="#fef08a" opacity="0.6"/>
+                            <text x="50" y="30" font-size="12" text-anchor="middle" fill="#1f2937">C₆₀</text>
+                         </svg>
+                     </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 例题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (一)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列属于传统硅酸盐材料的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 玻璃</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 晶体硅</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 碳化硅</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 石墨烯</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (一)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(A)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>传统的三大硅酸盐材料是陶瓷、水泥和<strong class="text-green-700">玻璃</strong>。晶体硅、碳化硅、石墨烯都属于新型无机非金属材料。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (二)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>制造光导纤维的主要原料是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 纯碱</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 石灰石</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 高纯度的二氧化硅</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 黏土</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (二)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>光导纤维利用光的全反射原理传输信号，对材料的纯净度和光学性能要求极高。其主要原料是<strong class="text-green-700">高纯度的二氧化硅 (SiO₂)</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (三)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列关于水泥的说法，错误的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 主要原料是石灰石和黏土</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 主要成分是硅酸盐</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 具有水硬性</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 水泥、沙子和水混合得到混凝土</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (三)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>混凝土是由水泥、沙子、<strong class="text-green-700">碎石</strong> (或砾石) 和水按一定比例混合而成的。缺少碎石这个骨料，不能称为混凝土。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (四)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列不属于晶体硅主要用途的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 半导体芯片</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 光导纤维</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 太阳能电池</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 计算机处理器</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1-4 h-1 bg-green-500 rounded"></span>练习 (四)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>晶体硅(Si)的主要用途是制造<strong class="text-green-700">半导体芯片</strong>（计算机处理器的核心材料）和<strong class="text-green-700">太阳能电池</strong>。<strong class="text-green-700">光导纤维</strong>的主要原料是高纯度的二氧化硅(SiO₂)。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (五)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列关于新型陶瓷的说法，错误的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 碳化硅硬度大，可用作磨料</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 氮化硅耐高温，可用作发动机部件</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 生物陶瓷(如Al₂O₃)可用于制作人工关节</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 新型陶瓷都属于硅酸盐材料</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (五)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>新型陶瓷<strong class="text-green-700">突破了</strong>传统硅酸盐体系的限制，包含了氧化物陶瓷 (如 Al₂O₃)、氮化物陶瓷 (如 Si₃N₄)、碳化物陶瓷 (如 SiC) 等，<strong class="text-green-700">不都属于</strong>硅酸盐材料。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

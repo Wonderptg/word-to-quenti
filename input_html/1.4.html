@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>逻辑用语第一课：充分必要条件与量词 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 400px; /* 保证内容较少时也有足够高度 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .cartoon-canvas {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            width: 100px;
+            height: 100px;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+
+            .section:last-child {
+                page-break-after: auto;
+            }
+            .cartoon-canvas {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- Section 1: Title -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">逻辑用语</h1>
+                <p class="text-3xl text-slate-600 mt-4">让你思考更清晰</p>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 2: Intro -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">开场：从生活小事聊起</h2>
+                <p class="mt-8 text-xl text-slate-700 leading-relaxed">
+                    昨天晚上下了一场大雨，今天早上我出门，看到地面是湿的。
+                </p>
+                <p class="mt-6 text-2xl font-semibold text-center text-slate-700">“下雨” 和 “地面湿”，谁能推出谁？</p>
+                 <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <p class="font-bold text-blue-700">推导一：</p>
+                        <p class="mt-2">如果“昨晚下雨了”，那么“今天地面是湿的”。</p>
+                        <p class="mt-2 font-bold text-green-600">✅ 基本成立！</p>
+                    </div>
+                    <div class="bg-red-50 p-4 rounded-lg">
+                         <p class="font-bold text-red-700">推导二：</p>
+                        <p class="mt-2">如果“今天地面是湿的”，那么“昨晚一定下雨了”。</p>
+                        <p class="mt-2 font-bold text-red-600">❌ 不一定！可能是洒水车。</p>
+                    </div>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 3: Part 1 Title -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800">搞懂充分必要条件</h2>
+                 <p class="mt-8 text-xl text-slate-600 leading-relaxed">P：昨晚下雨了 &nbsp;&nbsp;&nbsp;&nbsp; Q：今天地面是湿的</p>
+                 <p class="mt-4 text-2xl font-mono text-green-600">P ⇒ Q</p>
+                 <p class="mt-2 text-2xl font-mono text-red-600">Q ⇏ P</p>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 4: Sufficiency -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">充分性 (P ⇒ Q)</h2>
+                <div class="mt-6 bg-green-50 p-6 rounded-lg">
+                    <p class="text-slate-700 text-xl">P 是 Q 的 <strong class="text-green-800">充分条件</strong>。</p>
+                    <p class="mt-4 text-lg text-slate-600">意思是，有 P 这个条件就“<strong class="text-green-700">足够</strong>”了，保证 Q 一定发生。</p>
+                    <p class="mt-4 text-slate-500 text-base">例：“下雨”足够让“地面变湿”。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 5: Necessity -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">必要性 (Q ⇒ P)</h2>
+                 <div class="mt-6 bg-purple-50 p-6 rounded-lg">
+                     <p class="text-slate-700 text-xl">P 是 Q 的 <strong class="text-purple-800">必要条件</strong>。</p>
+                     <p class="mt-4 text-lg text-slate-600">意思是，要想有 Q，就“<strong class="text-purple-700">必须</strong>”有 P。</p>
+                     <p class="mt-4 text-slate-500 text-base">例：“下雨”不是“地面湿”的必要条件，因为洒水车也行。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 6: Four Relations 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center">四种关系，对号入座！</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg shadow">
+                    <h3 class="text-2xl font-bold text-green-700">① 充分不必要条件 (P ⇒ Q, Q ⇏ P)</h3>
+                    <p class="text-xl mt-2">左能推右，右推不回来。</p>
+                    <p class="mt-4 text-lg"><strong>例：</strong>“昨晚下雨了”是“今天地面湿”的充分不必要条件。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 7: Four Relations 2 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center">四种关系，对号入座！</h2>
+                <div class="mt-8 bg-purple-50 p-6 rounded-lg shadow">
+                    <h3 class="text-2xl font-bold text-purple-700">② 必要不充分条件 (P ⇏ Q, Q ⇒ P)</h3>
+                    <p class="text-xl mt-2">左推不回来，右能推左。</p>
+                     <p class="mt-4 text-lg"><strong>例：</strong>“你完成了期末考试(P)”是“你这门课的成绩是A(Q)”的必要不充分条件。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 8: Four Relations 3 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center">四种关系，对号入座！</h2>
+                 <div class="mt-8 bg-teal-50 p-6 rounded-lg shadow">
+                    <h3 class="text-2xl font-bold text-teal-700">③ 充要条件 (P ⇔ Q)</h3>
+                    <p class="text-xl mt-2">两边能互相推，完全等价。</p>
+                    <p class="mt-4 text-lg"><strong>例：</strong>“一个三角形的三条边都相等(P)”和“三个角都相等(Q)”互为充要条件。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 9: Four Relations 4 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center">四种关系，对号入座！</h2>
+                <div class="mt-8 bg-gray-50 p-6 rounded-lg shadow">
+                    <h3 class="text-2xl font-bold text-gray-700">④ 既不充分也不必要条件 (P ⇏ Q, Q ⇏ P)</h3>
+                    <p class="text-xl mt-2">两边都推不动，八竿子打不着。</p>
+                     <p class="mt-4 text-lg"><strong>例：</strong>“小明戴眼镜(P)”和“小明的智商很高(Q)”之间没有必然逻辑关系。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 10: Logic and Sets -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">思想升华：逻辑背后是集合</h2>
+                <p class="mt-6 text-xl text-slate-700">导致“地面湿”的原因有很多：{下雨, 洒水车, 浇花, ...}</p>
+                 <p class="mt-2 text-xl text-slate-700">“下雨”是其中一种可能性，所以 {下雨} ⊂ {地面湿的原因}</p>
+                <div class="mt-6 bg-red-100 text-red-800 p-6 rounded-lg text-2xl font-bold text-center">
+                    <p>小范围可以推大范围，大范围推不了小范围！</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 11: Part 2 Title -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800">全称量词与存在量词</h2>
+                 <p class="mt-8 text-2xl text-slate-600 leading-relaxed">咱们平时说话，有两种口气：<br>一种是把话说满，一种是留有余地。</p>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 12: Universal Quantifier -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">数学中的口气 (1)</h2>
+                <div class="mt-6 bg-sky-50 p-8 rounded-lg">
+                    <h3 class="font-bold text-sky-800 text-3xl">全称量词 (∀)</h3>
+                    <p class="mt-4 text-xl text-slate-600">读作“任意的”或“所有的”，来自 <strong class="text-sky-700">A</strong>ll。</p>
+                    <p class="mt-4 text-lg">例：“<strong class="text-sky-700">所有</strong>的巧克力都是黑巧克力。” (∀ 巧克力x, x是黑巧克力)</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 13: Existential Quantifier -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">数学中的口气 (2)</h2>
+                <div class="mt-6 bg-lime-50 p-8 rounded-lg">
+                    <h3 class="font-bold text-lime-800 text-3xl">存在量词 (∃)</h3>
+                    <p class="mt-4 text-xl text-slate-600">读作“存在一个”，来自 <strong class="text-lime-700">E</strong>xist。</p>
+                    <p class="mt-4 text-lg">例：“<strong class="text-lime-700">存在</strong>一些牛奶巧克力。” (∃ 巧克力x, x是牛奶巧克力)</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 14: Negation -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">核心技能：如何科学地抬杠？</h2>
+                 <p class="mt-6 text-xl"><strong>原话：</strong>“这次作业上的<strong class="text-sky-700">每一道题</strong>，都很<strong class="text-green-600">简单</strong>。”</p>
+                 <p class="mt-4 text-xl"><strong>反驳：</strong>“<strong class="text-lime-700">存在一道题</strong>，它<strong class="text-red-600">不简单</strong>。”</p>
+                <div class="mt-6 bg-slate-100 p-6 rounded-lg text-lg">
+                    <h3 class="text-xl font-bold">否定的规律：</h3>
+                     <ul class="list-disc list-inside mt-2 space-y-1">
+                         <li><strong class="text-purple-600">换量词</strong>：∀ 换成 ∃，∃ 换成 ∀。</li>
+                         <li><strong class="text-red-600">反结论</strong>：“是”换成“不是”，“>”换成“≤”。</li>
+                         <li><strong class="text-gray-600">范围不变</strong>：讨论的全体对象不变。</li>
+                     </ul>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 15: Advanced Intro -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">进阶应用：假话变真话</h2>
+                <p class="mt-6 text-xl">当一个命题是<strong class="text-red-500">假</strong>的，直接思考会很绕。</p>
+                <p class="mt-4 text-2xl font-semibold text-center text-green-600">聪明的办法：<br>如果一句话是假的，那它的反话就一定是真的！</p>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 16: Advanced Step 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">进阶应用：解题步骤</h2>
+                 <p class="mt-6 text-lg">已知命题 “∀ x∈R, x²+k > 0” 是一个<strong class="text-red-500">假命题</strong>，求 k 的范围。</p>
+                 <div class="mt-6 text-lg space-y-4">
+                    <p class="text-xl"><strong>第一步：否定原命题，把它变成真话！</strong></p>
+                    <p class="p-4 bg-green-50 rounded-lg text-xl">
+                        “<strong class="text-lime-700">∃</strong> x∈R, x²+k <strong class="text-red-600">≤</strong> 0”  (这一定是<strong class="text-green-600">真</strong>的)
+                    </p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 17: Advanced Step 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">进阶应用：解题步骤</h2>
+                 <p class="mt-6 text-xl"><strong>第二步：让否定后的真命题成立。</strong></p>
+                 <p class="mt-4 text-lg">就是要让不等式 x²+k ≤ 0 <strong class="text-green-600">要有解</strong>。</p>
+                 <div class="mt-6 text-lg space-y-4 p-4 bg-slate-50 rounded-lg">
+                    <p><strong>第三步：分析求解。</strong></p>
+                    <p>我们知道 x² 的最小值是 0，所以 (x²+k) 的最小值就是 k。</p>
+                    <p>要让 x²+k 的值有机会小于等于0，那么它的<strong class="text-red-600">最小值 k 就必须小于等于0</strong>。</p>
+                </div>
+                <p class="p-3 mt-6 bg-blue-100 rounded-lg text-xl font-bold text-center"><strong>最终结论： k ≤ 0</strong></p>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 18: Problems Title -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800">课后习题</h2>
+                <p class="mt-6 text-xl text-slate-600">检验一下学习成果吧！</p>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 19: Problem 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">题型一：充分、必要条件的判断</h3>
+                <div class="mt-6 text-lg space-y-4">
+                    <p class="font-semibold">例题1．已知 p：x > 1，q：x² + x - 2 > 0，则p是q的（&nbsp;&nbsp;&nbsp;&nbsp;）</p>
+                    <ul class="list-none pl-4 space-y-2">
+                        <li>A．充分不必要条件</li>
+                        <li>B．必要不充分条件</li>
+                        <li>C．充要条件</li>
+                        <li>D．既不充分也不必要条件</li>
+                    </ul>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 20: Problem 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">题型二：“是”标志词</h3>
+                <div class="mt-6 text-lg space-y-4">
+                    <p class="font-semibold">例题2．设集合A = {x|0 ≤ x < 3}，集合B = {x|1 ≤ x ≤ 3}，那么“m ∈ A”是“m ∈ B”的（&nbsp;&nbsp;&nbsp;&nbsp;）</p>
+                    <ul class="list-none pl-4 space-y-2">
+                        <li>A．充分条件</li>
+                        <li>B．必要条件</li>
+                        <li>C．既是充分条件也是必要条件</li>
+                        <li>D．既不充分又不必要条件</li>
+                    </ul>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 21: Problem 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">题型三：“的”标志词</h3>
+                <div class="mt-6 text-lg space-y-4">
+                    <p class="font-semibold">例题3．“x-1>0”成立的一个必要不充分条件的是（&nbsp;&nbsp;&nbsp;&nbsp;）</p>
+                    <ul class="list-none pl-4 space-y-2">
+                        <li>A．x > 1</li>
+                        <li>B．x > 2</li>
+                        <li>C．x < 3</li>
+                        <li>D．x > 0</li>
+                    </ul>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 22: Problem 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">题型四：量词命题的真假判断</h3>
+                <div class="mt-6 text-lg space-y-4">
+                    <p class="font-semibold">例题4．下列命题是全称量词命题，且是真命题的为（&nbsp;&nbsp;&nbsp;&nbsp;）</p>
+                    <ul class="list-none pl-4 space-y-2">
+                        <li>A．有些四边形的内角和不等于360°</li>
+                        <li>B．∀ n ∈ N*, 1/n < 1</li>
+                        <li>C．∃ m ∈ R, |m| > 0</li>
+                        <li>D．所有能被4整除的数都是偶数</li>
+                    </ul>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 23: Problem 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">题型五：量词命题的否定</h3>
+                <div class="mt-6 text-lg space-y-4">
+                    <p class="font-semibold">例题5．命题“∀ x∈{x|0≤x≤2}, x² -kx+1 > 0”的否定是_________．</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 24: Answers Title -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800">答案与解析</h2>
+                <p class="mt-6 text-xl text-slate-600">看看你都做对了吗？</p>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 25: Answer 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h3 class="text-2xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">题型一 解析</h3>
+                <div class="mt-4 bg-slate-50 p-4 rounded-lg text-lg">
+                    <p><strong class="text-blue-600">【答案】A</strong></p>
+                    <p class="mt-2 text-slate-700">【解析】p: x > 1。q: x² + x - 2 > 0 解得 (x+2)(x-1) > 0，所以 x < -2 或 x > 1。
+                    p ⇒ q ? 如果 x > 1，那么一定满足 x < -2 或 x > 1。成立。
+                    q ⇒ p ? 如果 x < -2 (比如 x=-3)，满足 q，但不能推出 p。
+                    所以 p 是 q 的充分不必要条件。故选A。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 26: Answer 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h3 class="text-2xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">题型二 解析</h3>
+                <div class="mt-4 bg-slate-50 p-4 rounded-lg text-lg">
+                    <p><strong class="text-blue-600">【答案】D</strong></p>
+                    <p class="mt-2 text-slate-700">【解析】p: m ∈ A = {x|0 ≤ x < 3}。q: m ∈ B = {x|1 ≤ x ≤ 3}。
+                    p ⇒ q ?  若 m = 0.5, 则 m ∈ A 但 m ∉ B。所以p推不出q。
+                    q ⇒ p ? 若 m = 3, 则 m ∈ B 但 m ∉ A。所以q推不出p。
+                    因此，“m ∈ A”是“m ∈ B”的既不充分也不必要条件。故选D。
+                    </p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 27: Answer 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h3 class="text-2xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">题型三 解析</h3>
+                <div class="mt-4 bg-slate-50 p-4 rounded-lg text-lg">
+                    <p><strong class="text-blue-600">【答案】D</strong></p>
+                    <p class="mt-2 text-slate-700">【解析】结论是 P: x - 1 > 0，即 x > 1。我们要找一个条件 Q，使得 Q 是 P 的必要不充分条件。这意味着 P ⇒ Q 成立，但 Q ⇏ P。用集合的语言说，就是代表P的集合是代表Q的集合的真子集 (P ⊂ Q)。
+                    P 的集合是 (1, +∞)。
+                    A: x > 1, 集合是 (1, +∞)。 这是充要条件。
+                    B: x > 2, 集合是 (2, +∞)。 B ⊂ P。这是充分不必要条件。
+                    C: x < 3, 集合是 (-∞, 3)。无包含关系。
+                    D: x > 0, 集合是 (0, +∞)。 P ⊂ D。所以 D 是 P 的必要不充分条件。
+                    故选D。
+                    </p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 28: Answer 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h3 class="text-2xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">题型四 解析</h3>
+                <div class="mt-4 bg-slate-50 p-4 rounded-lg text-lg">
+                    <p><strong class="text-blue-600">【答案】D</strong></p>
+                    <p class="mt-2 text-slate-700">【解析】A是存在量词命题。B是全称量词命题，但当n=1时，1/n=1，不满足 1/n < 1，所以是假命题。C是存在量词命题。D是全称量词命题，“所有能被4整除的数”意味着这个数可以写成4k (k为整数)，4k=2(2k)，所以它一定是偶数，是真命题。故选D。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 29: Answer 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h3 class="text-2xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">题型五 解析</h3>
+                <div class="mt-4 bg-slate-50 p-4 rounded-lg text-lg">
+                    <p><strong class="text-blue-600">【答案】∃ x∈{x|0≤x≤2}, x² -kx+1 ≤ 0</strong></p>
+                    <p class="mt-2 text-slate-700">【解析】原命题是全称量词命题。否定时，将全称量词“∀”改为存在量词“∃”，范围“x∈{x|0≤x≤2}”不变，结论“x² -kx+1 > 0”进行否定，即“x² -kx+1 ≤ 0”。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 30: Summary -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">总结</h2>
+                <p class="mt-6 text-xl text-slate-700">今天我们学习了高中逻辑的两大支柱：</p>
+                <ul class="mt-4 list-disc list-inside space-y-3 text-lg">
+                    <li><strong>充分必要条件：</strong>核心就是画箭头，判断谁能推谁。别忘了“小范围推大范围”这个集合思想！</li>
+                    <li><strong>量词与否定：</strong>记住 ∀ 和 ∃ 的意思，更要记住如何科学地“抬杠”——换量词、反结论。遇到假命题，先把它变成真命题再动手。</li>
+                </ul>
+                <p class="mt-6 text-xl text-slate-700">学好逻辑，不仅能让你数学题做得更对，更能让你在生活里说话、思考问题时，条理更清晰！</p>
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvases = document.querySelectorAll('.cartoon-canvas');
+            canvases.forEach((canvas, index) => {
+                const ctx = canvas.getContext('2d');
+                drawCartoon(ctx, index, canvas.width, canvas.height);
+            });
+        });
+
+        function drawCartoon(ctx, index, w, h) {
+            ctx.clearRect(0, 0, w, h);
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 2;
+
+            const mood = index % 5; 
+
+            switch (index % 12) {
+                case 0: // Robot
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.fillRect(w*0.2, h*0.2, w*0.6, h*0.6); // body
+                    ctx.fillRect(w*0.4, h*0.1, w*0.2, h*0.1); // head
+                    ctx.beginPath(); // antenna
+                    ctx.moveTo(w*0.5, h*0.1);
+                    ctx.lineTo(w*0.5, h*0.05);
+                    ctx.arc(w*0.5, h*0.05, 5, 0, Math.PI*2);
+                    ctx.stroke();
+                    drawFace(ctx, w/2, h*0.45, w*0.1, mood);
+                    break;
+                case 1: // Raining cloud
+                    ctx.fillStyle = '#dbeafe';
+                    ctx.beginPath();
+                    ctx.arc(w*0.3, h*0.5, w*0.25, 0, Math.PI*2);
+                    ctx.arc(w*0.5, h*0.4, w*0.3, 0, Math.PI*2);
+                    ctx.arc(w*0.7, h*0.5, w*0.25, 0, Math.PI*2);
+                    ctx.fill();
+                    ctx.strokeStyle = '#60a5fa';
+                    for(let i=0; i<4; i++){
+                        ctx.beginPath();
+                        ctx.moveTo(w*(0.3 + i*0.15), h*0.7);
+                        ctx.lineTo(w*(0.25 + i*0.15), h*0.9);
+                        ctx.stroke();
+                    }
+                    break;
+                case 2: // Thinking face
+                    ctx.fillStyle = '#fde047';
+                    ctx.beginPath();
+                    ctx.arc(w/2, h/2, w*0.4, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.stroke();
+                    ctx.fillStyle = 'black';
+                    ctx.beginPath();
+                    ctx.arc(w*0.35, h*0.4, w*0.05, 0, Math.PI*2);
+                    ctx.arc(w*0.65, h*0.4, w*0.05, 0, Math.PI*2);
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.4, h*0.65);
+                    ctx.lineTo(w*0.6, h*0.65);
+                    ctx.stroke();
+                    break;
+                case 3: // Venn Diagram
+                    ctx.strokeStyle = '#3b82f6';
+                    ctx.beginPath();
+                    ctx.arc(w*0.4, h*0.5, w*0.3, 0, Math.PI*2);
+                    ctx.stroke();
+                    ctx.strokeStyle = '#16a34a';
+                     ctx.beginPath();
+                    ctx.arc(w*0.6, h*0.5, w*0.3, 0, Math.PI*2);
+                    ctx.stroke();
+                    break;
+                case 4: // Sun
+                    ctx.fillStyle = '#facc15';
+                    ctx.beginPath();
+                    ctx.arc(w/2, h/2, w*0.3, 0, Math.PI*2);
+                    ctx.fill();
+                    ctx.strokeStyle = '#f97316';
+                    for(let i=0; i<8; i++){
+                        const angle = i * Math.PI / 4;
+                        ctx.beginPath();
+                        ctx.moveTo(w/2 + Math.cos(angle) * w*0.35, h/2 + Math.sin(angle) * h*0.35);
+                        ctx.lineTo(w/2 + Math.cos(angle) * w*0.5, h/2 + Math.sin(angle) * h*0.5);
+                        ctx.stroke();
+                    }
+                    break;
+                case 5: // Detective
+                    ctx.fillStyle = '#f5d0a9';
+                    ctx.beginPath();
+                    ctx.arc(w/2, h*0.4, w*0.3, 0, Math.PI*2); // face
+                    ctx.fill();
+                    ctx.fillStyle = '#4b5563';
+                    ctx.fillRect(w*0.2, h*0.2, w*0.6, h*0.1); // hat brim
+                    ctx.fillRect(w*0.3, h*0.1, w*0.4, h*0.1); // hat top
+                    ctx.fillRect(w*0.1, h*0.6, w*0.8, h*0.3); // coat
+                    drawFace(ctx, w/2, h*0.4, w*0.1, 3);
+                    break;
+                case 6: // Lightbulb
+                    ctx.fillStyle = '#fef08a';
+                    ctx.beginPath();
+                    ctx.arc(w/2, h*0.4, w*0.3, 0, Math.PI*2);
+                    ctx.fill();
+                    ctx.fillStyle = '#d1d5db';
+                    ctx.fillRect(w*0.4, h*0.7, w*0.2, h*0.2);
+                    ctx.fillRect(w*0.35, h*0.9, w*0.3, h*0.05);
+                    break;
+                 case 7: // Ghost
+                    ctx.fillStyle = 'white';
+                    ctx.strokeStyle = 'black';
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.2, h*0.9);
+                    ctx.quadraticCurveTo(w*0.1, h*0.5, w*0.5, h*0.2);
+                    ctx.quadraticCurveTo(w*0.9, h*0.5, w*0.8, h*0.9);
+                    ctx.lineTo(w*0.7, h*0.8);
+                    ctx.lineTo(w*0.6, h*0.9);
+                    ctx.lineTo(w*0.5, h*0.8);
+                    ctx.lineTo(w*0.4, h*0.9);
+                    ctx.lineTo(w*0.3, h*0.8);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                    ctx.fillStyle = 'black';
+                    ctx.beginPath();
+                    ctx.arc(w*0.4, h*0.5, w*0.05, 0, Math.PI*2);
+                    ctx.arc(w*0.6, h*0.5, w*0.05, 0, Math.PI*2);
+                    ctx.fill();
+                    break;
+                case 8: // Rocket
+                    ctx.fillStyle = '#e2e8f0';
+                    ctx.beginPath(); // body
+                    ctx.moveTo(w*0.4, h*0.9);
+                    ctx.lineTo(w*0.4, h*0.3);
+                    ctx.quadraticCurveTo(w*0.5, h*0.1, w*0.6, h*0.3);
+                    ctx.lineTo(w*0.6, h*0.9);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.fillStyle = '#ef4444';
+                    ctx.beginPath(); // tip
+                    ctx.moveTo(w*0.4, h*0.3);
+                    ctx.quadraticCurveTo(w*0.5, h*0.0, w*0.6, h*0.3);
+                    ctx.fill();
+                    ctx.beginPath(); // fin
+                    ctx.moveTo(w*0.4, h*0.8);
+                    ctx.lineTo(w*0.2, h*1.0);
+                    ctx.lineTo(w*0.4, h*0.9);
+                    ctx.fill();
+                    ctx.beginPath(); // fin
+                    ctx.moveTo(w*0.6, h*0.8);
+                    ctx.lineTo(w*0.8, h*1.0);
+                    ctx.lineTo(w*0.6, h*0.9);
+                    ctx.fill();
+                    break;
+                case 9: // Pencil
+                     ctx.fillStyle = '#fde047'; // body
+                     ctx.fillRect(w*0.4, h*0.1, w*0.2, h*0.7);
+                     ctx.fillStyle = '#f472b6'; // eraser
+                     ctx.fillRect(w*0.4, h*0.0, w*0.2, h*0.1);
+                     ctx.fillStyle = '#f5d0a9'; // wood
+                     ctx.beginPath();
+                     ctx.moveTo(w*0.4, h*0.8);
+                     ctx.lineTo(w*0.6, h*0.8);
+                     ctx.lineTo(w*0.5, h*1.0);
+                     ctx.closePath();
+                     ctx.fill();
+                     ctx.fillStyle = '#4b5563'; // lead
+                     ctx.beginPath();
+                     ctx.moveTo(w*0.5, h*1.0);
+                     ctx.lineTo(w*0.48, h*0.95);
+                     ctx.lineTo(w*0.52, h*0.95);
+                     ctx.fill();
+                     break;
+                 case 10: // Book
+                    ctx.fillStyle = '#3b82f6';
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.1, h*0.2);
+                    ctx.lineTo(w*0.1, h*0.8);
+                    ctx.lineTo(w*0.8, h*0.9);
+                    ctx.lineTo(w*0.8, h*0.3);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.fillStyle = 'white';
+                    ctx.fillRect(w*0.15, h*0.25, w*0.6, h*0.05);
+                    ctx.fillRect(w*0.15, h*0.35, w*0.6, h*0.05);
+                    break;
+                default: // Alien
+                    ctx.fillStyle = '#a7f3d0';
+                    ctx.beginPath();
+                    ctx.ellipse(w/2, h*0.5, w*0.3, w*0.4, 0, 0, Math.PI*2);
+                    ctx.fill();
+                    ctx.fillStyle = 'black';
+                    ctx.beginPath();
+                    ctx.ellipse(w*0.4, h*0.4, w*0.08, w*0.12, 0, 0, Math.PI*2);
+                    ctx.ellipse(w*0.6, h*0.4, w*0.08, w*0.12, 0, 0, Math.PI*2);
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.arc(w/2, h*0.65, w*0.15, 0, Math.PI);
+                    ctx.stroke();
+                    break;
+            }
+        }
+        
+        function drawFace(ctx, x, y, r, mood) {
+            ctx.fillStyle = 'black';
+            ctx.beginPath(); // eyes
+            ctx.arc(x - r/2, y - r/4, r*0.15, 0, Math.PI*2);
+            ctx.arc(x + r/2, y - r/4, r*0.15, 0, Math.PI*2);
+            ctx.fill();
+
+            ctx.beginPath(); // mouth
+            switch (mood) {
+                case 0: // happy
+                    ctx.arc(x, y + r/4, r*0.4, 0, Math.PI);
+                    break;
+                case 1: // sad
+                    ctx.arc(x, y + r/2, r*0.4, Math.PI, Math.PI*2);
+                    break;
+                case 2: // surprised
+                    ctx.arc(x, y + r/4, r*0.25, 0, Math.PI*2);
+                    break;
+                case 3: // neutral
+                    ctx.moveTo(x - r/2, y + r/3);
+                    ctx.lineTo(x + r/2, y + r/3);
+                    break;
+                default: // smiling with teeth
+                    ctx.arc(x, y + r/4, r*0.4, 0, Math.PI);
+                    ctx.moveTo(x - r*0.4, y + r/4);
+                    ctx.lineTo(x + r*0.4, y + r/4);
+                    break;
+            }
+            ctx.stroke();
+        }
+    </script>
+</body>
+</html>
+

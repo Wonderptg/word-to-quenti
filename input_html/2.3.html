@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二次函数与不等式 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 400px; /* 保证内容较少时也有足够高度 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .cartoon-canvas {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            width: 100px;
+            height: 100px;
+        }
+
+        .graph-canvas {
+            border-radius: 0.5rem;
+        }
+        #graph-canvas-intro {
+            width: 300px;
+            height: 300px;
+        }
+        #graph-canvas-inequality, #graph-canvas-substitution {
+            width: 250px;
+            height: 250px;
+        }
+
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+
+            .print-row-container {
+                flex-direction: row !important;
+                width: 100%;
+                gap: 2rem;
+                align-items: center;
+            }
+
+            .section:last-child {
+                page-break-after: auto;
+            }
+            .cartoon-canvas {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- Section 1: Title -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">不等式轻松搞定</h1>
+                <p class="text-2xl text-slate-600 mt-4">从二次函数到参数问题</p>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 2: Intro with Graph -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 print-row-container">
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">热身与基石：二次函数</h2>
+                    <p class="mt-8 text-xl text-slate-700 leading-relaxed">
+                        解开所有不等式谜题的钥匙，就是我们的老朋友——二次函数！
+                    </p>
+                    <div class="mt-6 bg-amber-50 p-6 rounded-lg text-lg">
+                        <p class="font-semibold">二次函数的“脸谱”怎么画？</p>
+                        <ul class="list-disc list-inside mt-2 space-y-2">
+                            <li>开口方向 (a)</li>
+                            <li>对称轴 (x = -b/2a)</li>
+                            <li>判别式 (Δ = b²-4ac)</li>
+                            <li>与y轴交点 (x=0)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center items-center">
+                    <canvas id="graph-canvas-intro" class="graph-canvas" width="300" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Forms of Quadratic Functions -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">二次函数的三张“身份证”</h2>
+                <div class="mt-6 space-y-4">
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-blue-700">一般式：y = ax² + bx + c</h3>
+                        <p class="text-sm">例：y = x² - 4x + 3</p>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-green-700">顶点式：y = a(x-m)² + n</h3>
+                        <p class="text-sm">例：y = (x-2)² - 1</p>
+                    </div>
+                    <div class="bg-red-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-red-700">两根式：y = a(x-x₁)(x-x₂)</h3>
+                        <p class="text-sm">例：y = (x-1)(x-3)</p>
+                    </div>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 4: Vieta's formulas -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">两根的“悄悄话”——韦达定理</h2>
+                <p class="mt-6 text-xl text-center">对于 ax² + bx + c = 0 的两根 x₁, x₂</p>
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                    <div class="bg-sky-50 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-sky-700 text-2xl">x₁ + x₂ = -b/a</h3>
+                    </div>
+                    <div class="bg-lime-50 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-lime-700 text-2xl">x₁x₂ = c/a</h3>
+                    </div>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 5: Solving Quadratic Inequalities -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 print-row-container">
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">核心技能：一元二次不等式</h2>
+                    <p class="mt-6 text-xl font-semibold text-center text-red-600">本质就是画出函数图像，然后“看图说话”！</p>
+                    <div class="mt-6 bg-purple-50 p-6 rounded-lg">
+                        <p class="text-lg font-semibold">解不等式 x² - 4x + 3 < 0</p>
+                        <p class="mt-2 text-base">1. 看作函数 y = x² - 4x + 3</p>
+                        <p class="mt-1 text-base">2. 开口向上，与x轴交于 x=1, x=3</p>
+                        <p class="mt-1 text-base">3. 小于0，即x轴下方的部分</p>
+                        <p class="mt-2 text-xl font-bold">解集：1 < x < 3</p>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center items-center">
+                     <canvas id="graph-canvas-inequality" class="graph-canvas" width="250" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5.5: Substitution Method Intro -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">换个花样：换元大法</h2>
+                <div class="mt-6 bg-purple-50 p-6 rounded-lg text-lg">
+                    <p class="font-semibold">解 e²ˣ - 5eˣ + 4 ≤ 0</p>
+                    <p class="mt-4">这个看着不像二次的呀？别慌！</p>
+                    <p>你看，e²ˣ 是 (eˣ)²。咱们就令 <strong class="text-red-600">t = eˣ</strong>。</p>
+                    <p>因为 eˣ 总是正的，所以有个隐藏条件 <strong class="text-red-600">t > 0</strong>！</p>
+                    <p class="mt-4">换掉之后，不等式就变成了：</p>
+                    <p class="text-2xl font-bold text-center mt-2">t² - 5t + 4 ≤ 0</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 5.6: Substitution Method Graph -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 print-row-container">
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">换个花样：看图说话</h2>
+                     <div class="mt-6 bg-purple-50 p-6 rounded-lg">
+                        <p class="text-lg font-semibold">解 t² - 5t + 4 ≤ 0</p>
+                        <p class="mt-2 text-base">因式分解 (t-1)(t-4) ≤ 0。</p>
+                        <p class="mt-1 text-base">画个关于t的抛物线，交点是 t=1 和 t=4。要‘小于等于0’，就是 t 轴下方的部分。</p>
+                        <p class="mt-2 text-xl font-bold">解集：1 ≤ t ≤ 4</p>
+                        <p class="mt-4 text-base">还没完！咱们求的是x...<br>代回 t = eˣ，得 1 ≤ eˣ ≤ 4。<br>两边取对数: ln(1) ≤ x ≤ ln(4)。<br><strong>最终解集: 0 ≤ x ≤ ln(4)</strong></p>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center items-center">
+                     <canvas id="graph-canvas-substitution" class="graph-canvas" width="250" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 6: Fractional Inequalities -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-orange-500 pb-2">拓展延伸：分式不等式</h2>
+                <p class="mt-6 text-xl text-center"><strong>变形咒语：</strong>除法变乘法，分母不为零！</p>
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                    <div class="bg-orange-50 p-4 rounded-lg">
+                        <p class="font-semibold text-orange-700">A/B > 0  ⟺  A·B > 0</p>
+                        <p class="font-semibold text-orange-700">A/B < 0  ⟺  A·B < 0</p>
+                    </div>
+                     <div class="bg-red-50 p-4 rounded-lg flex items-center justify-center">
+                        <p class="font-bold text-red-700 text-2xl">🚨 B ≠ 0</p>
+                    </div>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 6.1: Fractional Example 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-700 border-b-2 border-orange-300 pb-2">来个简单的：解 (x-4)/(x+2) < 0</h3>
+                <ol class="list-decimal list-inside mt-4 space-y-2 text-lg">
+                    <li>用咒语，变成 (x+2)(x−4) < 0。</li>
+                    <li>这是个开口向上，与x轴交于 x=-2 和 x=4 的抛物线。‘小于0’的部分，就是 -2 < x < 4。</li>
+                    <li>别忘了检查分母！x+2 ≠ 0 ⟹ x ≠ -2。解集 -2 < x < 4 已经满足。</li>
+                </ol>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 6.2: Fractional Example 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h3 class="text-2xl font-bold text-slate-700 border-b-2 border-orange-300 pb-2">如果右边不是0呢？</h3>
+                 <p class="text-lg mt-4">解 (x+5)/(x-1) ≥ 1</p>
+                 <ol class="list-decimal list-inside mt-2 space-y-2 text-lg">
+                    <li><strong class="text-red-600">不能</strong>直接两边同乘 x−1！标准做法是移项通分！</li>
+                    <li>(x+5)/(x-1) - 1 ≥ 0  ⟹  6/(x-1) ≥ 0。</li>
+                    <li>分子6是正数，所以分母 x−1 必须是正数。</li>
+                    <li>所以 x-1 > 0 ⟹ x > 1。（分母不能为0，所以没有等号）</li>
+                </ol>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 6.3: Fractional Example 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h3 class="text-2xl font-bold text-slate-700 border-b-2 border-orange-300 pb-2">再强调一遍“带等号”的陷阱</h3>
+                 <p class="text-lg mt-4">解 (x-1)/(x+3) ≤ 0</p>
+                 <ol class="list-decimal list-inside mt-2 space-y-2 text-lg">
+                    <li>可以化为 (x−1)(x+3) ≤ 0 且 x+3 ≠ 0。</li>
+                    <li>解 (x−1)(x+3) ≤ 0 得到 −3 ≤ x ≤ 1。</li>
+                    <li>但是！x+3 ≠ 0 ⟹ x ≠ −3。</li>
+                    <li>综合一下，最终答案是 <strong class="text-red-600">−3 < x ≤ 1</strong>。-3那边的等号被去掉了！</li>
+                </ol>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 7: Parameterized Inequalities -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-red-500 pb-2">挑战升级：参数来了！</h2>
+                <p class="mt-6 text-xl text-center">解关于 x 的不等式 x² + mx + 4 > 0</p>
+                <div class="mt-6 bg-red-50 p-6 rounded-lg">
+                    <p class="text-xl font-bold text-center text-red-700">万变不离其宗——还是看图像，但要“看情况”画图！</p>
+                    <p class="mt-4 text-lg">这个“情况”由谁决定？还是判别式 <strong class="text-red-600">Δ = m² - 16</strong>！</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 8.1: Parameterized Case 1 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-red-500 pb-2">Δ 的三种“脸色”：情况一</h2>
+                <div class="mt-6 space-y-3 text-lg bg-blue-50 p-6 rounded-lg">
+                    <h3 class="font-bold text-xl text-blue-700">情况一：Δ < 0 (判别式害羞了)</h3>
+                    <p>1. m²−16 < 0 ⟹ −4 < m < 4。</p>
+                    <p>2. 抛物线开口向上，且跟x轴没交点（整个飘在x轴上方）。</p>
+                    <p>3. 那么 x²+mx+4 是不是永远都大于0？是的！</p>
+                    <p>4. 所以，当 −4 < m < 4 时，解集是 <strong class="text-blue-600">全体实数R</strong>！</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 8.2: Parameterized Case 2 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-red-500 pb-2">Δ 的三种“脸色”：情况二</h2>
+                <div class="mt-6 space-y-3 text-lg bg-yellow-50 p-6 rounded-lg">
+                    <h3 class="font-bold text-xl text-yellow-700">情况二：Δ = 0 (和x轴握了个手)</h3>
+                    <p>1. m²−16 = 0 ⟹ m=4 或 m=−4。</p>
+                    <p>2. 抛物线开口向上，刚好和x轴在顶点处碰了一下。f(x)≥0 恒成立。</p>
+                    <p>3. 我们要的是 x²+mx+4 > 0，所以除了那个等于0的点 (顶点 x=−m/2) 都满足。</p>
+                    <p>4. 当 m=4 时，(x+2)²>0，解为 <strong class="text-yellow-600">x ≠ -2</strong>。</p>
+                    <p>5. 当 m=-4 时，(x-2)²>0，解为 <strong class="text-yellow-600">x ≠ 2</strong>。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 8.3: Parameterized Case 3 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-red-500 pb-2">Δ 的三种“脸色”：情况三</h2>
+                <div class="mt-6 space-y-3 text-lg bg-green-50 p-6 rounded-lg">
+                    <h3 class="font-bold text-xl text-green-700">情况三：Δ > 0 (热情拥抱了两次)</h3>
+                    <p>1. m²−16 > 0 ⟹ m < -4 或 m > 4。</p>
+                    <p>2. 抛物线开口向上，和x轴有两个不同的交点 x₁, x₂。</p>
+                    <p>3. x₁,₂ = (-m ± √m²-16) / 2</p>
+                    <p>4. 要使 x²+mx+4 > 0，x应该在两根之外。</p>
+                    <p>5. 解集是 <strong class="text-green-600">x < x₁ 或 x > x₂</strong>。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 9: Problems Title -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800">课堂练习</h2>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 10: Problem 1.1 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">题型一：一元二次不等式</h2>
+                <div class="mt-6 text-lg">
+                    <p class="font-semibold">例题1．解不等式：(2x-3)(4-x) < 0</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 11: Problem 1.2 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">题型一：一元二次不等式</h2>
+                <div class="mt-6 text-lg">
+                    <p class="font-semibold">例题2．解不等式：-2x² + x + 1 < 0</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 12: Problem 2.1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">题型二：分式不等式</h2>
+                <div class="mt-6 text-lg">
+                    <p class="font-semibold">例题1．解不等式：(x+1)/(x-2) ≥ 3</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 13: Problem 2.2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">题型二：分式不等式</h2>
+                 <div class="mt-6 text-lg">
+                    <p class="font-semibold">例题2．解不等式：(2x+1)/(x+2) ≥ 1</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 14: Answers Title -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800">答案与解析</h2>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 15: Answer Set 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">题型一 解析</h3>
+                <div class="mt-4 bg-slate-50 p-4 rounded-lg text-lg">
+                    <p class="font-semibold">例题1：</p>
+                    <p class="mt-2 text-slate-700">(2x-3)(4-x) < 0  => (2x-3)(x-4) > 0. 解得 x > 4 或 x < 3/2。</p>
+                </div>
+                <div class="mt-4 bg-slate-50 p-4 rounded-lg text-lg">
+                    <p class="font-semibold">例题2：</p>
+                    <p class="mt-2 text-slate-700">-2x² + x + 1 < 0 => 2x² - x - 1 > 0 => (2x+1)(x-1) > 0. 解得 x > 1 或 x < -1/2。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 16: Answer Set 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">题型二 解析</h3>
+                <div class="mt-4 bg-slate-50 p-4 rounded-lg text-lg">
+                    <p class="font-semibold">例题1：</p>
+                    <p class="mt-2 text-slate-700">(x+1)/(x-2) - 3 ≥ 0 => (-2x+7)/(x-2) ≥ 0 => (2x-7)(x-2) ≤ 0, 且 x≠2. 解得 2 < x ≤ 7/2。</p>
+                </div>
+                 <div class="mt-4 bg-slate-50 p-4 rounded-lg text-lg">
+                    <p class="font-semibold">例题2：</p>
+                    <p class="mt-2 text-slate-700">(2x+1)/(x+2) - 1 ≥ 0 => (x-1)/(x+2) ≥ 0 => (x-1)(x+2) ≥ 0, 且 x≠-2. 解得 x ≥ 1 或 x < -2。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 17: Summary -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">总结与升华</h2>
+                <p class="mt-6 text-xl text-slate-700">不等式的奥秘，尽在图像中！</p>
+                <ul class="mt-4 list-disc list-inside space-y-3 text-lg">
+                    <li><strong>万物皆可“图”：</strong>数形结合是永远的神！</li>
+                    <li><strong>分式不等式：</strong>分母死活不能是0！</li>
+                    <li><strong>含参不等式：</strong>分类讨论是王道，Δ是常客！</li>
+                </ul>
+                <p class="mt-6 text-xl font-bold">多想，多练，才能真正变成自己的！</p>
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Draw cartoon for all small canvases
+            const canvases = document.querySelectorAll('.cartoon-canvas');
+            canvases.forEach((canvas, index) => {
+                const ctx = canvas.getContext('2d');
+                drawCartoon(ctx, index, canvas.width, canvas.height); 
+            });
+
+            // Draw intro graph
+            const introCanvas = document.getElementById('graph-canvas-intro');
+            if (introCanvas) {
+                const ctx = introCanvas.getContext('2d');
+                drawQuadraticGraph(ctx, true, null); // true for full annotations
+            }
+            
+            // Draw inequality graph
+            const inequalityCanvas = document.getElementById('graph-canvas-inequality');
+            if(inequalityCanvas){
+                const ctx = inequalityCanvas.getContext('2d');
+                drawQuadraticGraph(ctx, false, 'x');
+            }
+            
+            // Draw substitution graph
+            const substitutionCanvas = document.getElementById('graph-canvas-substitution');
+            if(substitutionCanvas){
+                const ctx = substitutionCanvas.getContext('2d');
+                drawQuadraticGraph(ctx, false, 't');
+            }
+        });
+
+        function drawQuadraticGraph(ctx, showAnnotations, variable = 'x') {
+            const w = ctx.canvas.width;
+            const h = ctx.canvas.height;
+            
+            const xMin = -1, xMax = 5;
+            const yMin = -2.5, yMax = 5.5;
+
+            const toCanvasX = (x) => (x - xMin) / (xMax - xMin) * w;
+            const toCanvasY = (y) => h - (y - yMin) / (yMax - yMin) * h;
+            
+            let func, roots;
+            if(variable === 't'){
+                func = (t) => t * t - 5 * t + 4;
+                roots = [1, 4];
+            } else {
+                func = (x) => x * x - 4 * x + 3;
+                roots = [1, 3];
+            }
+
+            ctx.clearRect(0, 0, w, h);
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillRect(0, 0, w, h);
+
+            // Draw axes
+            ctx.strokeStyle = '#9ca3af';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(0, toCanvasY(0));
+            ctx.lineTo(w, toCanvasY(0));
+            ctx.moveTo(toCanvasX(0), 0);
+            ctx.lineTo(toCanvasX(0), h);
+            ctx.stroke();
+            ctx.fillStyle = '#6b7280';
+            ctx.font = '12px Arial';
+            ctx.fillText('y', toCanvasX(0) + 5, 10);
+            ctx.fillText(variable, w - 10, toCanvasY(0) - 5);
+
+            // --- Function to draw the parabola ---
+            const drawParabola = () => {
+                ctx.strokeStyle = '#3b82f6';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                for (let x_math = xMin; x_math <= xMax; x_math += 0.1) {
+                    let y_math = func(x_math);
+                    let canvasX = toCanvasX(x_math);
+                    let canvasY = toCanvasY(y_math);
+                    if (x_math === xMin) ctx.moveTo(canvasX, canvasY);
+                    else ctx.lineTo(canvasX, canvasY);
+                }
+                ctx.stroke();
+            };
+            
+            // Draw shaded area for inequality solution if needed
+            if (!showAnnotations) {
+                ctx.fillStyle = 'rgba(192, 132, 252, 0.3)';
+                ctx.beginPath();
+                ctx.moveTo(toCanvasX(roots[0]), toCanvasY(0));
+                for (let x_math = roots[0]; x_math <= roots[1]; x_math += 0.1) {
+                    let y_math = func(x_math);
+                    ctx.lineTo(toCanvasX(x_math), toCanvasY(y_math));
+                }
+                ctx.lineTo(toCanvasX(roots[1]), toCanvasY(0));
+                ctx.closePath();
+                ctx.fill();
+            }
+            
+            drawParabola();
+
+            // Annotate roots for inequality graph
+            if(!showAnnotations){
+                ctx.fillStyle = '#ef4444'; 
+                ctx.font = 'bold 12px Arial';
+
+                ctx.beginPath();
+                ctx.arc(toCanvasX(roots[0]), toCanvasY(0), 4, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.fillText(roots[0], toCanvasX(roots[0]) - 10, toCanvasY(0) + 15);
+
+                ctx.beginPath();
+                ctx.arc(toCanvasX(roots[1]), toCanvasY(0), 4, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.fillText(roots[1], toCanvasX(roots[1]) + 5, toCanvasY(0) + 15);
+            }
+
+            // Draw all annotations if requested
+            if (showAnnotations) {
+                // Annotate Axis of Symmetry
+                ctx.strokeStyle = '#f59e0b';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.moveTo(toCanvasX(2), 0);
+                ctx.lineTo(toCanvasX(2), h);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.fillStyle = '#f59e0b';
+                ctx.font = 'bold 12px Arial';
+                ctx.fillText('x=2', toCanvasX(2) + 5, 15);
+
+                // Annotate Roots
+                ctx.fillStyle = '#ef4444';
+                ctx.beginPath();
+                ctx.arc(toCanvasX(1), toCanvasY(0), 4, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(toCanvasX(3), toCanvasY(0), 4, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.font = 'bold 12px Arial';
+                ctx.fillText('1', toCanvasX(1) - 10, toCanvasY(0) + 15);
+                ctx.fillText('3', toCanvasX(3) + 5, toCanvasY(0) + 15);
+
+                // Annotate Y-intercept
+                ctx.fillStyle = '#10b981';
+                ctx.beginPath();
+                ctx.arc(toCanvasX(0), toCanvasY(3), 4, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.font = 'bold 12px Arial';
+                ctx.fillText('(0, 3)', toCanvasX(0) + 8, toCanvasY(3) + 5);
+                
+                // Annotate Opening direction
+                ctx.strokeStyle = '#8b5cf6';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(toCanvasX(1), toCanvasY(0));
+                ctx.lineTo(toCanvasX(0.5), toCanvasY(1.25));
+                ctx.moveTo(toCanvasX(3), toCanvasY(0));
+                ctx.lineTo(toCanvasX(3.5), toCanvasY(1.25));
+                ctx.stroke();
+                ctx.fillStyle = '#8b5cf6';
+                ctx.font = 'bold 12px Arial';
+                ctx.fillText('开口向上', toCanvasX(2.5), toCanvasY(4));
+            }
+        }
+
+
+        function drawCartoon(ctx, index, w, h) {
+            ctx.clearRect(0, 0, w, h);
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 2;
+
+            switch (index % 10) {
+                case 0: // Basketball
+                    ctx.fillStyle = '#f97316';
+                    ctx.beginPath();
+                    ctx.arc(w/2, h/2, w*0.4, 0, Math.PI*2);
+                    ctx.fill();
+                    ctx.strokeStyle = 'black';
+                    ctx.beginPath();
+                    ctx.moveTo(w/2, h*0.1);
+                    ctx.lineTo(w/2, h*0.9);
+                    ctx.moveTo(w*0.1, h/2);
+                    ctx.lineTo(w*0.9, h/2);
+                    ctx.stroke();
+                    break;
+                case 1: // Parabola up
+                    ctx.strokeStyle = '#22c55e';
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.1, h*0.9);
+                    ctx.quadraticCurveTo(w/2, -h*0.2, w*0.9, h*0.9);
+                    ctx.stroke();
+                    break;
+                case 2: // ID Card
+                    ctx.fillStyle = '#e0f2fe';
+                    ctx.fillRect(w*0.1, h*0.2, w*0.8, h*0.6);
+                    ctx.strokeRect(w*0.1, h*0.2, w*0.8, h*0.6);
+                    ctx.fillStyle = '#0ea5e9';
+                    ctx.fillRect(w*0.2, h*0.3, w*0.2, h*0.2);
+                    ctx.fillRect(w*0.5, h*0.3, w*0.3, h*0.05);
+                    ctx.fillRect(w*0.5, h*0.4, w*0.3, h*0.05);
+                    break;
+                case 3: // Venn Diagram
+                    ctx.strokeStyle = '#3b82f6';
+                    ctx.beginPath();
+                    ctx.arc(w*0.4, h*0.5, w*0.3, 0, Math.PI*2);
+                    ctx.stroke();
+                    ctx.strokeStyle = '#16a34a';
+                     ctx.beginPath();
+                    ctx.arc(w*0.6, h*0.5, w*0.3, 0, Math.PI*2);
+                    ctx.stroke();
+                    break;
+                case 4: // Graph with axis
+                    ctx.strokeStyle = 'black';
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.1, h*0.8);
+                    ctx.lineTo(w*0.9, h*0.8);
+                    ctx.moveTo(w/2, h*0.1);
+                    ctx.lineTo(w/2, h*0.9);
+                    ctx.stroke();
+                    ctx.strokeStyle = '#ef4444';
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.2, h*0.9);
+                    ctx.quadraticCurveTo(w/2, h*0.5, w*0.8, h*0.9);
+                    ctx.stroke();
+                    break;
+                case 5: // Fraction
+                    ctx.font = 'bold 40px Arial';
+                    ctx.fillStyle = '#0ea5e9';
+                    ctx.fillText('A', w*0.4, h*0.4);
+                    ctx.fillText('B', w*0.4, h*0.8);
+                    ctx.strokeStyle = 'black';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.3, h*0.5);
+                    ctx.lineTo(w*0.7, h*0.5);
+                    ctx.stroke();
+                    break;
+                 case 6: // Question mark
+                    ctx.font = 'bold 80px Arial';
+                    ctx.fillStyle = '#f43f5e';
+                    ctx.fillText('?', w*0.4, h*0.8);
+                    break;
+                 case 7: // Delta sign
+                    ctx.font = 'bold 60px Arial';
+                    ctx.fillStyle = '#f59e0b';
+                    ctx.fillText('Δ', w*0.4, h*0.7);
+                    break;
+                 case 8: // Test paper
+                    ctx.fillStyle = 'white';
+                    ctx.strokeStyle = 'black';
+                    ctx.fillRect(w*0.1, h*0.1, w*0.8, h*0.8);
+                    ctx.strokeRect(w*0.1, h*0.1, w*0.8, h*0.8);
+                     for(let i=0.3; i<0.8; i+=0.15){
+                         ctx.beginPath();
+                         ctx.moveTo(w*0.2, h*i);
+                         ctx.lineTo(w*0.8, h*i);
+                         ctx.stroke();
+                     }
+                    break;
+                default: // Thumbs up
+                    ctx.fillStyle = '#fde047';
+                    ctx.strokeStyle = 'black';
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.3, h*0.9);
+                    ctx.lineTo(w*0.3, h*0.5);
+                    ctx.arc(w*0.5, h*0.5, w*0.2, Math.PI, 0);
+                    ctx.lineTo(w*0.7, h*0.9);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
+

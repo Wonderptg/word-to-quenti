@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圆与圆的位置关系 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <!-- MathJax Library -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0.25rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            overflow-x: auto;
+            text-align: center;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">圆与圆的位置关系</h1>
+                <p class="text-2xl text-slate-600 mt-4">用“算术”解决“几何”</p>
+                <p class="mt-8 text-xl text-cyan-600 font-semibold">"一个圆，再来一个圆，它俩能怎么着？"</p>
+            </div>
+        </div>
+
+        <!-- 五种位置关系 -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-4">五种位置关系 (按交点个数)</h2>
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <p class="text-lg"></p>
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <h3 class="font-bold text-xl">0 个交点</h3>
+                        <p class="text-lg mt-2">外离、内含</p>
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <h3 class="font-bold text-xl">1 个交点</h3>
+                        <p class="text-lg mt-2">外切、内切</p>
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <h3 class="font-bold text-xl">2 个交点</h3>
+                        <p class="text-lg mt-2">相交</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 新增：五种位置关系 (图像) -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-4">五种位置关系 (图像)</h2>
+            <div class="w-full max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 text-center">
+                
+                <!-- 1. 外离 -->
+                <div class="bg-gray-50 p-3 rounded-lg flex flex-col justify-start">
+                    <h3 class="font-bold text-xl mb-2">外离</h3>
+                    <svg viewBox="0 0 100 60" class="w-full h-auto" style="stroke-linecap: round; stroke-linejoin: round;">
+                        <circle cx="25" cy="30" r="15" fill="none" stroke="#000" stroke-width="2"></circle>
+                        <circle cx="75" cy="30" r="20" fill="none" stroke="#000" stroke-width="2"></circle>
+                    </svg>
+                </div>
+
+                <!-- 2. 外切 -->
+                <div class="bg-gray-50 p-3 rounded-lg flex flex-col justify-start">
+                    <h3 class="font-bold text-xl mb-2">外切</h3>
+                    <svg viewBox="0 0 100 60" class="w-full h-auto" style="stroke-linecap: round; stroke-linejoin: round;">
+                        <circle cx="30" cy="30" r="20" fill="none" stroke="#000" stroke-width="2"></circle>
+                        <circle cx="70" cy="30" r="20" fill="none" stroke="#000" stroke-width="2"></circle>
+                    </svg>
+                </div>
+
+                <!-- 3. 相交 -->
+                <div class="bg-gray-50 p-3 rounded-lg flex flex-col justify-start">
+                    <h3 class="font-bold text-xl mb-2">相交</h3>
+                    <svg viewBox="0 0 100 60" class="w-full h-auto" style="stroke-linecap: round; stroke-linejoin: round;">
+                        <circle cx="35" cy="30" r="20" fill="none" stroke="#000" stroke-width="2"></circle>
+                        <circle cx="65" cy="30" r="20" fill="none" stroke="#000" stroke-width="2"></circle>
+                    </svg>
+                </div>
+
+                <!-- 4. 内切 -->
+                <div class="bg-gray-50 p-3 rounded-lg flex flex-col justify-start">
+                    <h3 class="font-bold text-xl mb-2">内切</h3>
+                    <svg viewBox="0 0 100 60" class="w-full h-auto" style="stroke-linecap: round; stroke-linejoin: round;">
+                        <circle cx="50" cy="30" r="30" fill="none" stroke="#000" stroke-width="2"></circle>
+                        <circle cx="70" cy="30" r="10" fill="none" stroke="#000" stroke-width="2"></circle>
+                    </svg>
+                </div>
+
+                <!-- 5. 内含 -->
+                <div class="bg-gray-50 p-3 rounded-lg flex flex-col justify-start">
+                    <h3 class="font-bold text-xl mb-2">内含</h3>
+                    <svg viewBox="0 0 100 60" class="w-full h-auto" style="stroke-linecap: round; stroke-linejoin: round;">
+                        <circle cx="50" cy="30" r="30" fill="none" stroke="#000" stroke-width="2"></circle>
+                        <circle cx="55" cy="30" r="10" fill="none" stroke="#000" stroke-width="2"></circle>
+                    </svg>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 核心判断 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2 mb-4">核心判断：比较“d”与“和、差”</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <p class="text-lg text-center">我们只用比较三个数：圆心距 $d$、半径和 $r_1+r_2$、半径差 $|r_1-r_2|$</p>
+                <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-emerald-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-xl text-emerald-800">临界情况 1：外切</h3>
+                        <p class="mt-2 text-lg text-center font-bold">$d = r_1 + r_2$</p>
+                    </div>
+                    <div class="bg-emerald-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-xl text-emerald-800">临界情况 2：内切</h3>
+                        <p class="mt-2 text-lg text-center font-bold">$d = |r_1 - r_2|$</p>
+                    </div>
+                </div>
+                <div class="formula-box text-left text-base mt-4">
+                    <p>$\implies d > r_1 + r_2$ (比和大) $\implies$ <strong>外离</strong></p>
+                    <p>$\implies |r_1 - r_2| < d < r_1 + r_2$ (卡中间) $\implies$ <strong>相交</strong></p>
+                    <p>$\implies d < |r_1 - r_2|$ (比差小) $\implies$ <strong>内含</strong></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 例题1 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-2">例题1：基础判断</h2>
+                 <div class="mt-4 text-base bg-sky-50 p-4 rounded-lg">
+                    <p class="font-bold text-lg">例1：$C_1: (x-1)^2 + y^2 = 4$ 和 $C_2: (x+2)^2 + y^2 = 1$ 的关系是？</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题2 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-2">例题2：参数问题</h2>
+                 <div class="mt-4 text-base bg-sky-50 p-4 rounded-lg">
+                    <p class="font-bold text-lg">例2：$C_1: x^2 + y^2 = 1$ 和 $C_2: (x-4)^2 + y^2 = r^2$ ($r>0$) <strong>相交</strong>，求 $r$ 的取值范围。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 公切线 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-rose-500 pb-2">拓展：公切线条数</h2>
+                 <p class="mt-4 text-lg">公切线条数与位置关系一一对应：</p>
+                 <div class="mt-4 grid grid-cols-2 md:grid-cols-5 gap-3 text-center">
+                    <div class="bg-rose-50 p-3 rounded-lg">
+                        <h3 class="font-bold text-xl">外离</h3>
+                        <p class="text-2xl font-bold text-rose-700">4</p>
+                    </div>
+                     <div class="bg-rose-50 p-3 rounded-lg">
+                        <h3 class="font-bold text-xl">外切</h3>
+                        <p class="text-2xl font-bold text-rose-700">3</p>
+                    </div>
+                     <div class="bg-rose-50 p-3 rounded-lg">
+                        <h3 class="font-bold text-xl">相交</h3>
+                        <p class="text-2xl font-bold text-rose-700">2</p>
+                    </div>
+                     <div class="bg-rose-50 p-3 rounded-lg">
+                        <h3 class="font-bold text-xl">内切</h3>
+                        <p class="text-2xl font-bold text-rose-700">1</p>
+                    </div>
+                     <div class="bg-rose-50 p-3 rounded-lg">
+                        <h3 class="font-bold text-xl">内含</h3>
+                        <p class="text-2xl font-bold text-rose-700">0</p>
+                    </div>
+                 </div>
+                 <!-- ... existing code -->
+            </div>
+        </div>
+
+        <!-- 新增：公切线例题 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-rose-500 pb-2 mb-4">拓展：公切线例题</h2>
+                <div class="mt-4 text-sm bg-gray-100 p-3 rounded-lg text-left">
+                    <p><strong>例3：</strong> $C_1: x^2+y^2=4$ 和 $C_2: (x-3)^2+(y-4)^2=1$ 有几条公切线？</p>
+                 </div>
+            </div>
+        </div>
+
+
+        <!-- 练习题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (1/4)</h2>
+                <div class="space-y-3 text-base md:text-lg">
+                    <div class="bg-gray-50 p-3 rounded-lg"><strong>1.</strong> 两圆有且仅有一个公共点，则两圆位置关系是？<br/>(A) 相交 (B) 外离 (C) 内含 (D) 相切</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (2/4)</h2>
+                <div class="space-y-3 text-base md:text-lg">
+                    <div class="bg-gray-50 p-3 rounded-lg"><strong>2.</strong> 两圆有且仅有两条公切线，则两圆位置关系是？<br/>(A) 外离 (B) 外切 (C) 相交 (D) 内切</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (3/4)</h2>
+                <div class="space-y-3 text-base md:text-lg">
+                    <div class="bg-gray-50 p-3 rounded-lg"><strong>3.</strong> 已知圆 C1 : $x^2 + y^2 = 1$ 和圆 C2 : $(x - 3)^2 + y^2 = 4$，则两圆的位置关系是？<br/>(A) 外离 (B) 外切 (C) 相交 (D) 内含</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (4/4)</h2>
+                <div class="space-y-3 text-base md:text-lg">
+                    <div class="bg-gray-50 p-3 rounded-lg"><strong>4.</strong> 已知圆 C1 的半径 $r_1 = 5$，圆 C2 的半径 $r_2 = 3$，两圆的圆心距 $d = 1$，则两圆的位置关系是？<br/>(A) 相交 (B) 内切 (C) 内含 (D) 外离</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题解析 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析</h2>
+                <div class="space-y-3 text-base">
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>1. 答案：D</strong></p>
+                        <p><strong>解析：</strong>唯一公共点，意味着“贴”在了一起，包括“外切”和“内切”，统称“相切”。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>2. 答案：C</strong></p>
+                        <p><strong>解析：</strong>公切线条数与位置关系对应：外离(4), 外切(3), 相交(2), 内切(1), 内含(0)。2条对应相交。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>3. 答案：B</strong></p>
+                        <p><strong>解析：</strong>$O_1(0,0), r_1=1$。$O_2(3,0), r_2=2$。圆心距 $d=3$。半径和 $r_1+r_2=3$。因 $d=r_1+r_2$，故外切。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>4. 答案：C</strong></p>
+                        <p><strong>解析：</strong>$r_1=5, r_2=3, d=1$。半径和=8。半径差=$|5-3|=2$。因为 $d=1 < 2$，即 $d < |r_1-r_2|$，所以两圆内含。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 总结 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">总结</h2>
+                <div class="space-y-4 text-base md:text-lg">
+                    
+                    <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
+                        <p><strong>1. 五种关系：</strong>
+                        <br>外离、外切、相交、内切、内含。(要会画图)</p>
+                    </div>
+
+                    <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
+                        <p><strong>2. 一个法宝 (核心判断)：</strong>
+                        <br>算圆心距 $d$。
+                        <br>算半径和 $r_1 + r_2$。
+                        <br>算半径差 $|r_1 - r_2|$。
+                        <br>...然后 <strong>比较大小</strong>！</p>
+                    </div>
+
+                    <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
+                        <p><strong>3. 一个推论：</strong>
+                        <br>公切线条数 (4, 3, 2, 1, 0) 与位置关系是 <strong>一一对应</strong> 的。</p>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-gray-400">
+                        <p><strong>4. 拓展大招：</strong>
+                        <br>求公切线方程时，可以找“<strong>位似中心</strong>”来简化问题。</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

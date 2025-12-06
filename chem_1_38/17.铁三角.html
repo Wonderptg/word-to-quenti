@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>铁三角转化关系 (打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: flex; /* 直接显示所有页面 */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 90vh; /* 确保每页在屏幕上看起来像一页 */
+            border-bottom: 2px dashed #cbd5e1;
+        }
+        
+        .section:last-of-type {
+            border-bottom: none;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; border-radius: 0; }
+            .section { 
+                min-height: 100vh; 
+                width: 100vw; 
+                page-break-after: always; 
+                display: flex !important; 
+                opacity: 1 !important; 
+                flex-direction: column; 
+                justify-content: center; 
+                align-items: center; 
+                padding: 2rem; 
+                box-sizing: border-box; 
+                border-bottom: none; /* 打印时去掉分隔线 */
+            }
+            .section:last-of-type { 
+                page-break-after: auto; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.625a2.25 2.25 0 01-2.36 0l-7.5-4.625A2.25 2.25 0 012.25 6.993V6.75" />
+                 </svg>
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">铁三角</h1>
+                <p class="text-2xl text-slate-600 mt-2">—— Fe, Fe²⁺, Fe³⁺ 的宏观转化关系</p>
+            </div>
+        </div>
+
+        <!-- 美化后的示意图 -->
+        <div class="section">
+            <div class="w-full max-w-5xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-slate-700 to-sky-600 pb-2 mb-12">
+                    核心转化关系示意图
+                </h2>
+                <div class="relative max-w-2xl mx-auto mt-20" style="height: 450px;">
+                    <!-- Nodes -->
+                    <div class="absolute left-1/2 -translate-x-1/2 w-36 h-36 flex items-center justify-center bg-gradient-to-br from-amber-500 to-yellow-400 text-white rounded-full font-bold text-4xl shadow-lg ring-4 ring-amber-200" style="top: -4rem;">
+                        Fe³⁺
+                    </div>
+                    <div class="absolute bottom-0 left-0 w-36 h-36 flex items-center justify-center bg-gradient-to-br from-slate-600 to-gray-500 text-white rounded-full font-bold text-4xl shadow-lg ring-4 ring-slate-300">
+                        Fe
+                    </div>
+                    <div class="absolute bottom-0 right-0 w-36 h-36 flex items-center justify-center bg-gradient-to-br from-teal-500 to-green-400 text-white rounded-full font-bold text-4xl shadow-lg ring-4 ring-teal-200">
+                        Fe²⁺
+                    </div>
+
+                    <!-- SVG for Arrows and Labels -->
+                    <svg class="absolute top-0 left-0 w-full h-full overflow-visible" viewBox="0 0 600 450">
+                        <defs>
+                            <!-- Red arrow for Oxidation -->
+                            <marker id="arrow-ox-new" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#ef4444" />
+                            </marker>
+                            <!-- Blue arrow for Reduction -->
+                            <marker id="arrow-re-new" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#3b82f6" />
+                            </marker>
+
+                            <!-- Invisible paths for text -->
+                            <path id="path-fe-fe2" fill="none" d="M 145 380 Q 300 430 455 380" />
+                            <path id="path-fe2-fe" fill="none" d="M 455 360 Q 300 310 145 360" />
+                            <path id="path-fe2-fe3" fill="none" d="M 500 310 Q 430 160 335 85" />
+                            <path id="path-fe3-fe2" fill="none"d="M 315 85 Q 370 160 480 310" />
+                            <path id="path-fe-fe3" fill="none" d="M 100 310 Q 170 160 265 85" />
+                            <path id="path-fe3-fe" fill="none" d="M 285 85 Q 230 160 120 310" />
+                        </defs>
+
+                        <!-- Arrow Paths (Visible) -->
+                        <g stroke-width="3" fill="none">
+                            <!-- Oxidation (Red) -->
+                            <use href="#path-fe-fe2" stroke="#ef4444" marker-end="url(#arrow-ox-new)" />
+                            <use href="#path-fe2-fe3" stroke="#ef4444" marker-end="url(#arrow-ox-new)" />
+                            <use href="#path-fe-fe3" stroke="#ef4444" marker-end="url(#arrow-ox-new)" />
+                            
+                            <!-- Reduction (Blue) -->
+                            <use href="#path-fe2-fe" stroke="#3b82f6" marker-end="url(#arrow-re-new)" />
+                            <use href="#path-fe3-fe2" stroke="#3b82f6" marker-end="url(#arrow-re-new)" />
+                            <use href="#path-fe3-fe" stroke="#3b82f6" marker-end="url(#arrow-re-new)" />
+                        </g>
+
+                        <!-- Labels on paths -->
+                        <g font-size="16px" style="font-family: 'Noto Serif SC', serif; font-weight: 500;">
+                            <!-- Oxidation Labels -->
+                            <text dy="-8">
+                                <textPath href="#path-fe-fe2" startOffset="50%" text-anchor="middle" fill="#ef4444">
+                                    氧化 (弱氧化剂: H⁺, Cu²⁺)
+                                </textPath>
+                            </text>
+                             <text dy="-8">
+                                <textPath href="#path-fe2-fe3" startOffset="50%" text-anchor="middle" fill="#ef4444">
+                                    氧化 (Cl₂, H₂O₂, KMnO₄)
+                                </textPath>
+                            </text>
+                            <text dy="-8">
+                                <textPath href="#path-fe-fe3" startOffset="50%" text-anchor="middle" fill="#ef4444">
+                                    氧化 (强氧化剂: Cl₂, 浓HNO₃)
+                                </textPath>
+                            </text>
+                            
+                            <!-- Reduction Labels -->
+                             <text x="300" y="330" text-anchor="middle" fill="#3b82f6">
+                                还原 (强还原剂: Zn, Al)
+                            </text>
+                            <text dy="20">
+                                <textPath href="#path-fe3-fe2" startOffset="50%" text-anchor="middle" fill="#3b82f6">
+                                    还原 (弱还原剂: Fe, Cu, I⁻)
+                                </textPath>
+                            </text>
+                             <text dy="20">
+                                <textPath href="#path-fe3-fe" startOffset="50%" text-anchor="middle" fill="#3b82f6">
+                                    还原 (强还原剂: C, CO, Al)
+                                </textPath>
+                            </text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 氧化关系 0 -> 2 -->
+        <div class="section">
+            <div class="w-full max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>铁三角：氧化关系 (Fe → Fe²⁺)</h2>
+                    <p class="mt-8 text-xl text-slate-700">将 0 价的铁氧化成 +2 价，需要使用<strong class="text-sky-600">较弱的氧化剂</strong>。</p>
+                    <div class="mt-8 grid grid-cols-1 gap-6 text-lg">
+                        <div class="bg-sky-50 border border-sky-200 p-6 rounded-lg">
+                            <h3 class="font-bold text-sky-800 text-xl">常见反应</h3>
+                            <ul class="list-disc list-inside mt-3 text-slate-600 space-y-2 mono">
+                                <li>Fe + 2H⁺ → Fe²⁺ + H₂↑</li>
+                                <li>Fe + S → FeS</li>
+                                <li>Fe + Cu²⁺ → Fe²⁺ + Cu</li>
+                                <li>Fe + 2Fe³⁺ → 3Fe²⁺ (归中)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden md:block p-4 bg-slate-50 rounded-lg shadow-inner">
+                    <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto">
+                        <title>铁钉在稀盐酸中反应的静态示意图</title>
+                        <rect x="0" y="0" width="200" height="150" fill="#e0f2fe"/>
+                        <path d="M 70 20 L 70 120 Q 100 140 130 120 L 130 20 Z" fill="#ffffff" stroke="#a5f3fc" stroke-width="2"/>
+                        <path d="M 75 110 L 75 115 Q 100 135 125 115 L 125 110 Z" fill="#a5f3fc"/>
+                        <rect x="95" y="60" width="10" height="60" fill="#a3a3a3" stroke="#737373" rx="2" ry="2" transform="rotate(10 100 120)"/>
+                        <!-- Static bubbles -->
+                        <circle cx="85" cy="50" r="3" fill="#a5f3fc"/>
+                        <circle cx="110" cy="70" r="2" fill="#a5f3fc"/>
+                        <circle cx="98" cy="90" r="2.5" fill="#a5f3fc"/>
+                        <text x="100" y="15" text-anchor="middle" font-family="monospace" font-size="10px" fill="#0c4a6e">Fe + 2H⁺</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 氧化关系 0 -> 3 -->
+        <div class="section">
+             <div class="w-full max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+                <div class="hidden md:block p-4 bg-slate-50 rounded-lg shadow-inner">
+                    <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto">
+                        <title>铁与氯气反应的简化示意图</title>
+                        <rect x="0" y="0" width="200" height="150" fill="#fee2e2"/>
+                        <!-- Iron -->
+                        <rect x="20" y="60" width="40" height="30" fill="#a3a3a3" stroke="#737373" rx="2"/>
+                        <text x="40" y="80" text-anchor="middle" font-weight="bold" font-size="12px" fill="white">Fe</text>
+                        <!-- Chlorine -->
+                        <g>
+                            <circle cx="80" cy="50" r="5" fill="#a7f3d0"/>
+                            <circle cx="90" cy="50" r="5" fill="#a7f3d0"/>
+                            <text x="85" y="40" text-anchor="middle" font-size="10px" fill="#047857">Cl₂</text>
+                        </g>
+                        <g>
+                            <circle cx="85" cy="100" r="5" fill="#a7f3d0"/>
+                            <circle cx="95" cy="100" r="5" fill="#a7f3d0"/>
+                        </g>
+                        <!-- Plus Sign -->
+                        <text x="65" y="80" font-size="20px" fill="#7f1d1d">+</text>
+                        <!-- Arrow -->
+                        <path d="M 110 75 L 140 75" stroke="#7f1d1d" stroke-width="2" marker-end="url(#arrow-red)"/>
+                        <defs>
+                            <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#7f1d1d"/>
+                            </marker>
+                        </defs>
+                        <!-- Ferric Chloride -->
+                        <g>
+                            <rect x="150" y="60" width="40" height="30" fill="#fde68a" stroke="#ca8a04" rx="2"/>
+                            <text x="170" y="80" text-anchor="middle" font-weight="bold" font-size="12px" fill="#a16207">FeCl₃</text>
+                        </g>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-red-500 rounded"></span>铁三角：氧化关系 (Fe → Fe³⁺)</h2>
+                    <p class="mt-8 text-xl text-slate-700">将 0 价的铁氧化成 +3 价，需要使用<strong class="text-red-600">较强的氧化剂</strong>。</p>
+                    <div class="mt-6 grid grid-cols-1 gap-6">
+                        <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                            <h3 class="font-bold text-red-800 text-xl">强氧化剂</h3>
+                            <p class="mt-3 mono">2Fe + 3Cl₂ → 2FeCl₃</p>
+                            <p class="mt-2 text-slate-600">与浓硝酸/浓硫酸 (加热)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 氧化关系 2 -> 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>铁三角：氧化关系 (Fe²⁺ → Fe³⁺)</h2>
+                 <p class="mt-8 text-xl text-slate-700">+2价的铁具有还原性，可以被多种氧化剂氧化为+3价。</p>
+                 <div class="mt-8 bg-purple-50 border border-purple-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-purple-800 text-xl">常见氧化剂</h3>
+                    <ul class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4 text-lg text-slate-700">
+                        <li class="p-2 bg-purple-100 rounded text-center">O₂</li>
+                        <li class="p-2 bg-purple-100 rounded text-center">Cl₂ / Br₂</li>
+                        <li class="p-2 bg-purple-100 rounded text-center">H₂O₂</li>
+                        <li class="p-2 bg-purple-100 rounded text-center">HNO₃</li>
+                        <li class="p-2 bg-purple-100 rounded text-center">H₂SO₄(浓)</li>
+                        <li class="p-2 bg-purple-100 rounded text-center">KMnO₄(酸性)</li>
+                        <li class="p-2 bg-purple-100 rounded text-center">K₂Cr₂O₇(酸性)</li>
+                    </ul>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 氧化关系 2 -> 3 详解1 -->
+        <div class="section">
+            <div class="w-full max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+                 <div>
+                    <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>二价铁的氧化 (一)</h2>
+                    <div class="mt-8 space-y-6">
+                        <div class="bg-indigo-50 border border-indigo-200 p-6 rounded-lg">
+                            <h3 class="font-bold text-indigo-800 text-xl">与酸性高锰酸钾</h3>
+                            <p class="mt-2 text-slate-600">现象：紫红色褪去。</p>
+                            <p class="mono text-center bg-indigo-100 p-3 rounded mt-3 text-sm md:text-base">5Fe²⁺ + MnO₄⁻ + 8H⁺ → 5Fe³⁺ + Mn²⁺ + 4H₂O</p>
+                        </div>
+                        <div class="bg-orange-50 border border-orange-200 p-6 rounded-lg">
+                            <h3 class="font-bold text-orange-800 text-xl">与酸性重铬酸钾</h3>
+                            <p class="mt-2 text-slate-600">现象：溶液由橙色变为绿色。</p>
+                            <p class="mono text-center bg-orange-100 p-3 rounded mt-3 text-sm md:text-base">6Fe²⁺ + Cr₂O₇²⁻ + 14H⁺ → 6Fe³⁺ + 2Cr³⁺ + 7H₂O</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden md:block p-4 bg-slate-50 rounded-lg shadow-inner">
+                    <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto">
+                        <title>酸性高锰酸钾氧化亚铁离子的反应示意图</title>
+                        <rect x="0" y="0" width="200" height="150" fill="#ede9fe"/>
+                        <!-- Reactants -->
+                        <rect x="10" y="60" width="40" height="30" fill="#d9f99d" stroke="#65a30d" rx="2"/>
+                        <text x="30" y="80" text-anchor="middle" font-weight="bold" font-size="12px" fill="#3f6212">Fe²⁺</text>
+                        <rect x="55" y="60" width="40" height="30" fill="#f3e8ff" stroke="#a855f7" rx="2"/>
+                        <text x="75" y="80" text-anchor="middle" font-weight="bold" font-size="10px" fill="#5b21b6">KMnO₄</text>
+
+                        <!-- Arrow -->
+                        <path d="M 100 75 L 120 75" stroke="#4c1d95" stroke-width="2" marker-end="url(#arrow-purple-2)"/>
+                        <defs>
+                            <marker id="arrow-purple-2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#4c1d95"/>
+                            </marker>
+                        </defs>
+
+                        <!-- Products -->
+                        <rect x="125" y="60" width="40" height="30" fill="#fef08a" stroke="#ca8a04" rx="2"/>
+                        <text x="145" y="80" text-anchor="middle" font-weight="bold" font-size="12px" fill="#a16207">Fe³⁺</text>
+                        <rect x="170" y="60" width="30" height="30" fill="#f1f5f9" stroke="#94a3b8" rx="2"/>
+                        <text x="185" y="80" text-anchor="middle" font-weight="bold" font-size="10px" fill="#475569">Mn²⁺</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 氧化关系 2 -> 3 详解2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>二价铁的氧化 (二)</h2>
+                <div class="mt-8 space-y-6">
+                     <div class="bg-teal-50 border border-teal-200 p-6 rounded-lg">
+                         <h3 class="font-bold text-teal-800 text-xl">与过氧化氢</h3>
+                         <p class="mt-2 text-slate-600">H₂O₂是绿色氧化剂，产物为水。</p>
+                         <p class="mono text-center bg-teal-100 p-3 rounded mt-3 text-sm md:text-base">2Fe²⁺ + H₂O₂ + 2H⁺ → 2Fe³⁺ + 2H₂O</p>
+                     </div>
+                    <div class="bg-rose-50 border border-rose-200 p-6 rounded-lg">
+                         <h3 class="font-bold text-rose-800 text-xl">与稀硝酸</h3>
+                         <p class="mt-2 text-slate-600">Fe²⁺的还原性使稀硝酸的还原产物依然是NO。</p>
+                         <p class="mono text-center bg-rose-100 p-3 rounded mt-3 text-sm md:text-base">3Fe²⁺ + NO₃⁻ + 4H⁺ → 3Fe³⁺ + NO↑ + 2H₂O</p>
+                     </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 还原关系 3/2 -> 0 -->
+        <div class="section">
+            <div class="w-full max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+                <div class="hidden md:block p-4 bg-slate-50 rounded-lg shadow-inner">
+                    <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto">
+                        <title>铝热反应的静态示意图</title>
+                        <rect x="0" y="0" width="200" height="150" fill="#d1fae5"/>
+                        <!-- Crucible -->
+                        <path d="M 70 40 L 80 110 H 120 L 130 40 Z" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1.5"/>
+                        <path d="M 80 110 C 90 120, 110 120, 120 110" fill="none" stroke="#9ca3af" stroke-width="1.5"/>
+                        <ellipse cx="100" cy="40" rx="30" ry="8" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1.5"/>
+                        <ellipse cx="100" cy="40" rx="25" ry="5" fill="#fbbf24"/>
+                        <!-- Static Sparks -->
+                        <path d="M100 45 L105 55 L115 60" stroke="#fef08a" stroke-width="2"/>
+                        <path d="M100 45 L95 58 L85 65" stroke="#f97316" stroke-width="2"/>
+                        <circle cx="100" cy="42" r="4" fill="white"/>
+                        <text x="100" y="135" text-anchor="middle" font-family="monospace" font-size="10px" fill="#065f46">Al + Fe₂O₃</text>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-emerald-500 rounded"></span>铁三角：还原关系 (→ Fe)</h2>
+                    <p class="mt-8 text-xl text-slate-700">将铁的化合物还原为铁单质，需要使用<strong class="text-emerald-600">较强的还原剂</strong>。</p>
+                    <div class="mt-6 grid grid-cols-1 gap-6">
+                        <div class="bg-emerald-50 border border-emerald-200 p-6 rounded-lg">
+                            <h3 class="font-bold text-emerald-800 text-xl">常见反应</h3>
+                            <p class="mt-2 mono">2Al + Fe₂O₃ <span class="text-slate-500">(高温)</span> → 2Fe + Al₂O₃</p>
+                            <p class="mt-2 mono">Fe₂O₃ + 3CO <span class="text-slate-500">(高温)</span> → 2Fe + 3CO₂</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 还原关系 3 -> 2 -->
+        <div class="section">
+            <div class="w-full max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>铁三角：还原关系 (Fe³⁺ → Fe²⁺)</h2>
+                    <p class="mt-8 text-xl text-slate-700">将 +3 价的铁还原为 +2 价，使用<strong class="text-cyan-600">还原性相对较弱</strong>的物质即可。</p>
+                    <div class="mt-8 bg-cyan-50 border border-cyan-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-cyan-800 text-xl">常见还原剂</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4 text-lg text-slate-700 mono">
+                            <div class="p-2 bg-cyan-100 rounded text-center">Fe</div>
+                            <div class="p-2 bg-cyan-100 rounded text-center">Cu</div>
+                            <div class="p-2 bg-cyan-100 rounded text-center">H₂S / S²⁻</div>
+                            <div class="p-2 bg-cyan-100 rounded text-center">SO₂</div>
+                            <div class="p-2 bg-cyan-100 rounded text-center">I⁻</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden md:block p-4 bg-slate-50 rounded-lg shadow-inner">
+                    <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto">
+                        <title>FeCl₃溶液中加入铜片的静态示意图</title>
+                        <rect x="0" y="0" width="200" height="150" fill="#ecfeff"/>
+                        <defs>
+                            <linearGradient id="solutionGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#fef08a;stop-opacity:1" />
+                                <stop offset="40%" style="stop-color:#fef08a;stop-opacity:1" />
+                                <stop offset="55%" style="stop-color:#d9f99d;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#fef08a;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M 70 20 L 70 120 Q 100 140 130 120 L 130 20 Z" fill="url(#solutionGradient2)" stroke="#a5f3fc" stroke-width="2"/>
+                        <path d="M 75 110 L 75 115 Q 100 135 125 115 L 125 110 Z" fill="#a5f3fc" opacity="0.5"/>
+                        <rect x="90" y="50" width="20" height="70" fill="#f97316" stroke="#b45309" rx="2" ry="2"/>
+                        <text x="100" y="15" text-anchor="middle" font-family="monospace" font-size="10px" fill="#0e7490">2Fe³⁺ + Cu</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 还原关系 3 -> 2 详解 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>三价铁的还原：离子方程式</h2>
+                 <div class="mt-8 space-y-4">
+                     <div class="bg-cyan-50 border border-cyan-200 p-3 rounded-lg">
+                         <p class="mono text-center text-sm md:text-base">2Fe³⁺ + Cu → 2Fe²⁺ + Cu²⁺</p>
+                     </div>
+                     <div class="bg-cyan-50 border border-cyan-200 p-3 rounded-lg">
+                         <p class="mono text-center text-sm md:text-base">2Fe³⁺ + H₂S → 2Fe²⁺ + S↓ + 2H⁺</p>
+                     </div>
+                     <div class="bg-cyan-50 border border-cyan-200 p-3 rounded-lg">
+                         <p class="mono text-center text-sm md:text-base">2Fe³⁺ + SO₂ + 2H₂O → 2Fe²⁺ + SO₄²⁻ + 4H⁺</p>
+                     </div>
+                      <div class="bg-cyan-50 border border-cyan-200 p-3 rounded-lg">
+                         <p class="mono text-center text-sm md:text-base">2Fe³⁺ + 2I⁻ → 2Fe²⁺ + I₂</p>
+                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2 flex items-center gap-4">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-purple-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg>
+                    <span>随堂练习 (一)</span>
+                </h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列哪种物质能将铁单质直接氧化为+3价？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 盐酸</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 碘单质</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 氯气</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 硫单质</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2 flex items-center gap-4">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                    <span>练习 (一)：解析</span>
+                </h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>氯气 (Cl₂) 是强氧化剂，可以将铁直接氧化到最高的+3价。而盐酸、碘和硫都是相对较弱的氧化剂，只能将铁氧化到+2价。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2 flex items-center gap-4">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-purple-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg>
+                    <span>随堂练习 (二)</span>
+                </h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>为了检验某溶液中是否含有Fe²⁺，不应选用的试剂是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 氯水</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 酸性高锰酸钾溶液</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> KSCN溶液</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> H₂O₂溶液</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2 flex items-center gap-4">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>
+                     <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                    <span>练习 (二)：解析</span>
+                </h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>KSCN溶液是用来检验 Fe³⁺ 的（溶液变血红色），它与 Fe²⁺ 不发生颜色反应。A、B、D都是氧化剂，可以氧化Fe²⁺并伴随自身明显的颜色变化（如KMnO₄褪色），或与指示剂配合检验Fe²⁺被氧化。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2 flex items-center gap-4">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-purple-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg>
+                    <span>随堂练习 (三)</span>
+                </h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>将铁粉加入到FeCl₃溶液中，充分反应后，溶液中的主要阳离子是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> Fe³⁺</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> Fe²⁺</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> Fe³⁺ 和 Fe²⁺</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> H⁺</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2 flex items-center gap-4">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>
+                     <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                    <span>练习 (三)：解析</span>
+                </h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>该反应是归中反应：<code>Fe + 2Fe³⁺ → 3Fe²⁺</code>。铁单质会将溶液中的三价铁离子全部还原为二价铁离子。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2 flex items-center gap-4">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-purple-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg>
+                    <span>随堂练习 (四)</span>
+                </h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列离子方程式书写正确的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(A)</strong> Fe + H₂SO₄(稀) → Fe³⁺ + H₂↑ + SO₄²⁻</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(B)</strong> 2Fe³⁺ + Cu → 2Fe²⁺ + Cu²⁺</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(C)</strong> Fe²⁺ + Cl₂ → Fe³⁺ + 2Cl⁻</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(D)</strong> Fe + 2H⁺ → Fe³⁺ + H₂↑</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2 flex items-center gap-4">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                    <span>练习 (四)：解析</span>
+                </h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>A和D：铁与稀酸反应生成Fe²⁺，不是Fe³⁺。C：电荷不守恒，应为 <code>2Fe²⁺ + Cl₂ → 2Fe³⁺ + 2Cl⁻</code>。B正确，铜可以将三价铁还原为二价铁。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2 flex items-center gap-4">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-purple-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg>
+                    <span>随堂练习 (五)</span>
+                </h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>如何除去FeCl₂溶液中的少量FeCl₃杂质？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 加入过量铁粉，然后过滤</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 通入足量氯气</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 加入氢氧化钠溶液，然后过滤</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 加入铜粉，然后过滤</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2 flex items-center gap-4">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>
+                     <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                    <span>练习 (五)：解析</span>
+                </h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(A)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>利用反应 <code>Fe + 2Fe³⁺ → 3Fe²⁺</code>，加入过量的铁粉可以将FeCl₃杂质转化为FeCl₂。过量的铁粉可以通过过滤除去，该方法不会引入新的杂质。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">掌握铁三角，告别死记硬背！</p>
+            </div>
+        </div>
+        
+    </div>
+
+</body>
+</html>
+

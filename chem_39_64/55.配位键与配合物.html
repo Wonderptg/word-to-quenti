@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>配位键与配合物 - 基础精讲</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 MathJax 用于显示化学公式 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                packages: {'[+]': ['mhchem']}
+            },
+            loader: {load: ['[tex]/mhchem']}
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
+    <style>
+        /* 基础样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        
+        #presentation-container {
+            max-width: 64rem; /* 稍微加宽以容纳公式 */
+            margin: 1.5rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+            min-height: 85vh;
+            position: relative;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 4rem; /* 调整内边距 */
+            display: none;
+            flex-direction: column;
+            justify-content: center; /* 垂直居中 */
+            height: 100%;
+            min-height: 85vh;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        /* 导航栏 */
+        #navigation {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 1rem;
+            border-top: 1px solid #e2e8f0;
+            z-index: 50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 -4px 6px -1px rgb(0 0 0 / 0.05);
+        }
+
+        /* 化学公式字体 */
+        .chem-formula {
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* 列表样式优化 */
+        ul.feature-list li {
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: flex-start;
+        }
+        ul.feature-list li::before {
+            content: "•";
+            color: #3b82f6;
+            font-weight: bold;
+            display: inline-block; 
+            width: 1em;
+            margin-left: -1em;
+        }
+
+        /* 打印专用样式 - 核心功能 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; }
+            #presentation-container { 
+                margin: 0; 
+                padding: 0; 
+                border: none; 
+                box-shadow: none; 
+                width: 100%; 
+                max-width: 100%; 
+                min-height: auto;
+            }
+            .section { 
+                min-height: 100vh; 
+                width: 100vw; 
+                page-break-after: always; 
+                display: flex !important; 
+                opacity: 1 !important; 
+                padding: 2rem 3rem; /* 打印时减少边距 */
+            }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none !important; }
+            /* 隐藏特定的交互元素 */
+            .no-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section active">
+            <div class="text-center w-full">
+                <div class="mb-8 inline-block p-6 rounded-full bg-blue-50">
+                    <!-- 分子结构图标 -->
+                    <svg class="w-32 h-32 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M12 9V5"></path>
+                        <path d="M12 15v4"></path>
+                        <path d="M9.5 10.5L6 7"></path>
+                        <path d="M14.5 13.5L18 17"></path>
+                        <circle cx="12" cy="3" r="1" fill="currentColor"></circle>
+                        <circle cx="12" cy="21" r="1" fill="currentColor"></circle>
+                        <circle cx="5" cy="6" r="1" fill="currentColor"></circle>
+                        <circle cx="19" cy="18" r="1" fill="currentColor"></circle>
+                    </svg>
+                </div>
+                <h1 class="text-6xl font-bold text-slate-800 mb-6 tracking-tight">配位键与配合物</h1>
+                <div class="w-24 h-1 bg-blue-600 mx-auto rounded"></div>
+                <p class="text-2xl text-slate-500 mt-6 font-light">从零基础掌握化学键的奥秘</p>
+            </div>
+        </div>
+
+        <!-- 1. 配位键的定义 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 mb-8 border-l-8 border-blue-500 pl-4">1. 配位键的定义</h2>
+            
+            <div class="bg-blue-50 p-6 rounded-xl mb-8 border border-blue-100">
+                <p class="text-2xl leading-relaxed text-slate-700">
+                    <span class="font-bold text-blue-700">成键定义：</span>一方提供<span class="bg-white px-2 py-1 rounded border border-blue-200 shadow-sm mx-1 text-blue-600 font-bold">孤电子对</span>，另一方提供<span class="bg-white px-2 py-1 rounded border-blue-200 shadow-sm mx-1 text-red-600 font-bold">空轨道</span>。
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-10 items-center">
+                <div>
+                    <h3 class="text-2xl font-bold mb-4 text-slate-700">形成示例：铵根离子的生成</h3>
+                    <div class="text-xl leading-loose text-slate-600">
+                        <p>$\ce{NH3}$：氮原子有孤电子对（给予体）</p>
+                        <p>$\ce{H+}$：氢离子有空轨道（接受体）</p>
+                        <div class="mt-4 p-4 bg-gray-100 rounded text-center text-2xl chem-formula">
+                            $\ce{NH3 + H+ -> NH4+}$
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-center">
+                    <!-- SVG 示意图：NH3 + H+ -->
+                    <svg width="300" height="200" viewBox="0 0 300 200">
+                        <!-- NH3 -->
+                        <circle cx="80" cy="100" r="20" fill="#3b82f6" opacity="0.2"/>
+                        <text x="80" y="105" font-size="16" text-anchor="middle" font-weight="bold">N</text>
+                        <text x="80" y="140" font-size="12" text-anchor="middle">H</text>
+                        <text x="50" y="120" font-size="12" text-anchor="middle">H</text>
+                        <text x="110" y="120" font-size="12" text-anchor="middle">H</text>
+                        <!-- 孤电子对 -->
+                        <circle cx="75" cy="75" r="3" fill="#1e293b"/>
+                        <circle cx="85" cy="75" r="3" fill="#1e293b"/>
+                        
+                        <text x="150" y="105" font-size="24" text-anchor="middle">+</text>
+                        
+                        <!-- H+ -->
+                        <circle cx="220" cy="80" r="15" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="4"/>
+                        <text x="220" y="85" font-size="16" text-anchor="middle" fill="#ef4444">H⁺</text>
+                        <text x="220" y="110" font-size="10" text-anchor="middle" fill="#ef4444">空轨道</text>
+
+                        <!-- 箭头 -->
+                        <path d="M 90 70 Q 150 40 200 70" stroke="#3b82f6" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. 配位键的特点 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 mb-8 border-l-8 border-indigo-500 pl-4">2. 配位键的特点与表示</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 h-full">
+                <div class="bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
+                    <h3 class="text-2xl font-bold text-indigo-600 mb-4">本质与特征</h3>
+                    <ul class="text-xl space-y-4 text-slate-700 feature-list pl-4">
+                        <li>是一种特殊的<span class="font-bold">共价键</span>。</li>
+                        <li>具有共价键的<span class="font-bold">饱和性</span>和<span class="font-bold">方向性</span>。</li>
+                        <li><span class="text-red-500 font-bold">重要结论：</span>一旦形成，配位键与其他共价键在键长、键能、键角上完全相同，无法区分。</li>
+                        <li>$\ce{NH4+}$ 空间构型：<span class="bg-indigo-100 px-2 rounded">正四面体</span>。</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white border border-gray-200 p-6 rounded-lg shadow-sm flex flex-col justify-center">
+                    <h3 class="text-2xl font-bold text-indigo-600 mb-4">表示方法</h3>
+                    <div class="mb-6">
+                        <p class="text-lg text-slate-600 mb-2">箭头表示法：</p>
+                        <div class="text-2xl font-mono bg-gray-50 p-4 rounded border text-center">
+                            A $\rightarrow$ B
+                        </div>
+                        <p class="text-sm text-slate-500 mt-2 text-center">（给予体指向接受体，也可直接用短线 — 表示）</p>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center bg-gray-50 p-3 rounded">
+                            <span>水合氢离子</span>
+                            <span class="font-mono font-bold">$\ce{[H3O]+}$</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-gray-50 p-3 rounded">
+                            <span>四水合铜离子</span>
+                            <span class="font-mono font-bold">$\ce{[Cu(H2O)4]^2+}$</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. 配合物的组成 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 mb-6 border-l-8 border-emerald-500 pl-4">3. 配合物的组成</h2>
+            
+            <div class="flex flex-col items-center justify-center h-full">
+                <div class="text-5xl font-mono mb-10 relative p-8 bg-white shadow-lg rounded-xl border border-slate-200">
+                    <!-- 结构标注 -->
+                    <div class="absolute -top-4 left-10 bg-emerald-100 text-emerald-800 text-sm px-2 py-1 rounded font-bold">内界（配离子）</div>
+                    <div class="absolute -bottom-4 right-10 bg-gray-100 text-gray-800 text-sm px-2 py-1 rounded font-bold">外界</div>
+                    
+                    <span class="text-slate-400">[</span>
+                    <span class="text-blue-600 font-bold relative group cursor-help">
+                        Cu
+                        <span class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-32 text-sm bg-slate-800 text-white text-center p-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">中心离子<br>(空轨道)</span>
+                    </span>
+                    <span class="text-slate-800 relative group cursor-help">
+                        (NH<sub class="text-3xl">3</sub>)<sub class="text-3xl">4</sub>
+                        <span class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-32 text-sm bg-slate-800 text-white text-center p-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">配体<br>(N为配位原子)</span>
+                    </span>
+                    <span class="text-slate-400">]</span>
+                    <span class="text-slate-600 relative group cursor-help">
+                        SO<sub class="text-3xl">4</sub>
+                        <span class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-32 text-sm bg-slate-800 text-white text-center p-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">外界离子</span>
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-6 w-full text-lg">
+                    <div class="bg-emerald-50 p-5 rounded-lg">
+                        <strong class="text-emerald-700 block mb-2 text-xl">中心原子/离子</strong>
+                        <p>提供空轨道。通常是过渡金属（如 $\ce{Fe, Cu, Ag, Zn}$），也可以是主族元素（如 $\ce{Al, B}$）。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-5 rounded-lg">
+                        <strong class="text-emerald-700 block mb-2 text-xl">配体</strong>
+                        <p>提供孤电子对。常见如 $\ce{NH3, H2O, CO, Cl-, CN-, SCN-}$。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-5 rounded-lg col-span-2">
+                        <strong class="text-emerald-700 block mb-2 text-xl">配位数</strong>
+                        <p>直接与中心原子形成的配位键数目。例如上图中铜的配位数为 4。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. 实验：铜与氨水的反应 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 mb-6 border-l-8 border-sky-500 pl-4">4. 经典实验：铜与氨水的反应</h2>
+            
+            <div class="space-y-6">
+                <!-- 步骤 1 -->
+                <div class="flex items-center bg-white p-4 rounded-lg shadow-sm border-l-4 border-sky-300">
+                    <div class="w-12 h-12 rounded-full bg-sky-100 text-sky-600 flex items-center justify-center font-bold mr-6 shrink-0">1</div>
+                    <div>
+                        <h3 class="text-xl font-bold">滴加少量氨水</h3>
+                        <p class="text-slate-600 mt-1">产生蓝色沉淀 $\ce{Cu(OH)2}$</p>
+                        <div class="mt-2 bg-slate-50 p-2 rounded font-mono text-sm text-slate-500">$\ce{Cu^2+ + 2NH3.H2O -> Cu(OH)2 v + 2NH4+}$</div>
+                    </div>
+                </div>
+
+                <!-- 步骤 2 -->
+                <div class="flex items-center bg-white p-4 rounded-lg shadow-sm border-l-4 border-blue-600">
+                    <div class="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold mr-6 shrink-0">2</div>
+                    <div>
+                        <h3 class="text-xl font-bold">继续滴加氨水</h3>
+                        <p class="text-slate-600 mt-1">沉淀溶解，溶液变为<span class="text-blue-700 font-bold">深蓝色</span>透明溶液</p>
+                        <div class="mt-2 bg-slate-50 p-2 rounded font-mono text-sm text-slate-500">$\ce{Cu(OH)2 + 4NH3 -> [Cu(NH3)4]^2+ + 2OH-}$</div>
+                    </div>
+                </div>
+
+                <!-- 步骤 3 -->
+                <div class="flex items-center bg-white p-4 rounded-lg shadow-sm border-l-4 border-indigo-800">
+                    <div class="w-12 h-12 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold mr-6 shrink-0">3</div>
+                    <div>
+                        <h3 class="text-xl font-bold">加入乙醇</h3>
+                        <p class="text-slate-600 mt-1">析出深蓝色晶体（降低溶剂极性，溶解度降低）</p>
+                        <div class="mt-2 bg-slate-50 p-2 rounded font-mono text-sm text-slate-500">晶体：$\ce{[Cu(NH3)4]SO4.H2O}$</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. 其他常见配合物实验 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 mb-8 border-l-8 border-red-500 pl-4">5. 其他常见配合物实验</h2>
+            
+            <div class="grid grid-cols-1 gap-8">
+                <!-- 铁的检验 -->
+                <div class="bg-red-50 border border-red-100 p-8 rounded-xl">
+                    <div class="flex items-center mb-4">
+                        <span class="w-8 h-8 bg-red-500 rounded-full mr-4"></span>
+                        <h3 class="text-2xl font-bold text-red-900">离子的检验</h3>
+                    </div>
+                    <p class="text-xl mb-4">$\ce{Fe^3+}$ 遇 $\ce{KSCN}$ 溶液显<span class="text-red-600 font-bold">血红色</span>。</p>
+                    <div class="bg-white p-4 rounded border border-red-200 font-mono text-lg text-center">
+                        $\ce{Fe^3+ + nSCN- <=> [Fe(SCN)_n]^{3-n}}$
+                    </div>
+                    <p class="text-sm text-red-400 mt-2 text-center">（n = 1~6，这是配合物形成的显色反应）</p>
+                </div>
+
+                <!-- 银氨溶液 -->
+                <div class="bg-gray-50 border border-gray-200 p-8 rounded-xl">
+                    <div class="flex items-center mb-4">
+                        <span class="w-8 h-8 bg-gray-400 rounded-full mr-4"></span>
+                        <h3 class="text-2xl font-bold text-gray-800">银氨溶液的制备</h3>
+                    </div>
+                    <p class="text-xl mb-4">白色 $\ce{AgCl}$ 沉淀溶于氨水。</p>
+                    <div class="bg-white p-4 rounded border border-gray-200 font-mono text-lg text-center">
+                        $\ce{AgCl + 2NH3 -> [Ag(NH3)2]+ + Cl-}$
+                    </div>
+                    <p class="text-slate-600 mt-2">竞争反应：配位能力的竞争，$\ce{[Ag(NH3)2]+}$ 比 $\ce{AgCl}$ 沉淀更稳定。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. 生物中的配合物 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 mb-8 border-l-8 border-pink-500 pl-4">6. 生物中的配合物</h2>
+            
+            <div class="grid grid-cols-2 gap-10 items-center h-full">
+                <div>
+                    <h3 class="text-3xl font-bold text-pink-800 mb-6">血红蛋白 (Hemoglobin)</h3>
+                    <ul class="text-xl space-y-4 text-slate-700">
+                        <li class="flex items-center">
+                            <span class="font-bold mr-2">中心离子：</span>
+                            <span class="bg-pink-100 text-pink-800 px-2 py-1 rounded">$\ce{Fe^2+}$</span>
+                        </li>
+                        <li>配位体：卟啉环中的4个氮原子 + 咪唑环氮原子 + <span class="text-red-500 font-bold">$\ce{O2}$</span>。</li>
+                        <li><strong class="text-red-600">CO中毒原理：</strong>$\ce{CO}$ 与 $\ce{Fe^2+}$ 的结合能力远强于 $\ce{O2}$（约200-300倍），发生“鸠占鹊巢”，导致缺氧。</li>
+                    </ul>
+                    
+                    <div class="mt-8 pt-6 border-t border-slate-200">
+                        <h3 class="text-2xl font-bold text-green-800 mb-2">叶绿素 (Chlorophyll)</h3>
+                        <p class="text-lg text-slate-600">中心离子为 <span class="bg-green-100 text-green-800 px-2 py-1 rounded font-bold">$\ce{Mg^2+}$</span>。</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-pink-100 flex justify-center">
+                    <!-- 简化的血红素示意图 SVG -->
+                    <svg width="300" height="300" viewBox="0 0 300 300">
+                        <defs>
+                            <marker id="arrow-sm" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#cbd5e1" />
+                            </marker>
+                        </defs>
+                        <!-- 中心铁离子 -->
+                        <circle cx="150" cy="150" r="25" fill="#fb7185" />
+                        <text x="150" y="155" text-anchor="middle" fill="white" font-weight="bold" font-size="18">Fe²⁺</text>
+                        
+                        <!-- 4个氮原子 (卟啉环) -->
+                        <circle cx="150" cy="90" r="15" fill="#94a3b8"/> <text x="150" y="95" text-anchor="middle" fill="white" font-size="12">N</text>
+                        <circle cx="150" cy="210" r="15" fill="#94a3b8"/> <text x="150" y="215" text-anchor="middle" fill="white" font-size="12">N</text>
+                        <circle cx="90" cy="150" r="15" fill="#94a3b8"/> <text x="90" y="155" text-anchor="middle" fill="white" font-size="12">N</text>
+                        <circle cx="210" cy="150" r="15" fill="#94a3b8"/> <text x="210" y="155" text-anchor="middle" fill="white" font-size="12">N</text>
+
+                        <!-- 配位键连线 -->
+                        <line x1="150" y1="105" x2="150" y2="125" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-sm)"/>
+                        <line x1="150" y1="195" x2="150" y2="175" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-sm)"/>
+                        <line x1="105" y1="150" x2="125" y2="150" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-sm)"/>
+                        <line x1="195" y1="150" x2="175" y2="150" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-sm)"/>
+
+                        <!-- O2 分子 -->
+                        <g transform="translate(200, 80)">
+                            <ellipse cx="0" cy="0" rx="20" ry="12" fill="#ef4444" transform="rotate(-45)"/>
+                            <text x="0" y="5" text-anchor="middle" fill="white" font-size="12" font-weight="bold">O₂/CO</text>
+                            <line x1="-30" y1="50" x2="-10" y2="30" stroke="#ef4444" stroke-width="2" stroke-dasharray="4"/>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. 配合物与颜色平衡 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 mb-6 border-l-8 border-yellow-500 pl-4">7. 配合物的平衡移动</h2>
+            
+            <div class="bg-yellow-50 p-6 rounded-xl border border-yellow-100 mb-6">
+                <p class="text-xl text-slate-800 mb-4">氯化铜溶液颜色的秘密：存在平衡</p>
+                <div class="bg-white p-4 rounded shadow-sm text-center font-mono text-lg">
+                    $\ce{[Cu(H2O)4]^2+ (蓝色) + 4Cl- <=> [CuCl4]^2- (黄色) + 4H2O}$
+                </div>
+                <p class="text-center text-sm text-slate-500 mt-2">（正反应为吸热反应）</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-6">
+                <div class="border p-5 rounded-lg">
+                    <h3 class="font-bold text-xl text-slate-700 mb-3">浓度影响</h3>
+                    <ul class="space-y-2 text-slate-600">
+                        <li><span class="font-bold">浓溶液：</span>绿色（蓝+黄混合，偏黄）</li>
+                        <li><span class="font-bold">加水稀释：</span>平衡<span class="text-blue-600 font-bold">逆向</span>移动（找粒子数增大的方向/水增多），溶液由绿变蓝。</li>
+                    </ul>
+                </div>
+                <div class="border p-5 rounded-lg">
+                    <h3 class="font-bold text-xl text-slate-700 mb-3">温度影响</h3>
+                    <ul class="space-y-2 text-slate-600">
+                        <li><span class="font-bold">加热：</span>吸热反应，平衡<span class="text-yellow-600 font-bold">正向</span>移动，黄色加深，溶液变绿/黄绿。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 mb-8 text-purple-700">随堂练习 (一)</h2>
+            <div class="text-2xl text-slate-800 leading-relaxed bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                <p>下列关于配位键的说法中，<strong class="text-red-500">不正确</strong>的是：</p>
+                <div class="mt-8 space-y-4 text-xl">
+                    <div class="p-4 border rounded hover:bg-purple-50 cursor-pointer">(A) 配位键是一种特殊的共价键</div>
+                    <div class="p-4 border rounded hover:bg-purple-50 cursor-pointer">(B) 形成配位键的条件是：一方有空轨道，一方有孤电子对</div>
+                    <div class="p-4 border rounded hover:bg-purple-50 cursor-pointer">(C) 配位键形成后，其键能与普通共价键往往不同</div>
+                    <div class="p-4 border rounded hover:bg-purple-50 cursor-pointer">(D) $\ce{NH4+}$ 中 4 个 $\ce{N-H}$ 键是完全等同的</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 1 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-green-700 mb-6">练习 (一)：解析</h2>
+            <div class="bg-green-50 p-8 rounded-xl border border-green-200 h-full flex flex-col justify-center">
+                <p class="text-3xl font-bold text-green-800 mb-6">答案：(C)</p>
+                <div class="text-xl text-slate-700 space-y-6 leading-relaxed">
+                    <p><strong>解析：</strong></p>
+                    <p>配位键在形成过程上与普通共价键不同，但一旦形成，<strong class="bg-yellow-100 px-1">电子云重叠方式与普通共价键没有区别</strong>。</p>
+                    <p>例如在 $\ce{NH4+}$ 中，4个 $\ce{N-H}$ 键的键长、键角、键能完全相同，无法区分哪一个是配位键。因此 C 选项说法错误。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 mb-8 text-purple-700">随堂练习 (二)</h2>
+            <div class="text-2xl text-slate-800 leading-relaxed bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                <p>向 $\ce{CuSO4}$ 溶液中逐滴加入氨水至过量，观察到的现象是：</p>
+                <div class="mt-8 space-y-4 text-xl">
+                    <div class="p-4 border rounded hover:bg-purple-50 cursor-pointer">(A) 产生蓝色沉淀，不溶解</div>
+                    <div class="p-4 border rounded hover:bg-purple-50 cursor-pointer">(B) 产生淡蓝色沉淀，后溶解生成深蓝色溶液</div>
+                    <div class="p-4 border rounded hover:bg-purple-50 cursor-pointer">(C) 直接生成深蓝色溶液</div>
+                    <div class="p-4 border rounded hover:bg-purple-50 cursor-pointer">(D) 产生白色沉淀</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 2 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-green-700 mb-6">练习 (二)：解析</h2>
+            <div class="bg-green-50 p-8 rounded-xl border border-green-200 h-full flex flex-col justify-center">
+                <p class="text-3xl font-bold text-green-800 mb-6">答案：(B)</p>
+                <div class="text-xl text-slate-700 space-y-6 leading-relaxed">
+                    <p><strong>解析：</strong></p>
+                    <p>反应分两步：</p>
+                    <ol class="list-decimal pl-6 space-y-2">
+                        <li>少量氨水：生成 $\ce{Cu(OH)2}$ <span class="text-blue-500">蓝色沉淀</span>。</li>
+                        <li>过量氨水：沉淀与 $\ce{NH3}$ 配合，生成 $\ce{[Cu(NH3)4]^2+}$，沉淀溶解，溶液显 <span class="text-blue-800 font-bold">深蓝色</span>。</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 mb-8 text-purple-700">随堂练习 (三)</h2>
+            <div class="text-2xl text-slate-800 leading-relaxed bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                <p>配合物 $\ce{[Co(NH3)5Cl]Cl2}$ 中的中心离子、配体、配位数分别是：</p>
+                <div class="mt-8 space-y-4 text-xl">
+                    <div class="p-4 border rounded hover:bg-purple-50 cursor-pointer">(A) $\ce{Co^2+}$、$\ce{NH3}$、5</div>
+                    <div class="p-4 border rounded hover:bg-purple-50 cursor-pointer">(B) $\ce{Co^3+}$、$\ce{NH3}$、6</div>
+                    <div class="p-4 border rounded hover:bg-purple-50 cursor-pointer">(C) $\ce{Co^3+}$、$\ce{NH3}$ 和 $\ce{Cl-}$、6</div>
+                    <div class="p-4 border rounded hover:bg-purple-50 cursor-pointer">(D) $\ce{Co^2+}$、$\ce{NH3}$ 和 $\ce{Cl-}$、5</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 3 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-green-700 mb-6">练习 (三)：解析</h2>
+            <div class="bg-green-50 p-8 rounded-xl border border-green-200 h-full flex flex-col justify-center">
+                <p class="text-3xl font-bold text-green-800 mb-6">答案：(C)</p>
+                <div class="text-xl text-slate-700 space-y-6 leading-relaxed">
+                    <p><strong>解析：</strong></p>
+                    <ul class="feature-list space-y-2">
+                        <li><strong>内界分析：</strong>中括号内为 $\ce{[Co(NH3)5Cl]}$。</li>
+                        <li><strong>配体：</strong>包含 5个 $\ce{NH3}$ 分子和 1个 $\ce{Cl-}$ 离子，均在内界直接与中心离子相连。</li>
+                        <li><strong>配位数：</strong>$5 + 1 = 6$。</li>
+                        <li><strong>电荷计算：</strong>外界是 2个 $\ce{Cl-}$ (-2价)，内界显+2价。内界中 $\ce{NH3}$ 为0价，$\ce{Cl}$ 为-1价，故中心离子 $\ce{Co}$ 为 <strong class="text-red-600">+3价</strong>。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 mb-8 text-purple-700">随堂练习 (四)</h2>
+            <div class="text-2xl text-slate-800 leading-relaxed bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                <p>在 $\ce{Ni(CO)4}$ 分子中，与中心原子 $\ce{Ni}$ 形成配位键的原子是：</p>
+                <div class="mt-8 space-y-4 text-xl">
+                    <div class="p-4 border rounded hover:bg-purple-50 cursor-pointer">(A) $\ce{C}$ 原子</div>
+                    <div class="p-4 border rounded hover:bg-purple-50 cursor-pointer">(B) $\ce{O}$ 原子</div>
+                    <div class="p-4 border rounded hover:bg-purple-50 cursor-pointer">(C) $\ce{C}$ 原子和 $\ce{O}$ 原子</div>
+                    <div class="p-4 border rounded hover:bg-purple-50 cursor-pointer">(D) 不确定</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 4 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-green-700 mb-6">练习 (四)：解析</h2>
+            <div class="bg-green-50 p-8 rounded-xl border border-green-200 h-full flex flex-col justify-center">
+                <p class="text-3xl font-bold text-green-800 mb-6">答案：(A)</p>
+                <div class="text-xl text-slate-700 space-y-6 leading-relaxed">
+                    <p><strong>解析：</strong></p>
+                    <p>在 $\ce{CO}$ 配体中，虽然氧的电负性大，但在碳氧三键的结构中，碳原子上有一对孤电子对且能量更匹配，更容易提供给金属的空轨道。</p>
+                    <p>因此，羰基配合物中通常是 <strong class="text-red-600">碳(C)</strong> 原子作为配位原子。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 5 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 mb-8 text-purple-700">随堂练习 (五)</h2>
+            <div class="text-2xl text-slate-800 leading-relaxed bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                <p>下列物质中，<strong class="text-red-500">不含有</strong>配位键的是：</p>
+                <div class="mt-8 space-y-4 text-xl">
+                    <div class="p-4 border rounded hover:bg-purple-50 cursor-pointer">(A) $\ce{NH4Cl}$</div>
+                    <div class="p-4 border rounded hover:bg-purple-50 cursor-pointer">(B) $\ce{[Ag(NH3)2]OH}$</div>
+                    <div class="p-4 border rounded hover:bg-purple-50 cursor-pointer">(C) $\ce{H3O+}$</div>
+                    <div class="p-4 border rounded hover:bg-purple-50 cursor-pointer">(D) $\ce{CaCl2}$</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 5 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-green-700 mb-6">练习 (五)：解析</h2>
+            <div class="bg-green-50 p-8 rounded-xl border border-green-200 h-full flex flex-col justify-center">
+                <p class="text-3xl font-bold text-green-800 mb-6">答案：(D)</p>
+                <div class="text-xl text-slate-700 space-y-6 leading-relaxed">
+                    <p><strong>解析：</strong></p>
+                    <ul class="feature-list">
+                        <li>(A) $\ce{NH4+}$ 中含有配位键。</li>
+                        <li>(B) 典型的银氨配合物，含配位键。</li>
+                        <li>(C) 水合氢离子 $\ce{H3O+}$，水中的氧提供孤对电子给氢离子，含配位键。</li>
+                        <li>(D) $\ce{CaCl2}$ 是典型的离子化合物，由 $\ce{Ca^2+}$ 和 $\ce{Cl-}$ 离子通过离子键结合，无配位键。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="text-center w-full">
+                 <svg class="w-24 h-24 mx-auto text-slate-400 mb-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                <h2 class="text-5xl font-bold text-slate-800">本课结束</h2>
+                <p class="mt-8 text-2xl text-slate-500">请务必复习配合物的组成与颜色变化</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- 导航按钮 -->
+    <div id="navigation" class="no-print">
+        <button id="prevBtn" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2 px-6 rounded mr-4 transition-colors">
+            &larr; 上一页
+        </button>
+        <span id="page-indicator" class="mx-4 text-slate-600 font-mono text-lg"></span>
+        <button id="nextBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded ml-4 transition-colors">
+            下一页 &rarr;
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

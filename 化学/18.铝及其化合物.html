@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>铝及其重要化合物（含示意图）</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                    <polyline points="2 17 12 22 22 17"></polyline>
+                    <polyline points="2 12 12 17 22 12"></polyline>
+                </svg>
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">铝及其重要化合物</h1>
+                <p class="text-2xl text-slate-600 mt-2">—— 两性元素的全面解析</p>
+            </div>
+        </div>
+
+        <!-- 铝单质 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto pb-12">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>铝单质 (Al)</h2>
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                    <div class="bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-gray-800 text-xl">基本性质</h3>
+                        <ul class="list-disc list-inside mt-3 text-slate-600 space-y-2">
+                            <li>地壳中含量<strong class="text-red-600">最多</strong>的金属元素</li>
+                            <li>银白色，质地较软</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-gray-800 text-xl">特殊的“抗腐蚀性”</h3>
+                         <ul class="list-disc list-inside mt-3 text-slate-600 space-y-2">
+                            <li>性质活泼，常温即可与O₂反应</li>
+                            <li>表面形成<strong class="text-red-600">致密的氧化铝(Al₂O₃)薄膜</strong></li>
+                             <li>该薄膜能阻止内部的铝继续被腐蚀</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 示意图: 氧化膜保护 -->
+                <div class="mt-6 text-center">
+                    <svg width="80%" viewBox="0 0 300 120" class="mx-auto">
+                        <defs>
+                            <pattern id="hatch" patternUnits="userSpaceOnUse" width="8" height="8">
+                                <path d="M-2,2 l4,-4 M0,8 l8,-8 M6,10 l4,-4" stroke="#a1a1aa" stroke-width="1"/>
+                            </pattern>
+                        </defs>
+                        <rect x="10" y="30" width="280" height="70" fill="#d1d5db" stroke="#6b7280" stroke-width="1.5"/>
+                        <rect x="10" y="30" width="280" height="10" fill="#f87171" stroke="#dc2626" stroke-width="1.5"/>
+                        <rect x="10" y="40" width="280" height="60" fill="url(#hatch)" />
+                        <text x="150" y="75" text-anchor="middle" font-size="14" fill="#1f2937" font-weight="bold">内部铝 (Al)</text>
+                        <text x="150" y="20" text-anchor="middle" font-size="12" fill="#b91c1c" font-weight="bold">致密的氧化铝 (Al₂O₃) 保护膜</text>
+                        <text x="50" y="115" text-anchor="middle" font-size="12" fill="#374151">空气 (O₂)</text>
+                        <path d="M 50 100 Q 70 80 90 50" fill="none" stroke="#374151" stroke-width="1.5" marker-end="url(#arrow)"/>
+                        <defs>
+                            <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#374151" />
+                            </marker>
+                        </defs>
+                    </svg>
+                    <p class="text-sm text-slate-600 mt-2"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 与酸反应 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto pb-12">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>化学性质：与酸的反应</h2>
+                 <p class="mt-4 text-xl text-slate-700">铝能与多种酸发生反应，但与浓酸的反应条件特殊。</p>
+                 <div class="mt-4 space-y-6">
+                     <div class="bg-sky-50 border border-sky-200 p-6 rounded-lg">
+                         <h3 class="font-bold text-sky-800 text-xl">与非氧化性酸 (盐酸, 稀硫酸)</h3>
+                         <p class="mt-3 mono">2Al + 6H⁺ → 2Al³⁺ + 3H₂↑</p>
+                     </div>
+                      <div class="bg-rose-50 border border-rose-200 p-6 rounded-lg">
+                         <h3 class="font-bold text-rose-800 text-xl">与浓硫酸、浓硝酸</h3>
+                         <p class="mt-3"><strong class="text-red-600">常温下：钝化</strong>，生成致密氧化膜，反应停止。</p>
+                         <p class="mt-2"><strong class="text-red-600">加热时：反应</strong>，生成盐、SO₂/NO₂和水。</p>
+                     </div>
+                 </div>
+                 <!-- 示意图: 钝化 -->
+                <div class="mt-6 text-center">
+                    <svg width="80%" viewBox="0 0 300 150" class="mx-auto">
+                        <path d="M 80 140 L 80 50 Q 150 20 220 50 L 220 140 Z" fill="#eff6ff" stroke="#60a5fa" stroke-width="1.5"/>
+                        <path d="M 70 140 H 230" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+                        <rect x="130" y="70" width="40" height="60" fill="#d1d5db" stroke="#6b7280" stroke-width="1.5"/>
+                        <rect x="130" y="70" width="40" height="5" fill="#f87171" stroke="#dc2626" stroke-width="1.5"/>
+                        <text x="150" y="105" text-anchor="middle" font-size="12" fill="#1f2937">Al</text>
+                        <text x="150" y="50" text-anchor="middle" font-size="12" fill="#1e3a8a">浓H₂SO₄/浓HNO₃</text>
+                        <text x="150" y="15" text-anchor="middle" font-size="12" fill="#b91c1c" font-weight="bold">钝化！反应停止</text>
+                    </svg>
+                    <p class="text-sm text-slate-600 mt-2"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 与碱反应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>核心性质：与强碱反应 (两性)</h2>
+                 <p class="mt-8 text-xl text-slate-700">铝是典型的<strong class="text-purple-600">两性金属</strong>，既能与强酸反应，也能与强碱溶液反应，且<strong class="text-red-600">均产生氢气</strong>。</p>
+                 <div class="mt-8 bg-purple-50 border border-purple-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-purple-800 text-xl">与氢氧化钠溶液反应</h3>
+                    <p class="mt-3 text-slate-600">产物为四羟基合铝酸钠和氢气。</p>
+                    <p class="mono text-center bg-purple-100 p-3 rounded mt-3 text-sm md:text-base">2Al + 2NaOH + 6H₂O = 2Na[Al(OH)₄] + 3H₂↑</p>
+                    <p class="mt-4 text-slate-600 text-center">离子方程式：<code>2Al + 2OH⁻ + 6H₂O → 2[Al(OH)₄]⁻ + 3H₂↑</code></p>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 铝热反应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>重要应用：铝热反应</h2>
+                 <p class="mt-4 text-xl text-slate-700">利用铝的强还原性和反应放出的大量热量，来冶炼高熔点的金属。</p>
+                 <div class="mt-4 bg-orange-50 border border-orange-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-orange-800 text-xl">典型反应：焊接铁轨</h3>
+                    <p class="mt-3 mono text-center bg-orange-100 p-3 rounded">2Al + Fe₂O₃ <span class="text-slate-500">(高温)</span> → 2Fe + Al₂O₃</p>
+                    <p class="mt-4 text-slate-600"><strong>特点：</strong>放出大量的热，发出耀眼的光芒，生成熔融的金属。</p>
+                    <p class="mt-2 text-slate-600"><strong>铝热剂：</strong>铝粉和金属氧化物（如Fe₂O₃, MnO₂, Cr₂O₃）的混合物。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 铝热反应 - 示意图 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>铝热反应：示意图</h2>
+                 <!-- 示意图: 铝热反应 -->
+                <div class="mt-6 text-center">
+                    <svg width="70%" viewBox="0 0 300 200" class="mx-auto">
+                        <!-- Crucible -->
+                        <path d="M 100 50 Q 150 20 200 50 L 175 120 Q 150 130 125 120 Z" fill="#f5f5f5" stroke="#404040" stroke-width="1.5"/>
+                        <!-- Thermite mixture -->
+                        <ellipse cx="150" cy="55" rx="45" ry="15" fill="#a16207" />
+                        <text x="150" y="50" font-size="10" fill="white">Al + Fe₂O₃</text>
+                        <!-- Magnesium strip -->
+                        <path d="M 200 50 Q 220 30 230 10" fill="none" stroke="#737373" stroke-width="2"/>
+                        <text x="235" y="15" font-size="10">引燃</text>
+                        <!-- Molten iron -->
+                        <path d="M 150 125 C 145 140, 155 140, 150 155" fill="#f97316" stroke="#ea580c" stroke-width="1.5"/>
+                        <!-- Rails -->
+                        <rect x="80" y="160" width="60" height="20" fill="#a8a29e"/>
+                        <rect x="160" y="160" width="60" height="20" fill="#a8a29e"/>
+                        <rect x="85" y="155" width="50" height="5" fill="#78716c"/>
+                        <rect x="165" y="155" width="50" height="5" fill="#78716c"/>
+                        <text x="150" y="190" text-anchor="middle" font-size="12">铁轨</text>
+                        <text x="110" y="90" text-anchor="middle" font-size="12" fill="#ef4444" font-weight="bold">耀眼光芒</text>
+                        <text x="190" y="90" text-anchor="middle" font-size="12" fill="#ef4444" font-weight="bold">大量热量</text>
+                    </svg>
+                    <p class="text-sm text-slate-600 mt-2">示意图：利用铝热反应焊接铁轨。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 氧化铝 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>氧化铝 (Al₂O₃)</h2>
+                <p class="mt-8 text-xl text-slate-700">俗称矾土，是典型的<strong class="text-teal-600">两性氧化物</strong>。</p>
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                     <div class="bg-teal-50 border border-teal-200 p-6 rounded-lg">
+                         <h3 class="font-bold text-teal-800 text-xl">与强酸反应</h3>
+                         <p class="mt-3 mono">Al₂O₃ + 6H⁺ → 2Al³⁺ + 3H₂O</p>
+                     </div>
+                      <div class="bg-teal-50 border border-teal-200 p-6 rounded-lg">
+                         <h3 class="font-bold text-teal-800 text-xl">与强碱反应</h3>
+                         <p class="mt-3 mono">Al₂O₃ + 2OH⁻ + 3H₂O → 2[Al(OH)₄]⁻</p>
+                     </div>
+                 </div>
+                 <p class="mt-4 text-slate-600 text-lg"><strong>性质：</strong>白色固体，熔点高（>2000°C），硬度大，难溶于水，是冶炼铝的原料和耐火材料。</p>
+            </div>
+        </div>
+        
+        <!-- 氢氧化铝 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-emerald-500 rounded"></span>氢氧化铝 (Al(OH)₃)</h2>
+                <p class="mt-8 text-xl text-slate-700">典型的<strong class="text-emerald-600">两性氢氧化物</strong>，不溶于水，是白色胶状固体。</p>
+                 <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                     <div class="bg-emerald-50 border border-emerald-200 p-6 rounded-lg">
+                         <h3 class="font-bold text-emerald-800 text-xl">与强酸反应 (作碱)</h3>
+                         <p class="mt-3 mono">Al(OH)₃ + 3H⁺ → Al³⁺ + 3H₂O</p>
+                     </div>
+                      <div class="bg-emerald-50 border border-emerald-200 p-6 rounded-lg">
+                         <h3 class="font-bold text-emerald-800 text-xl">与强碱反应 (作酸)</h3>
+                         <p class="mt-3 mono">Al(OH)₃ + OH⁻ → [Al(OH)₄]⁻</p>
+                     </div>
+                 </div>
+                 <p class="mt-4 text-slate-600 text-lg"><strong>其他性质：</strong>受热不稳定，分解为氧化铝和水。可作胃药的成分（中和胃酸），也用作净水剂。</p>
+            </div>
+        </div>
+
+        <!-- 铝三角 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>核心转化关系：“铝三角”</h2>
+                <p class="mt-4 text-xl text-slate-700">铝的三种重要形态 Al³⁺, Al(OH)₃, [Al(OH)₄]⁻ 之间的转化关系是考查重点。</p>
+                <!-- 示意图: 铝三角 (新版) -->
+                <div class="mt-6 text-center">
+                    <svg width="60%" viewBox="0 0 450 350" class="mx-auto">
+                        <defs>
+                            <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#4f46e5" />
+                            </marker>
+                            <style>
+                                .node { fill: #e0e7ff; stroke: #6366f1; stroke-width: 2; }
+                                .node-text { font-family: 'Courier New', Courier, monospace; font-size: 16px; font-weight: bold; text-anchor: middle; dominant-baseline: central; }
+                                .label-text { font-family: 'Noto Serif SC', serif; font-size: 13px; fill: #4338ca; text-anchor: middle; }
+                                .sub-label-text { font-family: 'Noto Serif SC', serif; font-size: 12px; fill: #6d28d9; text-anchor: middle; }
+                                .arrow { stroke: #818cf8; stroke-width: 2; marker-end: url(#arrowhead); }
+                            </style>
+                        </defs>
+    
+                        <!-- Nodes -->
+                        <rect x="175" y="30" width="100" height="50" rx="10" class="node"/>
+                        <text x="225" y="55" class="node-text">Al³⁺</text>
+    
+                        <rect x="50" y="250" width="100" height="50" rx="10" class="node"/>
+                        <text x="100" y="275" class="node-text">Al(OH)₃</text>
+    
+                        <rect x="300" y="250" width="100" height="50" rx="10" class="node"/>
+                        <text x="350" y="275" class="node-text">[Al(OH)₄]⁻</text>
+    
+                        <!-- Arrows & Labels -->
+    
+                        <!-- Al³⁺ -->
+                        <path d="M 185 80 L 115 245" fill="none" class="arrow"/>
+                        <text x="130" y="150" class="label-text">+ 少量 OH⁻</text>
+                        <text x="130" y="170" class="sub-label-text">(如: 氨水)</text>
+    
+                        <!-- Al(OH)₃ -->
+                        <path d="M 135 245 L 205 80" fill="none" class="arrow"/>
+                        <text x="185" y="180" class="label-text">+ 3H⁺</text>
+    
+                        <!-- Al(OH)₃ -->
+                        <path d="M 155 260 L 295 260" fill="none" class="arrow"/>
+                        <text x="225" y="245" class="label-text">+ OH⁻</text>
+    
+                        <!-- [Al(OH)₄]⁻ -->
+                        <path d="M 295 290 L 155 290" fill="none" class="arrow"/>
+                        <text x="225" y="305" class="label-text">+ H⁺ (或 CO₂)</text>
+    
+                        <!-- Al³⁺ -->
+                        <path d="M 265 80 L 335 245" fill="none" class="arrow"/>
+                        <text x="320" y="150" class="label-text">+ 4OH⁻ (过量)</text>
+    
+                        <!-- [Al(OH)₄]⁻ -->
+                        <path d="M 315 245 L 245 80" fill="none" class="arrow"/>
+                        <text x="265" y="180" class="label-text">+ 4H⁺ (过量)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 制备氢氧化铝 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>氢氧化铝的制备</h2>
+                <p class="mt-8 text-xl text-slate-700">制备Al(OH)₃的关键是避免其两性导致的溶解。核心思想：用“弱”制“两性”。</p>
+                <div class="mt-6 space-y-4 text-lg">
+                    <p class="bg-indigo-50 border border-indigo-200 p-4 rounded-lg">从 <strong>Al³⁺</strong> 出发：应使用<strong class="text-red-600">弱碱</strong>（如氨水，NH₃·H₂O），过量也不溶解。<br><code class="text-base">Al³⁺ + 3NH₃·H₂O → Al(OH)₃↓ + 3NH₄⁺</code></p>
+                    <p class="bg-indigo-50 border border-indigo-200 p-4 rounded-lg">从 <strong>[Al(OH)₄]⁻</strong> 出发：应通入<strong class="text-red-600">弱酸</strong>（如CO₂），过量也不溶解。<br><code class="text-base">[Al(OH)₄]⁻ + CO₂ → Al(OH)₃↓ + HCO₃⁻</code></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 例题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (一)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列物质中，既能与盐酸反应，又能与氢氧化钠溶液反应的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> Na₂CO₃</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> Al₂O₃</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> SiO₂</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> Fe₂O₃</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (一)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>题目要求找出两性物质。氧化铝 (Al₂O₃) 是典型的两性氧化物，既能与强酸（如盐酸）反应生成盐和水，也能与强碱（如氢氧化钠）反应生成盐和水。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (二)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>在常温下，铝制品能稳定存在于空气中的原因是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 铝的化学性质不活泼</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 铝的表面形成了致密的氧化膜</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 铝不与氧气反应</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 铝的熔点很高</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (二)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>铝是化学性质非常活泼的金属。它之所以在空气中表现出良好的抗腐蚀性，是因为其表面能迅速与氧气反应，生成一层致密、坚固的氧化铝(Al₂O₃)保护膜，阻止了内部的铝继续被氧化。（回顾第一页的示意图）</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (三)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列离子方程式中，正确的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(A)</strong> Al + 2OH⁻ → [Al(OH)₂]⁻ + H₂↑</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(B)</strong> Al(OH)₃ + 3H⁺ → Al³⁺ + 3H₂O</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(C)</strong> Al₂O₃ + 2OH⁻ → 2AlO₂⁻ + H₂O</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(D)</strong> Al³⁺ + 3OH⁻ → Al(OH)₃↓ (加入过量NaOH)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (三)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>A、C的产物写法不符合新教材的<code>[Al(OH)₄]⁻</code>规范，且原子不守恒。D项中，若加入过量NaOH，生成的Al(OH)₃沉淀会继续溶解生成<code>[Al(OH)₄]⁻</code>（参考“铝三角”图示）。B是氢氧化铝与强酸反应的正确离子方程式。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (四)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>实验室制备少量氢氧化铝，最好向AlCl₃溶液中加入？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 足量NaOH溶液</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 适量NaOH溶液</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 足量氨水</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 少量氨水</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (四)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>氢氧化铝是两性氢氧化物，能溶于强碱。若使用NaOH，用量难以控制，过量则沉淀溶解。氨水是弱碱，即使过量也不能溶解氢氧化铝。因此，加入足量氨水可以确保Al³⁺完全沉淀，是实验室制备Al(OH)₃的最佳方法。</p>
+                    <!-- 示意图: 制备氢氧化铝 -->
+                    <div class="mt-4 text-center">
+                        <svg width="90%" viewBox="0 0 400 200" class="mx-auto">
+                            <!-- Beaker -->
+                            <path d="M 100 180 L 100 50 Q 175 20 250 50 L 250 180 Z" fill="#eff6ff" stroke="#60a5fa" stroke-width="1.5"/>
+                            <path d="M 90 180 H 260" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+                             <!-- Precipitate -->
+                            <path d="M 120 175 C 140 160, 160 170, 180 165 C 200 160, 220 175, 230 170" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+                             <path d="M 110 165 C 130 150, 150 160, 170 155 C 190 150, 210 165, 220 160" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+                            <text x="175" y="150" text-anchor="middle" font-size="12">Al(OH)₃↓</text>
+                            <text x="175" y="100" text-anchor="middle" font-size="12">AlCl₃溶液</text>
+                            <!-- Dropper -->
+                            <line x1="280" y1="10" x2="280" y2="80" stroke="#737373" stroke-width="2"/>
+                            <path d="M 270 80 Q 280 100 290 80 Z" fill="#d4d4d4"/>
+                            <text x="310" y="50" font-size="12">滴加氨水</text>
+                            <path d="M 280 80 Q 260 60 255 50" fill="none" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (五)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列哪个反应不属于铝热反应？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(A)</strong> Al + Fe₂O₃</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(B)</strong> Al + MnO₂</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(C)</strong> Al + MgO</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(D)</strong> Al + V₂O₅</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (五)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>铝热反应是利用铝的强还原性来冶炼比它不活泼的金属。根据金属活动性顺序，镁(Mg)的活泼性强于铝(Al)，因此铝不能置换出氧化镁中的镁，该反应不能发生。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看，下节课再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

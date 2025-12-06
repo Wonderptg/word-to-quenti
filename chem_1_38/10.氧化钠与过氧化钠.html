@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>钠的“变身博士”：氧化钠与过氧化钠</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.572L16.5 21.75l-.398-1.178a3.375 3.375 0 00-2.455-2.456L12.75 18l1.178-.398a3.375 3.375 0 002.455-2.456L16.5 14.25l.398 1.178a3.375 3.375 0 002.455 2.456L20.25 18l-1.178.398a3.375 3.375 0 00-2.455 2.456z" />
+                </svg>
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">钠的“变身博士”</h1>
+                <p class="text-2xl text-slate-600 mt-2">—— 从平凡的氧化钠到神奇的过氧化钠</p>
+            </div>
+        </div>
+        
+        <!-- 基础对比 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>基础对比：两位“钠”家兄弟</h2>
+                <p class="mt-8 text-xl text-slate-700">一个平平无奇，一个身怀绝技。是什么让它们产生了如此巨大的差异？</p>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-gray-50 border border-gray-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-gray-800 text-2xl">氧化钠 (Na₂O)</h3>
+                        <p class="mt-3 text-slate-600">白色粉末</p>
+                        <p class="mt-3 bg-gray-200 text-gray-700 rounded-full py-1">内部结构稳定 (O²⁻)</p>
+                    </div>
+                    <div class="bg-yellow-50 border border-yellow-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-yellow-800 text-2xl">过氧化钠 (Na₂O₂)</h3>
+                        <p class="mt-3 text-slate-600">淡黄色粉末</p>
+                         <p class="mt-3 bg-yellow-200 text-yellow-800 rounded-full py-1">内部结构<strong class="text-red-600">不稳定</strong> (O₂²⁻)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 核心差异 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-red-500 rounded"></span>差异的根源：-1价的氧</h2>
+                 <p class="mt-8 text-xl text-slate-700">过氧化钠一切神奇性质的“总开关”，都源于其内部不稳定的<strong class="text-red-600">-1价过氧根(O₂²⁻)</strong>。</p>
+                 <div class="mt-8 bg-red-50 border border-red-200 p-8 rounded-lg text-center">
+                    <svg class="w-20 h-20 mx-auto text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                       <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5" />
+                    </svg>
+                    <p class="mt-4 text-xl text-slate-700">-1价的氧处于中间价态，既可以<strong class="text-red-600">降低</strong>到更稳定的-2价，也可以<strong class="text-red-600">升高</strong>到0价(氧气)。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 与水反应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>实战表现：与水的反应</h2>
+                 <div class="mt-8 space-y-6">
+                    <div class="bg-slate-50 border border-slate-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-slate-800 text-xl">氧化钠：波澜不惊</h3>
+                        <p class="mt-2 text-lg text-slate-600">安静溶解，只生成氢氧化钠。</p>
+                        <p class="mono text-center bg-slate-100 p-3 rounded mt-3">Na₂O + H₂O = 2NaOH</p>
+                    </div>
+                    <div class="bg-cyan-50 border border-cyan-200 p-6 rounded-lg">
+                         <h3 class="font-bold text-cyan-800 text-xl">过氧化钠：冰火之歌</h3>
+                         <p class="mt-2 text-lg text-slate-600">剧烈反应，放热、<strong class="text-cyan-700">产生大量气泡 (O₂)</strong>。</p>
+                        <p class="mono text-center bg-cyan-100 p-3 rounded mt-3">2Na₂O₂ + 2H₂O = 4NaOH + O₂↑</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 新增页: 歧化反应 (修改后的图表) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-violet-500 rounded"></span>反应的微观视角：歧化反应</h2>
+                 <p class="mt-8 text-xl text-slate-700">过氧化钠与水的反应，是典型的<strong class="text-violet-600">歧化反应</strong>。“自己人打自己人”，-1价的氧元素一部分化合价升高，一部分降低。</p>
+                 <div class="mt-10 flex justify-center items-center bg-violet-50 p-6 rounded-lg border-2 border-violet-200">
+                    <svg width="600" height="300" viewBox="0 0 600 300">
+                        <!-- 定义箭头样式 -->
+                        <defs>
+                            <marker id="arrowhead-up" markerWidth="10" markerHeight="7" refX="8" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#15803d"/>
+                            </marker>
+                            <marker id="arrowhead-down" markerWidth="10" markerHeight="7" refX="8" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#be123c"/>
+                            </marker>
+                        </defs>
+        
+                        <!-- 中心元素: O(-1) -->
+                        <g transform="translate(300, 150)">
+                            <rect x="-70" y="-30" width="140" height="60" rx="10" fill="#f5f3ff" stroke="#a78bfa" stroke-width="2"/>
+                            <text x="0" y="0" font-size="22" text-anchor="middle" font-weight="bold" fill="#4c1d95">O 元素 (-1价)</text>
+                            <text x="0" y="23" font-size="14" text-anchor="middle" fill="#5b21b6">(在 Na₂O₂ 中)</text>
+                        </g>
+        
+                        <!-- 上方路径: 氧化 -->
+                        <path d="M 300 120 C 300 60, 180 60, 120 60" fill="none" stroke="#34d399" stroke-width="2.5" stroke-dasharray="6,6" marker-end="url(#arrowhead-up)"/>
+                        <g transform="translate(40, 60)">
+                            <rect x="-35" y="-30" width="140" height="60" rx="10" fill="#ecfdf5" stroke="#34d399" stroke-width="2"/>
+                            <text x="35" y="0" font-size="20" text-anchor="middle" font-weight="bold" fill="#065f46">O 元素 (0价)</text>
+                            <text x="35" y="23" font-size="14" text-anchor="middle" fill="#047857">(生成 O₂)</text>
+                        </g>
+                        <text x="210" y="45" font-size="16" fill="#15803d" font-weight="600" text-anchor="middle">化合价升高 (被氧化)</text>
+        
+                        <!-- 下方路径: 还原 -->
+                        <path d="M 300 180 C 300 240, 420 240, 480 240" fill="none" stroke="#fb7185" stroke-width="2.5" stroke-dasharray="6,6" marker-end="url(#arrowhead-down)"/>
+                        <g transform="translate(560, 240)">
+                           <rect x="-105" y="-30" width="140" height="60" rx="10" fill="#fff1f2" stroke="#fb7185" stroke-width="2"/>
+                            <text x="-35" y="0" font-size="20" text-anchor="middle" font-weight="bold" fill="#9f1239">O 元素 (-2价)</text>
+                            <text x="-35" y="23" font-size="14" text-anchor="middle" fill="#be123c">(生成 NaOH)</text>
+                        </g>
+                        <text x="390" y="265" font-size="16" fill="#be123c" font-weight="600" text-anchor="middle">化合价降低 (被还原)</text>
+        
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 核心超能力 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-emerald-500 rounded"></span>核心超能力：变废为宝</h2>
+                <p class="mt-8 text-xl text-slate-700">过氧化钠能“吃掉”二氧化碳，吐出氧气，是呼吸面具和潜艇中的供氧剂。</p>
+                <div class="mt-8 grid grid-cols-1 gap-8 text-lg">
+                    <div class="bg-emerald-50 border border-emerald-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-emerald-800 text-xl">与CO₂的“双胞胎”反应</h3>
+                        <p class="mt-4 text-center mono bg-emerald-100 p-2 rounded">2Na₂O₂ + 2CO₂ = 2Na₂CO₃ + O₂</p>
+                    </div>
+                    <div class="bg-orange-50 border border-orange-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-orange-800 text-xl">“看人下菜碟”：与H₂S反应</h3>
+                        <p class="mt-3 text-slate-600">遇到强还原剂H₂S，过氧化钠只做氧化剂，<strong class="text-red-600">不产生氧气</strong>。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 性质验证 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-pink-500 rounded"></span>性质验证：强效“化学橡皮擦”</h2>
+                 <p class="mt-8 text-xl text-slate-700">向滴有酚酞的NaOH稀溶液(红色)中加入Na₂O₂，会发生什么？</p>
+                 <div class="mt-8 space-y-2 text-lg text-center">
+                    <p class="bg-rose-100 text-rose-800 p-3 rounded-lg font-semibold">溶液呈红色</p>
+                    <p class="font-bold">↓ <span class="text-sm font-normal text-slate-500">(加入Na₂O₂，生成更多NaOH)</span></p>
+                    <p class="bg-rose-200 text-rose-900 p-3 rounded-lg font-bold">红色加深</p>
+                    <p class="font-bold">↓ <span class="text-sm font-normal text-slate-500">(Na₂O₂的强氧化性漂白酚酞)</span></p>
+                    <p class="bg-gray-200 text-gray-800 p-3 rounded-lg font-bold">红色褪去变为无色</p>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 总结 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>“变身博士”档案总结</h2>
+                <ul class="mt-10 text-xl space-y-5">
+                    <li class="flex items-start"><svg class="w-8 h-8 text-yellow-500 mr-3 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg><strong>外貌特征：</strong>与众不同的淡黄色固体。</li>
+                    <li class="flex items-start"><svg class="w-8 h-8 text-red-500 mr-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l4.5-4.5m0 0l4.5 4.5m-4.5-4.5v11.25m6-11.25l4.5-4.5m0 0l4.5 4.5m-4.5-4.5v11.25" /></svg><strong>能量核心：</strong>不稳定的 <strong class="text-red-600">-1价过氧根</strong>。</li>
+                    <li class="flex items-start"><svg class="w-8 h-8 text-sky-500 mr-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg><strong>两大超能力：</strong>供氧能力 & 强氧化/漂白能力。</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 例题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (一)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列哪种物质常被用作呼吸面具中的供氧剂？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> Na₂O</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> Na₂O₂</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> NaOH</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> NaCl</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (一)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>过氧化钠(Na₂O₂)能与人体呼出的二氧化碳反应生成氧气 (2Na₂O₂ + 2CO₂ = 2Na₂CO₃ + O₂)，因此可用作呼吸面具或潜艇中的供氧剂。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (二)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>过氧化钠与水反应，除了生成氢氧化钠外，还会生成什么气体？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 氢气 (H₂)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 氯气 (Cl₂)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 氧气 (O₂)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 二氧化碳 (CO₂)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (二)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>根据反应方程式 <code class="bg-green-100 text-green-800">2Na₂O₂ + 2H₂O = 4NaOH + O₂↑</code>，生成的气体是氧气。这是一个歧化反应。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (三)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>过氧化钠(Na₂O₂)中，氧元素的化合价是多少？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 0</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> -1</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> -2</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> +1</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (三)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>过氧化钠(Na₂O₂)中含有过氧根离子(O₂²⁻)。根据化合物中正负化合价代数和为零的原则，钠为+1价，则两个氧的总价态为-2，因此每个氧元素的平均化合价为-1价。这是过氧化物的特征。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (四)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列关于氧化钠(Na₂O)的描述，正确的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 它是淡黄色固体</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 它与水反应生成氧气</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 它是一种碱性氧化物</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 它的化学性质比过氧化钠活泼</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (四)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>氧化钠是白色固体，与水反应只生成氢氧化钠(Na₂O + H₂O = 2NaOH)，没有氧气。作为典型的金属氧化物，它能与酸反应生成盐和水，属于碱性氧化物。其化学性质相对过氧化钠更稳定。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (五)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>将少量过氧化钠投入到品红溶液中，会观察到什么现象？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 溶液颜色不变</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 产生蓝色沉淀</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 溶液变为蓝色</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 溶液红色褪去</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (五)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>过氧化钠具有强氧化性，这种性质赋予了它漂白能力，可以氧化并破坏某些有色物质（如品红、酚酞）的结构，使其褪色。因此，品红溶液的红色会褪去。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看，下节课再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

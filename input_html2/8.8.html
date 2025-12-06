@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>椭圆入门 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration --><script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <!-- MathJax Library --><script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0.25rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            overflow-x: auto;
+            text-align: center;
+        }
+        
+        .magic-triangle {
+            background-color: #fffbe6;
+            border: 2px dashed #f59e0b;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 --><div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">椭圆入门课</h1>
+                <p class="text-2xl text-slate-600 mt-4">“这到底是个啥形状？”</p>
+                <p class="mt-8 text-xl text-cyan-600 font-semibold">"椭圆的灵魂，就在那根‘绳子’上！"</p>
+            </div>
+        </div>
+
+        <!-- 定义 --><div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-4">椭圆的定义</h2>
+            <!-- 改动：添加 md:flex md:items-center md:gap-6 实现左右布局 -->
+            <div class="w-full max-w-4xl mx-auto md:flex md:items-center md:gap-6">
+                <!-- 文本内容列 -->
+                <div class="md:w-1/2">
+                    <p class="text-lg">想象两根钉子 $F_1, F_2$（<strong>焦点</strong>）和一根固定长度的绳子。</p>
+                    <p class="text-lg mt-4">用一支笔 $P$ 把绳子绷紧，画出的轨迹就是椭圆。</p>
+                    <p class="text-lg mt-4"><strong>定义：</strong>平面上，到两个固定点 $F_1, F_2$ 的距离之和，等于一个常数（绳长 $2a$）的点的轨迹。</p>
+                    
+                    <div class="formula-box text-xl font-bold">
+                        $|PF_1| + |PF_2| = 2a$
+                    </div>
+                    
+                    <p class="text-base text-gray-500 mt-4 text-center">（注：$2a$ 必须大于两焦点间的距离 $|F_1F_2|$）</p>
+                </div>
+                <!-- 图像列 -->
+                <div class="mt-8 md:mt-0 md:w-1/2 text-center bg-gray-50 p-4 rounded-lg">
+                    <svg class="w-full max-w-lg mx-auto" viewBox="-160 -100 320 200" xmlns="http://www.w3.org/2000/svg" aria-label="椭圆定义示意图">
+                        <!-- 坐标轴 -->
+                        <line x1="-160" y1="0" x2="160" y2="0" stroke="#9ca3af" stroke-width="1" stroke-dasharray="2 2"></line>
+                        <line x1="0" y1="-100" x2="0" y2="100" stroke="#9ca3af" stroke-width="1" stroke-dasharray="2 2"></line>
+                        
+                        <!-- 椭圆 -->
+                        <ellipse cx="0" cy="0" rx="150" ry="90" fill="none" stroke="#3b82f6" stroke-width="2"></ellipse>
+                        
+                        <!-- 焦点 F1, F2 -->
+                        <circle cx="-120" cy="0" r="3" fill="#ef4444"></circle>
+                        <text x="-135" y="0" dy="4" font-size="12" fill="#ef4444" font-weight="bold">$F_1$</text>
+                        <circle cx="120" cy="0" r="3" fill="#ef4444"></circle>
+                        <text x="125" y="0" dy="4" font-size="12" fill="#ef4444" font-weight="bold">$F_2$</text>
+                        
+                        <!-- 点 P -->
+                        <circle cx="75" cy="-78" r="3" fill="black"></circle>
+                        <text x="75" y="-85" font-size="12" fill="black" font-weight="bold">$P$</text>
+                        
+                        <!-- "绳子" |PF1| 和 |PF2| -->
+                        <line x1="75" y1="-78" x2="-120" y2="0" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4 2"></line>
+                        <line x1="75" y1="-78" x2="120" y2="0" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4 2"></line>
+                        
+                        <!-- 标签 -->
+                        <text x="-22" y="-39" font-size="12" fill="#ef4444">$|PF_1|$</text>
+                        <text x="97" y="-39" font-size="12" fill="#ef4444">$|PF_2|$</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 标准方程 --><div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-2 mb-4">标准方程：“给椭圆上户口”</h2>
+            <div class="w-full max-w-4xl mx-auto bg-gray-50 p-4 rounded-lg">
+                <p class="text-lg">我们把焦点 $F_1(-c, 0)$ 和 $F_2(c, 0)$ 放在 $x$ 轴上，原点 $(0,0)$ 作为中点。</p>
+                <p class="text-lg mt-2">根据定义 $|PF_1| + |PF_2| = 2a$，设 $P(x, y)$：</p>
+                <p class="text-sm font-mono text-center">$\sqrt{(x+c)^2 + y^2} + \sqrt{(x-c)^2 + y^2} = 2a$</p>
+                <p class="text-lg mt-2 text-center">经过两次“分而治之”的平方和整理...</p>
+                <p class="text-lg mt-2">我们得到：$(a^2 - c^2)x^2 + a^2y^2 = a^2(a^2 - c^2)$</p>
+                <p class="text-lg mt-2">为了简化，我们<strong>规定 $b^2 = a^2 - c^2$</strong>。</p>
+                <p class="text-lg mt-2">于是得到 $b^2x^2 + a^2y^2 = a^2b^2$。</p>
+                <p class="text-lg mt-2 text-center">两边同除以 $a^2b^2$，得到最终形态：</p>
+                <div class="formula-box text-2xl font-bold">
+                    $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1 \quad (a > b > 0)$
+                </div>
+            </div>
+        </div>
+        
+        <!-- a, b, c 的几何意义 --><div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2 mb-4">椭圆的“三围”：$a, b, c$</h2>
+            <!-- 改动：添加 md:flex md:items-center md:gap-6 实现左右布局 -->
+            <div class="w-full max-w-4xl mx-auto text-lg bg-gray-50 p-4 rounded-lg md:flex md:items-center md:gap-6">
+                <!-- 文本内容列 -->
+                <div class="md:w-1/2">
+                    <ul class="list-disc list-inside space-y-3">
+                        <li><strong>$a$ (长半轴):</strong> 椭圆与 $x$ 轴的交点 $(\pm a, 0)$。<strong>长轴长 = $2a$</strong>。</li>
+                        <li><strong>$b$ (短半轴):</strong> 椭圆与 $y$ 轴的交点 $(0, \pm b)$。<strong>短轴长 = $2b$</strong>。</li>
+                        <li><strong>$c$ (半焦距):</strong> 焦点坐标 $F(\pm c, 0)$。<strong>焦距 = $2c$</strong>。</li>
+                    </ul>
+                    <p class="text-lg mt-6 text-center text-red-600 font-bold">“$a$ 永远是 $a, b, c$ 中最大的那个！”</p>
+                </div>
+                <!-- 图像列 -->
+                <div class="my-6 md:my-0 md:w-1/2 text-center">
+                    <svg class="w-full max-w-lg mx-auto" viewBox="-160 -110 320 220" xmlns="http://www.w3.org/2000/svg" aria-label="a, b, c 几何意义示意图">
+                        <!-- 坐标轴 -->
+                        <line x1="-160" y1="0" x2="160" y2="0" stroke="#9ca3af" stroke-width="1"></line>
+                        <line x1="0" y1="-110" x2="0" y2="110" stroke="#9ca3af" stroke-width="1"></line>
+                        <text x="155" y="-5" font-size="12">$x$</text>
+                        <text x="5" y="-105" font-size="12">$y$</text>
+
+                        <!-- 椭圆 -->
+                        <ellipse cx="0" cy="0" rx="150" ry="90" fill="none" stroke="#3b82f6" stroke-width="2"></ellipse>
+                        
+                        <!-- 标出 a (顶点) -->
+                        <circle cx="150" cy="0" r="3" fill="#059669"></circle>
+                        
+                        <circle cx="-150" cy="0" r="3" fill="#059669"></circle>
+                        
+                        
+                        <!-- 标出 b (顶点) -->
+                        <circle cx="0" cy="90" r="3" fill="#d97706"></circle>
+                        
+                        <circle cx="0" cy="-90" r="3" fill="#d97706"></circle>
+                        
+
+                        <!-- 标出 c (焦点) -->
+                        <circle cx="120" cy="0" r="3" fill="#ef4444"></circle>
+                        
+                        <circle cx="-120" cy="0" r="3" fill="#ef4444"></circle>
+                        
+
+                        <!-- 标签 F1, F2 -->
+                        <text x="115" y="-10" font-size="12" fill="#ef4444" font-weight="bold">$F_2(c,0)$</text>
+                        <text x="-160" y="-10" font-size="12" fill="#ef4444" font-weight="bold">$F_1(-c,0)$</text>
+
+                        <!-- 标签 顶点 -->
+                        <text x="145" y="-10" font-size="12" fill="#059669" font-weight="bold">$A_2(a,0)$</text>
+                        <text x="-190" y="-10" font-size="12" fill="#059669" font-weight="bold">$A_1(-a,0)$</text>
+                        <text x="5" y="-95" font-size="12" fill="#d97706" font-weight="bold">$B_1(0,-b)$</text>
+                        <text x="5" y="105" font-size="12" fill="#d97706" font-weight="bold">$B_2(0,b)$</text>
+
+                    </svg>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 魔法三角形 --><div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-amber-500 pb-2">“魔法三角形”</h2>
+                 <!-- 改动：添加 md:flex md:items-start md:gap-6 实现左右布局 -->
+                 <div class="mt-4 text-lg md:flex md:items-start md:gap-6">
+                    <!-- 文本内容列 -->
+                    <div class="md:w-1/2">
+                        <p>连接短轴顶点 $B(0, b)$、原点 $O(0, 0)$ 和焦点 $F_2(c, 0)$。</p>
+                        <p class="mt-2">这是一个直角三角形 $\Delta BOF_2$：</p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li>直角边 $|OB| = b$</li>
+                            <li>直角边 $|OF_2| = c$</li>
+                        </ul>
+                        <p class="mt-2">它的斜边 $|BF_2|$ 是多少？</p>
+                        <p>根据定义， $B$ 点在椭圆上 $\implies |BF_1| + |BF_2| = 2a$。</p>
+                        <p>因为对称， $|BF_1| = |BF_2|$。</p>
+                        <p>所以 $2|BF_2| = 2a \implies |BF_2| = a$。</p>
+                    </div>
+                    
+                    <!-- 图像和公式列 -->
+                    <div class="md:w-1/2">
+                        <div class="my-6 md:my-0 text-center bg-gray-50 p-4 rounded-lg">
+                            <svg class="w-full max-w-lg mx-auto" viewBox="-160 -110 320 220" xmlns="http://www.w3.org/2000/svg" aria-label="魔法三角形示意图">
+                                <!-- 坐标轴 -->
+                                <line x1="-160" y1="0" x2="160" y2="0" stroke="#9ca3af" stroke-width="1" stroke-dasharray="2 2"></line>
+                                <line x1="0" y1="-110" x2="0" y2="110" stroke="#9ca3af" stroke-width="1" stroke-dasharray="2 2"></line>
+                                
+                                <!-- 椭圆 -->
+                                <ellipse cx="0" cy="0" rx="150" ry="90" fill="none" stroke="#3b82f6" stroke-width="2"></ellipse>
+                                
+                                <!-- 焦点 F1, F2 -->
+                                <circle cx="-120" cy="0" r="3" fill="#ef4444"></circle>
+                                <text x="-135" y="0" dy="4" font-size="12" fill="#ef4444" font-weight="bold">$F_1$</text>
+                                <circle cx="120" cy="0" r="3" fill="#ef4444"></circle>
+                                
+                                <!-- 魔法三角形 -->
+                                <path d="M 0 0 L 120 0 L 0 -90 Z" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"></path>
+                                
+                                <!-- 斜边 a -->
+                                <line x1="120" y1="0" x2="0" y2="-90" stroke="#ef4444" stroke-width="2"></line>
+                                
+                                <!-- 顶点标签 (带坐标) -->
+                                <text x="-25" y="15" font-size="12" font-weight="bold">$O(0,0)$</text>
+                                <text x="125" y="15" font-size="12" font-weight="bold">$F_2(c,0)$</text>
+                                <text x="5" y="-95" font-size="12" font-weight="bold">$B(0,b)$</text>
+                                
+                                <!-- 边长标签 -->
+                                <text x="60" y="15" font-size="12" fill="#000">$c$</text>
+                                <text x="10" y="-45" font-size="12" fill="#000">$b$</text>
+                                <text x="70" y="-35" font-size="14" fill="#ef4444" font-weight="bold">$a$</text>
+                                
+                                <!-- 直角符号 -->
+                                <path d="M 0 -15 L 15 -15 L 15 0" fill="none" stroke="#9ca3af" stroke-width="1"></path>
+                            </svg>
+                        </div>
+
+                        <div class="magic-triangle mt-4">
+                            <p class="text-xl font-bold text-amber-800">斜边是 $a$，直角边是 $b$ 和 $c$。</p>
+
+                            <div class="formula-box text-2xl font-bold">
+                                $a^2 = b^2 + c^2$
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 躺着还是站着 --><div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-indigo-500 pb-2">“躺着” 还是 “站着”？</h2>
+                 <div class="mt-4 text-lg space-y-4 bg-gray-50 p-4 rounded-lg">
+                    <p class="text-center font-bold text-2xl text-red-600">核心口诀：看分母，谁大谁是 $a^2$！</p>
+                    
+                    <div>
+                        <p><strong>例 1 (躺着)：</strong> $\frac{x^2}{10} + \frac{y^2}{9} = 1$</p>
+                    </div>
+                    
+                    <div>
+                        <p><strong>例 2 (站着)：</strong> $\frac{x^2}{36} + \frac{y^2}{100} = 1$</p>
+                    </div>
+
+                    <div>
+                        <p><strong>例 3 (陷阱)：</strong> $10x^2 + y^2 = 10$</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 离心率 --><div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-purple-500 pb-2">离心率 $e$ —— 椭圆有多“扁”？</h2>
+                 <div class="mt-4 text-lg">
+                    <p><strong>定义：</strong> $e = \frac{c}{a}$ （半焦距 / 长半轴）</p>
+                    <p class="mt-2"><strong>范围：</strong> $0 < e < 1$ (因为 $a$ 是老大, $a>c$)</p>
+                    
+                    <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <h3 class="font-bold text-xl text-purple-800"> $e \to 0$ (越圆)</h3>
+                            <p class="mt-2"> $c \to 0$，焦点合体。$a \to b$。<br> (记忆：数字 0 长得很圆)</p>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <h3 class="font-bold text-xl text-purple-800"> $e \to 1$ (越扁)</h3>
+                            <p class="mt-2">$c \to a$，焦点跑到端点。$b \to 0$。<br> (记忆：数字 1 像条线)</p>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 离心率计算 --><div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-purple-500 pb-2">求 $e$ 的本质：找关系</h2>
+                 <div class="mt-4 text-base bg-gray-50 p-4 rounded-lg">
+                    <p class="font-bold text-lg">求 $e$ 的本质，就是找到 $a, b, c$ 之间的一个等式关系！</p>
+                    <p class="mt-2"><strong>例：</strong>“椭圆的短轴长是焦距的两倍。”</p>
+                    <p><strong>翻译：</strong>
+                    <br>短轴长 = $2b$。焦距 = $2c$。
+                    <br>$2b = 2 \times (2c) \implies b = 2c$。</p>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 实战演练 --><div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-rose-500 pb-2">实战演练</h2>
+                 <div class="mt-4 text-base bg-rose-50 p-4 rounded-lg">
+                    <p class="font-bold text-lg">新例题：已知椭圆 $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1 (a > b > 0)$，它的一个焦点是 $F(2,0)$。它上面的一个点 $P(2,3)$。</p><p class="font-bold text-lg mt-2">(1) 求这个椭圆的方程。 (2) 求这个椭圆的离心率。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1/4 --><div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (1/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                    <p class="font-semibold mb-2">1. 已知椭圆上一点 $P$ 到两焦点 $F_1, F_2$ 的距离之和为 10，两焦点间距离 $|F_1F_2| = 6$。则该椭圆的短轴长（$2b$）为？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) 4</p>
+                        <p>(B) 5</p>
+                        <p>(C) 8</p>
+                        <p>(D) 10</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题 2/4 --><div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (2/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                    <p class="font-semibold mb-2">2. 椭圆方程 $\frac{x^2}{10} + \frac{y^2}{12} = 1$ 的焦点在？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) x 轴上</p>
+                        <p>(B) y 轴上</p>
+                        <p>(C) 原点</p>
+                        <p>(D) 无法判断</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3/4 --><div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (3/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                     <p class="font-semibold mb-2">3. 在椭圆的标准方程中，$a, b, c$ 三个量（均大于0）的关系一定满足？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) $a^2 = b^2 + c^2$</p>
+                        <p>(B) $b^2 = a^2 + c^2$</p>
+                        <p>(C) $c^2 = a^2 + b^2$</p>
+                        <p>(D) $a = b + c$</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题 4/4 --><div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (4/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                     <p class="font-semibold mb-2">4. 椭圆的离心率 $e = \frac{c}{a}$。当 $e$ 越趋近于 1 时，椭圆的形状？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) 越圆</p>
+                        <p>(B) 越扁</p>
+                        <p>(C) 保持不变</p>
+                        <p>(D) 变为一个点</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题解析 --><div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析</h2>
+                <div class="space-y-3 text-base">
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>1. 答案：C</strong></p>
+                        <p><strong>解析：</strong>定义 $\implies 2a = 10 \implies a=5$。
+                        <br>焦距 $\implies 2c = 6 \implies c=3$。
+                        <br>关系式 $a^2 = b^2 + c^2 \implies 5^2 = b^2 + 3^2 \implies 25 = b^2 + 9 \implies b^2 = 16 \implies b=4$。
+                        <br>短轴长 = $2b = 2 \times 4 = 8$。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>2. 答案：B</strong></p>
+                        <p><strong>解析：</strong>口诀：“看分母，谁大谁是 $a^2$”。
+                        <br>$12 > 10 \implies a^2 = 12, b^2 = 10$。
+                        <br>$a^2$ (12) 在 $y^2$ 的下面，所以焦点在 <strong>y 轴上</strong>。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>3. 答案：A</strong></p>
+                        <p><strong>解析：</strong>核心关系式（“魔法三角形”的勾股定理）。$a$ 是斜边， $b, c$ 是直角边。所以 $a^2 = b^2 + c^2$。$a$ 是三者中最大的。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>4. 答案：B</strong></p>
+                        <p><strong>解析：</strong>$e \to 1 \implies c \to a$。根据 $b^2 = a^2 - c^2$， $b^2 \to 0$。短轴 $2b$ 没了，椭圆被压成一条线，所以<strong>越扁</strong>。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- GjZ --><div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8">总结</h2>
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <ul class="list-disc list-inside text-left text-lg mt-4 space-y-2">
+                        <li><strong>定义：</strong> $|PF_1| + |PF_2| = 2a$。（绳子）</li>
+                        <li><strong>核心：</strong> $a^2 = b^2 + c^2$。（$a$ 是老大，记住‘魔法三角形’）</li>
+                        <li><strong>辨认：</strong> 谁分母大，谁是 $a^2$，焦点就在谁的轴上。</li>
+                        <li><strong>胖瘦：</strong> $e = \frac{c}{a}$。$e \to 0$ 越圆，$e \to 1$ 越扁。</li>
+                    </ul>
+                </div>
+             </div>
+         </div>
+
+    </div>
+</body>
+</html>

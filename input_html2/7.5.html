@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>空间向量求距离 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                 macros: {
+                    vec: ['\\overrightarrow{#1}', 1]
+                }
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <!-- MathJax Library -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: white; /* 由 #f1f5f9 改为 white */
+        }
+        
+        #presentation-container {
+            max-width: 56rem; /* 900px */
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            /* 移除了阴影，使其与白色背景融为一体 */
+            box-shadow: none; 
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2.5rem; /* 48px 40px */
+            position: relative; 
+            min-height: 560px; /* 增加了最小高度以适应内容 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem 1.5rem;
+            margin-top: 1rem;
+            border-radius: 0.25rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            overflow-x: auto;
+        }
+        
+        .formula-box.formula-center {
+            text-align: center;
+        }
+        
+        .explanation-note {
+            font-size: 0.9rem;
+            color: #475569;
+            margin-top: 0.5rem;
+            padding-left: 0.5rem;
+        }
+
+        .answer-box {
+            margin-top: 2rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background-color: #ecfdf5; /* 绿色系背景 */
+            border: 1px solid #a7f3d0;
+        }
+        .answer-box strong {
+            color: #059669; /* 深绿色字体 */
+        }
+        
+        .calculation-step {
+            font-size: 0.95rem;
+            color: #1e293b;
+            margin-top: 0.5rem;
+            padding-left: 0.5rem;
+        }
+
+        /* Canvas Style */
+        .projection-canvas {
+            display: block;
+            margin: 1.5rem auto 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            background-color: #ffffff;
+            width: 80%; /* 恢复到 80% 避免内容过度拥挤 */
+            max-width: 100%;
+        }
+
+        /* 调整第一个投影图的底部外边距，避免紧贴下一个元素 */
+        #projectionCanvas-concept {
+            margin-bottom: 2rem; 
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2.5rem; /* 40px */
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+</head>
+<body class=""> <!-- 移除了 bg-slate-100 -->
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 (已优化) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">用空间向量</h1>
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">一统立体几何的“距离江湖”</h1>
+                <p class="text-2xl text-slate-600 mt-6">空间向量求距离</p>
+                <p class="mt-8 text-xl text-cyan-600 font-semibold">"一个基础，两个核心，搞定六种距离"</p>
+            </div>
+        </div>
+        
+        <!-- 新增：开场 (来自稿子) -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-8">要解决的六种“距离”</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-lg">
+                    <div class="bg-slate-50 p-4 rounded-lg text-center">
+                        <h3 class="font-bold text-xl text-slate-500">基础</h3>
+                        <p class="mt-2">1. 点到点距离</p>
+                        <p class="text-sm">( $|\vec{AB}|$ )</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg text-center">
+                        <h3 class="font-bold text-xl text-blue-700">核心</h3>
+                        <p class="mt-2">2. 点到线距离</p>
+                        <p class="mt-2">3. 点到面距离</p>
+                    </div>
+                    <div class="bg-cyan-50 p-4 rounded-lg text-center">
+                        <h3 class="font-bold text-xl text-cyan-700">转化</h3>
+                        <p class="mt-2">4. 线到面距离</p>
+                        <p class="mt-2">5. 面到面距离</p>
+                        <p class="mt-2">6. 异面直线距离</p>
+                    </div>
+                </div>
+                 <p class="text-center text-slate-700 text-xl mt-10">
+                    我们只需要掌握<span class="font-bold text-blue-700">两个核心</span>，就能解决所有问题！
+                 </p>
+            </div>
+        </div>
+
+        <!-- 基础内功：投影 (新 1/3) - 概念与推导 -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-4">基础内功：投影 (Projection)</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <p class="text-lg text-center">投影就是“影子”。我们想求 $\vec{AP}$ 在直线 $l$ (单位方向向量为 $\vec{u}$) 上的影子。</p>
+                
+                <!-- 投影示意图 (ID: projectionCanvas-concept) -->
+                <canvas id="projectionCanvas-concept" width="400" height="200" class="projection-canvas"></canvas>
+
+                <div class="mt-8 text-center bg-gray-50 p-4 rounded-lg">
+                    <h3 class="text-xl font-bold text-slate-700 mb-2">推导思路</h3>
+                    <p class="text-base">推导：$\vec{AP} \cdot \vec{u} = |\vec{AP}| |\vec{u}| \cos\theta$。因为 $\vec{u}$ 是**单位向量**， $|\vec{u}|=1$。</p>
+                    <p class="text-base mt-2">所以：$\vec{AP} \cdot \vec{u} = |\vec{AP}| \cos\theta = $ 投影长度 (带方向)。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 基础内功：投影 (新 2/3) - 两个核心公式 -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-4">基础内功：投影（核心公式）</h2>
+            <div class="w-full max-w-4xl mx-auto pt-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-sky-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-xl text-blue-700 text-center mb-2">(板书: 核心公式1: 投影长度)</h3>
+                        <p class="text-base mt-2 text-center">向量 $\vec{AP}$ 在 $\vec{u}$ 方向上的投影长度 L 为：</p>
+                         <div class="formula-box text-2xl formula-center">
+                            $L = |\vec{AP} \cdot \vec{u}|$
+                         </div>
+                         <p class="explanation-note text-center"><strong>(强调: 加绝对值! 因为长度必须是正的, 但数量积可正可负。)</strong></p>
+                    </div>
+                    <div class="bg-emerald-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-xl text-emerald-700 text-center mb-2">(板书: 核心公式2: 投影向量)</h3>
+                        <p class="text-base mt-2 text-center">向量 $\vec{AP}$ 在 $\vec{u}$ 方向上的投影向量 $\vec{AG}$ 为：</p>
+                        <div class="formula-box text-2xl formula-center">
+                             $\vec{AG} = (\vec{AP} \cdot \vec{u}) \vec{u}$
+                        </div>
+                         <p class="explanation-note text-center"><strong>(强调: 这次不用绝对值! 因为如果点积是负数, 说明影子和 $\vec{u}$ 反向, 这个负号刚好帮我们调整了方向。)</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 基础内功 - 第3页: 例题 (来自稿子第3页) -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-4">基础内功：投影（例题）</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                 <div class="text-base bg-gray-50 p-4 rounded-lg shadow-sm">
+                    <p class="text-lg font-semibold mb-2"><strong>例：</strong> $\vec{a}=(1,2,2)$, $\vec{b}=(2,0,-2)$。求 $\vec{a}$ 在 $\vec{b}$ 上的投影向量。</p>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 核心一：点线距离 (已优化) -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-amber-500 pb-2 mb-4">核心一：点到直线距离</h2>
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <p class="text-lg">回到直角三角形 $APG$。我们要求的是垂线 $PG$ 的长度 $d$。</p>
+                 
+                 <!-- 投影示意图 (ID: projectionCanvas-core1) -->
+                 <!-- 重新使用投影图，让学生回顾勾股定理 -->
+                <canvas id="projectionCanvas-core1" width="400" height="200" class="projection-canvas"></canvas>
+                <p class="text-sm text-gray-500 mt-0">（图示：我们要求的是 $PG$ 的长度 $d$）</p>
+
+                 <p class="text-lg mt-4">利用勾股定理：距离 $d$ 是直角三角形的另一条直角边。</p>
+                 <div class="formula-box formula-center text-2xl my-4">
+                     $d^2 = |\vec{AP}|^2 - L^2 \quad \text{(其中 } d = PG, |\vec{AP}| = AP, L = AG \text{)}$
+                 </div>
+                 <p class="text-lg">将 $L = |\vec{AP} \cdot \vec{u}|$ 代入，得：</p>
+                 <div class="formula-box formula-center text-2xl my-4 bg-amber-50 border-amber-500">
+                     $d = \sqrt{|\vec{AP}|^2 - (\vec{AP} \cdot \vec{u})^2}$
+                 </div>
+                  <p class="mt-4 text-base text-gray-600">
+                      ($\vec{AP}$ 是从线上一点A指向线外点P的向量, $\vec{u}$ 是直线的单位方向向量)
+                  </p>
+                  <p class="mt-2 text-base text-gray-600">
+                      ($|\vec{AP}|^2$ 是<span class="font-bold">斜边</span>的平方, $(\vec{AP} \cdot \vec{u})^2$ 是<span class="font-bold">投影(一个直角边)</span>的平方)
+                  </p>
+            </div>
+        </div>
+        
+        <!-- 核心一：点线距离（计算例题 - 来自稿子第4-5页） -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-amber-500 pb-2 mb-4">核心一：点到直线距离（计算例题）</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <div class="text-lg bg-amber-50 p-4 rounded-lg shadow-sm">
+                    <p class="font-semibold mb-3"><strong>例：</strong>已知点 $P(1,1,1)$,直线 $l$ 经过 $A(0,0,0)$ 和 $B(1,2,0)$。求 $P$ 到 $l$ 的距离 $d$。</p>
+                    <div class="mt-3 bg-white p-3 rounded-md border border-amber-200">
+                        <!-- 留空供学生计算 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 核心二：点面距离 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-violet-500 pb-2">核心二：点到平面距离</h2>
+                <p class="mt-4 text-lg">点到平面的距离，就是连接向量 $\vec{AP}$ 在该平面<strong>法向量 $\vec{n}$</strong> 方向上的<strong>投影长度</strong>。</p>
+                 <div class="formula-box formula-center text-2xl my-4 bg-violet-50 border-violet-500">
+                     $d = \frac{|\vec{AP} \cdot \vec{n}|}{|\vec{n}|}$
+                 </div>
+                 <p class="mt-4 text-base text-gray-600">（其中 $\vec{AP}$ 是从面内一点A指向面外点P的向量, $\vec{n}$ 是平面的法向量）</p>
+                 <p class="mt-2 text-sm text-gray-600">
+                     (这本质上就是投影长度 $L = |\vec{AP} \cdot \vec{u_n}|$ 的计算，因为 $\vec{u_n} = \frac{\vec{n}}{|\vec{n}|}$)
+                 </p>
+                 <p class="mt-4 text-xl text-red-600 font-bold">点线用“勾股”，点面用“投影”！</p>
+            </div>
+        </div>
+
+        <!-- 新增：核心二：点面距离（计算例题 - 来自稿子第6页） -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2 mb-4">核心二：点到平面距离（计算例题）</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <div class="text-lg bg-violet-50 p-4 rounded-lg shadow-sm">
+                    <p class="font-semibold mb-3"><strong>例（侮辱智商题）：</strong>已知点 $P(1,0,0)$,平面 $\alpha$ 经过点 $A(0,0,0)$,且平面的法向量 $\vec{n}=(1,1,2)$。求 $P$ 到 $\alpha$ 的距离 $d$。</p>
+                    <div class="mt-3 bg-white p-3 rounded-md border border-violet-200">
+                        <p class="font-bold text-base text-violet-700">请写出你的计算步骤和最终结果。</p>
+                        <!-- 留空供学生计算 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 其他距离转化 (已优化) -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-rose-500 pb-2">万法归宗：其他距离的转化</h2>
+            <div class="w-full max-w-4xl mx-auto text-lg space-y-4">
+                <div class="bg-rose-50 p-4 rounded-lg">
+                    <p><strong>1. 线面距离 (平行线面)：</strong><br/>
+                       转化为 $\to$ 线上<strong>任意一点</strong>到平面的距离 (即 <span class="font-bold">核心二</span>)。</p>
+                </div>
+                <div class="bg-rose-50 p-4 rounded-lg">
+                    <p><strong>2. 面面距离 (平行平面)：</strong><br/>
+                       转化为 $\to$ 一个面上<strong>任意一点</strong>到另一个平面的距离 (即 <span class="font-bold">核心二</span>)。</p>
+                </div>
+                <div class="bg-rose-50 p-4 rounded-lg">
+                    <p><strong>3. 异面直线距离 (最难)：</strong><br/>
+                       转化为 $\to$ 一条线上<strong>动点</strong>到另一条直线的<span class="font-bold">点线距离最小值</span> (即 <span class="font-bold">核心一 + 二次函数求最值</span>)。</p>
+                       <p class="mt-2 text-sm text-gray-600">（异面直线距离 = 所有“点到线距离”中的最小值，即公垂线段长）</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 随堂练习 1: 点面距离本质 (题目) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2 mb-8">随堂练习 (1/4)</h2>
+                <div class="space-y-3 text-base md:text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <p class="mb-3"><strong>1.</strong> 点 $P$ 到平面 $\alpha$ 的距离，本质上是向量 $\vec{AP}$ (A为平面上任意一点)在哪个向量上的投影长度？</p>
+                        <div class="grid grid-cols-2 gap-2 text-sm">
+                            <p>(A) 平面 $\alpha$ 内的任意向量</p>
+                            <p>(B) 平面 $\alpha$ 的法向量 $\vec{n}$</p>
+                            <p>(C) 向量 $\vec{AP}$ 自身</p>
+                            <p>(D) 零向量</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 1: 点面距离本质 (解析) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2 mb-8">随堂练习 (解析 1/4)</h2>
+                <div class="space-y-3 text-base md:text-lg">
+                    <div class="answer-box">
+                        <p class="text-xl font-bold mb-2">答案：B</p>
+                        <p><strong>解析：</strong>点到平面的距离是垂线段的长度，而法向量 $\vec{n}$ 正好是垂直于平面的向量。因此，距离是连接向量 $\vec{AP}$ 在法向量方向上的投影长度。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 练习题 2: 点线距离要求 (题目) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2 mb-8">随堂练习 (2/4)</h2>
+                <div class="space-y-3 text-base md:text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <p class="mb-3"><strong>2.</strong> 求点到直线的距离 $d=\sqrt{|\vec{AP}|^{2}-(\vec{AP}\cdot\vec{u})^{2}}$ 时， $\vec{u}$ 必须是：</p>
+                        <div class="grid grid-cols-2 gap-2 text-sm">
+                            <p>(A) 直线上的任意向量</p>
+                            <p>(B) 直线上的单位方向向量</p>
+                            <p>(C) 直线的法向量</p>
+                            <p>(D) 任意向量</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2: 点线距离要求 (解析) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2 mb-8">随堂练习 (解析 2/4)</h2>
+                <div class="space-y-3 text-base md:text-lg">
+                    <div class="answer-box">
+                        <p class="text-xl font-bold mb-2">答案：B</p>
+                        <p><strong>解析：</strong>此公式基于投影长 $L=|\vec{AP}\cdot\vec{u}|$。该投影长公式成立的前提是 $\vec{u}$ 的模长必须为1，即 $\vec{u}$ 必须是单位方向向量。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3: 异面直线 (题目) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2 mb-8">随堂练习 (3/4)</h2>
+                <div class="space-y-3 text-base md:text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <p class="mb-3"><strong>3.</strong> 计算异面直线之间的距离，可以转化为求：</p>
+                        <div class="grid grid-cols-2 gap-2 text-sm">
+                            <p>(A) 点到面的距离</p>
+                            <p>(B) 点到面的距离的最小值</p>
+                            <p>(C) 点到直线的距离</p>
+                            <p>(D) 点到直线的距离的最小值</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题 3: 异面直线 (解析) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2 mb-8">随堂练习 (解析 3/4)</h2>
+                <div class="space-y-3 text-base md:text-lg">
+                    <div class="answer-box">
+                        <p class="text-xl font-bold mb-2">答案：D</p>
+                        <p><strong>解析：</strong>异面直线距离等于一条直线上**动点**到另一条直线的距离的**最小值**，这正是“点到线距离”的最小值问题。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4: 计算题 (题目) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2 mb-8">随堂练习 (4/4)</h2>
+                <div class="space-y-3 text-base md:text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <p class="mb-3"><strong>4.</strong> (计算)已知点 $P(1,1,1)$,平面 $\alpha$ 的法向量为 $\vec{n}=(1,0,0)$,且平面 $\alpha$ 经过原点 $O(0,0,0)$。求点 $P$ 到平面 $\alpha$ 的距离 $d$。</p>
+                        <div class="grid grid-cols-4 gap-2 text-sm">
+                             <p>(A) $\sqrt{3}$</p>
+                             <p>(B) $\sqrt{2}$</p>
+                             <p>(C) 1</p>
+                             <p>(D) 0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题 4: 计算题 (解析) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2 mb-8">随堂练习 (解析 4/4)</h2>
+                <div class="space-y-3 text-base md:text-lg">
+                    <div class="answer-box">
+                        <p class="text-xl font-bold mb-2">答案：C</p>
+                        <p class="font-bold text-base text-emerald-700">解析步骤：</p>
+                        <p class="calculation-step">1. 确定连接向量 $\vec{OP}$: $\vec{OP} = (1-0, 1-0, 1-0) = (1,1,1)$。</p>
+                        <p class="calculation-step">2. 求法向量模长 $|\vec{n}|$: $|\vec{n}| = \sqrt{1^2 + 0^2 + 0^2} = 1$。</p>
+                        <p class="calculation-step">3. 求数量积 $\vec{OP} \cdot \vec{n}$: $\vec{OP} \cdot \vec{n} = (1,1,1) \cdot (1,0,0) = 1$。</p>
+                        <p class="calculation-step">4. 代入公式 $d = \frac{|\vec{OP} \cdot \vec{n}|}{|\vec{n}|}$: $d = \frac{|1|}{1} = 1$。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 总结 (来自稿子) -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">课程总结：一基两核</h2>
+            <div class="w-full max-w-4xl mx-auto space-y-4">
+                
+                <div class="bg-gray-100 p-4 rounded-lg">
+                    <h3 class="font-bold text-xl text-gray-700">一个基础：投影 (Projection)</h3>
+                    <p class="mt-2 text-lg">投影长度 $L = |\vec{AP} \cdot \vec{u}|$</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-amber-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-xl text-amber-700">核心一：点到线</h3>
+                        <p class="mt-2 text-lg">用“勾股定理”</p>
+                        <p class="text-base formula-box formula-center mt-2">$d = \sqrt{|\vec{AP}|^2 - (\vec{AP} \cdot \vec{u})^2}$</p>
+                    </div>
+                    
+                    <div class="bg-violet-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-xl text-violet-700">核心二：点到面</h3>
+                        <p class="mt-2 text-lg">用“法向投影”</p>
+                        <p class="text-base formula-box formula-center mt-2">$d = \frac{|\vec{AP} \cdot \vec{n}|}{|\vec{n}|}$</p>
+                    </div>
+                </div>
+
+                <div class="bg-rose-50 p-4 rounded-lg">
+                     <h3 class="font-bold text-xl text-rose-700">万法归宗：转化</h3>
+                     <p class="mt-2 text-lg">线面、面面 $\to$ 转化为 <span class="font-bold">核心二 (点到面)</span></p>
+                     <p class="mt-1 text-lg">异面直线 $\to$ 转化为 <span class="font-bold">核心一 (点到线)</span> 的最小值</p>
+                </div>
+                
+                <p class="text-center text-xl text-slate-700 pt-4">
+                    空间向量把复杂的<span class="font-bold">几何关系</span>，变成了纯粹的<span class="font-bold text-blue-600">坐标运算</span>！
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+        // ------------------------------------------------
+        // Canvas 绘图逻辑
+        // ------------------------------------------------
+        
+        // 辅助函数：绘制点
+        function drawPoint(ctx, x, y) {
+            ctx.beginPath();
+            ctx.arc(x, y, 4, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        // 辅助函数：绘制箭头
+        function drawArrowhead(ctx, fromX, fromY, toX, toY, size, color) {
+            const angle = Math.atan2(toY - fromY, toX - fromX);
+            const x1 = toX - size * Math.cos(angle - Math.PI / 6);
+            const y1 = toY - size * Math.sin(angle - Math.PI / 6);
+            const x2 = toX - size * Math.cos(angle + Math.PI / 6);
+            const y2 = toX - size * Math.sin(angle + Math.PI / 6);
+
+            ctx.beginPath();
+            ctx.moveTo(toX, toY);
+            ctx.lineTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.closePath();
+            ctx.fillStyle = color;
+            ctx.fill();
+        }
+
+        /**
+         * 绘制投影图和点线距离图
+         * @param {string} canvasId - 画布ID
+         * @param {boolean} highlightDistance - 是否高亮显示 PG (点线距离 d)
+         */
+        function drawProjection(canvasId, highlightDistance = false) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+
+            // 关键：将 canvas 的内部绘图尺寸设置为与外部显示尺寸一致
+            const container = canvas.parentElement;
+            const clientWidth = container.clientWidth;
+            
+            // 确保 clientWidth 有效，否则使用默认值
+            canvas.width = clientWidth > 0 ? clientWidth : 400; 
+            canvas.height = 240; // 增加高度以容纳底部文字和图形，防止遮挡
+
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const W = canvas.width;
+            const H = canvas.height;
+            const PADDING = 20;
+
+            // 定义关键点坐标
+            // 直线 l (投影基线)
+            const Ax = PADDING;
+            const Ay = H - PADDING - 20; // 稍微抬高直线，为底部文字留出更多空间
+            const Bx = W - PADDING;
+            const By = H - PADDING - 20;
+
+            // 点 P (线外点)
+            const Px = W / 2 + 50;
+            const Py = PADDING + 30;
+
+            // 垂足 G (投影点)
+            const Gx = Px;
+            const Gy = Ay;
+            
+            // 样式设置
+            ctx.font = '14px Noto Serif SC';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            // 1. 绘制直线 l
+            ctx.beginPath();
+            ctx.moveTo(Ax, Ay);
+            ctx.lineTo(Bx, By);
+            ctx.strokeStyle = '#374151'; // Slate-700
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.fillStyle = '#374151';
+            ctx.fillText('直线 l', Bx - 30, By - 10);
+
+            // 2. 绘制向量 AP (斜边)
+            ctx.beginPath();
+            ctx.moveTo(Ax, Ay);
+            ctx.lineTo(Px, Py);
+            ctx.strokeStyle = '#3b82f6'; // Blue-500
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            // 绘制箭头 (简易箭头)
+            drawArrowhead(ctx, Ax, Ay, Px, Py, 10, '#3b82f6');
+            
+            // 3. 绘制投影 AG (投影 L)
+            ctx.beginPath();
+            ctx.moveTo(Ax, Ay);
+            ctx.lineTo(Gx, Gy);
+            ctx.strokeStyle = '#10b981'; // Emerald-500
+            ctx.lineWidth = 4;
+            ctx.stroke();
+            
+            // 4. 绘制垂线 PG (距离 d)
+            ctx.beginPath();
+            ctx.moveTo(Px, Py);
+            ctx.lineTo(Gx, Gy);
+            ctx.strokeStyle = highlightDistance ? '#ef4444' : '#ef4444'; // Red-500
+            ctx.lineWidth = highlightDistance ? 3 : 1; 
+            ctx.setLineDash(highlightDistance ? [] : [4, 4]); // 高亮时实线，否则虚线
+            ctx.stroke();
+            ctx.setLineDash([]); // 恢复实线
+
+            // 绘制直角符号
+            ctx.strokeStyle = '#ef4444';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(Gx - 8, Gy - 8, 8, 8);
+
+
+            // 5. 标记点和文字
+            ctx.fillStyle = '#1e293b'; // Slate-800
+            ctx.font = 'bold 16px Noto Serif SC';
+
+            // 点 A (直线上锚点)
+            drawPoint(ctx, Ax, Ay);
+            ctx.fillText('A', Ax - 10, Ay + 20);
+
+            // 点 P (线外点)
+            drawPoint(ctx, Px, Py);
+            ctx.fillText('P', Px + 5, Py);
+
+            // 点 G (垂足)
+            drawPoint(ctx, Gx, Gy);
+            ctx.fillText('G', Gx - 5, Gy + 20);
+
+            // 标记投影长度 L
+            ctx.fillStyle = '#10b981';
+            ctx.font = '14px Noto Serif SC';
+            ctx.fillText('L', (Ax + Gx) / 2, Ay - 8);
+
+            // 标记向量 AP
+            ctx.fillStyle = '#3b82f6';
+            ctx.font = '14px Noto Serif SC';
+            ctx.fillText('vec(AP)', (Ax + Px) / 2 + 5, (Ay + Py) / 2 - 5);
+            
+            // 标记距离 d
+            if (highlightDistance) {
+                ctx.fillStyle = '#ef4444';
+                ctx.font = 'bold 16px Noto Serif SC';
+                ctx.fillText('d', Px + 15, (Py + Gy) / 2);
+            }
+        }
+        
+        // 使用 DOMContentLoaded 确保 DOM 结构和 CSS 样式已加载
+        document.addEventListener('DOMContentLoaded', function() {
+            // 基础概念图
+            drawProjection('projectionCanvas-concept', false); 
+            // 核心一：点线距离图，高亮显示距离 d
+            drawProjection('projectionCanvas-core1', true); 
+        });
+
+        // 在窗口尺寸变化时重新绘制 (使用 resize 事件)
+        window.addEventListener('resize', () => {
+             drawProjection('projectionCanvas-concept', false);
+             drawProjection('projectionCanvas-core1', true);
+        });
+    </script>
+</body>
+</html>

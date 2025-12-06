@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>氮及其重要化合物</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        
+        /* 反应示意图容器样式 */
+        .reaction-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        
+        .placeholder-box {
+            background-color: #e5e7eb;
+            border: 1px dashed #9ca3af;
+            color: #6b7280;
+            font-size: 0.9em;
+            text-align: center;
+            border-radius: 0.375rem;
+            min-height: 100px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0.5rem;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+            .placeholder-box { background-color: #e5e7eb !important; -webkit-print-color-adjust: exact; print-color-adjust: exact;}
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-sky-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                     <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
+                 </svg>
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">氮及其重要化合物</h1>
+                <p class="text-2xl text-slate-600 mt-2">—— 氮气与氮的氧化物</p>
+            </div>
+        </div>
+
+        <!-- 氮气结构与性质 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-blue-500 rounded"></span>氮气 (N₂) 的结构与性质</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-blue-800 text-xl">结构：N≡N</h3>
+                         <!-- SVG: N2 三键结构 -->
+                        <svg class="w-full h-24 mx-auto" viewBox="0 0 150 80">
+                            <circle cx="40" cy="40" r="15" fill="#3b82f6"/>
+                            <circle cx="110" cy="40" r="15" fill="#3b82f6"/>
+                            <!-- 三键 -->
+                            <line x1="55" y1="30" x2="95" y2="30" stroke="#1d4ed8" stroke-width="3"/>
+                            <line x1="55" y1="40" x2="95" y2="40" stroke="#1d4ed8" stroke-width="3"/>
+                            <line x1="55" y1="50" x2="95" y2="50" stroke="#1d4ed8" stroke-width="3"/>
+                            <text x="40" y="45" fill="white" font-weight="bold" font-size="12">N</text>
+                            <text x="110" y="45" fill="white" font-weight="bold" font-size="12">N</text>
+                        </svg>
+                        <p class="mt-3 text-slate-600">两个氮原子间以<strong class="text-red-600">共价三键 (N≡N)</strong> 结合。</p>
+                        <p class="mt-2 text-slate-600">键能<strong class="text-red-600">极大</strong>，不易断裂。</p>
+                    </div>
+                    <div class="bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-gray-800 text-xl">物理性质与稳定性</h3>
+                         <ul class="list-disc list-inside mt-3 text-slate-600 space-y-2 text-center md:text-left">
+                            <li>无色无味、难溶于水的气体。</li>
+                            <li>密度与空气接近，略小。</li>
+                         </ul>
+                         <!-- Removed SVG Icon here -->
+                         <p class="mt-6 text-slate-600 text-center">由于 N≡N 键稳定，通常条件下化学性质<strong class="text-red-600">不活泼</strong>。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 氮气化学性质 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>氮气的化学反应 (特定条件下)</h2>
+                 <p class="mt-8 text-xl text-slate-700">在高温、放电等条件下，氮气可以参与反应。</p>
+                 <div class="mt-6 space-y-4">
+                     <div class="bg-cyan-50 border border-cyan-200 p-4 rounded-lg">
+                         <h3 class="font-bold text-cyan-800 text-lg">与氧气反应 (固氮)</h3>
+                         <p class="mono text-center mt-2">N₂ + O₂ <span class="text-slate-500">(放电/高温)</span> ⇌ 2NO</p>
+                         <p class="text-slate-600 text-sm mt-1">自然界中<strong class="text-red-600">闪电</strong>可引发此反应。</p>
+                     </div>
+                    <div class="bg-cyan-50 border border-cyan-200 p-4 rounded-lg">
+                         <h3 class="font-bold text-cyan-800 text-lg">与活泼金属反应 (氧化性)</h3>
+                         <p class="mono text-center mt-2">N₂ + 3Mg <span class="text-slate-500">(点燃)</span> → Mg₃N₂ (氮化镁)</p>
+                         <p class="text-slate-600 text-sm mt-1">N₂在此反应中体现<strong class="text-red-600">氧化性</strong>，氮元素价态由 0 降为 -3。</p>
+                     </div>
+                      <div class="bg-cyan-50 border border-cyan-200 p-4 rounded-lg">
+                         <h3 class="font-bold text-cyan-800 text-lg">与氢气反应 (工业合成氨)</h3>
+                         <p class="mono text-center mt-2">N₂ + 3H₂ ⇌ 2NH₃</p>
+                         <p class="text-slate-600 text-sm mt-1">条件：<strong class="text-red-600">高温、高压、催化剂</strong>。反应<strong class="text-red-600">可逆</strong>。</p>
+                     </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 工业合成氨 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>工业合成氨 (哈伯法)</h2>
+                 <p class="mt-8 text-xl text-slate-700">哈伯法实现了氨的工业化大规模生产，是<strong class="text-green-600">20世纪最重要的化学发明之一</strong>。</p>
+                 <div class="mt-6 bg-green-50 border border-green-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-green-800 text-xl">核心反应与流程</h3>
+                    <p class="mono text-center mt-3 bg-green-100 p-3 rounded text-sm md:text-base">N₂ + 3H₂ <span class="text-slate-500">(高温,高压,催化剂)</span> ⇌ 2NH₃</p>
+                     <!-- SVG: 工业合成氨示意图 -->
+                    <div class="reaction-diagram mt-4">
+                        <svg class="w-full h-32" viewBox="0 0 300 100">
+                            <!-- 反应物输入 -->
+                            <rect x="10" y="30" width="40" height="40" rx="5" fill="#f0fdf4" stroke="#4ade80"/>
+                            <text x="30" y="55" font-size="12" text-anchor="middle">N₂ + H₂</text>
+                            <!-- 压缩/混合 -->
+                            <path d="M50 50 L90 50" stroke="#34d399" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+                            <text x="70" y="45" font-size="10" fill="#16a34a" text-anchor="middle">压缩</text>
+                            <!-- 反应器 -->
+                            <rect x="90" y="10" width="120" height="80" rx="10" fill="#d1fae5" stroke="#10b981"/>
+                            <text x="150" y="50" font-size="12" fill="#047857" text-anchor="middle">高温/高压/催化</text>
+                            <text x="150" y="70" font-size="10" fill="#047857" text-anchor="middle">反应器</text>
+                            <!-- 产物输出 -->
+                            <path d="M210 50 L250 50" stroke="#34d399" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+                            <text x="230" y="45" font-size="10" fill="#16a34a" text-anchor="middle">产物</text>
+                             <!-- 氨分离 -->
+                            <rect x="250" y="30" width="40" height="40" rx="5" fill="#bae6fd" stroke="#0ea5e9"/>
+                            <text x="270" y="55" font-size="12" text-anchor="middle">NH₃</text>
+                            <defs><marker id="arrowhead-green" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0, 6 2, 0 4" fill="#34d399"/></marker></defs>
+                        </svg>
+                    </div>
+                 </div>
+                 <div class="mt-4 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <h3 class="font-semibold text-gray-700">重大意义</h3>
+                    <p class="mt-2 text-slate-600 text-sm">解决了<strong class="text-red-600">氮肥</strong>大规模生产问题，极大提高了粮食产量，使人类免受饥荒之苦。</p>
+                    <p class="mt-1 text-slate-600 text-sm">常见氮肥：铵态氮肥(NH₄⁺)、硝态氮肥(NO₃⁻)、尿素[CO(NH₂)₂]。</p>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 氮的固定 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>氮的固定：游离态 → 化合态</h2>
+                 <p class="mt-8 text-xl text-slate-700">将大气中<strong class="text-sky-600">游离态</strong>的氮转化为<strong class="text-sky-600">含氮化合物</strong>的过程。</p>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-sky-50 border border-sky-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-sky-800 text-xl">自然固氮</h3>
+                        <ul class="list-disc list-inside text-left mt-3 text-slate-600 space-y-2">
+                            <li><strong>高能固氮：</strong>闪电使N₂和O₂反应生成NO。</li>
+                            <li><strong>生物固氮：</strong>根瘤菌等微生物将N₂转化为NH₃。</li>
+                        </ul>
+                         <!-- SVG: 闪电和根瘤 -->
+                        <svg class="w-full h-24 mx-auto mt-4" viewBox="0 0 200 100">
+                             <g transform="translate(40, 50)">
+                                <path d="M0 0 L15 30 L5 30 L20 60 L-10 30 L0 30 Z" fill="#fbbf24"/>
+                                <text x="10" y="-10" font-size="10" fill="#92400e">高能固氮</text>
+                            </g>
+                             <g transform="translate(130, 50)">
+                                <circle cx="0" cy="0" r="10" fill="#a7f3d0"/>
+                                <rect x="-30" y="5" width="60" height="30" rx="5" fill="#fef08a"/>
+                                <text x="0" y="25" font-size="10" fill="#065f46" text-anchor="middle">根瘤菌</text>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-green-800 text-xl">人工固氮</h3>
+                         <p class="mt-3 text-slate-600">主要指<strong class="text-red-600">工业合成氨</strong>。</p>
+                         <!-- SVG: 工厂/反应釜 -->
+                         <svg class="w-full h-24 mx-auto mt-4" viewBox="0 0 150 100">
+                            <rect x="30" y="20" width="90" height="60" rx="8" fill="#d1fae5"/>
+                            <rect x="65" y="0" width="20" height="20" fill="#34d399"/>
+                            <rect x="65" y="80" width="20" height="20" fill="#34d399"/>
+                            <text x="75" y="50" font-size="12" fill="#047857" font-weight="bold">合成氨</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 氮循环 Part 1 (索引 5 - 原第6页前半) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-lime-500 rounded"></span>氮元素的循环 (一)</h2>
+                  <p class="mt-8 text-xl text-slate-700">氮元素在自然界中不断转化，维持生态平衡。</p>
+                  <div class="mt-8 bg-lime-50 border border-lime-200 p-6 rounded-lg text-lg space-y-4">
+                    <h3 class="font-bold text-lime-800 text-xl">1. 氮的固定 (N₂ → 含氮化合物)</h3>
+                    <p class="ml-4 text-slate-700">通过人工固氮（合成氨）或自然固氮（闪电、生物固氮）实现：</p>
+                    <p class="mono text-center bg-lime-100 p-2 rounded text-base">N₂ + 3H₂ ⇌ 2NH₃ (人工固氮)</p>
+                    <p class="mono text-center bg-lime-100 p-2 rounded text-base">N₂ + O₂ ⇌ 2NO (高能固氮)</p>
+                    
+                    <h3 class="font-bold text-lime-800 text-xl pt-4">2. 硝化作用 (NH₃ → 硝酸盐)</h3>
+                    <p class="ml-4 text-slate-700">微生物将氨或铵盐氧化成硝酸盐：</p>
+                    <p class="mono text-center bg-lime-100 p-2 rounded text-base">NH₃ → NO₂⁻ → NO₃⁻</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 氮循环 Part 2 (索引 6 - 原第6页后半) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-lime-500 rounded"></span>氮元素的循环 (二)</h2>
+                  <p class="mt-8 text-xl text-slate-700">（接上页）氮元素在生物和环境中的其他主要转化路径：</p>
+                  <div class="mt-8 bg-lime-50 border border-lime-200 p-6 rounded-lg text-lg space-y-4">
+                    <h3 class="font-bold text-lime-800 text-xl">3. 生物同化作用 (无机氮 → 有机氮)</h3>
+                    <p class="ml-4 text-slate-700">植物吸收铵盐或硝酸盐，合成蛋白质等有机氮化合物。</p>
+                    <p class="mono text-center bg-lime-100 p-2 rounded text-base">NH₄⁺/NO₃⁻ <span class="text-slate-500">(植物吸收)</span> → 有机氮 (蛋白质)</p>
+                    
+                    <h3 class="font-bold text-lime-800 text-xl pt-4">4. 分解作用 (有机氮 → NH₃)</h3>
+                    <p class="ml-4 text-slate-700">动植物残体和排泄物被微生物分解，将有机氮转化为氨或铵盐。</p>
+
+                    <h3 class="font-bold text-lime-800 text-xl pt-4">5. 反硝化作用 (硝酸盐 → N₂)</h3>
+                    <p class="ml-4 text-slate-700">微生物在缺氧条件下将硝酸盐还原成氮气，回到大气：</p>
+                    <p class="mono text-center bg-lime-100 p-2 rounded text-base">NO₃⁻ → N₂</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- NO 和 NO2 性质 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-red-500 rounded"></span>氮的氧化物：NO 和 NO₂</h2>
+                <p class="mt-8 text-xl text-slate-700">NO（+2价）和NO₂（+4价）都是含氮化合物，化学性质差异巨大。</p>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-gray-800 text-xl">一氧化氮 (NO)</h3>
+                        <ul class="list-disc list-inside mt-3 text-slate-600 space-y-2">
+                            <li><strong class="text-red-600">无色</strong>、有毒气体</li>
+                            <li><strong class="text-red-600">不溶</strong>于水</li>
+                            <li>空气中<strong class="text-red-600">不稳定</strong>，易被O₂氧化 (<strong class="text-red-600">生成NO₂</strong>)</li>
+                        </ul>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-red-800 text-xl">二氧化氮 (NO₂)</h3>
+                         <ul class="list-disc list-inside mt-3 text-slate-600 space-y-2">
+                            <li><strong class="text-red-600">红棕色</strong>、有毒气体</li>
+                            <li><strong class="text-red-600">易溶</strong>于水，并与水反应</li>
+                             <li>易<strong class="text-red-600">双聚</strong>生成 N₂O₄ (无色)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- NO 和 NO2 转化 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-red-500 rounded"></span>NO 和 NO₂ 的相互转化</h2>
+                 <div class="mt-8 space-y-6">
+                     <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                         <h3 class="font-bold text-blue-800 text-xl">NO → NO₂：空气中的氧化</h3>
+                         <div class="reaction-diagram mt-3">
+                            <span class="text-2xl font-bold text-gray-600">2NO</span>
+                            <span class="text-2xl font-bold">+</span>
+                            <span class="text-2xl font-bold text-green-600">O₂</span>
+                            <span class="text-2xl font-bold">→</span>
+                            <span class="text-2xl font-bold text-red-600">2NO₂</span>
+                        </div>
+                         <p class="mono text-center mt-2 bg-blue-100 p-3 rounded">2NO (无色) + O₂ → 2NO₂ (红棕色)</p>
+                     </div>
+                      <div class="bg-green-50 border border-green-200 p-6 rounded-lg">
+                         <h3 class="font-bold text-green-800 text-xl">NO₂ → HNO₃ + NO：与水反应</h3>
+                         <div class="reaction-diagram mt-3">
+                            <span class="text-2xl font-bold text-red-600">3NO₂</span>
+                            <span class="text-2xl font-bold">+</span>
+                            <span class="text-2xl font-bold text-cyan-500">H₂O</span>
+                            <span class="text-2xl font-bold">→</span>
+                            <span class="text-2xl font-bold text-green-600">2HNO₃ + NO</span>
+                        </div>
+                         <p class="mono text-center mt-2 bg-green-100 p-3 rounded text-sm md:text-base">3NO₂ + H₂O → 2HNO₃ + NO</p>
+                         <p class="mt-2 text-slate-600">这是一个<strong class="text-red-600">歧化反应</strong> (+4价N → +5价和+2价)。</p>
+                     </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- NO 和 NO2 制备与收集 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>NO 和 NO₂ 的实验室制备与收集</h2>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-purple-50 border border-purple-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-purple-800 text-xl">NO 的制备与收集</h3>
+                        <p class="mt-3 text-slate-600">反应：Cu + 稀 HNO₃</p>
+                        <!-- 公式放大并居中 -->
+                        <p class="mono text-center text-lg md:text-xl font-bold bg-purple-100 p-3 rounded mt-2">3Cu + 8HNO₃(稀) → 3Cu(NO₃)₂ + 2NO↑ + 4H₂O</p>
+                        <p class="mt-3 text-slate-600">收集：<strong class="text-red-600">排水法</strong> (NO不溶于水，且会与空气反应)</p>
+                    </div>
+                    <div class="bg-orange-50 border border-orange-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-orange-800 text-xl">NO₂ 的制备与收集</h3>
+                         <p class="mt-3 text-slate-600">反应：Cu + 浓 HNO₃</p>
+                         <!-- 公式放大并居中 -->
+                         <p class="mono text-center text-lg md:text-xl font-bold bg-orange-100 p-3 rounded mt-2">Cu + 4HNO₃(浓) → Cu(NO₃)₂ + 2NO₂↑ + 2H₂O</p>
+                         <p class="mt-3 text-slate-600">收集：<strong class="text-red-600">向上排空气法</strong> (NO₂密度比空气大，且与水反应)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 尾气处理 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-yellow-500 rounded"></span>氮氧化物的尾气处理</h2>
+                 <p class="mt-8 text-xl text-slate-700">NO 和 NO₂ 都是有毒气体，需用碱液吸收处理。</p>
+                 <div class="mt-6 space-y-4">
+                     <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
+                         <h3 class="font-bold text-yellow-800 text-lg">吸收 NO₂</h3>
+                         <p class="mono text-center text-sm md:text-base mt-2">2NO₂ + 2NaOH → NaNO₃ + NaNO₂ + H₂O</p>
+                         <p class="text-slate-600 text-sm mt-1">NO₂是酸性氧化物，但有歧化反应。</p>
+                     </div>
+                    <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
+                         <h3 class="font-bold text-yellow-800 text-lg">吸收 NO (需通入O₂)</h3>
+                         <p class="text-slate-600 text-sm mt-1">先将NO氧化为NO₂，再用碱液吸收，总反应式（按比例）为：</p>
+                         <p class="mono text-center text-sm md:text-base mt-2">4NO + 3O₂ + 4NaOH → 4NaNO₃ + 2H₂O</p>
+                     </div>
+                      <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
+                         <h3 class="font-bold text-yellow-800 text-lg">汽车尾气净化 (三效催化剂)</h3>
+                         <p class="mono text-center text-sm md:text-base mt-2">2NO + 2CO <span class="text-slate-500">(催化剂)</span> → N₂ + 2CO₂</p>
+                         <p class="text-slate-600 text-sm mt-1">将有毒气体转化为无害的 N₂ 和 CO₂。</p>
+                     </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 环境问题 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-red-600 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-red-600 rounded"></span>氮化合物与环境问题</h2>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-lg">
+                    <div class="bg-red-50 p-4 rounded-lg text-center">
+                        <h3 class="font-bold text-red-800 text-xl">酸雨</h3>
+                        <!-- 增大文字字号 -->
+                        <p class="mt-4 text-slate-600 text-lg">NOₓ 溶于水，生成 HNO₃。</p>
+                    </div>
+                     <div class="bg-orange-50 p-4 rounded-lg text-center">
+                        <h3 class="font-bold text-orange-800 text-xl">光化学烟雾</h3>
+                         <!-- 增大文字字号 -->
+                        <p class="mt-4 text-slate-600 text-lg">NOₓ + 碳氢化合物在阳光下反应。</p>
+                    </div>
+                     <div class="bg-cyan-50 p-4 rounded-lg text-center">
+                        <h3 class="font-bold text-cyan-800 text-xl">水体富营养化</h3>
+                         <!-- 增大文字字号 -->
+                        <p class="mt-4 text-slate-600 text-lg">过量 N, P 导致藻类疯长。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 例题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (一)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列关于氮气的说法，错误的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 分子内存在共价三键</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 化学性质非常活泼，易与其他物质反应</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 在放电条件下能与氧气反应生成NO</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 是工业合成氨的重要原料</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (一)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>氮气分子中存在非常稳定的共价三键 (N≡N)，键能很大，难以断裂。因此，通常条件下氮气的化学性质<strong class="text-green-700">不活泼</strong>，需要高温、高压或放电等条件才能发生反应。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (二)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列关于NO和NO₂的说法，正确的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> NO是红棕色气体，NO₂是无色气体</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 两者都能与水反应生成硝酸</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> NO能用排水法收集，NO₂不能</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 两者都是酸性氧化物</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (二)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>A. NO是无色气体，NO₂是红棕色气体。<br>B. 只有NO₂能与水反应生成硝酸和NO (<code>3NO₂ + H₂O → 2HNO₃ + NO</code>)。NO不与水反应。<br>C. NO不溶于水且不与水反应，可用排水法收集。NO₂与水反应，不能用排水法收集，<strong class="text-green-700">正确</strong>。<br>D. NO和NO₂都不是酸性氧化物 (不能直接与碱反应只生成对应的盐和水)。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (三)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列不属于“氮的固定”的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 闪电使N₂转化为NO</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 工业合成氨</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 豆科植物根瘤菌将N₂转化为NH₃</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> NO转化为NO₂</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (三)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>氮的固定是指将大气中<strong class="text-green-700">游离态的氮 (N₂)</strong> 转化为<strong class="text-green-700">含氮化合物</strong>的过程。A, B, C都符合此定义。D是含氮化合物之间的转化，不属于氮的固定。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (四)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>实验室制备NO₂气体时，常用的尾气吸收液是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 浓硫酸</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 氢氧化钠溶液</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 饱和食盐水</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 水</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1-4 h-1 bg-green-500 rounded"></span>练习 (四)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>NO₂是有毒气体，不能直接排放。它能与碱液反应生成盐和水 (<code>2NO₂ + 2NaOH → NaNO₃ + NaNO₂ + H₂O</code>)，因此常用<strong class="text-green-700">氢氧化钠溶液</strong>吸收尾气。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (五)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列环境问题与氮氧化物(NOₓ)无关的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 酸雨</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 光化学烟雾</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 臭氧层破坏</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 水体富营养化</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (五)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>氮氧化物是形成<strong class="text-green-700">酸雨</strong>（生成硝酸）和<strong class="text-green-700">光化学烟雾</strong>的主要原因之一。含氮化合物（如化肥流失）是导致<strong class="text-green-700">水体富营养化</strong>的重要因素。<strong class="text-green-700">臭氧层破坏</strong>主要是由氟氯烃（如氟利昂）等物质引起的。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看！下节课学习氨和硝酸。</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

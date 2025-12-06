@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>解三角形核心定理 (优化版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- 引入 MathJax 用于渲染数学公式 -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 2.5rem 2rem;
+            position: relative; 
+            min-height: 550px; /* 保证每页有足够的高度 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        /* 优化公式和代码框样式 */
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border-radius: 0.25rem;
+            font-size: 1.25rem; /* 增大公式字体 */
+            line-height: 2;
+            overflow-x: auto;
+            text-align: center;
+        }
+
+        /* 示例框样式 */
+        .example-box {
+             background-color: #f0f9ff;
+             border-left: 4px solid #0ea5e9;
+             padding: 1rem;
+             margin-top: 1rem;
+             border-radius: 0.25rem;
+        }
+        
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 标题与开场白 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-6">解三角形核心定理</h1>
+                <p class="text-2xl text-slate-600">你的终极工具箱</p>
+            </div>
+            <div class="mt-8 text-left max-w-3xl mx-auto text-lg space-y-4">
+                <p>想象一下，你在玩一个开放世界游戏，想知道你离远处那座雪山到底有多远。游戏地图没给，但你能测出一些角度和距离...</p>
+                <p class="font-bold text-cyan-700 text-center text-xl p-4 bg-cyan-50 rounded-lg">就靠这点信息，你能精确算出你和雪山的距离吗？答案是，<strong>绝对可以</strong>！</p>
+                <p>这就是‘解三角形’的魔力。今天，我们就来把这个工具箱里的两个最牛的工具——<strong>余弦定理</strong>和<strong>正弦定理</strong>——彻底搞明白！</p>
+            </div>
+        </div>
+
+        <!-- 余弦定理 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-4">余弦定理：力量型选手</h2>
+                <p class="text-lg text-center text-slate-700"><strong>主场：</strong> 专治“边”信息多的情况。</p>
+                <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+                    <div class="bg-gray-100 p-4 rounded-lg"><h3 class="font-bold text-xl">SSS (已知三边) → 求角</h3></div>
+                    <div class="bg-gray-100 p-4 rounded-lg"><h3 class="font-bold text-xl">SAS (两边夹一角) → 求对边</h3></div>
+                </div>
+                <div class="formula-box">
+                    求边: \(c^2 = a^2 + b^2 - 2ab \cos C\) <br>
+                    求角: \(\cos C = \frac{a^2 + b^2 - c^2}{2ab}\)
+                </div>
+            </div>
+        </div>
+        
+        <!-- 余弦定理典例 (SSS -> 角) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-4">余弦定理：典例精讲 (SSS → 角)</h2>
+                <div class="example-box">
+                    <p class="font-bold">例1 (SSS → 角): 假设一个三角形，三条边分别是 \( a=5, b=7, c=8 \)。我们想知道最大的角是哪个角，它到底是多少度？</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 余弦定理典例 (SAS -> 边) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-4">余弦定理：典例精讲 (SAS → 边)</h2>
+                <div class="example-box">
+                    <p class="font-bold">例2 (SAS → 边): 现在换个场景。我们知道一个三角形里，边 \(a=3\), 边 \(b=5\), 它们俩的夹角 \(C = 120^\circ\)。求对边 \(c\) 的长度。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 正弦定理 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2 mb-4">正弦定理：技巧型选手</h2>
+                <p class="text-lg text-center text-slate-700"><strong>主场：</strong> 处理成对的“边和角”信息。</p>
+                <div class="mt-4 text-xl bg-emerald-50 p-4 rounded-lg font-bold text-emerald-800 text-center">
+                    只要有一组成对的 (边, 对角)，就能发挥威力！
+                </div>
+                <div class="formula-box text-2xl my-4">
+                    \( \frac{a}{\sin A} = \frac{b}{\sin B} = \frac{c}{\sin C} \)
+                </div>
+            </div>
+        </div>
+        
+        <!-- 正弦定理典例 (AAS -> 边) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2 mb-4">正弦定理：典例精讲 (AAS → 边)</h2>
+                <div class="example-box">
+                    <p class="font-bold">例3 (AAS → 边): 假设在一个寻宝游戏里，你在A点，知道宝藏在C点。你测出角 \(A\) 是 \(45^\circ\)，角 \(B\) 是 \(60^\circ\)，你还知道从A点到B点的距离是10米 (也就是边 \(c=10\))。问你离宝藏C点有多远？（也就是求边 \(b\)）</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 终极策略 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2">终极策略</h2>
+                <div class="mt-4 text-lg bg-violet-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-xl mb-2 text-center">决策流程</h3>
+                    <ol class="list-decimal list-inside space-y-2">
+                        <li>审题，看已知条件是 <strong>SSS</strong> 或 <strong>SAS</strong> 吗？ → 是，则用<strong>余弦定理</strong>。</li>
+                        <li>再看，有没有“<strong>成对的边和角</strong>”？ → 有，则用<strong>正弦定理</strong>。</li>
+                    </ol>
+                </div>
+             </div>
+        </div>
+
+        <!-- 综合应用演练 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-rose-500 pb-2 mb-4">综合应用演练</h2>
+                 <div class="example-box text-base">
+                     <p class="font-bold">在△ABC中，已知角 \(A=60^\circ\)，边 \(a=7\)，边 \(b=5\)。求这个三角形的面积。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 面积新公式 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2">面积新公式</h2>
+                <div class="mt-6">
+                    <h3 class="font-bold text-2xl">面积新武器</h3>
+                    <div class="formula-box text-2xl my-2">
+                        \( S = \frac{1}{2}ab\sin C \)
+                    </div>
+                    <p class="text-lg">口诀：二分之一两邻边，再乘夹角正弦值。</p>
+                </div>
+             </div>
+        </div>
+
+        <!-- 随堂练习 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (1)</h2>
+                <div class="space-y-4 text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg"><strong>1.</strong> 在△ABC中, \(a=2, b=3, c=4\), 则 \(\cos C\) 的值为？<br/>(A) \( \frac{1}{4} \) (B) \( -\frac{1}{4} \) (C) \( \frac{1}{2} \) (D) \( -\frac{1}{2} \)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (2)</h2>
+                <div class="space-y-4 text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg"><strong>2.</strong> 在△ABC中, \(A=30^\circ, B=45^\circ, a=10\), 则边 \(b\) 的长度为？<br/>(A) \( 10\sqrt{2} \) (B) \( 5\sqrt{2} \) (C) \( 10 \) (D) \( 20 \)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (3)</h2>
+                <div class="space-y-4 text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg"><strong>3.</strong> 在△ABC中, \(a=4, c=6, B=150^\circ\), 则△ABC的面积为？<br/>(A) \( 12 \) (B) \( 6\sqrt{3} \) (C) \( 6 \) (D) \( 12\sqrt{3} \)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (4)</h2>
+                <div class="space-y-4 text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg"><strong>4.</strong> 当已知一个三角形的两条边和它们的夹角，求解第三条边时，最优选的方法是？<br/>(A) 正弦定理 (B) 余弦定理 (C) 面积公式 (D) 勾股定理</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析</h2>
+                <div class="space-y-3 text-base">
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>1. 答案：B</strong></p>
+                        <p><strong>解析：</strong>已知三边(SSS)求角，用余弦定理。 \(\cos C = \frac{a^2+b^2-c^2}{2ab} = \frac{2^2+3^2-4^2}{2 \cdot 2 \cdot 3} = \frac{-3}{12} = -\frac{1}{4}\)。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>2. 答案：A</strong></p>
+                        <p><strong>解析：</strong>已知两角一边(AAS)，且有成对的(\(a,A\))，用正弦定理。 \(\frac{a}{\sin A}=\frac{b}{\sin B} \implies \frac{10}{\sin 30^\circ}=\frac{b}{\sin 45^\circ} \implies b=10\sqrt{2}\)。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>3. 答案：C</strong></p>
+                        <p><strong>解析：</strong>已知两边夹一角(SAS)求面积，用面积公式。 \(S=\frac{1}{2}ac \sin B = \frac{1}{2} \cdot 4 \cdot 6 \cdot \sin 150^\circ = 12 \cdot \frac{1}{2} = 6\)。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>4. 答案：B</strong></p>
+                        <p><strong>解析：</strong>这是对定理应用场景的理解。已知两边及其夹角（SAS），求解第三条边，是余弦定理最经典的应用场景。正弦定理适用于处理对边对角的关系，面积公式用于求面积，而勾股定理只适用于直角三角形。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 总结与展望 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8">总结与展望</h2>
+                <div class="text-left text-xl space-y-4 max-w-2xl mx-auto">
+                     <ol class="list-decimal list-inside bg-sky-50 p-6 rounded-lg">
+                        <li><strong>余弦定理：</strong> 力量型选手，专治<strong>三边</strong>或<strong>两边夹一角</strong>。</li>
+                        <li><strong>正弦定理：</strong> 技巧型选手，专治有<strong>对边对角</strong>的情况。</li>
+                        <li><strong>面积公式：</strong> 求面积的快捷方式，需要<strong>两边一夹角</strong>。</li>
+                        <li class="font-bold"><strong>决策心法：</strong> 先看边多不多，再找对子，就能选对工具！</li>
+                    </ol>
+                </div>
+                <p class="mt-8 text-xl text-slate-600">把这个决策流程变成你自己的本能，解三角形就会变得非常简单！</p>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+

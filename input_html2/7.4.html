@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>空间向量求角度 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Base Styles --- */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f8fafc; /* Lighter slate background */
+        }
+        
+        /* --- Presentation Container --- */
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.75rem; /* Larger radius */
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            overflow: hidden; /* Ensures content respects border radius */
+        }
+
+        /* --- Section Styling --- */
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2rem; /* Increased padding */
+            position: relative; 
+            min-height: 480px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center; /* Center content by default */
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e2e8f0; /* Lighter border */
+        }
+        
+        /* --- Formula Box --- */
+        .formula-box {
+            background-color: #f1f5f9;
+            border-left: 4px solid #3b82f6;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border-radius: 0.5rem;
+            font-size: 1.25rem;
+            line-height: 1.8;
+            overflow-x: auto;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .formula-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px -2px rgb(0 0 0 / 0.1);
+        }
+
+        /* --- Print Styles --- */
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+                border-radius: 0;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+
+            .print-hidden {
+                display: none;
+            }
+        }
+
+        /* --- Animation --- */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* For Practice Section */
+        details > summary {
+            cursor: pointer;
+            list-style: none;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+    </style>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                macros: {
+                    vec: ['\\overrightarrow{#1}', 1]
+                }
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+</head>
+<body class="bg-slate-50">
+
+    <header class="py-4 px-6 bg-white/80 backdrop-blur-sm sticky top-0 z-10 border-b border-slate-200 print-hidden">
+        <div class="max-w-5xl mx-auto flex justify-between items-center">
+            <h1 class="text-lg font-semibold text-slate-800">空间向量求角度</h1>
+            <button onclick="window.print()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-300 shadow-md hover:shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v6a2 2 0 002 2h12a2 2 0 002 2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7V9h6v3z" clip-rule="evenodd" />
+                </svg>
+                打印页面
+            </button>
+        </div>
+    </header>
+
+    <main id="presentation-container">
+        
+        <!-- 标题页 -->
+        <div class="section min-h-screen bg-slate-50">
+            <div class="w-full max-w-4xl mx-auto text-center fade-in-up">
+                <div class="mb-8">
+                    <svg class="w-28 h-28 text-cyan-500 mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="12" x2="22" y2="12"></line> <!-- x -->
+                        <line x1="12" y1="12" x2="12" y2="2"></line>  <!-- y -->
+                        <line x1="12" y1="12" x2="4" y2="20"></line>  <!-- z -->
+                        <path d="M22 12l-3 -3m3 3l-3 3"></path>
+                        <path d="M12 2l-3 3m3-3l3 3"></path>
+                        <path d="M4 20l3 -3m-2.5 3.5L5 21"></path>
+                        <text x="22.5" y="11.5" font-size="2" fill="currentColor">x</text>
+                        <text x="12.5" y="2" font-size="2" fill="currentColor">y</text>
+                        <text x="3" y="19" font-size="2" fill="currentColor">z</text>
+                    </svg>
+                </div>
+                <h1 class="text-5xl md:text-6xl font-bold text-slate-800 mb-4 tracking-wide">空间向量求角度</h1>
+                <p class="text-2xl text-slate-600 mt-4">拆解“公式迷魂阵”</p>
+                <p class="mt-8 text-xl text-cyan-600 font-semibold tracking-wider">"一个武器，搞定三“角”演义"</p>
+            </div>
+        </div>
+
+        <!-- 唯一武器 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center fade-in-up">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-8">破冰：我们的“唯一武器”</h2>
+                <p class="text-lg leading-relaxed">我们用 <strong>方向向量 $\vec{v}$</strong> 表示“一条线”，用 <strong>法向量 $\vec{n}$</strong> 表示“一个面”。</p>
+                <p class="text-lg mt-2 leading-relaxed">而我们唯一能直接计算的角度关系，就是两个向量夹角 $\theta$ 的余弦值：</p>
+                <div class="formula-box text-xl my-6">
+                    $\cos \theta = \frac{\vec{a} \cdot \vec{b}}{|\vec{a}| |\vec{b}|} = \frac{x_1 x_2 + y_1 y_2 + z_1 z_2}{\sqrt{x_1^2+y_1^2+z_1^2} \sqrt{x_2^2+y_2^2+z_2^2}}$
+                </div>
+                <p class="mt-4 text-lg bg-yellow-50 border border-yellow-200 p-4 rounded-lg">我们的任务：将几何角 $\alpha$ (线线/线面/二面角) 与我们算出的向量角 $\theta$ 建立联系。</p>
+            </div>
+        </div>
+
+        <!-- 案例实战 -->
+        <div class="section bg-slate-50">
+            <div class="w-full max-w-4xl mx-auto fade-in-up">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-8">案例实战：搭建“演义舞台”</h2>
+                
+                <!-- SVG "B-in-Front" Image -->
+                <div class="w-full flex justify-center my-6">
+                    <svg class="w-64 h-64 text-gray-700" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <title>四棱锥 P-ABCD 草图 (右转45度 - 旋转后)</title>
+                        
+                        <!-- 底面 ABCD -->
+                        <polygon points="50,74 8,74 8,60 50,60" fill="currentColor" opacity="0.05" />
+                        <!-- B-A -->
+                        <line x1="8" y1="74" x2="50" y2="74" stroke="currentColor" stroke-width="1.5"/>
+                        <!-- B-C -->
+                        <line x1="8" y1="74" x2="8" y2="60" stroke="currentColor" stroke-width="1.5"/>
+                        <!-- A-D -->
+                        <line x1="50" y1="74" x2="50" y2="60" stroke="currentColor" stroke-width="1.5"/>
+                        <!-- C-D -->
+                        <line x1="8" y1="60" x2="50" y2="60" stroke="currentColor" stroke-width="1" stroke-dasharray="3" opacity="0.7"/>
+                
+                        <!-- 顶点 P -->
+                        <circle cx="29" cy="17" r="1.5" fill="currentColor" />
+                        <text x="27" y="15" font-size="5" fill="currentColor" font-family="serif" class="font-semibold">P</text>
+                
+                        <!-- 侧棱 -->
+                        <line x1="29" y1="17" x2="8" y2="74" stroke="currentColor" stroke-width="1.5"/> <!-- P-C (was P-B) -->
+                        <line x1="29" y1="17" x2="50" y2="74" stroke="currentColor" stroke-width="1.5"/> <!-- P-B (was P-A) -->
+                        <line x1="29" y1="17" x2="8" y2="60" stroke="currentColor" stroke-width="1.5"/> <!-- P-D (was P-C) -->
+                        <line x1="29" y1="17" x2="50" y2="60" stroke="currentColor" stroke-width="1.5"/> <!-- P-A (was P-D) -->
+                
+                        <!-- 顶点标签 -->
+                        <text x="6" y="79" font-size="5" fill="currentColor" font-family="serif">C</text>
+                        <text x="52" y="79" font-size="5" fill="currentColor" font-family="serif">B</text>
+                        <text x="6" y="58" font-size="5" fill="currentColor" font-family="serif">D</text>
+                        <text x="52" y="58" font-size="5" fill="currentColor" font-family="serif">A</text>
+                    </svg>
+                </div>
+                
+                <div class="text-lg leading-relaxed space-y-4 prose max-w-none">
+                    <p>为了让概念更清晰，我们搭建一个具体的场景：一个四棱锥 <strong>P-ABCD</strong>。</p>
+                    <ul>
+                        <li>底面 $ABCD$ 是一个边长为2的正方形，位于 $xy$ 平面上。</li>
+                        <li>$A$ 点在原点 $(0,0,0)$。</li>
+                        <li>$B$ 点在 $x$ 轴上 $(2,0,0)$，$D$ 点在 $y$ 轴上 $(0,2,0)$，所以 $C$ 点是 $(2,2,0)$。</li>
+                        <li>顶点 $P$ 在底面中心正上方，坐标为 $(1, 1, 2)$。</li>
+                    </ul>
+                    <p>接下来，我们将用这个模型来逐一击破三种角的计算。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 线线角 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto fade-in-up">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-2 mb-8">第一幕：线线角 (最简单的“小弟”)</h2>
+                <p class="text-center text-xl mb-6">求异面直线 $PA$ 和 $BC$ 所成的角</p>
+                <!-- SVG "B-in-Front" Image -->
+                <div class="w-full flex justify-center my-6">
+                    <svg class="w-64 h-64 text-gray-700" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <title>四棱锥 P-ABCD 草图 (右转45度 - 旋转后)</title>
+                        
+                        
+                            <!-- 底面 ABCD -->
+                            <polygon points="50,74 8,74 8,60 50,60" fill="currentColor" opacity="0.05" />
+                        <line x1="8" y1="74" x2="50" y2="74" stroke="currentColor" stroke-width="1.5"/>
+                        <!-- B-C -->
+                        <line x1="8" y1="74" x2="8" y2="60" stroke="currentColor" stroke-width="1.5"/>
+                        <!-- A-D -->
+                        <line x1="50" y1="74" x2="50" y2="60" stroke="currentColor" stroke-width="1.5"/>
+                        <!-- C-D -->
+                        <line x1="8" y1="60" x2="50" y2="60" stroke="currentColor" stroke-width="1" stroke-dasharray="3" opacity="0.7"/>
+                
+                        <!-- 顶点 P -->
+                        <circle cx="29" cy="17" r="1.5" fill="currentColor" />
+                        <text x="27" y="15" font-size="5" fill="currentColor" font-family="serif" class="font-semibold">P</text>
+                
+                        <!-- 侧棱 -->
+                        <line x1="29" y1="17" x2="8" y2="74" stroke="currentColor" stroke-width="1.5"/> <!-- P-C (was P-B) -->
+                        <line x1="29" y1="17" x2="50" y2="74" stroke="currentColor" stroke-width="1.5"/> <!-- P-B (was P-A) -->
+                        <line x1="29" y1="17" x2="8" y2="60" stroke="currentColor" stroke-width="1.5"/> <!-- P-D (was P-C) -->
+                        <line x1="29" y1="17" x2="50" y2="60" stroke="currentColor" stroke-width="1.5"/> <!-- P-A (was P-D) -->
+                
+                        <!-- 顶点标签 -->
+                        <text x="6" y="79" font-size="5" fill="currentColor" font-family="serif">C</text>
+                        <text x="52" y="79" font-size="5" fill="currentColor" font-family="serif">B</text>
+                        <text x="6" y="58" font-size="5" fill="currentColor" font-family="serif">D</text>
+                        <text x="52" y="58" font-size="5" fill="currentColor" font-family="serif">A</text>
+                            <!-- 高亮 PA 和 BC -->
+                            <line x1="29" y1="17" x2="50" y2="60" stroke="cyan" stroke-width="2.5" opacity="0.8"/> <!-- P-A -->
+                            <line x1="50" y1="74" x2="8" y2="74" stroke="cyan" stroke-width="2.5" opacity="0.8"/> <!-- B-C -->
+                        
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 线面角 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto fade-in-up">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2 mb-8">第二幕：线面角 (最特殊的“怪咖”)</h2>
+                <p class="text-center text-xl mb-6">求直线 $PA$ 和底面 $ABCD$ 所成的角</p>
+                 <!-- SVG "B-in-Front" Image -->
+                <div class="w-full flex justify-center my-6">
+                    <svg class="w-64 h-64 text-gray-700" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <title>四棱锥 P-ABCD 草图 (右转45度 - 旋转后)</title>
+                        
+                        
+                            <!-- 底面 ABCD -->
+                            <polygon points="50,74 8,74 8,60 50,60" fill="currentColor" opacity="0.1" />
+                        <line x1="8" y1="74" x2="50" y2="74" stroke="currentColor" stroke-width="1.5"/>
+                        <!-- B-C -->
+                        <line x1="8" y1="74" x2="8" y2="60" stroke="currentColor" stroke-width="1.5"/>
+                        <!-- A-D -->
+                        <line x1="50" y1="74" x2="50" y2="60" stroke="currentColor" stroke-width="1.5"/>
+                        <!-- C-D -->
+                        <line x1="8" y1="60" x2="50" y2="60" stroke="currentColor" stroke-width="1" stroke-dasharray="3" opacity="0.7"/>
+                
+                        <!-- 顶点 P -->
+                        <circle cx="29" cy="17" r="1.5" fill="currentColor" />
+                        <text x="27" y="15" font-size="5" fill="currentColor" font-family="serif" class="font-semibold">P</text>
+                
+                        <!-- 侧棱 -->
+                        <line x1="29" y1="17" x2="8" y2="74" stroke="currentColor" stroke-width="1.5"/> <!-- P-C (was P-B) -->
+                        <line x1="29" y1="17" x2="50" y2="74" stroke="currentColor" stroke-width="1.5"/> <!-- P-B (was P-A) -->
+                        <line x1="29" y1="17" x2="8" y2="60" stroke="currentColor" stroke-width="1.5"/> <!-- P-D (was P-C) -->
+                        <line x1="29" y1="17" x2="50" y2="60" stroke="currentColor" stroke-width="1.5"/> <!-- P-A (was P-D) -->
+                
+                        <!-- 顶点标签 -->
+                        <text x="6" y="79" font-size="5" fill="currentColor" font-family="serif">C</text>
+                        <text x="52" y="79" font-size="5" fill="currentColor" font-family="serif">B</text>
+                        <text x="6" y="58" font-size="5" fill="currentColor" font-family="serif">D</text>
+                        <text x="52" y="58" font-size="5" fill="currentColor" font-family="serif">A</text>
+                            <!-- 高亮 PA 和 底面 -->
+                            <line x1="29" y1="17" x2="50" y2="60" stroke="cyan" stroke-width="2.5" opacity="0.8"/> <!-- P-A -->
+                            <polygon points="50,74 8,74 8,60 50,60" fill="cyan" opacity="0.2" />
+                        
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 二面角 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto fade-in-up">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-rose-500 pb-2 mb-8">第三幕：二面角 (最难缠的“Boss”)</h2>
+                <p class="text-center text-xl mb-6">求侧面 $PAB$ 和底面 $ABCD$ 所成的二面角</p>
+                <!-- SVG "B-in-Front" Image -->
+                <div class="w-full flex justify-center my-6">
+                    <svg class="w-64 h-64 text-gray-700" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <title>四棱锥 P-ABCD 草图 (右转45度 - 旋转后)</title>
+                        
+                        
+                            <!-- 底面 ABCD -->
+                            <polygon points="50,74 8,74 8,60 50,60" fill="currentColor" opacity="0.1" />
+                        <line x1="8" y1="74" x2="50" y2="74" stroke="currentColor" stroke-width="1.5"/>
+                        <!-- B-C -->
+                        <line x1="8" y1="74" x2="8" y2="60" stroke="currentColor" stroke-width="1.5"/>
+                        <!-- A-D -->
+                        <line x1="50" y1="74" x2="50" y2="60" stroke="currentColor" stroke-width="1.5"/>
+                        <!-- C-D -->
+                        <line x1="8" y1="60" x2="50" y2="60" stroke="currentColor" stroke-width="1" stroke-dasharray="3" opacity="0.7"/>
+                
+                        <!-- 顶点 P -->
+                        <circle cx="29" cy="17" r="1.5" fill="currentColor" />
+                        <text x="27" y="15" font-size="5" fill="currentColor" font-family="serif" class="font-semibold">P</text>
+                
+                        <!-- 侧棱 -->
+                        <line x1="29" y1="17" x2="8" y2="74" stroke="currentColor" stroke-width="1.5"/> <!-- P-C (was P-B) -->
+                        <line x1="29" y1="17" x2="50" y2="74" stroke="currentColor" stroke-width="1.5"/> <!-- P-B (was P-A) -->
+                        <line x1="29" y1="17" x2="8" y2="60" stroke="currentColor" stroke-width="1.5"/> <!-- P-D (was P-C) -->
+                        <line x1="29" y1="17" x2="50" y2="60" stroke="currentColor" stroke-width="1.5"/> <!-- P-A (was P-D) -->
+                
+                        <!-- 顶点标签 -->
+                        <text x="6" y="79" font-size="5" fill="currentColor" font-family="serif">C</text>
+                        <text x="52" y="79" font-size="5" fill="currentColor" font-family="serif">B</text>
+                        <text x="6" y="58" font-size="5" fill="currentColor" font-family="serif">D</text>
+                        <text x="52" y="58" font-size="5" fill="currentColor" font-family="serif">A</text>
+                            <!-- 高亮 PAB 和 底面 -->
+                            <polygon points="29,17 50,60 50,74" fill="cyan" opacity="0.2" /> <!-- PAB -->
+                            <polygon points="50,74 8,74 8,60 50,60" fill="cyan" opacity="0.2" /> <!-- ABCD -->
+                        
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 (例题 1) -->
+        <div class="section bg-slate-50">
+            <div class="w-full max-w-4xl mx-auto fade-in-up">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-indigo-500 pb-2 mb-8">随堂练习：巩固一下 (例题 1)</h2>
+                <div class="space-y-6 text-lg w-full text-left p-6 bg-white shadow-lg rounded-lg">
+                    
+                    <!-- Question 1 -->
+                    <p class="font-semibold text-slate-800 text-xl">1. 问题：在使用空间向量法求两条异面直线所成的角 $\alpha$ 时，如果算出的两条直线方向向量的夹角 $\theta$ 为 $120^\circ$，那么 $\cos \alpha$ 的值是多少？</p>
+                    <ul class="list-none space-y-4 pl-4 pt-4">
+                        <li class="text-lg">A. $\frac{1}{2}$</li>
+                        <li class="text-lg">B. $-\frac{1}{2}$</li>
+                        <li class="text-lg">C. $\frac{\sqrt{3}}{2}$</li>
+                        <li class="text-lg">D. $-\frac{\sqrt{3}}{2}$</li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 (答案与解析 1) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto fade-in-up">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-indigo-500 pb-2 mb-8">随堂练习：巩固一下 (答案与解析 1)</h2>
+                <div class="space-y-4 text-lg w-full text-left p-6 bg-white shadow-lg rounded-lg">
+                    
+                    <p class="font-bold text-xl text-blue-600">答案：A</p>
+                    
+                    <div>
+                        <p class="font-semibold text-lg text-slate-800">解析：</p>
+                        <p class="text-slate-700 mt-2 leading-relaxed">
+                            线线角的口诀是“恒为正，不变名”。因为线线角 $\alpha$ 定义为锐角或直角，所以其 $\cos \alpha$ 必须为非负值。向量夹角 $\theta$ 和线线角 $\alpha$ 的关系是 $\cos \alpha = |\cos \theta|$。这里 $\cos \theta = \cos 120^\circ = -\frac{1}{2}$，所以 $\cos \alpha = |-\frac{1}{2}| = \frac{1}{2}$。
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 (例题 2) -->
+        <div class="section bg-slate-50">
+            <div class="w-full max-w-4xl mx-auto fade-in-up">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-indigo-500 pb-2 mb-8">随堂练习：巩固一下 (例题 2)</h2>
+                <div class="space-y-6 text-lg w-full text-left p-6 bg-white shadow-lg rounded-lg">
+                    
+                    <!-- Question 2 -->
+                    <p class="font-semibold text-slate-800 text-xl">2. 问题：在求直线与平面所成的角 $\alpha$ 时，我们利用直线的方向向量 $\vec{v}$ 和平面的法向量 $\vec{n}$ 的夹角 $\theta$ 来计算。下列哪个公式是正确的？</p>
+                    <ul class="list-none space-y-4 pl-4 pt-4">
+                        <li class="text-lg">A. $\cos \alpha = |\cos \theta|$</li>
+                        <li class="text-lg">B. $\sin \alpha = |\sin \theta|$</li>
+                        <li class="text-lg">C. $\sin \alpha = |\cos \theta|$</li>
+                        <li class="text-lg">D. $\cos \alpha = \pm\cos \theta$</li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 (答案与解析 2) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto fade-in-up">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-indigo-500 pb-2 mb-8">随堂练习：巩固一下 (答案与解析 2)</h2>
+                <div class="space-y-4 text-lg w-full text-left p-6 bg-white shadow-lg rounded-lg">
+                    
+                    <p class="font-bold text-xl text-blue-600">答案：C</p>
+                    
+                    <div>
+                        <p class="font-semibold text-lg text-slate-800">解析：</p>
+                        <p class="text-slate-700 mt-2 leading-relaxed">
+                            线面角的口诀是“恒为正，要变名”。因为线面角 $\alpha$ 和向量夹角 $\theta$ 存在互余关系，所以函数名会改变。题目若求 $\sin \alpha$，则需要计算 $|\cos \theta|$；若求 $\cos \alpha$，则需要计算 $|\sin \theta|$。所以C是正确的。
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 (例题 3) -->
+        <div class="section bg-slate-50">
+            <div class="w-full max-w-4xl mx-auto fade-in-up">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-indigo-500 pb-2 mb-8">随堂练习：巩固一下 (例题 3)</h2>
+                <div class="space-y-6 text-lg w-full text-left p-6 bg-white shadow-lg rounded-lg">
+                    
+                    <!-- Question 3 -->
+                    <p class="font-semibold text-slate-800 text-xl">3. 问题：在用空间向量法求角时，哪种情况下计算余弦值时需要根据图形判断最终结果的正负号？</p>
+                    <ul class="list-none space-y-4 pl-4 pt-4">
+                        <li class="text-lg">A. 求线线角时</li>
+                        <li class="text-lg">B. 求线面角时</li>
+                        <li class="text-lg">C. 求二面角时</li>
+                        <li class="text-lg">D. 所有情况下都需要</li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 (答案与解析 3) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto fade-in-up">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-indigo-500 pb-2 mb-8">随堂练习：巩固一下 (答案与解析 3)</h2>
+                <div class="space-y-4 text-lg w-full text-left p-6 bg-white shadow-lg rounded-lg">
+                    
+                    <p class="font-bold text-xl text-blue-600">答案：C</p>
+                    
+                    <div>
+                        <p class="font-semibold text-lg text-slate-800">解析：</p>
+                        <p class="text-slate-700 mt-2 leading-relaxed">
+                            线线角和线面角都定义为锐角或直角，其正弦值和余弦值总是非负的，所以直接取绝对值即可。而二面角可以是钝角，其余弦值可能是负数，因此需要根据图形判断二面角的锐钝，来决定最终 $\cos \alpha$ 的正负。
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 (例题 4) -->
+        <div class="section bg-slate-50">
+            <div class="w-full max-w-4xl mx-auto fade-in-up">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-indigo-500 pb-2 mb-8">随堂练习：巩固一下 (例题 4)</h2>
+                <div class="space-y-6 text-lg w-full text-left p-6 bg-white shadow-lg rounded-lg">
+                    
+                    <!-- Question 4 -->
+                    <p class="font-semibold text-slate-800 text-xl">4. 问题：参考讲义中的四棱锥P-ABCD，直线 $PC$ 和直线 $AB$ 所成角的余弦值是多少？</p>
+                    <ul class="list-none space-y-4 pl-4 pt-4">
+                        <li class="text-lg">A. $\frac{1}{\sqrt{6}}$</li>
+                        <li class="text-lg">B. $-\frac{1}{\sqrt{6}}$</li>
+                        <li class="text-lg">C. $\frac{2}{\sqrt{5}}$</li>
+                        <li class="text-lg">D. $\frac{1}{2}$</li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 (答案与解析 4) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto fade-in-up">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-indigo-500 pb-2 mb-8">随堂练习：巩固一下 (答案与解析 4)</h2>
+                <div class="space-y-4 text-lg w-full text-left p-6 bg-white shadow-lg rounded-lg">
+                    
+                    <p class="font-bold text-xl text-blue-600">答案：A</p>
+                    
+                    <div>
+                        <p class="font-semibold text-lg text-slate-800">解析：</p>
+                        <p class="text-slate-700 mt-2 leading-relaxed">
+                            首先计算两条直线的方向向量。<br>
+                            $\vec{PC} = C - P = (2 - 1, 2 - 1, 0 - 2) = (1, 1, -2)$<br>
+                            $\vec{AB} = B - A = (2 - 0, 0 - 0, 0 - 0) = (2, 0, 0)$<br>
+                            然后计算向量夹角的余弦值 $\cos \theta$。<br>
+                            点积：$\vec{PC} \cdot \vec{AB} = (1)(2) + (1)(0) + (-2)(0) = 2$<br>
+                            模长：$|\vec{PC}| = \sqrt{1^2 + 1^2 + (-2)^2} = \sqrt{6}$，$|\vec{AB}| = \sqrt{2^2 + 0^2 + 0^2} = 2$<br>
+                            $\cos \theta = \frac{2}{2\sqrt{6}} = \frac{1}{\sqrt{6}}$<br>
+                            因为是求线线角，口诀是“恒为正，不变名”，所以所求角的余弦值 $\cos \alpha = |\cos \theta| = |\frac{1}{\sqrt{6}}| = \frac{1}{\sqrt{6}}$。
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- 总结 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto fade-in-up">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2 mb-8">终极总结：一张“防错表”</h2>
+                <div class="overflow-x-auto shadow-lg rounded-lg">
+                     <table class="w-full text-center border-collapse text-base">
+                        <thead>
+                            <tr class="bg-violet-600 text-white">
+                                <th class="p-3 border-b-2 border-violet-200">角度类型</th>
+                                <th class="p-3 border-b-2 border-violet-200">$\alpha$ 范围</th>
+                                <th class="p-3 border-b-2 border-violet-200">向量关系</th>
+                                <th class="p-3 border-b-2 border-violet-200">核心口诀</th>
+                                <th class="p-3 border-b-2 border-violet-200">核心公式</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-white hover:bg-slate-50"><td class="p-3 border"><strong>线线角</strong></td><td class="p-3 border"> $[0, \pi/2]$ </td><td class="p-3 border">方向-方向</td><td class="p-3 border">恒为正，不变名</td><td class="p-3 border font-mono text-lg text-sky-600">$\cos \alpha = |\cos \theta|$</td></tr>
+                            <tr class="bg-white hover:bg-slate-50"><td class="p-3 border"><strong>线面角</strong></td><td class="p-3 border"> $[0, \pi/2]$ </td><td class="p-3 border">方向-法</td><td class="p-3 border">恒为正，<b>要变名</b></td><td class="p-3 border font-mono text-lg text-emerald-600">$\sin \alpha = |\cos \theta|$</td></tr>
+                            <tr class="bg-white hover:bg-slate-50"><td class="p-3 border"><strong>二面角</strong></td><td class="p-3 border"> $[0, \pi]$ </td><td class="p-3 border">法-法</td><td class="p-3 border"><b>看图定正负</b>, 不变名</td><td class="p-3 border font-mono text-lg text-rose-600">$\cos \alpha = \pm \cos \theta$</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                 <div class="mt-8 text-left text-lg space-y-4 w-full">
+                    <p class="p-4 bg-emerald-50 border-l-4 border-emerald-400 rounded-r-lg"><strong>谁最怪？</strong> → <strong>线面角</strong>！只有它“要变名”（$\cos$变$\sin$），因为几何角和向量角互余。</p>
+                    <p class="p-4 bg-rose-50 border-l-4 border-rose-400 rounded-r-lg"><strong>谁最烦？</strong> → <strong>二面角</strong>！只有它的余弦值要“看图定正负”，因为它可能是钝角。</p>
+                    <p class="p-4 bg-sky-50 border-l-4 border-sky-400 rounded-r-lg"><strong>谁最乖？</strong> → <strong>线线角</strong>！无脑加绝对值就完事儿。</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="text-center py-6 text-sm text-slate-500 print-hidden bg-slate-50">
+        <p>祝你学习进步！</p>
+    </footer>
+
+    <script>
+        // No script needed for practice section anymore
+    </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+

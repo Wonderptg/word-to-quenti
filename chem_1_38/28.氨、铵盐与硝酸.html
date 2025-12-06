@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>氨、铵盐与硝酸</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        
+        /* 图片占位符样式 */
+        .placeholder-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #e5e7eb; /* 浅灰色背景 */
+            border: 1px dashed #9ca3af; /* 虚线边框 */
+            color: #6b7280; /* 文字颜色 */
+            font-size: 0.9em;
+            text-align: center;
+            border-radius: 0.375rem; /* 圆角 */
+            min-height: 150px; /* 最小高度 */
+            width: 100%; /* 宽度 */
+            margin-top: 1rem; /* 上边距 */
+            margin-bottom: 1rem; /* 下边距 */
+        }
+        
+        .reaction-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+             .placeholder-image { background-color: #e5e7eb !important; -webkit-print-color-adjust: exact; print-color-adjust: exact;} /* 确保打印背景色 */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-indigo-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
+                </svg>
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">氨、铵盐与硝酸</h1>
+                <p class="text-2xl text-slate-600 mt-2">—— 重要的含氮化合物</p>
+            </div>
+        </div>
+
+        <!-- 氨的物理性质 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>氨 (NH₃) 的物理性质</h2>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-8 rounded-lg text-lg text-slate-700 space-y-4">
+                    <p><strong>颜色/气味：</strong><strong class="text-red-600">无色</strong>、有<strong class="text-red-600">刺激性气味</strong>的气体 (类似公厕味)。</p>
+                    <p><strong>密度：</strong>相对分子质量17 < 空气平均(约29)，密度比空气<strong class="text-red-600">小</strong>。</p>
+                    <p><strong>溶解性：</strong><strong class="text-red-600">极易溶</strong>于水 (1:700)，水溶液称氨水。</p>
+                    <p><strong>熔沸点：</strong>易液化，液氨汽化<strong class="text-red-600">吸热</strong>，可用作<strong class="text-red-600">制冷剂</strong>。</p>
+                     <!-- SVG: 液氨制冷剂 (修改吸热部分) -->
+                    <div class="reaction-diagram mt-4">
+                        <svg class="w-full max-w-sm h-40" viewBox="0 0 300 200">
+                            <!-- 制冷剂容器 -->
+                            <rect x="50" y="30" width="200" height="80" rx="10" fill="#bae6fd" stroke="#0ea5e9" stroke-width="2"/>
+                            <text x="150" y="70" font-size="14" text-anchor="middle" fill="#0369a1">液氨 (制冷剂)</text>
+                            
+                            <!-- 气化吸热箭头和文字 - 向下移动并放大 -->
+                            <path d="M150 110 L150 150" stroke="#0ea5e9" stroke-width="6" stroke-linecap="round"/>
+                            <text x="150" y="180" font-size="16" fill="#ef4444" font-weight="bold" text-anchor="middle">吸热</text> <!-- 更大的字号，更靠下 -->
+                             <path d="M120 120 L180 120 L150 90 Z" fill="#93c5fd" transform="translate(0, 5)"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 氨的化学性质 - 与水反应 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-blue-500 rounded"></span>氨的化学性质：与水反应</h2>
+                 <p class="mt-8 text-xl text-slate-700">氨气极易溶于水，且部分与水反应生成<strong class="text-blue-600">一水合氨 (NH₃·H₂O)</strong>。</p>
+                 <div class="mt-8 bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-blue-800 text-xl">反应方程式</h3>
+                    <p class="mono text-center mt-3 bg-blue-100 p-3 rounded">NH₃ + H₂O ⇌ NH₃·H₂O</p>
+                    <p class="mono text-center mt-2 bg-blue-100 p-3 rounded">NH₃·H₂O ⇌ NH₄⁺ + OH⁻</p>
+                    <p class="mt-2 text-slate-600">一水合氨是<strong class="text-red-600">弱碱</strong>，能部分电离出OH⁻，使氨水显<strong class="text-red-600">弱碱性</strong>。</p>
+                     <p class="mt-1 text-slate-600">一水合氨<strong class="text-red-600">不稳定</strong>，受热易分解为NH₃和H₂O。</p>
+                     <!-- SVG: 氨水电离示意图 -->
+                     <div class="reaction-diagram mt-4">
+                         <svg class="w-full max-w-md h-24" viewBox="0 0 200 80">
+                            <circle cx="50" cy="40" r="15" fill="#3b82f6"/> <text x="50" y="45" font-size="12" text-anchor="middle" fill="white">NH₃</text>
+                            <circle cx="100" cy="40" r="15" fill="#0ea5e9"/> <text x="100" y="45" font-size="12" text-anchor="middle" fill="white">H₂O</text>
+                            <text x="135" y="40" font-size="20" font-weight="bold">⇌</text>
+                            <circle cx="170" cy="25" r="15" fill="#facc15"/> <text x="170" y="30" font-size="12" text-anchor="middle" fill="#92400e">NH₄⁺</text>
+                            <circle cx="170" cy="55" r="15" fill="#ef4444"/> <text x="170" y="60" font-size="12" text-anchor="middle" fill="white">OH⁻</text>
+                        </svg>
+                     </div>
+                 </div>
+                 <p class="mt-4 text-slate-600 text-lg"><strong>氨水成分：</strong>分子 (H₂O, NH₃·H₂O, NH₃)，离子 (NH₄⁺, OH⁻, H⁺)。</p>
+            </div>
+        </div>
+
+        <!-- 氨的化学性质 - 与酸反应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>氨的化学性质：与酸反应</h2>
+                 <p class="mt-8 text-xl text-slate-700">氨气是<strong class="text-green-600">碱性气体</strong>，能与酸反应生成<strong class="text-green-600">铵盐</strong>。</p>
+                 <div class="mt-6 space-y-4">
+                     <div class="bg-green-50 border border-green-200 p-4 rounded-lg">
+                         <h3 class="font-bold text-green-800 text-lg">与氯化氢反应 (生成白烟)</h3>
+                         <p class="mono text-center mt-2">NH₃ + HCl → NH₄Cl (固)</p>
+                         <p class="text-slate-600 text-sm mt-1">现象：产生<strong class="text-red-600">白烟</strong> (NH₄Cl固体小颗粒)。可用于相互检验。</p>
+                         <!-- SVG: 产生白烟的示意图 -->
+                         <div class="reaction-diagram mt-4">
+                            <svg class="w-full max-w-md h-32" viewBox="0 0 300 120">
+                                <rect x="20" y="80" width="100" height="20" fill="#9ca3af"/>
+                                <rect x="180" y="80" width="100" height="20" fill="#9ca3af"/>
+                                <text x="70" y="110" font-size="12" fill="#4b5563">浓氨水</text>
+                                <text x="230" y="110" font-size="12" fill="#4b5563">浓盐酸</text>
+                                <!-- 白烟区域 -->
+                                <circle cx="150" cy="50" r="40" fill="white" opacity="0.8" stroke="#cbd5e1" stroke-width="1"/>
+                                <text x="150" y="55" font-size="14" text-anchor="middle" fill="#f87171">白烟 (NH₄Cl)</text>
+                                <!-- 箭头 -->
+                                <path d="M120 90 L150 70" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead-blue)"/>
+                                <path d="M180 90 L150 70" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+                                <defs>
+                                    <marker id="arrowhead-blue" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0, 6 2, 0 4" fill="#3b82f6"/></marker>
+                                    <marker id="arrowhead-green" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0, 6 2, 0 4" fill="#10b981"/></marker>
+                                </defs>
+                            </svg>
+                        </div>
+                     </div>
+                    <div class="bg-green-50 border border-green-200 p-4 rounded-lg">
+                         <h3 class="font-bold text-green-800 text-lg">与硫酸/硝酸反应 (生成肥料)</h3>
+                         <p class="mono text-center mt-2 text-sm md:text-base">2NH₃ + H₂SO₄ → (NH₄)₂SO₄</p>
+                         <p class="mono text-center mt-2 text-sm md:text-base">NH₃ + HNO₃ → NH₄NO₃</p>
+                         <p class="mt-2 text-slate-600 text-center">生成物是常见的铵态氮肥。</p>
+                     </div>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 氨的化学性质 - 还原性 (索引 4) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>氨的化学性质：还原性</h2>
+                 <p class="mt-8 text-xl text-slate-700">氨中的氮为<strong class="text-orange-600">-3价</strong> (最低价)，具有<strong class="text-orange-600">还原性</strong>。</p>
+                 <div class="mt-8 bg-orange-50 border border-orange-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-orange-800 text-xl">氨的催化氧化 (工业制硝酸基础)</h3>
+                    <p class="mt-3 text-slate-600">氨气在催化剂和加热条件下被氧气氧化。</p>
+                    <p class="mono text-center bg-orange-100 p-3 rounded mt-3 text-sm md:text-base">4NH₃ + 5O₂ <span class="text-slate-500">(催化剂, Δ)</span> → 4NO + 6H₂O</p>
+                    <p class="mt-2 text-slate-600">注意产物是<strong class="text-red-600">NO</strong>，而不是N₂。</p>
+                    <!-- SVG: 氨的催化氧化流程 (NH3 + O2 组合体向左移) -->
+                    <div class="reaction-diagram mt-4">
+                        <svg class="w-full max-w-sm h-24" viewBox="0 0 250 100">
+                            <path d="M70 50 L200 50" stroke="#f97316" stroke-width="2" marker-end="url(#arrowhead-orange)"/>
+                            <rect x="100" y="30" width="50" height="40" rx="5" fill="#fff7ed" stroke="#f97316"/>
+                            <text x="125" y="55" font-size="12" text-anchor="middle" fill="#ea580c">Pt-Rh</text>
+                             <text x="125" y="20" font-size="12" text-anchor="middle" fill="#9ca3af">催化剂/加热</text>
+                            <text x="5" y="55" font-size="16" font-weight="bold" fill="#3b82f6">NH₃ + O₂</text> <!-- Adjusted X coordinate further left (from 25 to 5) -->
+                            <text x="225" y="55" font-size="16" font-weight="bold" fill="#dc2626">NO + H₂O</text>
+                            <defs>
+                                <marker id="arrowhead-orange" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0, 6 2, 0 4" fill="#f97316"/></marker>
+                            </defs>
+                        </svg>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 铵盐性质 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>铵盐 (NH₄⁺盐) 的性质</h2>
+                <div class="mt-8 bg-purple-50 border border-purple-200 p-8 rounded-lg text-lg text-slate-700 space-y-4">
+                     <p>物理性质：多为<strong class="text-purple-700">无色晶体</strong>，<strong class="text-red-600">均易溶</strong>于水。</p>
+                     <p>用途：重要的<strong class="text-red-600">氮肥</strong> (如 (NH₄)₂SO₄, NH₄HCO₃, NH₄NO₃)。</p>
+                     <p>化学性质1：<strong class="text-red-600">受热易分解</strong>。</p>
+                     <p class="mono text-sm ml-4">NH₄Cl(s) <span class="text-slate-500">(Δ)</span> → NH₃(g) + HCl(g)</p>
+                     <p class="mono text-sm ml-4">NH₄HCO₃(s) <span class="text-slate-500">(Δ)</span> → NH₃(g) + H₂O(g) + CO₂(g)</p>
+                     <p>化学性质2：<strong class="text-red-600">与碱共热</strong>产生<strong class="text-red-600">氨气</strong>。</p>
+                     <p class="mono text-sm ml-4">NH₄⁺ + OH⁻ <span class="text-slate-500">(Δ)</span> → NH₃↑ + H₂O (铵根离子的检验方法)</p>
+                     <!-- SVG: 铵根离子检验流程图 -->
+                     <div class="reaction-diagram mt-4">
+                         <svg class="w-full max-w-xs h-24" viewBox="0 0 250 80">
+                            <rect x="0" y="10" width="80" height="30" rx="5" fill="#f0fdf4" stroke="#a78bfa"/>
+                            <rect x="170" y="10" width="80" height="30" rx="5" fill="#f87171"/>
+                            <text x="40" y="30" font-size="14" text-anchor="middle" fill="#701a75">待检铵盐</text>
+                            <text x="210" y="30" font-size="14" text-anchor="middle" fill="white">NH₃↑</text>
+                            <path d="M80 25 L170 25" stroke="#a78bfa" stroke-width="2" marker-end="url(#arrowhead-purple)"/>
+                            <text x="125" y="45" font-size="10" fill="#701a75" text-anchor="middle">加碱/加热</text>
+                            <rect x="170" y="50" width="80" height="30" rx="5" fill="#34d399"/>
+                            <text x="210" y="70" font-size="12" text-anchor="middle" fill="white">红色石蕊变蓝</text>
+                            <path d="M210 40 L210 50" stroke="#34d399" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+                            <defs>
+                                <marker id="arrowhead-purple" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0, 6 2, 0 4" fill="#a78bfa"/></marker>
+                                <marker id="arrowhead-green" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0, 6 2, 0 4" fill="#34d399"/></marker>
+                            </defs>
+                        </svg>
+                     </div>
+                     <p class="text-red-600 font-semibold mt-2">储存与施用：需<strong class="text-red-600">密封、阴凉</strong>存放，<strong class="text-red-600">不能</strong>与碱性物质(如草木灰)混合施用。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 硝酸物理性质与不稳定性 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-rose-500 rounded"></span>硝酸 (HNO₃)：物理性质与不稳定性</h2>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-rose-50 border border-rose-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-rose-800 text-xl">物理性质</h3>
+                        <ul class="list-disc list-inside mt-3 text-slate-600 space-y-2">
+                            <li><strong class="text-rose-700">无色</strong>、有<strong class="text-rose-700">刺激性气味</strong>液体</li>
+                            <li><strong class="text-red-600">易挥发</strong> (浓度越大越易挥发，形成白雾)</li>
+                            <li>任意比例溶于水</li>
+                        </ul>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-amber-800 text-xl">不稳定性</h3>
+                         <p class="mt-3 text-slate-600">硝酸<strong class="text-red-600">见光或受热</strong>易分解。</p>
+                         <p class="mono text-center mt-2 bg-amber-100 p-3 rounded text-sm md:text-base">4HNO₃ <span class="text-slate-500">(光/Δ)</span> → 4NO₂↑ + O₂↑ + 2H₂O</p>
+                         <p class="mt-2 text-slate-600">分解产生的NO₂(红棕色)溶于硝酸，使浓硝酸常呈<strong class="text-red-600">黄色</strong>。</p>
+                         <p class="mt-1 text-slate-600">保存：<strong class="text-red-600">棕色瓶</strong>、<strong class="text-red-600">阴凉处</strong>、<strong class="text-red-600">玻璃塞</strong>。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 硝酸化学性质 - 强酸性与强氧化性 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-red-600 rounded"></span>硝酸 (HNO₃)：强酸性与强氧化性</h2>
+                <div class="mt-8 space-y-6">
+                     <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                         <h3 class="font-bold text-blue-800 text-xl">强酸性</h3>
+                         <p class="mt-3 text-lg text-slate-600">硝酸是一元强酸，具有酸的通性 (与碱、碱性氧化物、某些盐反应)。</p>
+                     </div>
+                      <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                         <h3 class="font-bold text-red-800 text-xl">强氧化性 (核心！)</h3>
+                         <p class="mt-3 text-lg text-slate-600">浓硝酸和稀硝酸都具有<strong class="text-red-600">强氧化性</strong>，能与<strong class="text-red-600">绝大多数金属</strong> (除Au, Pt) 和<strong class="text-red-600">某些非金属</strong>反应，反应<strong class="text-red-600">不产生H₂</strong>！</p>
+                         <p class="mt-2 text-slate-600">还原产物：<br> <strong class="text-red-700">浓HNO₃ → NO₂</strong> (主要)<br> <strong class="text-red-700">稀HNO₃ → NO</strong> (主要)</p>
+                     </div>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 硝酸与金属反应 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-red-600 rounded"></span>硝酸与金属的反应规律</h2>
+                 <div class="mt-8 space-y-4">
+                     <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                         <h3 class="font-bold text-red-800 text-lg">与铜反应 (不活泼金属代表)</h3>
+                         <p class="mono text-sm md:text-base mt-2">Cu + 4HNO₃(浓) → Cu(NO₃)₂ + 2NO₂↑ + 2H₂O</p>
+                         <p class="mono text-sm md:text-base mt-1">3Cu + 8HNO₃(稀) → 3Cu(NO₃)₂ + 2NO↑ + 4H₂O</p>
+                     </div>
+                    <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
+                         <h3 class="font-bold text-yellow-800 text-lg">与铁、铝反应 (活泼金属代表)</h3>
+                         <p class="mt-2 text-slate-600"><strong class="text-red-600">常温下：</strong>遇<strong class="text-red-600">浓</strong>硝酸发生<strong class="text-red-600">钝化</strong>。</p>
+                         <p class="mt-1 text-slate-600"><strong class="text-red-600">加热时：</strong>与<strong class="text-red-600">浓</strong>硝酸反应生成Fe³⁺/Al³⁺ 和 NO₂。</p>
+                          <p class="mt-1 text-slate-600">与<strong class="text-red-600">稀</strong>硝酸反应：<br> - Fe少量 → Fe³⁺ + NO<br> - Fe过量 → Fe²⁺ + NO</p>
+                     </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 工业制硝酸 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>硝酸的工业制法 (氨氧化法)</h2>
+                <p class="mt-8 text-xl text-slate-700">核心流程：利用氨气经过一系列氧化反应最终制得硝酸。</p>
+                 <div class="mt-8 bg-teal-50 border border-teal-200 p-6 rounded-lg text-lg space-y-3">
+                    <p><strong>第一步：氨的催化氧化</strong><br><code class="text-base">4NH₃ + 5O₂ <span class="text-slate-500">(催化剂, Δ)</span> → 4NO + 6H₂O</code></p>
+                    <p><strong>第二步：NO氧化为NO₂</strong><br><code class="text-base">2NO + O₂ → 2NO₂</code></p>
+                    <p><strong>第三步：NO₂与水反应</strong><br><code class="text-base">3NO₂ + H₂O → 2HNO₃ + NO</code> (NO可循环利用)</p>
+                    <!-- SVG: 工业制硝酸流程图 -->
+                    <div class="reaction-diagram mt-4">
+                        <svg class="w-full max-w-lg h-32" viewBox="0 0 300 120">
+                            <!-- NH3/O2 Input -->
+                            <text x="30" y="20" font-size="12" fill="#3b82f6">NH₃/O₂</text>
+                            <path d="M50 30 L100 30" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead-teal)"/>
+                            <!-- Step 1: 催化氧化 (NH3 -> NO) -->
+                            <rect x="100" y="10" width="50" height="40" rx="5" fill="#d1fae5" stroke="#10b981"/>
+                            <text x="125" y="35" font-size="12" text-anchor="middle" fill="#047857">氧化</text>
+                            <path d="M150 30 L180 30" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead-teal)"/>
+                            <text x="165" y="25" font-size="12" fill="#047857">NO</text>
+                            
+                            <!-- Step 2: 氧化 (NO -> NO2) -->
+                            <rect x="180" y="10" width="50" height="40" rx="5" fill="#fef08a" stroke="#facc15"/>
+                            <text x="205" y="35" font-size="12" text-anchor="middle" fill="#92400e">+ O₂</text>
+                            <path d="M230 30 L250 30" stroke="#facc15" stroke-width="2" marker-end="url(#arrowhead-amber)"/>
+                             <text x="245" y="25" font-size="12" fill="#92400e">NO₂</text>
+                            
+                            <!-- Step 3: 吸收 (NO2 -> HNO3) -->
+                            <rect x="180" y="70" width="50" height="40" rx="5" fill="#bae6fd" stroke="#0ea5e9"/>
+                            <text x="205" y="95" font-size="12" text-anchor="middle" fill="#0369a1">吸收塔</text>
+                            
+                            <!-- Water Input -->
+                             <path d="M150 70 L180 70" stroke="#0ea5e9" stroke-width="2" marker-end="url(#arrowhead-cyan)"/>
+                            <text x="165" y="65" font-size="12" fill="#0369a1">H₂O</text>
+                            
+                            <!-- NO2 Down -->
+                            <path d="M205 50 L205 70" stroke="#ef4444" stroke-width="2" marker-end="url(#arrowhead-red)"/>
+                            
+                            <!-- HNO3 Output -->
+                            <path d="M230 90 L280 90" stroke="#dc2626" stroke-width="2" marker-end="url(#arrowhead-red-output)"/>
+                            <text x="285" y="95" font-size="12" fill="#dc2626">HNO₃</text>
+                            
+                            <!-- NO Recycle -->
+                            <path d="M180 90 Q 170 100, 100 100 Q 50 100, 50 70" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="3,2"/>
+                            <path d="M50 70 L50 30" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#arrowhead-gray)"/>
+                            <text x="75" y="80" font-size="10" fill="#6b7280">NO 循环</text>
+
+                            <defs>
+                                <marker id="arrowhead-teal" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0, 6 2, 0 4" fill="#10b981"/></marker>
+                                <marker id="arrowhead-amber" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0, 6 2, 0 4" fill="#facc15"/></marker>
+                                <marker id="arrowhead-cyan" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0, 6 2, 0 4" fill="#0ea5e9"/></marker>
+                                <marker id="arrowhead-red" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0, 6 2, 0 4" fill="#ef4444"/></marker>
+                                <marker id="arrowhead-red-output" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0, 6 2, 0 4" fill="#dc2626"/></marker>
+                                <marker id="arrowhead-gray" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0, 6 2, 0 4" fill="#9ca3af"/></marker>
+                            </defs>
+                        </svg>
+                    </div>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 例题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (一)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列关于氨气的说法，错误的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 无色有刺激性气味的气体</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 密度比空气大</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 极易溶于水，水溶液呈碱性</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 液氨可用作制冷剂</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (一)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>氨气的相对分子质量为17，小于空气的平均相对分子质量(约29)，因此其密度比空气<strong class="text-green-700">小</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (二)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>检验某溶液中是否含有NH₄⁺离子，通常采用的方法是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 加入盐酸，观察是否有气体产生</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 加入氢氧化钠溶液并加热，用湿润的红色石蕊试纸检验产生的气体</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 加入硝酸银溶液，观察是否有沉淀产生</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 焰色反应</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (二)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>铵根离子(NH₄⁺)的检验方法是：向待测液中加入<strong class="text-green-700">强碱溶液</strong>（如NaOH）并<strong class="text-green-700">加热</strong>，若产生能使<strong class="text-green-700">湿润的红色石蕊试纸变蓝</strong>的气体（氨气），则证明含有NH₄⁺。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (三)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>关于硝酸的说法，错误的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 浓硝酸和稀硝酸都具有强氧化性</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 浓硝酸因分解产生的NO₂而常呈黄色</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 铁、铝在冷的浓硝酸中会发生钝化</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 铜与稀硝酸反应生成H₂</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (三)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>硝酸（无论是浓是稀）与金属反应时，由于其强氧化性，<strong class="text-green-700">不产生氢气(H₂)</strong>。其还原产物通常是氮的氧化物（如NO₂, NO）或其他含氮物质。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (四)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>工业制硝酸的核心反应不包括？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(A)</strong> N₂ + 3H₂ ⇌ 2NH₃</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(B)</strong> 4NH₃ + 5O₂ → 4NO + 6H₂O</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(C)</strong> 2NO + O₂ → 2NO₂</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(D)</strong> 3NO₂ + H₂O → 2HNO₃ + NO</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1-4 h-1 bg-green-500 rounded"></span>练习 (四)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(A)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>工业制硝酸（氨氧化法）的主要步骤是 B (氨的催化氧化)、C (NO氧化为NO₂)、D (NO₂与水反应生成硝酸)。反应 A (工业合成氨) 是制备硝酸的<strong class="text-green-700">原料</strong>氨气的过程，但不属于制硝酸的核心反应步骤。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (五)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>常温下，下列物质能用铝制容器盛放的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 稀盐酸</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 浓硝酸</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 稀硝酸</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> NaOH溶液</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (五)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>常温下，铝(Al)在<strong class="text-green-700">浓硝酸</strong>（或浓硫酸）中会发生<strong class="text-green-700">钝化</strong>，表面生成致密的氧化膜，阻止反应继续进行，因此可以用铝制容器盛放冷的浓硝酸。铝与稀盐酸、稀硝酸、NaOH溶液都会发生反应。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

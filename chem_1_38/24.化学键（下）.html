@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>化学键、物质类别与电子式</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 70vh; /* 减少最小高度以适应更多内容 */
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+
+        /* 用于电子式的特殊样式 */
+        .lewis {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.25rem; /* 增大字体 */
+            font-weight: bold;
+            letter-spacing: 0.1em; /* 增加字符间距 */
+            text-align: center;
+            padding: 0.75rem;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            line-height: 1.8; /* 增加行高 */
+            white-space: pre; /* 保留空格和换行 */
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">化学键与物质的类别</h1>
+                <p class="text-2xl text-slate-600 mt-2">—— 离子化合物、共价化合物与电子式精讲</p>
+            </div>
+        </div>
+
+        <!-- 应用实例：工业制铝 (问题) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>应用实例：工业制铝 (问题)</h2>
+                <!-- 修改：拆分页面，此页只放问题 -->
+                <div class="mt-8 grid grid-cols-1 gap-8 items-center">
+                    <div class="bg-gray-50 border border-gray-200 p-8 rounded-lg text-xl">
+                        <p class="font-bold text-2xl text-center">思考：为什么工业制铝电解的是熔融的 <code>Al₂O₃</code> 而不是 <code>AlCl₃</code>？</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 应用实例：工业制铝 (解析) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>应用实例：工业制铝 (解析)</h2>
+                <!-- 修改：此页放答案和图示 -->
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="bg-gray-50 border border-gray-200 p-8 rounded-lg text-xl">
+                        <div class="space-y-4">
+                            <p><strong>答案：</strong></p>
+                            <p>1. <strong>氧化铝 (<code>Al₂O₃</code>)</strong> 是<strong class="text-sky-600">离子化合物</strong>，熔融态<strong class="text-sky-600">能导电</strong>，可以被电解。</p>
+                            <p>2. <strong>氯化铝 (<code>AlCl₃</code>)</strong> 是<strong class="text-emerald-600">共价化合物</strong>，熔融态<strong class="text-emerald-600">不能导电</strong>，无法通过电解制备铝单质。</p>
+                        </div>
+                    </div>
+                    <!-- 电解铝示意图 -->
+                    <div class="flex justify-center items-center p-4">
+                        <svg class="w-full h-64" viewBox="0 0 250 200">
+                            <title>电解熔融氧化铝示意图</title>
+                            <!-- 电解槽 -->
+                            <path d="M 20 50 H 230 V 170 H 20 Z" fill="#f1f5f9" stroke="#475569" stroke-width="2"/>
+                            <rect x="20" y="140" width="210" height="30" fill="#e2e8f0"/>
+                            <text x="125" y="160" font-size="12" fill="#475569" text-anchor="middle">熔融 Al₂O₃ (含冰晶石)</text>
+                            
+                            <!-- 阴极 (槽内壁) -->
+                            <path d="M 30 60 H 220 V 140 H 30 Z" fill="none" stroke="#64748b" stroke-width="4"/>
+                            <text x="50" y="185" font-size="12" fill="#3b82f6" text-anchor="middle">阴极 (-)</text>
+                            <path d="M 70 170 V 190 H 180 V 170" stroke="#3b82f6" stroke-width="2" fill="none"/>
+                            <circle cx="125" cy="190" r="3" fill="#3b82f6"/>
+                            <text x="125" y="198" font-size="10" fill="#3b82f6" text-anchor="middle">Al (液)</text>
+
+                            <!-- 阳极 (碳棒) -->
+                            <rect x="70" y="30" width="30" height="80" fill="#334155" stroke="black" stroke-width="1.5"/>
+                            <rect x="150" y="30" width="30" height="80" fill="#334155" stroke="black" stroke-width="1.5"/>
+                            <rect x="70" y="20" width="110" height="10" fill="#ef4444"/>
+                            <text x="125" y="15" font-size="12" fill="#ef4444" text-anchor="middle">阳极 (+)</text>
+                            
+                            <!-- 气泡 (O2) -->
+                            <circle cx="85" cy="120" r="3" fill="white" stroke="#475569"/>
+                            <circle cx="165" cy="120" r="3" fill="white" stroke="#475569"/>
+                            <circle cx="80" cy="130" r="2" fill="white" stroke="#475569"/>
+                            <circle cx="170" cy="130" r="2" fill="white" stroke="#475569"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. 应用实例：工业制铝 -->
+        <!-- 删除：移除重复的幻灯片 -->
+        <!--
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>5. 应用实例：工业制铝</h2>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-8 rounded-lg text-xl">
+                    <p class="font-bold text-2xl text-center">思考：为什么工业制铝电解的是熔融的 <code>Al₂O₃</code> 而不是 <code>AlCl₃</code>？</p>
+                    <div class="mt-6 space-y-4">
+                        <p><strong>答案：</strong></p>
+                        <p>1. <strong>氧化铝 (<code>Al₂O₃</code>)</strong> 是<strong class="text-sky-600">离子化合物</strong>，熔融态<strong class="text-sky-600">能导电</strong>，可以被电解。</p>
+                        <p>2. <strong>氯化铝 (<code>AlCl₃</code>)</strong> 是<strong class="text-emerald-600">共价化合物</strong>，熔融态<strong class="text-emerald-600">不能导电</strong>，无法通过电解制备铝单质。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        -->
+
+        <!-- 总结：化学键与物质类别 (一) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>总结：化学键与物质类别 (一)</h2>
+                <div class="mt-8 text-lg space-y-6">
+                    <div class="bg-indigo-50 border border-indigo-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-indigo-800 text-xl">离子化合物</h3>
+                        <ul class="mt-3 list-disc list-inside space-y-2">
+                            <li><strong class="text-indigo-600">一定有</strong>：离子键</li>
+                            <li><strong class="text-indigo-600">可能有</strong>：极性共价键 (例: <code>NaOH</code>, Na⁺ 与 [OH]⁻ 间是离子键, O-H 是极性共价键)</li>
+                            <li><strong class="text-indigo-600">可能有</strong>：非极性共价键 (例: <code>Na₂O₂</code>, Na⁺ 与 [O₂]²⁻ 间是离子键, O-O 是非极性共价键)</li>
+                        </ul>
+                    </div>
+                    <div class="bg-violet-50 border border-violet-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-violet-800 text-xl">共价化合物</h3>
+                         <ul class="mt-3 list-disc list-inside space-y-2">
+                            <li><strong class="text-violet-600">一定有</strong>：极性共价键 (因为是化合物，由不同元素组成) (例: <code>HCl</code>, <code>CCl₄</code>)</li>
+                            <li><strong class="text-violet-600">可能有</strong>：非极性共价键 (例: <code>H₂O₂</code>, O-O 键; <code>C₂H₆</code>, C-C 键)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 总结：化学键与物质类别 (二) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>总结：化学键与物质类别 (二)</h2>
+                <div class="mt-8 text-lg space-y-6">
+                    <div class="bg-purple-50 border border-purple-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-purple-800 text-xl">共价单质</h3>
+                        <ul class="mt-3 list-disc list-inside space-y-2">
+                            <li><strong>定义：</strong> 相同元素组成的单质。</li>
+                            <li><strong class="text-purple-600">一定有</strong>：非极性共价键</li>
+                            <li><strong>例如：</strong> <code>Cl₂</code>, <code>H₂</code>, <code>N₂</code>, 金刚石 (<code>C</code>)</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-gray-800 text-xl">稀有气体</h3>
+                         <ul class="mt-3 list-disc list-inside space-y-2">
+                            <li><strong>例如：</strong> He, Ne, Ar ...</li>
+                            <li><strong class="text-red-600">不含任何化学键</strong>。</li>
+                            <li class="text-slate-600">(注意：不是所有物质都有化学键)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 电子式 - 定义 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>电子式 (Lewis Structures) - 定义</h2>
+                <div class="mt-8 bg-teal-50 border border-teal-200 p-8 rounded-lg text-xl">
+                    <p>在元素符号周围，用<strong class="text-teal-600">小黑点 (●)</strong> 或<strong class="text-teal-600">叉 (×)</strong> 来表示原子或离子的<strong class="text-red-600">最外层电子</strong>的式子。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 电子式 - 原子 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>电子式 - 原子的表示</h2>
+                <p class="mt-8 text-lg text-slate-700">关键：<strong class="text-red-600">少几个电子=形成几个键</strong>。因此，倾向于形成共价键的电子要<strong class="text-red-600">分开点</strong>。</p>
+                <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="lewis">Na·</div>
+                    <div class="lewis">·Al·</div>
+                    <div class="lewis">·Ċ·</div>
+                    <div class="lewis">·N̈:</div>
+                    <div class="lewis">:Ö·</div>
+                    <div class="lewis">:C̈l·</div>
+                </div>
+                <ul class="mt-4 text-lg list-disc list-inside space-y-1">
+                    <li><strong>碳 (C)</strong>: 最外层4个，差4个，形成4个键 (分四边点)。</li>
+                    <li><strong>氮 (N)</strong>: 最外层5个，差3个，形成3个键 (1对, 3单)。</li>
+                    <li><strong>氧 (O)</strong>: 最外层6个，差2个，形成2个键 (2对, 2单)。</li>
+                    <li><strong>氯 (Cl)</strong>: 最外层7个，差1个，形成1个键 (3对, 1单)。</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 电子式 - 简单离子 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>电子式 - 简单离子</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800 text-xl">简单阳离子</h3>
+                        <p class="mt-3">失去最外层电子，不画点。</p>
+                        <p class="lewis mt-2">Na⁺      Mg²⁺</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-red-800 text-xl">简单阴离子</h3>
+                        <p class="mt-3">得到电子，<strong class="text-red-600">必须加中括号 <code>[]</code></strong> 并标明电荷。</p>
+                        <p class="lewis mt-2">[ :C̈l: ]⁻</p>
+                        <p class="lewis mt-2">[ :Ö: ]²⁻</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 电子式 - 复杂离子 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>电子式 - 复杂(原子团)离子</h2>
+                <p class="mt-8 text-lg text-slate-700">同样需要加中括号 <code>[]</code> 并标明电荷。</p>
+                <div class="mt-4 space-y-4">
+                    <div class="lewis">
+[ :Ö:H ]⁻
+<span class="text-sm text-slate-600">(氢氧根离子)</span>
+                    </div>
+                    <div class="lewis">
+[ :Ö:Ö: ]²⁻
+<span class="text-sm text-slate-600">(过氧根离子)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 电子式 - 离子化合物 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>电子式 - 离子化合物</h2>
+                <p class="mt-8 text-lg text-slate-700">将阳离子和阴离子的电子式<strong class="text-sky-600">分开写</strong>。注意“多包围少”的写法。</p>
+                <div class="mt-4 space-y-4">
+                    <p class="lewis">Na⁺ [ :C̈l: ]⁻ <span class="text-sm text-slate-600">(NaCl)</span></p>
+                    <p class="lewis">[ :F̈: ]⁻ Ca²⁺ [ :F̈: ]⁻ <span class="text-sm text-slate-600">(CaF₂)</span></p>
+                    <p class="lewis">K⁺ [ :Ö:H ]⁻ <span class="text-sm text-slate-600">(KOH)</span></p>
+                    <p class="lewis">Na⁺ [ :Ö:Ö: ]²⁻ Na⁺ <span class="text-sm text-slate-600">(Na₂O₂)</span></p>
+                    <p class="lewis">[ NH₄ ]⁺ [ :C̈l: ]⁻ <span class="text-sm text-slate-600">(NH₄Cl)</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 电子式 - 共价分子 (一) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-emerald-500 rounded"></span>电子式 - 共价分子 (一)</h2>
+                <p class="mt-8 text-lg text-slate-700">通过<strong class="text-emerald-600">共用电子对</strong>使各原子满足稳定结构 (H=2, 其他=8)。<strong class="text-red-600">不要省略孤对电子</strong>。</p>
+                <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="lewis">H:H <span class="text-sm text-slate-600">(H₂)</span></div>
+                    <div class="lewis">:F̈:F̈: <span class="text-sm text-slate-600">(F₂)</span></div>
+                    <div class="lewis">:C̈l:C̈l: <span class="text-sm text-slate-600">(Cl₂)</span></div>
+                    <div class="lewis">:Ö::Ö: <span class="text-sm text-slate-600">(O₂)</span></div>
+                    <div class="lewis">:N:::N: <span class="text-sm text-slate-600">(N₂)</span></div>
+                    <div class="lewis">H:C̈l: <span class="text-sm text-slate-600">(HCl)</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 电子式 - 共价分子 (二) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-emerald-500 rounded"></span>电子式 - 共价分子 (二)</h2>
+                <!-- 修改：用SVG替换原有的lewis文本框，展示分子模型 -->
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- H₂O (水) -->
+                    <div class="bg-gray-50 p-4 rounded-lg flex flex-col items-center">
+                        <svg class="w-36 h-36" viewBox="0 0 150 150">
+                            <title>H₂O (水) - V形</title>
+                            <circle cx="75" cy="65" r="30" fill="#ef4444"/>
+                            <text x="75" y="72" font-size="20" fill="white" font-family="monospace" text-anchor="middle">O</text>
+                            <circle cx="45" cy="115" r="15" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+                            <text x="45" y="119" font-size="12" fill="black" font-family="monospace" text-anchor="middle">H</text>
+                            <circle cx="105" cy="115" r="15" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+                            <text x="105" y="119" font-size="12" fill="black" font-family="monospace" text-anchor="middle">H</text>
+                            <line x1="68" y1="80" x2="50" y2="105" stroke="#64748b" stroke-width="3"/>
+                            <line x1="82" y1="80" x2="100" y2="105" stroke="#64748b" stroke-width="3"/>
+                        </svg>
+                        <p class="mono mt-2">H₂O (V形)</p>
+                    </div>
+                    <!-- NH₃ (氨气) -->
+                    <div class="bg-gray-50 p-4 rounded-lg flex flex-col items-center">
+                        <svg class="w-36 h-36" viewBox="0 0 150 150">
+                            <title>NH₃ (氨气) - 三角锥形</title>
+                            <circle cx="75" cy="65" r="28" fill="#3b82f6"/>
+                            <text x="75" y="72" font-size="20" fill="white" font-family="monospace" text-anchor="middle">N</text>
+                            <circle cx="75" cy="115" r="15" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+                            <text x="75" y="119" font-size="12" fill="black" font-family="monospace" text-anchor="middle">H</text>
+                            <circle cx="35" cy="105" r="15" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+                            <text x="35" y="109" font-size="12" fill="black" font-family="monospace" text-anchor="middle">H</text>
+                            <circle cx="115" cy="105" r="15" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+                            <text x="115" y="109" font-size="12" fill="black" font-family="monospace" text-anchor="middle">H</text>
+                            <line x1="75" y1="88" x2="75" y2="103" stroke="#64748b" stroke-width="3"/>
+                            <line x1="65" y1="80" x2="45" y2="98" stroke="#64748b" stroke-width="3"/>
+                            <line x1="85" y1="80" x2="105" y2="98" stroke="#64748b" stroke-width="3"/>
+                        </svg>
+                        <p class="mono mt-2">NH₃ (三角锥形)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新增页面：电子式 - 共价分子 (三) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-emerald-500 rounded"></span>电子式 - 共价分子 (三)</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- CH₄ (甲烷) -->
+                    <div class="bg-gray-50 p-4 rounded-lg flex flex-col items-center">
+                        <svg class="w-36 h-36" viewBox="0 0 150 150">
+                             <title>CH₄ (甲烷) - 正四面体</title>
+                            <circle cx="75" cy="75" r="25" fill="#334155"/>
+                            <text x="75" y="81" font-size="20" fill="white" font-family="monospace" text-anchor="middle">C</text>
+                            <circle cx="75" cy="35" r="15" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+                            <text x="75" y="39" font-size="12" fill="black" font-family="monospace" text-anchor="middle">H</text>
+                            <circle cx="75" cy="115" r="15" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+                            <text x="75" y="119" font-size="12" fill="black" font-family="monospace" text-anchor="middle">H</text>
+                            <circle cx="35" cy="85" r="15" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+                            <text x="35" y="89" font-size="12" fill="black" font-family="monospace" text-anchor="middle">H</text>
+                            <circle cx="115" cy="85" r="15" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+                            <text x="115" y="89" font-size="12" fill="black" font-family="monospace" text-anchor="middle">H</text>
+                            <line x1="75" y1="53" x2="75" y2="67" stroke="#64748b" stroke-width="3"/>
+                            <line x1="75" y1="92" x2="75" y2="103" stroke="#64748b" stroke-width="3"/>
+                            <line x1="58" y1="79" x2="47" y2="82" stroke="#64748b" stroke-width="3"/>
+                            <line x1="92" y1="79" x2="103" y2="82" stroke="#64748b" stroke-width="3"/>
+                        </svg>
+                        <p class="mono mt-2">CH₄ (正四面体)</p>
+                    </div>
+                    <!-- CO₂ (二氧化碳) -->
+                    <div class="bg-gray-50 p-4 rounded-lg flex flex-col items-center">
+                        <svg class="w-36 h-36" viewBox="0 0 150 150">
+                            <title>CO₂ (二氧化碳) - 直线形</title>
+                            <circle cx="75" cy="75" r="25" fill="#334155"/>
+                            <text x="75" y="81" font-size="20" fill="white" font-family="monospace" text-anchor="middle">C</text>
+                            <circle cx="30" cy="75" r="20" fill="#ef4444"/>
+                            <text x="30" y="80" font-size="15" fill="white" font-family="monospace" text-anchor="middle">O</text>
+                            <circle cx="120" cy="75" r="20" fill="#ef4444"/>
+                            <text x="120" y="80" font-size="15" fill="white" font-family="monospace" text-anchor="middle">O</text>
+                            <!-- 双键 -->
+                            <line x1="48" y1="72" x2="62" y2="72" stroke="#64748b" stroke-width="3"/>
+                            <line x1="48" y1="78" x2="62" y2="78" stroke="#64748b" stroke-width="3"/>
+                            <line x1="88" y1="72" x2="102" y2="72" stroke="#64748b" stroke-width="3"/>
+                            <line x1="88" y1="78" x2="102" y2="78" stroke="#64748b" stroke-width="3"/>
+                        </svg>
+                        <p class="mono mt-2">CO₂ (直线形)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 电子式 - 共价分子 (四) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-emerald-500 rounded"></span>电子式 - 共价分子 (四)</h2>
+                <p class="mt-8 text-lg text-slate-700">注意<strong class="text-emerald-600">过氧化氢 (<code>H₂O₂</code>)</strong>，它同时含有极性键 (O-H) 和非极性键 (O-O)。</p>
+                <div class="mt-4">
+                    <div class="lewis">
+  H:Ö:Ö:H
+<span class="text-sm text-slate-600">(H₂O₂)</span>
+                    </div>
+                </div>
+                <!-- 
+                <div class="mt-6 bg-emerald-50 border border-emerald-200 p-6 rounded-lg text-xl">
+                    <h3 class="font-bold text-emerald-800">规律：</h3>
+                    <p class="mt-2">原子少几个电子满足8电子结构，就会形成几组共用电子对（几个共价键）。</p>
+                </div>
+                 -->
+            </div>
+        </div>
+        
+        <!-- 随堂练习 (一) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (一)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列物质中，只含有共价键的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> NaCl</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> H₂O</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> NaOH</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> Na₂O₂</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习 (一)：解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (一)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>H₂O (水) 是共价化合物，只含有 H-O 极性共价键。</p>
+                    <p class="text-slate-600">(A) NaCl 是离子化合物，含离子键。</p>
+                    <p class="text-slate-600">(C) NaOH 和 (D) Na₂O₂ 都是离子化合物，既含有离子键，也含有共价键。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 (二) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (二)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列原子的电子式书写正确的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 镁 <code>Mg:</code></p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 氮 <code>·N̈·</code></p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 氧 <code>:Ö:</code></p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 氟 <code>:F̈·</code></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习 (二)：解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (二)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>(D) 氟(F)最外层7个电子，差1个电子成键，表示为3对孤对电子和1个单电子 (<code>:F̈·</code>)，正确。</p>
+                    <p class="text-slate-600">(A) 镁(Mg)最外层2个电子，应为 <code>·Mg·</code>。</p>
+                    <p class="text-slate-600">(B) 氮(N)最外层5个电子，差3个成键，应为 <code>·N̈:</code>。</p>
+                    <p class="text-slate-600">(C) 氧(O)最外层6个电子，差2个成键，应为 <code>:Ö·</code>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 (三) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (三)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列离子化合物的电子式书写不正确的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> K⁺ [ :F̈: ]⁻</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> Mg²⁺ [ :C̈l: ]⁻</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> K⁺ [ :Ö:H ]⁻</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> Na⁺ [ :Ö:Ö: ]²⁻ Na⁺</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习 (三)：解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (三)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>氯化镁的化学式为 MgCl₂，电子式应为阴阳离子分开写，且符合化学计量数，即 [ :C̈l: ]⁻ Mg²⁺ [ :C̈l: ]⁻。</p>
+                    <p class="text-slate-600">(C) 选项中的 KOH 我在题目中改为了 K⁺，与 (A)(D) 保持一致。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 (四) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (四)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>物质 H₂O₂ (过氧化氢) 中含有的化学键类型是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 仅极性键</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 仅非极性键</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 极性键和非极性键</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 离子键</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习 (四)：解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (四)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>H₂O₂ 的结构为 H-O-O-H。不同种元素(O-H)之间形成的是极性共价键，相同种元素(O-O)之间形成的是非极性共价键。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 (五) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (五)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>某化合物在熔融状态下不能导电，但在水溶液中能导电，该物质可能是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> NaOH (固)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> Al₂O₃ (固)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> HCl (气)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> C₂H₅OH (液)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习 (五)：解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (五)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>HCl 是共价化合物，其熔融态(液氯化氢)由分子构成，不导电；但 HCl 溶于水电离成 H⁺ 和 Cl⁻，水溶液能导电。</p>
+                    <p class="text-slate-600">(A) 和 (B) 是离子化合物，熔融态能导电。</p>
+                    <p class="text-slate-600">(D) 乙醇是共价化合物(非电解质)，熔融态和水溶液均不导电。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 课程总结 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>课程总结</h2>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-8 rounded-lg text-xl">
+                    <p>本章节的知识点<strong class="text-gray-700">非常零散、繁琐</strong>，需要记忆的内容很多，这是学不好的主要原因。</p>
+                    <p class="mt-4">请大家务必把前面每一个零散的知识点都学习熟练。</p>
+                    <p class="mt-6 font-bold text-slate-800">接下来：</p>
+                    <p class="mt-2">我们将通过<strong class="text-sky-600">考点精华</strong>来训练<strong class="text-sky-600">元素推断</strong>和<strong class="text-sky-600">元素周期律</strong>的综合应用，这样才能得心应手！</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看，我们下节课再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

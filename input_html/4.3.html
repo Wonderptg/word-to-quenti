@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>对数函数 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 400px; /* 保证内容较少时也有足够高度 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .cartoon-canvas {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            width: 100px;
+            height: 100px;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+
+            .section:last-child {
+                page-break-after: auto;
+            }
+            .cartoon-canvas, .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+
+        <!-- Section 1: Title -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">你好，我是对数！</h1>
+                <p class="text-2xl text-slate-600 mt-4">Logarithm</p>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 2: The Story (Intro) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">一个分裂细菌引发的故事</h2>
+                <p class="mt-6 text-xl text-slate-700 leading-relaxed">
+                    嘿，同学们好！咱们先来玩个小游戏。想象一下，你有一种超级细菌，它每分钟分裂一次，数量翻一倍。
+                </p>
+                <div class="mt-4 text-center text-lg space-y-2">
+                    <p>从1个细菌变成8个，需要几分钟？ <span class="font-bold text-blue-600 font-mono text-xl">2³ = 8</span>，所以是 <span class="font-bold text-blue-600 text-xl">3</span> 分钟！</p>
+                    <p>那变成64个呢？ <span class="font-bold text-blue-600 font-mono text-xl">2⁶ = 64</span>，所以是 <span class="font-bold text-blue-600 text-xl">6</span> 分钟！</p>
+                </div>
+                <div class="mt-8 bg-amber-50 p-6 rounded-lg">
+                    <p class="text-center text-xl font-bold text-amber-800">现在难度升级：</p>
+                    <p class="mt-2 text-center text-2xl font-bold text-red-600">从1个细菌变成40个，需要几分钟？</p>
+                    <p class="mt-4 text-lg text-slate-700 leading-relaxed">
+                        嗯... 5分钟是32个，6分钟是64个。那40个肯定是在5到6分钟之间... 这个精确的时间点该怎么表示呢？
+                    </p>
+                    <p class="mt-2 text-lg text-slate-700 leading-relaxed">
+                        为了“命名”这个精确时间，数学家们发明了一个新工具，它的名字就叫做——<strong class="text-2xl">对数</strong>。
+                    </p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 3: Intro -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">给新朋友“上户口”</h2>
+                <p class="mt-8 text-xl text-slate-700 leading-relaxed font-mono">
+                    所以，当 2ˣ = 40 时，我们就把这个神秘的 x 记作：
+                </p>
+                <p class="mt-4 text-4xl font-bold text-center text-red-600 font-mono">
+                    x = log₂40
+                </p>
+                <p class="mt-4 text-lg text-center leading-relaxed">
+                    跟我读：“以 <strong class="text-blue-600">2</strong> 为 <strong class="text-blue-600">底</strong>，<strong class="text-green-600">40</strong> 的 <strong class="text-green-600">对数</strong>”。<br>
+                    这个 <strong class="text-blue-600">小小的2</strong> 叫 <strong class="text-blue-600">底数</strong>，<strong class="text-green-600">正常的40</strong> 叫 <strong class="text-green-600">真数</strong>。<br>
+                    整个式子的含义就是 <strong class="text-red-600">“2的多少次方等于40？”</strong>
+                </p>
+                <div class="mt-6 bg-amber-50 p-6 rounded-lg text-lg text-center">
+                    <p class="font-semibold text-xl">最重要的核心技能：自由转换！</p>
+                     <p class="mt-2 text-slate-600">指数和对数就像一枚硬币的两面，可以随时翻转。</p>
+                    <p class="mt-2 text-2xl font-mono">5³ = 125 &lt;=&gt; log₅125 = 3</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 4: Rules -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">对数的“家规”</h2>
+                <p class="mt-4 text-lg text-slate-600">不是什么数都能放进对数里。它的规矩来自于指数：</p>
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                    <div class="bg-blue-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-700 text-xl">底数 a</h3>
+                        <p class="mt-2">必须 <strong class="text-red-600">a > 0</strong> 且 <strong class="text-red-600">a ≠ 1</strong>。</p>
+                        <p class="mt-2 text-sm text-slate-500">（你想想，如果底数是1，那1的任何次方都是1，太无聊了！）</p>
+                    </div>
+                    <div class="bg-green-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-green-700 text-xl">真数 b</h3>
+                        <p class="mt-2">必须 <strong class="text-red-600">b > 0</strong>。</p>
+                        <p class="mt-2 text-sm text-slate-500">（因为一个正数的任何次方，结果永远是正的。）</p>
+                    </div>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 5: Property 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">对数的“超能力” (一)</h2>
+                <div class="mt-4 bg-purple-50 p-4 rounded-lg text-lg">
+                    <h3 class="font-bold text-purple-800 text-xl">超能力一：两个“隐藏彩蛋”</h3>
+                    <p class="mt-2 font-mono">logₐ1 = 0 <span class="text-sm text-purple-600 ml-4">(任何数的0次方都等于1)</span></p>
+                    <p class="mt-1 font-mono">logₐa = 1 <span class="text-sm text-purple-600 ml-4">(任何数的1次方都等于它自己)</span></p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 6: Property 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">对数的“超能力” (二)</h2>
+                <div class="mt-4 bg-purple-50 p-4 rounded-lg text-lg font-mono">
+                    <h3 class="font-bold text-purple-800 text-xl">超能力二：合体与分裂 (加减法)</h3>
+                    <p class="mt-2"><strong>同底相加，真数相乘：</strong><br>log₆2 + log₆18 = log₆(2 × 18) = log₆(36) = 2</p>
+                    <p class="mt-1"><strong>同底相减，真数相除：</strong><br>log₂40 - log₂5 = log₂(40 ÷ 5) = log₂(8) = 3</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 7: Property 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">对数的“超能力” (三)</h2>
+                <div class="mt-4 bg-purple-50 p-4 rounded-lg text-lg">
+                    <h3 class="font-bold text-purple-800 text-xl">超能力三：指数的“弹射座椅”</h3>
+                    <p class="mt-2 font-mono">logₐᵐ(bⁿ) = (n/m)logₐb</p>
+                     <p class="mt-1 text-sm text-purple-600">记忆方法：上面的帽子飞出去还在上面（分子），下面的帽子飞出去就跑到下面（分母）。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 8: Property 3 Example -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">“弹射座椅”应用</h2>
+                <div class="mt-4 bg-purple-50 p-6 rounded-lg text-lg">
+                    <h3 class="font-bold text-purple-800 text-xl mb-4 font-mono">实战演练：log₂₇9</h3>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 9: Property 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">对数的“超能力” (四)</h2>
+                <div class="mt-4 bg-purple-50 p-4 rounded-lg text-lg font-mono">
+                    <h3 class="font-bold text-purple-800 text-xl">超能力四：终极变身术 (换底公式)</h3>
+                    <p class="mt-2">logₐb = log<sub>c</sub>b / log<sub>c</sub>a</p>
+                    <p class="mt-2 border-t border-purple-200 pt-2"><strong>超好用的“倒装句”：</strong>1 / logₐb = log<sub>b</sub>a</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 10: Property 4 Example -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">“换底公式”应用</h2>
+                <div class="mt-4 bg-purple-50 p-6 rounded-lg text-lg">
+                    <h3 class="font-bold text-purple-800 text-xl mb-4 font-mono">实战演练：计算 log₂5 × log₅8</h3>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 11: Big Boss Challenge -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2">挑战大BOSS</h2>
+                <p class="mt-6 text-2xl text-center font-mono">计算：2log₆3 + log₆4 - 1/log₂6</p>
+                <div class="mt-4 bg-teal-50 p-6 rounded-lg text-lg">
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 12: Problem Type 1 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">课堂练习 (题型一：概念)</h2>
+                <div class="mt-6 text-lg space-y-6 font-mono">
+                    <p><strong>问题:</strong> 方程 2ˣ = 7 的解为 ______。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 13: Problem Type 2 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">课堂练习 (题型二：运算)</h2>
+                <div class="mt-6 text-lg space-y-6 font-mono">
+                    <p><strong>问题:</strong> lg2 + lg5 = ( &nbsp; ) <br>
+                        <span class="ml-4">A. 4</span>
+                        <span class="ml-4">B. 3</span>
+                        <span class="ml-4">C. 2</span>
+                        <span class="ml-4">D. 1</span>
+                    </p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 14: Problem Type 3 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">课堂练习 (题型三：转化)</h2>
+                <div class="mt-6 text-lg space-y-6 font-mono">
+                    <p><strong>问题:</strong> 求下列各式中的x值： <br>
+                       (1) log₅x = 3 <br> 
+                       (2) log₃(2x+1) = 3 <br>
+                       (3) log₁/₈x = 3 <br> 
+                       (4) log₂8ˣ = -3
+                    </p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 15: Problem Type 4 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">课堂练习 (题型四：性质)</h2>
+                <div class="mt-6 text-lg space-y-6 font-mono">
+                    <p><strong>问题:</strong> 设 log₇4 = a, log₇3 = b，则 log₄₉36 = ( &nbsp; )<br>
+                        <span class="ml-4">A. (1/2)a - b</span>
+                        <span class="ml-4">B. (1/2)b + a</span>
+                        <span class="ml-4">C. (1/2)a + b</span>
+                        <span class="ml-4">D. (1/2)b - a</span>
+                    </p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 16: Problem Type 5 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">课堂练习 (题型五：换底)</h2>
+                <div class="mt-6 text-lg space-y-6 font-mono">
+                    <p><strong>问题:</strong> 若 ln2 = a, ln3 = b, 则 log₈18 = ( &nbsp; )<br>
+                        <span class="ml-4">A. (a+3b)/a³</span>
+                        <span class="ml-4">B. (a+2b)/3a</span>
+                        <span class="ml-4">C. (a+2b)/a³</span>
+                        <span class="ml-4">D. (a+3b)/3a</span>
+                    </p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 17: Answers -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+               <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">课堂练习 - 答案</h2>
+               <div class="mt-6 bg-slate-50 p-6 rounded-lg">
+                    <div class="text-base space-y-4 font-mono">
+                       <p><strong>题型一: 答案：x = log₂7</strong><br>解：根据对数的概念可得方程 2ˣ = 7 的解为：x = log₂7。</p>
+                       <p><strong>题型二: 答案：D</strong><br>解：lg2 + lg5 = lg(2 × 5) = lg10 = 1。</p>
+                       <p><strong>题型三: 答案：(1) 125 (2) 7/2 (3) 1/2 (4) -1</strong><br>
+                          (1)解：因为 log₅x = 3，所以 x = 5³ = 125；<br>
+                          (2)解：因为 log₂(2x+1) = 3 所以 2x+1 = 2³ = 8，解得 x = 7/2；<br>
+                          (3)解：因为 log₁/₈x = 3，所以 (1/8)x = (1/2)³，所以 x = 1/2；<br>
+                          (4)解：因为 log₂8ˣ = -3，所以 8ˣ = 2⁻³ = 8⁻¹，所以 x = -1。
+                       </p>
+                       <p><strong>题型四: 答案：C</strong><br>解：log₄₉36 = log₇²6² = log₇6 = log₇(2+3) = log₇2 + log₇3 = (1/2)log₇4 + log₇3 = (1/2)a + b。</p>
+                       <p><strong>题型五: 答案：B</strong><br>解：log₈18 = ln18 / ln8 = ln(3² × 2) / ln(2³) = (2ln3 + ln2) / (3ln2) = (2b+a)/3a。</p>
+                   </div>
+               </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 18: Summary -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">总结</h2>
+                <p class="mt-6 text-xl text-slate-700">记住，对数不可怕，它只是指数的“反面”，它只问一个问题：“我是多少次方？”</p>
+                <p class="mt-4 text-xl font-semibold">我们学了它的四大超能力：</p>
+                <ul class="mt-2 list-disc list-inside space-y-2 text-lg">
+                    <li>加减法（合体分裂）</li>
+                    <li>幂运算（弹射座椅）</li>
+                    <li>换底公式（终极变身）</li>
+                    <li>还有两个隐藏彩蛋！</li>
+                </ul>
+                 <p class="mt-6 text-lg text-slate-600">数学就是这样，不断发明新的工具来解决新的问题。现在，这个强大的工具交到你们手上了！</p>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Draw cartoon for all small canvases
+            const canvases = document.querySelectorAll('.cartoon-canvas');
+            canvases.forEach((canvas, index) => {
+                const ctx = canvas.getContext('2d');
+                drawCartoon(ctx, index, canvas.width, canvas.height); 
+            });
+        });
+
+        function drawCartoon(ctx, index, w, h) {
+            ctx.clearRect(0, 0, w, h);
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 2;
+
+            switch (index % 18) { // Updated for 18 sections
+                case 0: // log text for Title page
+                    ctx.font = 'bold 30px Arial';
+                    ctx.fillStyle = '#ef4444';
+                    ctx.fillText('log', w*0.1, h*0.6);
+                    ctx.font = 'bold 20px Arial';
+                    ctx.fillText('a', w*0.4, h*0.7);
+                    ctx.fillText('b', w*0.6, h*0.6);
+                    break;
+                case 1: // Bacteria splitting for the story intro
+                    ctx.fillStyle = '#84cc16';
+                    ctx.beginPath(); ctx.arc(w*0.3, h*0.5, w*0.1, 0, 2*Math.PI); ctx.fill();
+                    ctx.beginPath(); ctx.arc(w*0.7, h*0.3, w*0.1, 0, 2*Math.PI); ctx.fill();
+                    ctx.beginPath(); ctx.arc(w*0.7, h*0.7, w*0.1, 0, 2*Math.PI); ctx.fill();
+                    ctx.beginPath(); ctx.moveTo(w*0.4, h*0.5); ctx.lineTo(w*0.6, h*0.35); ctx.stroke();
+                    ctx.beginPath(); ctx.moveTo(w*0.4, h*0.5); ctx.lineTo(w*0.6, h*0.65); ctx.stroke();
+                    break;
+                case 2: // Coin flip for conversion
+                    ctx.fillStyle = '#f59e0b';
+                    ctx.beginPath(); ctx.arc(w/2, h/2, w*0.3, 0, 2*Math.PI); ctx.fill();
+                    ctx.fillStyle = 'white';
+                    ctx.font = 'bold 20px Arial';
+                    ctx.fillText('5³', w*0.4, h*0.55);
+                    break;
+                case 3: // Door with rules
+                    ctx.strokeStyle = '#78350f';
+                    ctx.strokeRect(w*0.2, h*0.1, w*0.6, h*0.8);
+                    ctx.beginPath(); ctx.arc(w*0.7, h*0.5, w*0.05, 0, 2*Math.PI); ctx.stroke();
+                    ctx.font = '12px Arial';
+                    ctx.fillStyle='black';
+                    ctx.fillText('a>0, a≠1', w*0.3, h*0.4);
+                    ctx.fillText('b>0', w*0.4, h*0.6);
+                    break;
+                case 4: // Star for easter eggs
+                    ctx.fillStyle = '#facc15';
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.5, h*0.1);
+                    ctx.lineTo(w*0.6, h*0.4);
+                    ctx.lineTo(w*0.9, h*0.4);
+                    ctx.lineTo(w*0.65, h*0.6);
+                    ctx.lineTo(w*0.75, h*0.9);
+                    ctx.lineTo(w*0.5, h*0.7);
+                    ctx.lineTo(w*0.25, h*0.9);
+                    ctx.lineTo(w*0.35, h*0.6);
+                    ctx.lineTo(w*0.1, h*0.4);
+                    ctx.lineTo(w*0.4, h*0.4);
+                    ctx.closePath();
+                    ctx.fill();
+                    break;
+                case 5: // Plus and Minus
+                    ctx.font = 'bold 50px Arial';
+                    ctx.fillStyle = '#22c55e';
+                    ctx.fillText('+', w*0.2, h*0.5);
+                    ctx.fillStyle = '#ef4444';
+                    ctx.fillText('-', w*0.6, h*0.5);
+                    break;
+                case 6: // Catapult
+                    ctx.strokeStyle = '#ca8a04';
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.1, h*0.8); ctx.lineTo(w*0.4, h*0.8);
+                    ctx.lineTo(w*0.8, h*0.3);
+                    ctx.stroke();
+                    ctx.fillStyle = 'black';
+                    ctx.font = 'bold 20px Arial';
+                    ctx.fillText('n', w*0.7, h*0.2);
+                    break;
+                case 7: // Calculator for example
+                    ctx.fillStyle = '#64748b';
+                    ctx.fillRect(w*0.2, h*0.1, w*0.6, h*0.8);
+                    ctx.fillStyle = '#cbd5e1';
+                    ctx.fillRect(w*0.25, h*0.2, w*0.5, h*0.2);
+                    ctx.fillStyle = '#475569';
+                    let btnSize = w * 0.12;
+                    for (let i = 0; i < 3; i++) {
+                        for (let j = 0; j < 3; j++) {
+                            ctx.fillRect(w*0.28 + j * (btnSize + w*0.05), h*0.45 + i * (btnSize + w*0.05), btnSize, btnSize);
+                        }
+                    }
+                    break;
+                case 8: // Globe for base change
+                    ctx.strokeStyle = '#3b82f6';
+                    ctx.beginPath(); ctx.arc(w/2, h/2, w*0.35, 0, 2*Math.PI); ctx.stroke();
+                    ctx.beginPath(); ctx.moveTo(w*0.15, h/2); ctx.lineTo(w*0.85, h/2); ctx.stroke();
+                    ctx.beginPath(); ctx.ellipse(w/2, h/2, w*0.15, w*0.35, 0, 0, 2*Math.PI); ctx.stroke();
+                    break;
+                case 9: // Detective
+                    ctx.fillStyle = '#f5d0a9';
+                    ctx.beginPath();
+                    ctx.arc(w/2, h*0.4, w*0.3, 0, Math.PI*2); // face
+                    ctx.fill();
+                    ctx.fillStyle = '#4b5563';
+                    ctx.fillRect(w*0.2, h*0.2, w*0.6, h*0.1); // hat brim
+                    ctx.fillRect(w*0.3, h*0.1, w*0.4, h*0.1); // hat top
+                    ctx.fillRect(w*0.1, h*0.6, w*0.8, h*0.3); // coat
+                    break;
+                case 10: // Big Boss (Dragon/Monster simple)
+                    ctx.fillStyle = '#16a34a';
+                    ctx.beginPath();
+                    ctx.arc(w * 0.5, h * 0.6, w * 0.3, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.fillStyle = 'white';
+                    ctx.beginPath(); ctx.arc(w * 0.4, h * 0.5, w * 0.08, 0, 2 * Math.PI); ctx.fill();
+                    ctx.beginPath(); ctx.arc(w * 0.6, h * 0.5, w * 0.08, 0, 2 * Math.PI); ctx.fill();
+                    ctx.fillStyle = 'red';
+                    ctx.beginPath();
+                    ctx.arc(w * 0.4, h * 0.5, w * 0.03, 0, 2 * Math.PI);
+                    ctx.arc(w * 0.6, h * 0.5, w * 0.03, 0, 2 * Math.PI);
+                    ctx.fill();
+                    break;
+                case 11: case 12: case 13: case 14: case 15: // Test paper for all problems
+                    ctx.fillStyle = 'white';
+                    ctx.strokeStyle = 'black';
+                    ctx.fillRect(w*0.1, h*0.1, w*0.8, h*0.8);
+                    ctx.strokeRect(w*0.1, h*0.1, w*0.8, h*0.8);
+                     for(let i=0.3; i<0.8; i+=0.15){
+                         ctx.beginPath();
+                         ctx.moveTo(w*0.2, h*i);
+                         ctx.lineTo(w*0.8, h*i);
+                         ctx.stroke();
+                     }
+                    break;
+                case 16: // Key for answers
+                    ctx.fillStyle = '#f59e0b';
+                    ctx.beginPath();
+                    ctx.arc(w*0.7, h*0.3, w*0.15, 0, 2*Math.PI); // Head
+                    ctx.fill();
+                    ctx.fillStyle = 'white';
+                    ctx.beginPath();
+                    ctx.arc(w*0.7, h*0.3, w*0.08, 0, 2*Math.PI); // Hole
+                    ctx.fill();
+                    ctx.fillStyle = '#f59e0b';
+                    ctx.fillRect(w*0.2, h*0.4, w*0.5, w*0.1); // Shaft
+                    ctx.fillRect(w*0.2, h*0.55, w*0.1, w*0.15); // Bit 1
+                    ctx.fillRect(w*0.4, h*0.55, w*0.1, w*0.15); // Bit 2
+                    break;
+                default: // Thumbs up for summary
+                    ctx.fillStyle = '#fde047';
+                    ctx.strokeStyle = 'black';
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.3, h*0.9);
+                    ctx.lineTo(w*0.3, h*0.5);
+                    ctx.arc(w*0.5, h*0.5, w*0.2, Math.PI, 0);
+                    ctx.lineTo(w*0.7, h*0.9);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
+

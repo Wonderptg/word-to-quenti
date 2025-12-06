@@ -1,0 +1,519 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>概率统计第二讲：样本空间与随机事件</title>
+ <script src="https://cdn.tailwindcss.com"></script>
+ 
+ <!-- MathJax Configuration -->
+ <script>
+ window.MathJax = {
+ tex: {
+ inlineMath: [['$', '$'], ['\\(', '\\)']],
+ displayMath: [['$$', '$$'], ['\\[', '\\]']],
+ processEscapes: true
+ },
+ svg: { fontCache: 'global' }
+ };
+ </script>
+ <script id="MathJax-script" async src="https://cdn.bootcdn.net/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+ <style>
+ html, body {
+ margin: 0;
+ padding: 0;
+ font-family: 'Noto Serif SC', serif;
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
+ background-color: #f1f5f9;
+ }
+ 
+ #presentation-container {
+ max-width: 56rem;
+ margin: 2rem auto;
+ background-color: white;
+ border-radius: 0.5rem;
+ box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+ }
+
+ .section {
+ width: 100%;
+ box-sizing: border-box;
+ padding: 3rem 2rem;
+ position: relative; 
+ min-height: 520px;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+ }
+ 
+ .section:not(:last-child) {
+ border-bottom: 1px solid #e5e7eb;
+ }
+ 
+ .formula-box {
+ background-color: #f8fafc;
+ border-left: 4px solid #3b82f6;
+ padding: 1rem;
+ margin-top: 1rem;
+ border-radius: 0.25rem;
+ font-size: 1.25rem;
+ line-height: 1.8;
+ overflow-x: auto;
+ text-align: center;
+ width: 100%;
+ max-width: 80%;
+ }
+
+ @media print {
+ @page {
+ size: landscape;
+ margin: 0;
+ }
+
+ body, html {
+ background-color: white;
+ -webkit-print-color-adjust: exact;
+ print-color-adjust: exact;
+ }
+
+ #presentation-container {
+ margin: 0;
+ padding: 0;
+ border: none;
+ box-shadow: none;
+ width: 100%;
+ max-width: 100%;
+ }
+ 
+ .section {
+ height: 100vh;
+ width: 100vw;
+ page-break-after: always;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+ padding: 2rem;
+ box-sizing: border-box;
+ border-bottom: none;
+ }
+ 
+ .section:last-child {
+ page-break-after: auto;
+ }
+
+ svg {
+ -webkit-print-color-adjust: exact !important;
+ print-color-adjust: exact !important;
+ }
+
+ .grid, .flex {
+ display: block !important;
+ }
+ }
+ </style>
+</head>
+<body>
+
+ <div id="presentation-container">
+ 
+ <!-- Slide 1: Title -->
+ <div class="section">
+ <h1 class="text-4xl font-bold mb-4 text-center text-slate-900">概率统计第二讲：样本空间与随机事件</h1>
+ <div class="w-24 h-1 bg-blue-600 mb-6"></div>
+ <p class="text-2xl text-gray-600">数据不恐怖：概率统计的核心框架</p>
+ </div>
+
+ <!-- Slide 2: Three Pillars -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-8 text-blue-800">概率学习的三大支柱</h2>
+ <div class="space-y-6 text-xl max-w-3xl w-full">
+ <div class="p-6 bg-gray-50 rounded-lg">
+ <span class="font-bold text-blue-600 text-2xl block mb-2">1. 样本空间</span>
+ 你要告诉我，你做的这个实验，所有可能发生的结果有哪些？
+ </div>
+ <div class="p-6 bg-gray-50 rounded-lg">
+ <span class="font-bold text-blue-600 text-2xl block mb-2">2. 随机事件</span>
+ 我们关心的那些不确定的现象（如：明天是否下雨）。
+ </div>
+ <div class="p-6 bg-gray-50 rounded-lg">
+ <span class="font-bold text-blue-600 text-2xl block mb-2">3. 概率</span>
+ 用来刻画这些随机事件发生可能性大小的数值。
+ </div>
+ </div>
+ </div>
+
+ <!-- Slide 3: Sample Space Definition -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-6 text-blue-800">1. 样本空间</h2>
+ <div class="text-xl space-y-4 mb-8 text-center max-w-3xl">
+ <p><strong>随机现象</strong>：无法事先准确知道结果的现象。</p>
+ <p><strong>样本点</strong>：随机现象出现的每一个结果。</p>
+ </div>
+ <div class="formula-box">
+ $$ \text{样本空间 } \Omega = \{ \text{所有可能的样本点} \} $$
+ </div>
+ <p class="mt-6 text-lg text-gray-500">通常用大写希腊字母 $\Omega$ (Omega) 来表示</p>
+ </div>
+
+ <!-- Slide 4: Example - Coin Toss -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-10 text-blue-800">🌰 举个栗子：扔硬币</h2>
+ <div class="grid grid-cols-1 md:grid-cols-2 gap-12 text-xl w-full max-w-5xl">
+ <div class="flex flex-col items-center justify-start bg-gray-50 p-6 rounded-lg">
+ <h3 class="font-bold mb-4 text-2xl">扔一枚硬币</h3>
+ <p class="text-gray-600 mb-4">可能是正，也可能是反</p>
+ <div class="font-mono bg-white p-3 rounded shadow-sm border border-gray-100">
+ $\Omega = \{ \text{正面}, \text{反面} \}$
+ </div>
+ </div>
+ 
+ <div class="flex flex-col items-center justify-start bg-gray-50 p-6 rounded-lg">
+ <h3 class="font-bold mb-4 text-2xl">扔两枚硬币</h3>
+ <p class="text-gray-600 mb-4">正正、正反、反正、反反</p>
+ <div class="font-mono bg-white p-3 rounded shadow-sm border border-gray-100">
+ $$ \Omega = \{ \text{正正}, \text{正反}, \text{反正}, \text{反反} \} $$
+ </div>
+ <p class="text-sm text-gray-500 mt-4">一共 4 种结果</p>
+ </div>
+ </div>
+ </div>
+
+ <!-- Slide 5: Random Event Definition -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-6 text-blue-800">2. 随机事件</h2>
+ <p class="text-xl mb-6 text-center max-w-3xl leading-relaxed">
+ 在的框架下，我们把样本空间的<strong class="text-blue-600">非空真子集</strong>定义为<strong class="text-blue-600">随机事件</strong>。
+ </p>
+ <div class="bg-blue-50 px-8 py-4 rounded-lg text-xl text-center mb-10 text-blue-900 font-semibold">
+ 所有的事件，本质上就是样本空间 $\Omega$ 的子集。
+ </div>
+ 
+ <div class="grid grid-cols-2 gap-8 text-lg w-full max-w-4xl">
+ <div class="bg-gray-50 p-6 rounded text-center">
+ <strong class="text-green-700 text-xl block mb-2">必然事件</strong>
+ 全集 $\Omega$<br>包含所有结果，一定要发生
+ </div>
+ <div class="bg-gray-50 p-6 rounded text-center">
+ <strong class="text-red-700 text-xl block mb-2">不可能事件</strong>
+ 空集 $\varnothing$<br>不包含任何结果，一定不发生
+ </div>
+ </div>
+ </div>
+
+ <!-- Slide 6: Inclusion Relation SVG -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-4 text-blue-800">事件的关系：包含 ($A \subseteq B$)</h2>
+ <p class="text-xl mb-8 text-gray-600">如果事件 $A$ 发生了，事件 $B$ 就一定发生。</p>
+ 
+ <div class="transform scale-110">
+ <svg width="400" height="250" viewBox="0 0 400 250">
+ <defs>
+ <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+ <polygon points="0 0, 10 3.5, 0 7" fill="#555" />
+ </marker>
+ </defs>
+ <circle cx="200" cy="125" r="90" stroke="#3f51b5" stroke-width="3" fill="#e8eaf6" />
+ <text x="200" y="55" text-anchor="middle" font-weight="bold" fill="#3f51b5" font-size="18">B</text>
+ <circle cx="200" cy="150" r="45" stroke="#c51162" stroke-width="3" fill="#f8bbd0" />
+ <text x="200" y="155" text-anchor="middle" font-weight="bold" fill="#c51162" font-size="18">A</text>
+ <text x="200" y="235" text-anchor="middle" font-size="14" fill="#666">若 A 发生，B 必发生 (A ⊆ B)</text>
+ </svg>
+ </div>
+ </div>
+
+ <!-- Slide 7: Operations (Union & Intersection) -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-8 text-blue-800">事件的运算：并与交</h2>
+ <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl">
+ <div class="flex flex-col items-center p-8 bg-gray-50 rounded-lg">
+ <h3 class="text-2xl font-bold mb-4 text-indigo-700">并事件 (和事件)</h3>
+ <p class="text-lg mb-4 text-center">两个事件<strong>至少发生一个</strong><br>就像集合的并集，两个圈合起来</p>
+ <div class="formula-box">
+ $$ A+B \iff A \text{ 或 } B \text{ 发生} $$
+ </div>
+ </div>
+ 
+ <div class="flex flex-col items-center p-8 bg-gray-50 rounded-lg">
+ <h3 class="text-2xl font-bold mb-4 text-indigo-700">交事件 (积事件)</h3>
+ <p class="text-lg mb-4 text-center">两个事件<strong>同时发生</strong><br>就像集合的交集，重叠的部分</p>
+ <div class="formula-box">
+ $$ AB \iff A \text{ 且 } B \text{ 发生} $$
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Slide 8: Mutually Exclusive vs Complementary SVG -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-6 text-blue-800">图形辨析：互斥与对立</h2>
+ 
+ <div class="w-full max-w-5xl flex justify-center">
+ <svg width="650" height="260" viewBox="0 0 650 260">
+ <g transform="translate(20,20)">
+ <text x="130" y="20" text-anchor="middle" font-weight="bold" font-size="16" fill="#1a237e">互斥事件 (Mutually Exclusive)</text>
+ <rect x="0" y="40" width="260" height="160" rx="8" fill="none" stroke="#9e9e9e" stroke-width="2" stroke-dasharray="5,5"/>
+ <text x="245" y="190" font-size="14" fill="#757575">Ω</text>
+ <circle cx="80" cy="120" r="40" fill="#bbdefb" stroke="#1976d2" stroke-width="2"/>
+ <text x="80" y="125" text-anchor="middle" font-weight="bold" fill="#0d47a1">A</text>
+ <circle cx="180" cy="120" r="40" fill="#c8e6c9" stroke="#388e3c" stroke-width="2"/>
+ <text x="180" y="125" text-anchor="middle" font-weight="bold" fill="#1b5e20">B</text>
+ <text x="130" y="225" text-anchor="middle" font-size="13" fill="#424242">A ∩ B = Ø (无交集)</text>
+ </g>
+ <line x1="325" y1="20" x2="325" y2="240" stroke="#e0e0e0" stroke-width="2"/>
+ <g transform="translate(370,20)">
+ <text x="130" y="20" text-anchor="middle" font-weight="bold" font-size="16" fill="#1a237e">对立事件 (Complementary)</text>
+ <rect x="0" y="40" width="260" height="160" rx="8" fill="none" stroke="#333" stroke-width="2"/>
+ <text x="245" y="65" font-size="14" fill="#333">Ω</text>
+ <rect x="0" y="40" width="130" height="160" fill="#bbdefb" fill-opacity="0.6" stroke="none" rx="8" style="clip-path: inset(0 0 0 0 round 8px 0 0 8px)"/>
+ <rect x="130" y="40" width="130" height="160" fill="#ffccbc" fill-opacity="0.6" stroke="none" rx="8" style="clip-path: inset(0 0 0 0 round 0 8px 8px 0)"/>
+ <line x1="130" y1="40" x2="130" y2="200" stroke="#333" stroke-width="2"/>
+ <text x="65" y="125" text-anchor="middle" font-weight="bold" font-size="20" fill="#0d47a1">A</text>
+ <g transform="translate(195, 125)">
+ <text x="0" y="0" text-anchor="middle" font-weight="bold" font-size="20" fill="#bf360c">A</text>
+ <line x1="-8" y1="-22" x2="8" y2="-22" stroke="#bf360c" stroke-width="2"/>
+ </g>
+ <text x="130" y="225" text-anchor="middle" font-size="13" fill="#424242">A ∩ B = Ø 且 A ∪ B = Ω</text>
+ </g>
+ </svg>
+ </div>
+ </div>
+
+ <!-- Slide 9: Mutually Exclusive vs Complementary Text -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-8 text-blue-800">核心概念辨析</h2>
+ <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl">
+ <div class="bg-green-50 p-6 rounded-lg">
+ <h3 class="text-2xl font-bold mb-4 text-green-800">互斥事件</h3>
+ <p class="text-lg mb-2">两件事<strong>不能同时发生</strong>。</p>
+ <p class="text-lg mb-4">就像两个分开的圈，没有交点。</p>
+ <div class="bg-white p-3 rounded border border-green-200 text-center font-mono">
+ $$ A \cap B = \varnothing $$
+ </div>
+ </div>
+ 
+ <div class="bg-red-50 p-6 rounded-lg">
+ <h3 class="text-2xl font-bold mb-4 text-red-800">对立事件</h3>
+ <p class="text-lg mb-2">1. 必须是互斥的 ($A \cap B = \varnothing$)</p>
+ <p class="text-lg mb-2">2. 并集必须是全集 ($A \cup B = \Omega$)</p>
+ <div class="bg-white p-3 rounded border border-red-200 text-center font-bold text-red-700 mt-2">
+ “非此即彼：要么是你，要么是我，没别人了”
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Slide 10: Example Question -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-6 text-blue-800">🔥 实战演练：扔骰子</h2>
+ <div class="text-xl space-y-6 text-center w-full max-w-3xl">
+ <div class="bg-gray-100 p-4 rounded text-gray-700">
+ 样本空 $\Omega = \{1, 2, 3, 4, 5, 6\}$
+ </div>
+ 
+ <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 text-left mx-auto inline-block">
+ <p class="mb-4 font-bold text-lg">定义三个事件：</p>
+ <ul class="list-disc pl-8 space-y-2">
+ <li>事件 $A$ (基数)：$\{1, 3, 5\}$</li>
+ <li>事件 $B$ (偶数)：$\{2, 4, 6\}$</li>
+ <li>事件 $C$ (出6)：$\{6\}$</li>
+ </ul>
+ </div>
+ 
+ <p class="font-bold text-2xl mt-8 text-blue-600">请分析 A、B、C 之间的关系</p>
+ </div>
+ </div>
+
+ <!-- Slide 11: Example Answer -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-6 text-blue-800">解析：扔骰子</h2>
+ <div class="w-full max-w-4xl space-y-5 text-lg">
+ <!-- Inclusion -->
+ <div class="bg-blue-50 p-5 rounded-lg">
+ <div class="font-bold text-blue-800 text-xl mb-2">1. 包含关系 ($C$ 与 $B$)</div>
+ <p>$C=\{6\}$, $B=\{2,4,6\}$。因为 $6$ 是偶数，所以 $C \subseteq B$。</p>
+ </div>
+ 
+ <!-- Mutually Exclusive -->
+ <div class="bg-green-50 p-5 rounded-lg">
+ <div class="font-bold text-green-800 text-xl mb-2">2. 互斥关系 ($A$ 与 $C$)</div>
+ <p>$A=\{1,3,5\}$, $C=\{6\}$。</p>
+ <p>交集：$\{1,3,5\} \cap \{6\} = \varnothing$。没有公共元素！</p>
+ <p class="font-semibold mt-1">结论：$A$ 和 $C$ 互斥。</p>
+ </div>
+ 
+ <!-- Complementary -->
+ <div class="bg-red-50 p-5 rounded-lg">
+ <div class="font-bold text-red-800 text-xl mb-2">3. 对立关系 ($A$ 与 $B$)</div>
+ <p>互斥吗？是 (无公共元素)。</p>
+ <p>并集？$\{1,3,5\} \cup \{2,4,6\} = \{1,2,3,4,5,6\} = \Omega$。</p>
+ <p class="font-semibold mt-1">结论：$A$ 和 $B$ 是对立事件。</p>
+ </div>
+ </div>
+ </div>
+
+ <!-- Slide 12: Summary -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-8 text-blue-800">本讲小结</h2>
+ <div class="text-xl max-w-4xl w-full text-center">
+ <p class="mb-8">一定要学会用<strong>集合的眼光</strong>看事件：</p>
+ 
+ <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+ <div class="bg-gray-100 p-4 rounded text-gray-800">包含 $\rightarrow$ 子集</div>
+ <div class="bg-gray-100 p-4 rounded text-gray-800">同时发生 $\rightarrow$ 交集</div>
+ <div class="bg-gray-100 p-4 rounded text-gray-800">至少发生一个 $\rightarrow$ 并集</div>
+ <div class="bg-gray-100 p-4 rounded text-gray-800">不能同时发生 $\rightarrow$ 互斥</div>
+ <div class="bg-blue-100 p-4 rounded text-blue-900 font-bold col-span-1 md:col-span-2">非此即彼 $\rightarrow$ 对立</div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Quiz 1 -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-8 text-blue-800">🧐 随堂小测验 1</h2>
+ <div class="text-2xl text-center max-w-3xl">
+ <p class="mb-8">掷一枚骰子，样本空间 $\Omega$ 包含几个样本点？</p>
+ <div class="text-left space-y-4 inline-block bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+ <div>A. 1个</div>
+ <div>B. 2个 (奇/偶)</div>
+ <div>C. 6个</div>
+ <div>D. 无数个</div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Quiz 1 Answer -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-6 text-green-700">答案与解析</h2>
+ <div class="text-center">
+ <div class="text-6xl font-bold text-green-600 mb-8">C</div>
+ <div class="text-2xl max-w-3xl leading-relaxed">
+ 样本空间 $\Omega = \{1, 2, 3, 4, 5, 6\}$。<br>
+ 每一个点数都是一个样本点，共 6 个。
+ </div>
+ </div>
+ </div>
+
+ <!-- Quiz 2 -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-8 text-blue-800">🧐 随堂小测验 2</h2>
+ <div class="text-2xl text-center max-w-3xl">
+ <p class="mb-8">“必然事件”对应集合论中的什么概念？</p>
+ <div class="text-left space-y-4 inline-block bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+ <div>A. 空集 $\varnothing$</div>
+ <div>B. 全集 $\Omega$</div>
+ <div>C. 真子集</div>
+ <div>D. 补集</div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Quiz 2 Answer -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-6 text-green-700">答案与解析</h2>
+ <div class="text-center">
+ <div class="text-6xl font-bold text-green-600 mb-8">B</div>
+ <div class="text-2xl max-w-3xl leading-relaxed">
+ 必然事件是指在实验中一定会发生的事件。<br>
+ 它包含样本空间中的所有样本点，即全集 $\Omega$。
+ </div>
+ </div>
+ </div>
+
+ <!-- Quiz 3 -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-8 text-blue-800">🧐 随堂小测验 3</h2>
+ <div class="text-2xl text-center max-w-3xl">
+ <p class="mb-8">事件 A 与 事件 B “互斥” 意味着什么？</p>
+ <div class="text-left space-y-4 inline-block bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+ <div>A. 它们必须对立</div>
+ <div>B. $A \cup B = \Omega$</div>
+ <div>C. $A \cap B = \varnothing$ (不可能同时发生)</div>
+ <div>D. 它们包含同样的样本点</div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Quiz 3 Answer -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-6 text-green-700">答案与解析</h2>
+ <div class="text-center">
+ <div class="text-6xl font-bold text-green-600 mb-8">C</div>
+ <div class="text-2xl max-w-3xl leading-relaxed">
+ 互斥意味着两个事件不能同时发生。<br>
+ 在集合语言中，这表示它们的交集为空集，即 $A \cap B = \varnothing$。
+ </div>
+ </div>
+ </div>
+
+ <!-- Quiz 4 -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-8 text-blue-800">🧐 随堂小测验 4</h2>
+ <div class="text-2xl text-center max-w-3xl">
+ <p class="mb-8">事件 A 与 B 对立，则它们一定互斥吗？</p>
+ <div class="text-left space-y-4 inline-block bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+ <div>A. 一定</div>
+ <div>B. 不一定</div>
+ <div>C. 一定不互斥</div>
+ <div>D. 看情况</div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Quiz 4 Answer -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-6 text-green-700">答案与解析</h2>
+ <div class="text-center">
+ <div class="text-6xl font-bold text-green-600 mb-8">A</div>
+ <div class="text-2xl max-w-3xl leading-relaxed">
+ 对立事件的定义包含两个条件：<br>
+ 1. 互斥 ($A \cap B = \varnothing$)<br>
+ 2. 并集为全集 ($A \cup B = \Omega$)<br>
+ 所以对立事件<strong>一定</strong>是互斥的。
+ </div>
+ </div>
+ </div>
+
+ <!-- Quiz 5 -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-8 text-blue-800">🧐 随堂小测验 5</h2>
+ <div class="text-2xl text-center max-w-3xl">
+ <p class="mb-8">扔两枚硬币，事件“至少有一个正面”包含几个样本点？</p>
+ <div class="text-left space-y-4 inline-block bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+ <div>A. 1个 (正正)</div>
+ <div>B. 2个 (正反, 反正)</div>
+ <div>C. 3个 (正正, 正反, 反正)</div>
+ <div>D. 4个 (全部)</div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Quiz 5 Answer -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-6 text-green-700">答案与解析</h2>
+ <div class="text-center">
+ <div class="text-6xl font-bold text-green-600 mb-8">C</div>
+ <div class="text-2xl max-w-3xl leading-relaxed">
+ 样本空间为 $\{ \text{正正}, \text{正反}, \text{反正}, \text{反反} \}$。<br>
+ “至少一个正面”包含：<br>
+ $\{ \text{正正}, \text{正反}, \text{反正} \}$，共 3 个。
+ </div>
+ </div>
+ </div>
+
+ <!-- Closing Slide -->
+ <div class="section">
+ <h1 class="text-4xl font-bold mb-6 text-slate-900">谢谢聆听</h1>
+ <p class="text-2xl text-gray-600">下一讲：概率的数值计算</p>
+ </div>
+
+ </div>
+
+</body>
+</html>

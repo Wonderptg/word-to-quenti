@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>走进微观世界——分散系与胶体</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2rem;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+
+        .diagram-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background-color: #f8fafc;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- Slide 1: 开场 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">走进微观世界</h1>
+                <p class="text-2xl text-slate-700 mt-2">—— 分散系与胶体</p>
+            </div>
+        </div>
+        
+        <!-- Slide 2: 引入 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2">生活中的化学秘密</h2>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-xl">
+                    <div class="bg-teal-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-teal-800">速溶咖啡</h3>
+                        <p class="mt-2 text-slate-600">粉末倒进水里，搅拌一下，均匀“溶解”。</p>
+                    </div>
+                    <div class="bg-orange-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-orange-800">鲜榨橙汁</h3>
+                        <p class="mt-2 text-slate-600">静置一会儿，下面会沉淀一层果肉。</p>
+                    </div>
+                </div>
+                 <p class="mt-10 text-2xl font-semibold text-center text-slate-800">为什么现象完全不同？这背后就隐藏着我们今天要学习的<strong class="text-teal-600">分散系</strong>。</p>
+            </div>
+        </div>
+
+        <!-- Slide 3: 什么是分散系 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">一、什么是分散系？</h2>
+                <div class="mt-8 bg-blue-50 p-6 rounded-lg text-xl">
+                    <p class="font-bold text-blue-800">定义：</p>
+                    <p class="mt-2">把一种或几种物质以<strong class="text-blue-600">粒子</strong>的形式，分散到另一种物质里所形成的<strong class="text-blue-600">混合物</strong>。</p>
+                    <hr class="my-4 border-blue-200">
+                    <p class="font-bold text-blue-800">组成：</p>
+                    <ul class="list-disc list-inside mt-2 space-y-1">
+                        <li><strong>分散质</strong>: 被分散的物质 (量较少，如咖啡粉)</li>
+                        <li><strong>分散剂</strong>: 去分散别人的物质 (量较多，如热水)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: 分类方法 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-red-500 pb-2">核心分类方法</h2>
+                 <p class="mt-8 text-2xl text-center font-semibold text-slate-800">根据<strong class="text-red-600">分散质粒子直径的大小</strong>来分</p>
+                 <div class="diagram-container">
+                    <svg width="450" height="150" viewBox="0 0 450 150" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Solution -->
+                        <g transform="translate(75, 75)">
+                            <circle cx="0" cy="0" r="40" fill="#e0f2fe"/>
+                            <circle cx="0" cy="0" r="1.5" fill="#0ea5e9"/>
+                            <text x="0" y="55" text-anchor="middle" font-size="14">溶液 (&lt;1nm)</text>
+                        </g>
+                        <!-- Colloid -->
+                        <g transform="translate(225, 75)">
+                            <circle cx="0" cy="0" r="40" fill="#fee2e2"/>
+                            <circle cx="-10" cy="-5" r="4" fill="#ef4444"/><circle cx="12" cy="8" r="4" fill="#ef4444"/>
+                            <text x="0" y="55" text-anchor="middle" font-size="14">胶体 (1-100nm)</text>
+                        </g>
+                        <!-- Suspension -->
+                         <g transform="translate(375, 75)">
+                            <circle cx="0" cy="0" r="40" fill="#fef3c7"/>
+                            <circle cx="-15" cy="-10" r="8" fill="#f59e0b"/><circle cx="15" cy="15" r="8" fill="#f59e0b"/>
+                            <text x="0" y="55" text-anchor="middle" font-size="14">浊液 (&gt;100nm)</text>
+                        </g>
+                    </svg>
+                 </div>
+                 <p class="mt-10 text-xl font-semibold text-center text-red-700 bg-red-100 p-4 rounded-lg">今天的主角：胶体。这个数值范围，一定要牢牢记在心里！</p>
+            </div>
+        </div>
+
+        <!-- Slide 5: 胶体的本质 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800">二、胶体 (Colloid)</h2>
+                 <p class="mt-10 text-2xl text-slate-700">是什么根本原因，让胶体和溶液、浊液的性质表现得如此不同？</p>
+                 <p class="mt-8 text-3xl font-bold text-slate-800 bg-amber-100 p-8 rounded-lg shadow-lg">
+                    本质区别：<br>分散质粒子的大小！
+                 </p>
+                 <p class="mt-8 text-xl text-slate-600">正因如此，胶体有四个非常特别的性质，我们称之为“四大法宝”。</p>
+            </div>
+        </div>
+
+        <!-- Slide 6: 丁达尔效应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-indigo-500 pb-2">法宝一：丁达尔效应</h2>
+                <div class="diagram-container">
+                    <svg width="400" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="beamGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:rgb(255,255,0);stop-opacity:0" />
+                                <stop offset="20%" style="stop-color:rgb(255,255,0);stop-opacity:0.8" />
+                                <stop offset="80%" style="stop-color:rgb(255,255,0);stop-opacity:0.8" />
+                                <stop offset="100%" style="stop-color:rgb(255,255,0);stop-opacity:0" />
+                            </linearGradient>
+                        </defs>
+                        <rect x="50" y="50" width="100" height="100" fill="#a5f3fc" stroke="#0891b2" stroke-width="2"/>
+                        <path d="M 0 95 L 50 95" stroke="gold" stroke-width="4" />
+                        <text x="100" y="170" text-anchor="middle" font-size="16">溶液 (无光路)</text>
+                        <rect x="250" y="50" width="100" height="100" fill="#fecaca" stroke="#dc2626" stroke-width="2"/>
+                        <path d="M 200 95 L 300 95" stroke="url(#beamGradient)" stroke-width="15" />
+                        <path d="M 200 95 L 400 95" stroke="gold" stroke-width="4" />
+                        <text x="300" y="170" text-anchor="middle" font-size="16">胶体 (有光路)</text>
+                        <path d="M 0 95 L 20 85 L 20 105 Z" fill="gold" />
+                        <rect x="0" y="90" width="10" height="10" fill="gray"/>
+                    </svg>
+                </div>
+                 <div class="mt-8 bg-indigo-50 p-6 rounded-lg text-lg">
+                     <p class="text-xl font-bold text-indigo-800">原因：</p>
+                     <p class="mt-2">胶体粒子大小适中，能使光线发生<strong class="text-indigo-600">散射</strong>，将光“打散”到四面八方。</p>
+                     <p class="text-xl font-bold text-indigo-800 mt-4">应用：</p>
+                     <p class="mt-2">鉴别<strong class="text-indigo-600">胶体</strong>和<strong class="text-indigo-600">溶液</strong>的实验方法。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: 电泳 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">法宝二：电泳</h2>
+                <div class="diagram-container">
+                    <svg width="350" height="180" viewBox="0 0 350 180" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="50" y="40" width="250" height="100" fill="#f0fdf4" stroke="#16a34a" stroke-width="2" rx="10"/>
+                        <rect x="20" y="80" width="30" height="20" fill="#ef4444"/><text x="35" y="95" text-anchor="middle" fill="white">+</text>
+                        <rect x="300" y="80" width="30" height="20" fill="#3b82f6"/><text x="315" y="95" text-anchor="middle" fill="white">-</text>
+                        <circle cx="120" cy="90" r="8" fill="#7f1d1d"/><text x="120" y="85" text-anchor="middle" font-size="10" fill="white">+</text>
+                        <circle cx="160" cy="70" r="8" fill="#7f1d1d"/><text x="160" y="65" text-anchor="middle" font-size="10" fill="white">+</text>
+                        <circle cx="200" cy="110" r="8" fill="#7f1d1d"/><text x="200" y="105" text-anchor="middle" font-size="10" fill="white">+</text>
+                        <path d="M 120 90 L 250 90" stroke="#7f1d1d" stroke-dasharray="3" stroke-width="1.5"/>
+                        <path d="M 160 70 L 250 70" stroke="#7f1d1d" stroke-dasharray="3" stroke-width="1.5"/>
+                        <path d="M 200 110 L 250 110" stroke="#7f1d1d" stroke-dasharray="3" stroke-width="1.5"/>
+                        <text x="175" y="160" text-anchor="middle" font-size="14">Fe(OH)₃胶粒带正电，向阴极移动</text>
+                    </svg>
+                </div>
+                 <div class="mt-8 bg-green-50 p-6 rounded-lg text-lg">
+                     <p class="text-xl font-bold text-green-800">原因：</p>
+                     <p class="mt-2">胶体粒子表面积大，易吸附离子而<strong class="text-green-600">带上电荷</strong>。（注意：是胶粒带电，整个胶体呈电中性）</p>
+                     <p class="text-xl font-bold text-green-800 mt-4">应用：</p>
+                     <p class="mt-2">DNA鉴定、净化烟尘等。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: 聚沉 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-orange-500 pb-2">法宝三：聚沉</h2>
+                 <div class="diagram-container">
+                    <svg width="400" height="180" viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg">
+                        <defs><marker id="arrow_precip" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#9a3412" /></marker></defs>
+                        <!-- Before -->
+                        <rect x="50" y="30" width="100" height="100" fill="#fff7ed" stroke="#fb923c" stroke-width="2"/>
+                        <circle cx="80" cy="60" r="6" fill="#f97316"/><text x="80" y="55" text-anchor="middle" font-size="8" fill="white">+</text>
+                        <circle cx="120" cy="80" r="6" fill="#f97316"/><text x="120" y="75" text-anchor="middle" font-size="8" fill="white">+</text>
+                        <circle cx="90" cy="100" r="6" fill="#f97316"/><text x="90" y="95" text-anchor="middle" font-size="8" fill="white">+</text>
+                        <text x="100" y="150" text-anchor="middle" font-size="14">稳定的胶体</text>
+                        <!-- Arrow -->
+                        <path d="M 170 80 L 230 80" stroke="black" stroke-width="2.5" marker-end="url(#arrow_precip)"/>
+                        <text x="180" y="75" text-anchor="middle">加电解质</text>
+                        <!-- After -->
+                        <rect x="250" y="30" width="100" height="100" fill="#fff7ed" stroke="#fb923c" stroke-width="2"/>
+                        <path d="M 280 110 C 290 120, 310 120, 320 110 Z" fill="#f97316"/>
+                        <path d="M 282 108 L 295 100 L 308 108 L 318 102 L 305 115 Z" fill="#fed7aa"/>
+                        <text x="300" y="150" text-anchor="middle" font-size="14">聚沉</text>
+                    </svg>
+                 </div>
+                 <div class="mt-8 bg-orange-50 p-6 rounded-lg text-lg">
+                     <p class="text-xl font-bold text-orange-800">原因：</p>
+                     <p class="mt-2">胶粒因带有相同电荷而相互排斥，能稳定存在。加入电解质可以<strong class="text-orange-600">中和胶粒所带电荷</strong>，消除排斥力。</p>
+                     <p class="text-xl font-bold text-orange-800 mt-4">应用：</p>
+                     <p class="mt-2">明矾净水、江河入海口形成三角洲。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 9: 渗析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-cyan-500 pb-2">法宝四：渗析</h2>
+                 <div class="mt-8 bg-cyan-50 p-6 rounded-lg text-lg">
+                     <p class="text-xl font-bold text-cyan-800">原理：</p>
+                     <p class="mt-2">半透膜的孔径很小，只允许小分子和离子通过，而<strong class="text-cyan-600">胶体粒子无法通过</strong>。</p>
+                     <p class="text-xl font-bold text-cyan-800 mt-4">应用：</p>
+                     <p class="mt-2">提纯胶体、血液透析（人工肾）。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: 制备胶体 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-red-500 pb-2">三、亲手制备氢氧化铁胶体</h2>
+                <div class="diagram-container">
+                    <svg width="400" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 100 180 L 120 80 H 280 L 300 180 Z" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+                        <ellipse cx="200" cy="80" rx="80" ry="15" fill="#e0f2fe" stroke="#94a3b8" stroke-width="2"/>
+                        <text x="200" y="130" text-anchor="middle" font-size="14">沸水</text>
+                        <!-- Dropper -->
+                        <path d="M 50 20 L 70 20 L 80 50 L 60 50 Z" fill="#fde68a"/>
+                        <rect x="55" y="0" width="10" height="20" fill="#fcd34d"/>
+                        <path d="M 65 50 C 60 70, 70 80, 70 90" fill="none" stroke="#f59e0b" stroke-width="2"/>
+                        <circle cx="70" cy="95" r="4" fill="#f59e0b"/>
+                        <text x="20" y="40" font-size="14">FeCl₃</text>
+                    </svg>
+                </div>
+                 <div class="mt-8 bg-red-50 p-4 rounded-lg text-lg font-mono text-center">
+                     FeCl₃ + 3H₂O(沸水) ≜ Fe(OH)₃(胶体) + 3HCl
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 11: 总结 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-gray-500 pb-2">今日总结</h2>
+                <div class="mt-8 text-xl space-y-4">
+                    <p>• 我们认识了<strong class="text-gray-700">分散系</strong>，并掌握了按粒子大小分为<strong class="text-gray-700">溶液、胶体、浊液</strong>的核心分类方法。</p>
+                    <p>• 我们重点研究了胶体的“四大法宝”：</p>
+                    <ul class="list-disc list-inside ml-4">
+                        <li>能散射光的<strong class="text-indigo-600">丁达尔效应</strong></li>
+                        <li>粒子带电会移动的<strong class="text-green-600">电泳</strong></li>
+                        <li>加盐会沉淀的<strong class="text-orange-600">聚沉</strong></li>
+                        <li>能提纯的<strong class="text-cyan-600">渗析</strong></li>
+                    </ul>
+                    <p>• 我们还学会了如何亲手制备<strong class="text-red-600">氢氧化铁胶体</strong>。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 12: 练习题 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">随堂练习</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">下列生活中的常见物质，哪一种属于胶体？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 蔗糖水</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 泥水</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 豆浆</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 蒸馏水</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: 练习题解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">练习题：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>我们来分析各个选项：</p>
+                    <ul class="list-disc list-inside">
+                        <li>(A) 蔗糖水是蔗糖分子分散在水中，属于<strong class="text-green-700">溶液</strong>。</li>
+                        <li>(B) 泥水是泥沙颗粒分散在水中，颗粒较大，会沉淀，属于<strong class="text-green-700">浊液</strong>。</li>
+                        <li>(C) 豆浆是蛋白质等大分子分散在水中，粒子大小在1-100nm之间，属于<strong class="text-green-700">胶体</strong>。</li>
+                        <li>(D) 蒸馏水是<strong class="text-green-700">纯净物</strong>，不是分散系。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 14: 练习题一 题目 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">随堂练习（一）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">下列物质中，哪一种在水溶液中电离出的阳离子<strong class="text-red-600">全部</strong>是氢离子？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> NaHCO₃ (碳酸氢钠)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> CH₃COOH (醋酸)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> NaCl (氯化钠)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> Ba(OH)₂ (氢氧化钡)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: 练习题一 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">练习题（一）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>根据酸的定义，电离时生成的阳离子必须<strong class="text-green-700">全部</strong>是氢离子(H⁺)。</p>
+                    <ul class="list-disc list-inside">
+                        <li>(A) NaHCO₃ 电离出 Na⁺ 和 HCO₃⁻，属于盐。</li>
+                        <li>(B) CH₃COOH 是弱酸，电离出 H⁺ 和 CH₃COO⁻，阳离子全部是 H⁺。正确。</li>
+                        <li>(C) NaCl 电离出 Na⁺ 和 Cl⁻，属于盐。</li>
+                        <li>(D) Ba(OH)₂ 电离出 Ba²⁺ 和 OH⁻，属于碱。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: 练习题二 题目 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">随堂练习（二）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">下列关于硫酸 (H₂SO₄) 的描述中，<strong class="text-red-600">不正确</strong>的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 它是一种含氧酸</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 它是一种二元酸</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 它是一种强酸</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 它是一种氧化物</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: 练习题二 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">练习题（二）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>氧化物的定义是由<strong class="text-green-700">两种</strong>元素组成，且其中一种是氧元素的化合物。硫酸 (H₂SO₄) 由氢、硫、氧<strong class="text-green-700">三种</strong>元素组成，因此它不是氧化物。其它描述都是正确的。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 18: 练习题三 题目 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">随堂练习（三）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">下列哪组物质均属于强碱？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> NaOH, Cu(OH)₂</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> KOH, Ba(OH)₂</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> Ca(OH)₂, Fe(OH)₃</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> NH₃·H₂O, NaOH</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: 练习题三 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">练习题（三）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>我们需要熟记四大强碱：<code>KOH</code>, <code>NaOH</code>, <code>Ca(OH)₂</code>, <code>Ba(OH)₂</code>。</p>
+                    <ul class="list-disc list-inside">
+                        <li>(A) Cu(OH)₂ 是弱碱。</li>
+                        <li>(B) KOH 和 Ba(OH)₂ 都是强碱。</li>
+                        <li>(C) Fe(OH)₃ 是弱碱。</li>
+                        <li>(D) NH₃·H₂O (氨水) 是弱碱。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: 练习题四 题目 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">随堂练习（四）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">有一种黑色固体粉末A，可溶于稀盐酸，形成蓝色溶液B。则A物质属于下列哪一类？</p>
+                     <div class="mt-6 text-center">
+                        <svg width="300" height="80" viewBox="0 0 300 80">
+                            <rect x="20" y="20" width="80" height="40" rx="5" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+                            <text x="60" y="45" text-anchor="middle" font-size="14">A (黑色固体)</text>
+                            <path d="M 110 40 L 180 40" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+                            <text x="145" y="35" text-anchor="middle" font-size="12">+稀盐酸</text>
+                             <rect x="190" y="20" width="80" height="40" rx="5" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+                            <text x="230" y="45" text-anchor="middle" font-size="14">B (蓝色溶液)</text>
+                             <defs>
+                                <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b" />
+                                </marker>
+                            </defs>
+                        </svg>
+                    </div>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 酸性氧化物</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 碱性氧化物</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 碱</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 盐</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 21: 练习题四 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">练习题（四）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>蓝色溶液是含有铜离子(<code>Cu²⁺</code>)的特征颜色。黑色固体能与酸反应生成盐(含铜离子的盐)和水，说明该黑色固体是<strong class="text-green-700">碱性氧化物</strong>。</p>
+                    <p>推断可知 A 是 <code>CuO</code> (氧化铜)，B 是 <code>CuCl₂</code> (氯化铜)。<code>CuO</code> 是一种典型的碱性氧化物。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 22: 练习题五 题目 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">随堂练习（五）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">下列物质中，属于酸式盐的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> H₂CO₃</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> Ca(OH)₂</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> NaHSO₄</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> K₂SO₄</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 23: 练习题五 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">练习题（五）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>酸式盐是多元酸的酸根离子中仍含有可以电离的氢原子(H⁺)的盐。</p>
+                     <ul class="list-disc list-inside">
+                        <li>(A) H₂CO₃ 是酸。</li>
+                        <li>(B) Ca(OH)₂ 是碱。</li>
+                        <li>(C) NaHSO₄ 由金属阳离子(Na⁺)和含有可电离H⁺的酸根(HSO₄⁻)构成，是酸式盐。</li>
+                        <li>(D) K₂SO₄ 是正盐。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 24: 结束 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-5xl font-bold text-slate-800">课程结束</h2>
+                <p class="mt-8 text-2xl text-slate-700">希望大家也能用今天学到的知识，去发现生活中更多的化学奥秘！下课！</p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
+

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阿伏伽德罗定律</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-sky-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                </svg>
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">阿伏伽德罗定律</h1>
+                <p class="text-2xl text-slate-600 mt-2">—— 一位被低估的先知与一个伟大的定律</p>
+            </div>
+        </div>
+
+        <!-- 故事引入 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-amber-500 rounded"></span>一个被忽视了50年的天才</h2>
+                <div class="mt-8 bg-amber-50 border border-amber-200 p-8 rounded-lg text-lg text-slate-700 space-y-4">
+                    <p>19世纪初，化学界大佬<strong class="text-amber-700">道尔顿</strong>（原子论）和<strong class="text-amber-700">盖吕萨克</strong>（气体实验）互不相让，化学陷入混乱。</p>
+                    <p>一位名不见经传的意大利科学家<strong class="text-amber-800">阿伏伽德罗</strong>提出了<strong class="text-red-600">“分子假说”</strong>，完美解决了矛盾，但无人理睬。</p>
+                    <p>直到他去世后，他的理论才被世人认可，并成为化学的基石之一。为了纪念他，后人以他的名字命名了<strong class="text-red-600">阿伏伽德罗常数</strong>和<strong class="text-red-600">阿伏伽德罗定律</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 核心定律 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>阿伏伽德罗定律的核心内容</h2>
+                 <div class="mt-8 bg-teal-50 border border-teal-200 p-8 rounded-lg">
+                    <p class="text-2xl text-teal-800 leading-relaxed">在<strong class="text-red-600">同温同压</strong>下，<strong class="text-red-600">相同体积</strong>的<strong class="text-red-600">任何气体</strong>，都含有<strong class="text-red-600">相同数目</strong>的<strong class="text-red-600">分子</strong>。</p>
+                 </div>
+                 <div class="mt-6 text-xl text-slate-600 space-y-2">
+                    <p><strong>简单来说：</strong>三同（同T, 同P, 同V） → 一同（分子数n相同）</p>
+                    <p class="text-red-500"><strong>注意：</strong>定律说的是<strong class="text-red-600">分子数</strong>相同，而不是原子数相同！</p>
+                 </div>
+                 <!-- 新增示意图 -->
+                 <div class="mt-8 flex justify-around items-center text-center">
+                    <div class="w-1/4 p-4 border-2 border-dashed border-slate-300 rounded-lg bg-slate-50">
+                        <p class="font-semibold text-slate-700">气体 A</p>
+                        <svg viewBox="0 0 100 100" class="w-full h-auto mt-2">
+                            <circle cx="20" cy="25" r="5" fill="#38bdf8"></circle><circle cx="50" cy="30" r="5" fill="#38bdf8"></circle><circle cx="80" cy="20" r="5" fill="#38bdf8"></circle><circle cx="30" cy="70" r="5" fill="#38bdf8"></circle><circle cx="70" cy="65" r="5" fill="#38bdf8"></circle>
+                        </svg>
+                        <p class="text-sm text-slate-500 mt-2">5个分子</p>
+                    </div>
+                    <div class="w-1/4 p-4 border-2 border-dashed border-slate-300 rounded-lg bg-slate-50">
+                        <p class="font-semibold text-slate-700">气体 B</p>
+                        <svg viewBox="0 0 100 100" class="w-full h-auto mt-2">
+                            <rect x="15" y="20" width="10" height="10" fill="#34d399"></rect><rect x="45" y="25" width="10" height="10" fill="#34d399"></rect><rect x="75" y="15" width="10" height="10" fill="#34d399"></rect><rect x="25" y="65" width="10" height="10" fill="#34d399"></rect><rect x="65" y="60" width="10" height="10" fill="#34d399"></rect>
+                        </svg>
+                        <p class="text-sm text-slate-500 mt-2">5个分子</p>
+                    </div>
+                    <div class="w-1/4 p-4 border-2 border-dashed border-slate-300 rounded-lg bg-slate-50">
+                        <p class="font-semibold text-slate-700">气体 C</p>
+                        <svg viewBox="0 0 100 100" class="w-full h-auto mt-2">
+                            <polygon points="20,20 25,30 15,30" fill="#fbbf24"></polygon><polygon points="50,25 55,35 45,35" fill="#fbbf24"></polygon><polygon points="80,15 85,25 75,25" fill="#fbbf24"></polygon><polygon points="30,65 35,75 25,75" fill="#fbbf24"></polygon><polygon points="70,60 75,70 65,70" fill="#fbbf24"></polygon>
+                        </svg>
+                        <p class="text-sm text-slate-500 mt-2">5个分子</p>
+                    </div>
+                </div>
+                <p class="mt-4 text-center text-lg text-slate-600">条件：同温 (T), 同压 (P), 同体积 (V)</p>
+            </div>
+        </div>
+
+        <!-- 定律推论 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>重要推论与衍生</h2>
+                <p class="mt-8 text-xl text-slate-700">由核心定律可以推导出在<strong class="text-sky-600">同温同压(T, P)</strong>下的一系列正比关系：</p>
+                 <div class="mt-8 bg-sky-50 border border-sky-200 p-8 rounded-lg text-center">
+                    <p class="mono text-2xl font-bold text-sky-800">V₁ / V₂ = n₁ / n₂ = N₁ / N₂</p>
+                    <p class="mt-4 text-xl text-slate-700">气体体积之比 = 物质的量之比 = 分子数之比</p>
+                 </div>
+                 <div class="mt-6 text-xl text-slate-600">
+                    <p><strong>例：</strong>同温同压下，1L He, 2L H₂, 3L CO₂，它们的分子数之比就是 <strong class="text-red-600">1 : 2 : 3</strong>。</p>
+                 </div>
+                 <!-- 新增示意图 -->
+                 <div class="mt-8 flex justify-around items-end text-center space-x-8">
+                    <!-- Container 1 -->
+                    <div class="flex flex-col items-center">
+                        <svg width="80" height="120" viewBox="0 0 80 120">
+                            <rect x="10" y="50" width="60" height="60" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="2"></rect>
+                            <ellipse cx="40" cy="50" rx="30" ry="8" fill="#bae6fd" stroke="#0ea5e9" stroke-width="2"></ellipse>
+                            <circle cx="25" cy="70" r="4" fill="#3b82f6"></circle>
+                            <circle cx="55" cy="80" r="4" fill="#3b82f6"></circle>
+                            <circle cx="35" cy="95" r="4" fill="#3b82f6"></circle>
+                        </svg>
+                        <p class="font-semibold text-slate-700 mt-2">1 L 气体 (n 分子)</p>
+                    </div>
+                    <!-- Container 2 -->
+                    <div class="flex flex-col items-center">
+                        <svg width="80" height="180" viewBox="0 0 80 180">
+                            <rect x="10" y="50" width="60" height="120" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="2"></rect>
+                            <ellipse cx="40" cy="50" rx="30" ry="8" fill="#bae6fd" stroke="#0ea5e9" stroke-width="2"></ellipse>
+                            <circle cx="25" cy="70" r="4" fill="#3b82f6"></circle>
+                            <circle cx="55" cy="80" r="4" fill="#3b82f6"></circle>
+                            <circle cx="35" cy="95" r="4" fill="#3b82f6"></circle>
+                            <circle cx="45" cy="120" r="4" fill="#3b82f6"></circle>
+                            <circle cx="28" cy="140" r="4" fill="#3b82f6"></circle>
+                            <circle cx="60" cy="155" r="4" fill="#3b82f6"></circle>
+                        </svg>
+                        <p class="font-semibold text-slate-700 mt-2">2 L 气体 (2n 分子)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新增页: 定律应用 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>定律的初步应用：确定化学式</h2>
+                 <div class="mt-8 bg-purple-50 border border-purple-200 p-6 rounded-lg">
+                    <p class="text-xl font-semibold text-purple-800">问题：同温同压下，2体积的 AB₂ 气体与 1体积的 B₂ 气体反应，生成 2体积的气态化合物 X，求 X 的化学式。</p>
+                    <div class="mt-6 text-lg space-y-3">
+                        <p><strong>1. 体积比 → 计量数之比：</strong>根据定律，反应中各物质的计量数之比为 <code>2 : 1 : 2</code>。</p>
+                        <p><strong>2. 写出反应方程式：</strong><code>2AB₂ + 1B₂ → 2X</code></p>
+                        <p><strong>3. 原子守恒：</strong><br>反应前：A原子有 2×1=2个，B原子有 2×2 + 1×2 = 6个。</p>
+                        <p><strong>4. 求解 X：</strong>2个X分子共含有2个A和6个B，所以1个X分子含有1个A和3个B。因此 X 的化学式为 <code class="text-lg">AB₃</code>。</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 综合应用 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>综合应用：多角度比较</h2>
+                 <p class="mt-8 text-xl text-slate-700"><strong>问题：</strong>同温同压下，1 L 甲烷(CH₄) 和 2 L 二氧化碳(CO₂) 进行比较。</p>
+                 <div class="mt-6 bg-indigo-50 border border-indigo-200 p-6 rounded-lg text-lg space-y-4">
+                    <p><strong>分子数之比：</strong>体积比为 1:2，故分子数之比为 <code class="text-lg">1 : 2</code>。</p>
+                    <p><strong>原子数之比：</strong>每个CH₄有5个原子，每个CO₂有3个原子。<br>总原子数比 = (1×5) : (2×3) = <code class="text-lg">5 : 6</code>。</p>
+                    <p><strong>质量之比 (m=n×M)：</strong>物质的量之比为 1:2，M之比为 16:44。<br>质量比 = (1×16) : (2×44) = 16:88 = <code class="text-lg">2 : 11</code>。</p>
+                    <p><strong>密度之比 (ρ=m/V)：</strong>质量比为 16:88，体积比为 1:2。<br>密度比 = (16/1) : (88/2) = 16:44 = <code class="text-lg">4 : 11</code>。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 摩尔质量与密度 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-violet-500 rounded"></span>推论二：摩尔质量与密度</h2>
+                <p class="mt-8 text-xl text-slate-700">在<strong class="text-violet-600">同温同压(T, P)</strong>下，气体的摩尔质量与密度成正比。</p>
+                <div class="mt-8 bg-violet-50 border border-violet-200 p-8 rounded-lg text-center">
+                    <p class="mono text-2xl font-bold text-violet-800">M₁ / M₂ = ρ₁ / ρ₂</p>
+                </div>
+                <p class="mt-6 text-xl text-slate-600">
+                    <strong>解释：</strong>空气的平均M约为29 g/mol，H₂的M为2 g/mol。因为 2 < 29，所以在同温同压下，氢气的密度小于空气。
+                </p>
+                 <!-- 新增示意图 -->
+                <div class="mt-8 text-center">
+                    <svg viewBox="0 0 300 150" class="w-full max-w-xs mx-auto h-auto">
+                        <!-- Base of the scale -->
+                        <path d="M 140 130 L 160 130 L 150 115 Z" fill="#64748b"></path>
+                        <!-- Arm of the scale, tilted correctly -->
+                        <line x1="50" y1="45" x2="250" y2="65" stroke="#64748b" stroke-width="4" stroke-linecap="round"></line>
+                        <!-- Pivot point -->
+                        <circle cx="150" cy="55" r="5" fill="#64748b"></circle>
+                        <!-- Left side (H2 - lighter, goes up) -->
+                        <g>
+                            <line x1="50" y1="45" x2="50" y2="65" stroke="#94a3b8" stroke-width="2"></line>
+                            <circle cx="50" cy="85" r="20" fill="#c4b5fd" stroke="#8b5cf6" stroke-width="2"></circle>
+                            <text x="50" y="89" font-size="12" fill="white" text-anchor="middle" font-weight="bold">H₂</text>
+                            <text x="50" y="120" font-size="10" fill="#475569" text-anchor="middle">(M=2)</text>
+                        </g>
+                        <!-- Right side (Air - heavier, goes down) -->
+                        <g>
+                            <line x1="250" y1="65" x2="250" y2="85" stroke="#94a3b8" stroke-width="2"></line>
+                            <circle cx="250" cy="105" r="20" fill="#fde047" stroke="#f59e0b" stroke-width="2"></circle>
+                            <text x="250" y="109" font-size="12" fill="#422006" text-anchor="middle" font-weight="bold">空气</text>
+                            <text x="250" y="140" font-size="10" fill="#475569" text-anchor="middle">(M≈29)</text>
+                        </g>
+                    </svg>
+                    <p class="mt-2 text-lg text-slate-600">同T, P, V下, M越大, 质量(m)越大, 密度(ρ)越大。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 理想气体状态方程 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-red-500 rounded"></span>“解题神器”：理想气体状态方程</h2>
+                <p class="mt-8 text-xl text-slate-700">虽然高中不作要求，但理解这两个公式可以帮你解决几乎所有气体问题：</p>
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                    <div class="bg-red-50 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-red-800">基础式</h3>
+                        <p class="mono text-2xl mt-2">PV = nRT</p>
+                    </div>
+                    <div class="bg-red-50 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-red-800">变形式 (含密度)</h3>
+                        <p class="mono text-2xl mt-2">PM = ρRT</p>
+                    </div>
+                </div>
+                <p class="mt-4 text-slate-600 text-lg">其中P(压强), V(体积), n(物质的量), T(温度), M(摩尔质量), ρ(密度)是变量，R是常数。通过控制变量，可以轻松推导出所有关系。</p>
+            </div>
+        </div>
+
+        <!-- 新增页: 神器实战 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>“解题神器”实战：吹气球问题</h2>
+                 <div class="mt-8 bg-orange-50 border border-orange-200 p-6 rounded-lg">
+                    <p class="text-xl font-semibold text-orange-800">问题：同温同压下，用等质量的 CH₄, O₂, CO₂, SO₂ 四种气体分别吹出四个气球，体积最大的气球里装的是什么？</p>
+                    <div class="mt-6 text-lg space-y-3">
+                        <p><strong>1. 列出公式：</strong><code>PV = nRT</code></p>
+                        <p><strong>2. 确定常量：</strong>同温(T)、同压(P)、R是常数 → <code>V ∝ n</code> (体积与物质的量成正比)</p>
+                        <p><strong>3. 换算 n：</strong><code>n = m/M</code>，代入上式 → <code>V ∝ m/M</code></p>
+                        <p><strong>4. 再次确定常量：</strong>等质量(m) → <code>V ∝ 1/M</code> (体积与摩尔质量成反比)</p>
+                        <p><strong>5. 得出结论：</strong>摩尔质量(M)最小的气体，其体积(V)最大。</p>
+                        <p><strong>6. 比较 M：</strong>CH₄(16), O₂(32), CO₂(44), SO₂(64)。<strong class="text-red-600">CH₄的摩尔质量最小</strong>。</p>
+                        <p><strong>7. 答案：</strong>体积最大的气球里装的是<code class="text-lg">甲烷 (CH₄)</code>。</p>
+                    </div>
+                    <!-- 新增示意图 -->
+                    <div class="mt-8 flex justify-around items-end text-center text-slate-700">
+                        <div class="flex flex-col items-center"><svg viewBox="0 0 100 120" class="w-24 h-30"><path d="M 50 110 C 10 110, 10 40, 50 10 C 90 40, 90 110, 50 110 Z" fill="#34d399"></path><path d="M 50 110 L 45 115 L 55 115 Z" fill="#34d399"></path></svg><p class="font-bold mt-1">CH₄</p><p class="text-sm">(M=16)</p></div>
+                        <div class="flex flex-col items-center"><svg viewBox="0 0 100 120" class="w-20 h-24"><path d="M 50 110 C 10 110, 10 40, 50 10 C 90 40, 90 110, 50 110 Z" fill="#60a5fa"></path><path d="M 50 110 L 45 115 L 55 115 Z" fill="#60a5fa"></path></svg><p class="font-bold mt-1">O₂</p><p class="text-sm">(M=32)</p></div>
+                        <div class="flex flex-col items-center"><svg viewBox="0 0 100 120" class="w-16 h-20"><path d="M 50 110 C 10 110, 10 40, 50 10 C 90 40, 90 110, 50 110 Z" fill="#f87171"></path><path d="M 50 110 L 45 115 L 55 115 Z" fill="#f87171"></path></svg><p class="font-bold mt-1">CO₂</p><p class="text-sm">(M=44)</p></div>
+                        <div class="flex flex-col items-center"><svg viewBox="0 0 100 120" class="w-14 h-18"><path d="M 50 110 C 10 110, 10 40, 50 10 C 90 40, 90 110, 50 110 Z" fill="#a78bfa"></path><path d="M 50 110 L 45 115 L 55 115 Z" fill="#a78bfa"></path></svg><p class="font-bold mt-1">SO₂</p><p class="text-sm">(M=64)</p></div>
+                    </div>
+                    <p class="mt-4 text-center text-lg text-slate-600">等质量时，摩尔质量越小，物质的量越多，体积越大。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 例题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (一)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>同温同压下，相同体积的 H₂ 和 O₂ 含有相同的 ( )</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 原子数</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 分子数</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 质量</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 密度</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (一)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>根据阿伏伽德罗定律，在同温同压下，相同体积的任何气体都含有相同数目的分子。原子数（1:1 vs 1:2）、质量（摩尔质量不同）和密度（摩尔质量不同）均不相同。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (二)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>同温同压下，2L 的 CO₂ 和 1L 的 N₂，它们的分子数之比为 ( )</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 1 : 1</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 1 : 2</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 2 : 1</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 无法确定</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (二)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>根据阿伏伽德罗定律的推论，在同温同压下，气体的体积之比等于其分子数之比。因此，分子数之比为 <code>2 : 1</code>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (三)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>同温同压下，已知气体X的密度是气体Y的2倍，则X的摩尔质量是Y的几倍？ ( )</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 1/2 倍</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 1 倍</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 2 倍</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 4 倍</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (三)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>根据推论，在同温同压下，气体的摩尔质量之比等于其密度之比 (<code>M₁/M₂ = ρ₁/ρ₂</code>)。因此，X的摩尔质量是Y的2倍。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (四)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>关于阿伏伽德罗定律，下列说法正确的是 ( )</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 同温同压下，相同体积的任何物质都含有相同数目的分子</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 同温同压下，相同体积的任何气体都含有相同数目的原子</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 不同温度和压强下，相同体积的气体也含有相同数目的分子</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 同温同压下，1 mol H₂ 和 1 mol O₂ 的体积相同</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (四)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>定律的适用对象是气体。(A)错在“任何物质”，(B)错在“原子”，(C)错在“不同温度和压强”。(D)中，同温同压下，物质的量相同的任何气体，体积必然相同。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (五)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>同温同压下，等体积的 CH₄ 和 SO₂，它们的质量之比为？ (M(CH₄)=16, M(SO₂)=64)</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 1 : 1</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 1 : 2</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 1 : 4</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 4 : 1</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (五)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>同温同压等体积意味着它们的物质的量(n)相同。根据 <code>m = n × M</code>，质量之比就等于摩尔质量之比。所以质量比为 <code>16 : 64</code>，即 <code>1 : 4</code>。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看，下节课再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>
+
+
+

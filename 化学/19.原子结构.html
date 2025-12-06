@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>物质结构与元素周期律</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans SC', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">物质结构与元素周期律</h1>
+                <p class="text-2xl text-slate-600 mt-2">—— 原子结构入门</p>
+            </div>
+        </div>
+
+        <!-- 原子结构 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>原子结构的基本构成</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-gray-800 text-xl">原子核</h3>
+                        <ul class="list-disc list-inside mt-3 text-slate-600 space-y-2">
+                            <li><strong>质子 (P):</strong> 带1个单位正电荷</li>
+                            <li><strong>中子 (N):</strong> 不带电</li>
+                        </ul>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800 text-xl">核外电子 (e⁻)</h3>
+                         <ul class="list-disc list-inside mt-3 text-slate-600 space-y-2">
+                            <li>带1个单位负电荷</li>
+                            <li>质量极小，可忽略不计</li>
+                        </ul>
+                    </div>
+                </div>
+                 <div class="mt-10 flex justify-center items-center">
+                    <svg width="400" height="250" viewBox="0 0 400 250">
+                        <g transform="translate(180, 125)">
+                            <!-- Orbit -->
+                            <circle r="100" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4 4"></circle>
+                            
+                            <!-- Electron -->
+                            <g>
+                                <circle cx="0" cy="-100" r="10" fill="#3b82f6"></circle>
+                                <text x="-3" y="-95" font-size="12" fill="white" font-weight="bold">-</text>
+                            </g>
+                            
+                            <!-- Nucleus -->
+                            <g>
+                                <circle r="40" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"></circle>
+                                <!-- Protons -->
+                                <g>
+                                    <circle cx="-15" cy="-10" r="10" fill="#f87171"></circle>
+                                    <text x="-18" y="-5" font-size="12" fill="white" font-weight="bold">+</text>
+                                </g>
+                                <g>
+                                    <circle cx="15" cy="-10" r="10" fill="#f87171"></circle>
+                                     <text x="12" y="-5" font-size="12" fill="white" font-weight="bold">+</text>
+                                </g>
+                                 <g>
+                                    <circle cx="0" cy="15" r="10" fill="#f87171"></circle>
+                                    <text x="-3" y="20" font-size="12" fill="white" font-weight="bold">+</text>
+                                </g>
+                                <!-- Neutrons -->
+                                <circle cx="0" cy="-15" r="10" fill="#a1a1aa"></circle>
+                                <circle cx="-15" cy="12" r="10" fill="#a1a1aa"></circle>
+                                 <circle cx="15" cy="12" r="10" fill="#a1a1aa"></circle>
+                            </g>
+
+                            <!-- Legend -->
+                            <g transform="translate(120, -100)">
+                                <rect x="0" y="0" width="95" height="90" fill="white" stroke="#e2e8f0" rx="5"></rect>
+                                <g transform="translate(10, 20)">
+                                    <circle r="7" fill="#f87171"></circle>
+                                    <text x="-2" y="5" font-size="10" fill="white" font-weight="bold">+</text>
+                                    <text x="15" y="5" font-size="12" fill="#334155">质子 (P)</text>
+                                </g>
+                                 <g transform="translate(10, 45)">
+                                    <circle r="7" fill="#a1a1aa"></circle>
+                                    <text x="15" y="5" font-size="12" fill="#334155">中子 (N)</text>
+                                </g>
+                                 <g transform="translate(10, 70)">
+                                    <circle r="7" fill="#3b82f6"></circle>
+                                    <text x="-2" y="5" font-size="10" fill="white" font-weight="bold">-</text>
+                                    <text x="15" y="5" font-size="12" fill="#334155">电子 (e⁻)</text>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+                 <p class="mt-2 text-center text-xl text-slate-600"><strong>结论：</strong>原子的质量几乎全部集中在<strong class="text-red-600">原子核</strong>上。</p>
+            </div>
+        </div>
+
+        <!-- 质量数 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2 inline-block"><span class="absolute bottom-0 left-0 w-full h-1 bg-teal-500 rounded"></span>质量数 (A)</h2>
+                 <p class="mt-8 text-xl text-slate-700">一个描述原子核质量的重要概念。</p>
+                 <div class="mt-8 bg-teal-50 border border-teal-200 p-8 rounded-lg">
+                    <p class="mono text-3xl font-bold text-teal-800">质量数 (A) = 质子数 (Z) + 中子数 (N)</p>
+                 </div>
+                 <div class="mt-6 text-xl text-slate-600 space-y-2 text-left">
+                    <p><strong>特点：</strong>质量数必为<strong class="text-red-600">正整数</strong>。</p>
+                    <p><strong>近似关系：</strong>在数值上，一个原子的<strong class="text-red-600">相对原子质量 ≈ 质量数</strong>。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 粒子符号 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-2/5 h-1 bg-sky-500 rounded"></span>粒子符号周围数字的含义</h2>
+                 <div class="mt-12 bg-sky-50 border border-sky-200 p-8 rounded-lg flex justify-center items-center">
+                    <div class="text-center">
+                        <p class="text-xl text-red-500">质量数 (A)</p>
+                        <p class="text-7xl font-bold my-2 mono relative">
+                            X
+                            <span class="absolute -top-2 -left-6 text-2xl text-red-500">A</span>
+                            <span class="absolute -bottom-2 -left-6 text-2xl text-blue-500">Z</span>
+                            <span class="absolute -top-2 -right-10 text-2xl text-green-500">n±</span>
+                            <span class="absolute -bottom-2 -right-8 text-2xl text-purple-500">m</span>
+                        </p>
+                        <p class="text-xl text-blue-500">质子数 (Z)</p>
+                    </div>
+                    <div class="ml-20 text-xl space-y-3">
+                        <p><span class="text-green-500 font-semibold">右上角 (n±):</span> 离子所带电荷数</p>
+                        <p><span class="text-purple-500 font-semibold">右下角 (m):</span> 分子中的原子个数</p>
+                    </div>
+                 </div>
+                 <p class="mt-8 text-xl text-slate-600"><strong>示例：³⁵₁₇Cl⁻</strong> 意味着该氯离子有 17个质子, 18个中子 (35-17), 18个电子 (17+1)。</p>
+            </div>
+        </div>
+
+        <!-- 核素与同位素 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>核素与同位素</h2>
+                 <div class="mt-8 space-y-6">
+                     <div class="bg-indigo-50 border border-indigo-200 p-6 rounded-lg">
+                         <h3 class="font-bold text-indigo-800 text-xl">核素</h3>
+                         <p class="mt-2 text-lg text-slate-600">具有<strong class="text-indigo-700">确定质子数</strong>和<strong class="text-indigo-700">确定中子数</strong>的一种原子。</p>
+                     </div>
+                    <div class="bg-purple-50 border border-purple-200 p-6 rounded-lg">
+                         <h3 class="font-bold text-purple-800 text-xl">同位素</h3>
+                         <p class="mt-2 text-lg text-slate-600"><strong class="text-purple-700">质子数相同</strong>，但<strong class="text-purple-700">中子数不同</strong>的同一种元素的不同核素互称同位素。</p>
+                     </div>
+                </div>
+                <div class="mt-10 p-6 bg-slate-50 rounded-lg">
+                    <h4 class="text-center text-xl font-bold text-slate-700">以氢元素的同位素为例</h4>
+                    <div class="mt-4 flex justify-around items-end text-center">
+                        <div>
+                            <svg width="100" height="100" viewBox="0 0 100 100"><g transform="translate(50 50)"><circle r="35" fill="none" stroke="#d1d5db" stroke-width="2" stroke-dasharray="4 2"/><circle r="12" fill="#ef4444"/><text fill="white" font-size="12" text-anchor="middle" dy="4">P</text><circle cy="-35" r="6" fill="#3b82f6"/></g></svg>
+                            <p class="font-bold mono mt-2">¹H (氕)</p>
+                            <p class="text-sm text-slate-500">1质子, 0中子</p>
+                        </div>
+                        <div>
+                           <svg width="100" height="100" viewBox="0 0 100 100"><g transform="translate(50 50)"><circle r="35" fill="none" stroke="#d1d5db" stroke-width="2" stroke-dasharray="4 2"/><g><circle cx="-7" r="12" fill="#ef4444"/><text x="-7" fill="white" font-size="12" text-anchor="middle" dy="4">P</text><circle cx="7" r="12" fill="#6b7280"/><text x="7" fill="white" font-size="12" text-anchor="middle" dy="4">N</text></g><circle cy="-35" r="6" fill="#3b82f6"/></g></svg>
+                            <p class="font-bold mono mt-2">²H (氘)</p>
+                            <p class="text-sm text-slate-500">1质子, 1中子</p>
+                        </div>
+                        <div>
+                            <svg width="100" height="100" viewBox="0 0 100 100"><g transform="translate(50 50)"><circle r="35" fill="none" stroke="#d1d5db" stroke-width="2" stroke-dasharray="4 2"/><g><circle cy="-7" r="12" fill="#ef4444"/><text y="-7" fill="white" font-size="12" text-anchor="middle" dy="4">P</text><circle cx="-7" cy="7" r="12" fill="#6b7280"/><text x="-7" y="7" fill="white" font-size="12" text-anchor="middle" dy="4">N</text><circle cx="7" cy="7" r="12" fill="#6b7280"/><text x="7" y="7" fill="white" font-size="12" text-anchor="middle" dy="4">N</text></g><circle cy="-35" r="6" fill="#3b82f6"/></g></svg>
+                            <p class="font-bold mono mt-2">³H (氚)</p>
+                            <p class="text-sm text-slate-500">1质子, 2中子</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 同位素 vs 同素异形体 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-3/5 h-1 bg-orange-500 rounded"></span>同位素 vs 同素异形体</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-orange-50 border border-orange-200 p-6 rounded-lg flex flex-col">
+                        <h3 class="font-bold text-orange-800 text-xl text-center">同位素 (Isotopes)</h3>
+                        <p class="mt-3 text-slate-600 text-center">研究对象是<strong class="text-red-600">原子 (核素)</strong>。</p>
+                        <div class="flex-grow flex justify-center items-center gap-6 my-4">
+                            <div class="text-center"><svg width="80" height="80" viewBox="0 0 80 80"><g transform="translate(40 40)"><circle r="20" fill="#fef3c7" stroke="#f59e0b"/><text font-size="10" fill="#b45309" text-anchor="middle" dy="-2">6P, 6N</text></g></svg><p class="mono text-sm mt-1">¹²C</p></div>
+                            <div class="text-center"><svg width="80" height="80" viewBox="0 0 80 80"><g transform="translate(40 40)"><circle r="20" fill="#fef3c7" stroke="#f59e0b"/><text font-size="10" fill="#b45309" text-anchor="middle" dy="-2">6P, 8N</text></g></svg><p class="mono text-sm mt-1">¹⁴C</p></div>
+                        </div>
+                        <p class="mt-auto text-slate-600 text-center">化学性质几乎相同。</p>
+                    </div>
+                    <div class="bg-cyan-50 border border-cyan-200 p-6 rounded-lg flex flex-col">
+                        <h3 class="font-bold text-cyan-800 text-xl text-center">同素异形体 (Allotropes)</h3>
+                         <p class="mt-3 text-slate-600 text-center">研究对象是<strong class="text-red-600">单质</strong>。</p>
+                         <div class="flex-grow flex justify-center items-center gap-6 my-4">
+                            <div class="text-center"><svg width="80" height="70" viewBox="0 0 80 70"><g transform="translate(40 35)"><line x1="-15" y1="0" x2="15" y2="0" stroke="#0e7490" stroke-width="3"/><circle cx="-15" r="12" fill="#67e8f9" stroke="#0e7490" stroke-width="2"/><text x="-15" font-size="12" fill="#083344" text-anchor="middle" dy="4">O</text><circle cx="15" r="12" fill="#67e8f9" stroke="#0e7490" stroke-width="2"/><text x="15" font-size="12" fill="#083344" text-anchor="middle" dy="4">O</text></g></svg><p class="mono text-sm mt-1">O₂ (氧气)</p></div>
+                            <div class="text-center"><svg width="80" height="70" viewBox="0 0 80 70"><g transform="translate(40 40)"><path d="M -20 10 L 0 -15 L 20 10" stroke="#0e7490" stroke-width="3" fill="none"/><circle cy="-15" r="12" fill="#67e8f9" stroke="#0e7490" stroke-width="2"/><text cy="-15" font-size="12" fill="#083344" text-anchor="middle" dy="4">O</text><circle cx="-20" cy="10" r="12" fill="#67e8f9" stroke="#0e7490" stroke-width="2"/><text cx="-20" cy="10" font-size="12" fill="#083344" text-anchor="middle" dy="4">O</text><circle cx="20" cy="10" r="12" fill="#67e8f9" stroke="#0e7490" stroke-width="2"/><text cx="20" cy="10" font-size="12" fill="#083344" text-anchor="middle" dy="4">O</text></g></svg><p class="mono text-sm mt-1">O₃ (臭氧)</p></div>
+                        </div>
+                         <p class="mt-auto text-slate-600 text-center">物理性质差异很大。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 电子层 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-2/5 h-1 bg-emerald-500 rounded"></span>核外电子排布：电子层</h2>
+                <p class="mt-8 text-xl text-slate-700">核外电子像洋葱一样分层排布，每一层称为一个<strong class="text-emerald-600">电子层</strong>。</p>
+                <div class="mt-8 flex justify-center">
+                    <svg width="400" height="250" viewBox="0 0 400 250">
+                        <!-- Nucleus -->
+                        <g transform="translate(120, 125)">
+                            <circle r="15" fill="#34d399"/>
+                            <text text-anchor="middle" fill="white" font-size="10" dy="4">核</text>
+                        </g>
+                        
+                        <!-- Shells -->
+                        <g transform="translate(120, 125)">
+                            <circle r="40" fill="none" stroke="#a7f3d0" stroke-width="2"/>
+                            <circle r="70" fill="none" stroke="#6ee7b7" stroke-width="2"/>
+                            <circle r="100" fill="none" stroke="#34d399" stroke-width="2"/>
+                        </g>
+
+                        <!-- Energy Arrow and Labels -->
+                        <g transform="translate(120, 125)">
+                             <!-- Arrow Line -->
+                            <path d="M 20 0 L 250 0" stroke="#047857" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+                            
+                            <!-- Labels -->
+                            <text x="40" y="-10" text-anchor="middle" font-size="14" fill="#065f46">K</text>
+                            <text x="70" y="-10" text-anchor="middle" font-size="14" fill="#065f46">L</text>
+                            <text x="100" y="-10" text-anchor="middle" font-size="14" fill="#065f46">M</text>
+
+                            <!-- Text on arrow -->
+                             <text x="165" y="-10" text-anchor="middle" fill="#047857" font-size="14">能量由低到高</text>
+                        </g>
+                        
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#047857"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+                <div class="mt-4 bg-emerald-50 border border-emerald-200 p-6 rounded-lg text-lg">
+                    <ul class="space-y-3">
+                        <li>离核由近到远依次为：K, L, M, N... 层 (第 1, 2, 3, 4... 层)。</li>
+                        <li>离核越近，能量越<strong class="text-red-600">低</strong>；离核越远，能量越<strong class="text-red-600">高</strong>。</li>
+                        <li>各电子层最多可容纳的电子数为 <code class="text-lg">2n²</code> 个 (n为电子层序数)。</li>
+                    </ul>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 排布规律 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-3/5 h-1 bg-rose-500 rounded"></span>核外电子排布规律 (简化版)</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                    <div class="bg-rose-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-rose-800">能量最低原理</h3>
+                        <p class="mt-2 text-slate-600">电子总是优先排布在能量最低的电子层上，由内向外依次填充。</p>
+                    </div>
+                    <div class="bg-rose-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-rose-800">稳定结构原则</h3>
+                         <ul class="list-decimal list-inside mt-2 text-slate-600 space-y-1">
+                            <li>最外层电子数不超过 <strong class="text-red-600">8</strong> 个 (K层为2个)。</li>
+                            <li>次外层电子数不超过 <strong class="text-red-600">18</strong> 个。</li>
+                            <li>倒数第三层不超过 <strong class="text-red-600">32</strong> 个。</li>
+                        </ul>
+                    </div>
+                </div>
+                 <p class="mt-6 text-center text-slate-500 text-base">（更详细的规律将在选修模块学习）</p>
+            </div>
+        </div>
+        
+        <!-- 结构示意图 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-3/5 h-1 bg-violet-500 rounded"></span>原子/离子结构示意图</h2>
+                 <p class="mt-8 text-xl text-slate-700">一种直观表示核电荷数和各电子层电子数的图示。</p>
+                 <div class="mt-10 flex flex-wrap justify-around items-center text-center gap-8">
+                    <!-- Na Atom -->
+                    <div>
+                        <svg width="150" height="150" viewBox="0 0 150 150"><g transform="translate(75 75)"><circle r="15" fill="#fde68a" stroke="#f59e0b" stroke-width="1.5"/><text text-anchor="middle" dy="4" font-size="12" font-weight="500" fill="#ca8a04">+11</text><circle r="30" fill="none" stroke="#d1d5db" stroke-width="2"/><text x="21" y="21" font-weight="bold" fill="#4f46e5" font-size="14">2</text><circle r="50" fill="none" stroke="#d1d5db" stroke-width="2"/><text x="35" y="35" font-weight="bold" fill="#4f46e5" font-size="14">8</text><circle r="70" fill="none" stroke="#d1d5db" stroke-width="2"/><text x="49" y="49" font-weight="bold" fill="#4f46e5" font-size="14">1</text></g></svg>
+                        <p class="mt-2 font-semibold text-slate-700">钠原子 (Na)</p>
+                    </div>
+                    <!-- Cl Atom -->
+                    <div>
+                        <svg width="150" height="150" viewBox="0 0 150 150"><g transform="translate(75 75)"><circle r="15" fill="#a7f3d0" stroke="#10b981" stroke-width="1.5"/><text text-anchor="middle" dy="4" font-size="12" font-weight="500" fill="#047857">+17</text><circle r="30" fill="none" stroke="#d1d5db" stroke-width="2"/><text x="21" y="21" font-weight="bold" fill="#4f46e5" font-size="14">2</text><circle r="50" fill="none" stroke="#d1d5db" stroke-width="2"/><text x="35" y="35" font-weight="bold" fill="#4f46e5" font-size="14">8</text><circle r="70" fill="none" stroke="#d1d5db" stroke-width="2"/><text x="49" y="49" font-weight="bold" fill="#4f46e5" font-size="14">7</text></g></svg>
+                        <p class="mt-2 font-semibold text-slate-700">氯原子 (Cl)</p>
+                    </div>
+                    <!-- S2- Ion -->
+                    <div>
+                        <svg width="150" height="150" viewBox="0 0 150 150"><g transform="translate(75 75)"><circle r="15" fill="#fbcfe8" stroke="#db2777" stroke-width="1.5"/><text text-anchor="middle" dy="4" font-size="12" font-weight="500" fill="#9d174d">+16</text><circle r="30" fill="none" stroke="#d1d5db" stroke-width="2"/><text x="21" y="21" font-weight="bold" fill="#4f46e5" font-size="14">2</text><circle r="50" fill="none" stroke="#d1d5db" stroke-width="2"/><text x="35" y="35" font-weight="bold" fill="#4f46e5" font-size="14">8</text><circle r="70" fill="none" stroke="#d1d5db" stroke-width="2"/><text x="49" y="49" font-weight="bold" fill="#4f46e5" font-size="14">8</text></g></svg>
+                        <p class="mt-2 font-semibold text-slate-700">硫离子 (S²⁻)</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 例题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>随堂练习 (一)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p class="font-semibold">决定元素种类的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border hover:border-indigo-400 hover:bg-indigo-50 transition cursor-pointer"><strong>(A)</strong> 中子数</p>
+                        <p class="p-3 rounded-md bg-white border hover:border-indigo-400 hover:bg-indigo-50 transition cursor-pointer"><strong>(B)</strong> 质子数</p>
+                        <p class="p-3 rounded-md bg-white border hover:border-indigo-400 hover:bg-indigo-50 transition cursor-pointer"><strong>(C)</strong> 电子数</p>
+                        <p class="p-3 rounded-md bg-white border hover:border-indigo-400 hover:bg-indigo-50 transition cursor-pointer"><strong>(D)</strong> 质量数</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 1 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-emerald-500 rounded"></span>练习 (一) 解析</h2>
+                <div class="mt-8 bg-emerald-50 border border-emerald-200 p-8 rounded-lg text-xl">
+                    <h3 class="font-bold text-2xl text-emerald-800">答案：(B) 质子数</h3>
+                     <div class="mt-6 text-lg text-slate-700 space-y-4">
+                        <p><strong>解析：</strong></p>
+                        <p>元素是具有<strong class="text-red-600">相同质子数</strong>（即核电荷数）的同一类原子的总称。</p>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li><strong>质子数 (Z)</strong> 决定了元素的种类。例如，所有质子数为6的原子都属于碳元素。</li>
+                            <li><strong>中子数 (N)</strong> 影响原子的质量，质子数相同、中子数不同的原子互为同位素。</li>
+                            <li><strong>电子数</strong> 决定了粒子的化学性质和带电情况（原子 vs 离子）。</li>
+                            <li><strong>质量数 (A)</strong> 是质子数和中子数的总和，决定了原子的近似质量。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>随堂练习 (二)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p class="font-semibold">¹⁶O 和 ¹⁸O 的关系是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border hover:border-indigo-400 hover:bg-indigo-50 transition cursor-pointer"><strong>(A)</strong> 同一种物质</p>
+                        <p class="p-3 rounded-md bg-white border hover:border-indigo-400 hover:bg-indigo-50 transition cursor-pointer"><strong>(B)</strong> 同分异构体</p>
+                        <p class="p-3 rounded-md bg-white border hover:border-indigo-400 hover:bg-indigo-50 transition cursor-pointer"><strong>(C)</strong> 同素异形体</p>
+                        <p class="p-3 rounded-md bg-white border hover:border-indigo-400 hover:bg-indigo-50 transition cursor-pointer"><strong>(D)</strong> 同位素</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 例题 2 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-emerald-500 rounded"></span>练习 (二) 解析</h2>
+                <div class="mt-8 bg-emerald-50 border border-emerald-200 p-8 rounded-lg text-xl">
+                    <h3 class="font-bold text-2xl text-emerald-800">答案：(D) 同位素</h3>
+                     <div class="mt-6 text-lg text-slate-700 space-y-4">
+                        <p><strong>解析：</strong></p>
+                        <p>¹⁶O 和 ¹⁸O 都是氧元素，它们的质子数都为8。</p>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>¹⁶O 的中子数 = 16 - 8 = 8 个。</li>
+                            <li>¹⁸O 的中子数 = 18 - 8 = 10 个。</li>
+                        </ul>
+                        <p><strong>同位素</strong>的定义是：<strong class="text-red-600">质子数相同</strong>，但<strong class="text-red-600">中子数不同</strong>的同一种元素的不同核素（原子）。</p>
+                        <p>因此，¹⁶O 和 ¹⁸O 互为同位素。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW: 例题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>随堂练习 (三)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p class="font-semibold">13号元素铝 (Al) 形成Al³⁺离子后，其核外电子排布是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border hover:border-indigo-400 hover:bg-indigo-50 transition cursor-pointer"><strong>(A)</strong> 2, 8, 3</p>
+                        <p class="p-3 rounded-md bg-white border hover:border-indigo-400 hover:bg-indigo-50 transition cursor-pointer"><strong>(B)</strong> 2, 8</p>
+                        <p class="p-3 rounded-md bg-white border hover:border-indigo-400 hover:bg-indigo-50 transition cursor-pointer"><strong>(C)</strong> 2, 8, 8</p>
+                        <p class="p-3 rounded-md bg-white border hover:border-indigo-400 hover:bg-indigo-50 transition cursor-pointer"><strong>(D)</strong> 2, 3</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- NEW: 例题 3 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-emerald-500 rounded"></span>练习 (三) 解析</h2>
+                <div class="mt-8 bg-emerald-50 border border-emerald-200 p-8 rounded-lg text-xl">
+                    <h3 class="font-bold text-2xl text-emerald-800">答案：(B) 2, 8</h3>
+                     <div class="mt-6 text-lg text-slate-700 space-y-4">
+                        <p><strong>解析：</strong></p>
+                        <ol class="list-decimal list-inside space-y-2">
+                            <li>13号元素铝 (Al) 的质子数为13，原子核外电子数也为13。</li>
+                            <li>Al原子的核外电子排布为 2, 8, 3 (K层2个, L层8个, M层3个)。</li>
+                            <li>形成Al³⁺离子意味着它<strong class="text-red-600">失去</strong>了最外层的3个电子。</li>
+                            <li>失去3个电子后，核外电子总数变为 13 - 3 = 10个。</li>
+                            <li>这10个电子的排布为 2, 8 (K层2个, L层8个)，达到了稳定结构。</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW: 例题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>随堂练习 (四)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p class="font-semibold">已知粒子 R²⁺ 的核外有18个电子，质量数为40，则R原子的核内中子数为？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border hover:border-indigo-400 hover:bg-indigo-50 transition cursor-pointer"><strong>(A)</strong> 18</p>
+                        <p class="p-3 rounded-md bg-white border hover:border-indigo-400 hover:bg-indigo-50 transition cursor-pointer"><strong>(B)</strong> 20</p>
+                        <p class="p-3 rounded-md bg-white border hover:border-indigo-400 hover:bg-indigo-50 transition cursor-pointer"><strong>(C)</strong> 22</p>
+                        <p class="p-3 rounded-md bg-white border hover:border-indigo-400 hover:bg-indigo-50 transition cursor-pointer"><strong>(D)</strong> 40</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- NEW: 例题 4 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-emerald-500 rounded"></span>练习 (四) 解析</h2>
+                <div class="mt-8 bg-emerald-50 border border-emerald-200 p-8 rounded-lg text-xl">
+                    <h3 class="font-bold text-2xl text-emerald-800">答案：(B) 20</h3>
+                     <div class="mt-6 text-lg text-slate-700 space-y-4">
+                        <p><strong>解析：</strong></p>
+                        <ol class="list-decimal list-inside space-y-2">
+                            <li>R²⁺ 粒子是R原子<strong class="text-red-600">失去</strong>2个电子形成的，它带2个单位正电荷。</li>
+                            <li>已知 R²⁺ 有18个电子，所以R原子有 18 + 2 = 20个电子。</li>
+                            <li>在原子中，质子数(Z) = 核外电子数。所以R原子的质子数为20。</li>
+                            <li>根据公式：<code class="text-base">质量数(A) = 质子数(Z) + 中子数(N)</code>。</li>
+                            <li>已知质量数(A) = 40，质子数(Z) = 20。</li>
+                            <li>所以，中子数(N) = A - Z = 40 - 20 = 20。</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW: 例题 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>随堂练习 (五)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p class="font-semibold">下列说法正确的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border hover:border-indigo-400 hover:bg-indigo-50 transition cursor-pointer"><strong>(A)</strong> O₂ 和 O₃ 互为同位素</p>
+                        <p class="p-3 rounded-md bg-white border hover:border-indigo-400 hover:bg-indigo-50 transition cursor-pointer"><strong>(B)</strong> ¹H 和 ²H 互为同素异形体</p>
+                        <p class="p-3 rounded-md bg-white border hover:border-indigo-400 hover:bg-indigo-50 transition cursor-pointer"><strong>(C)</strong> 金刚石和石墨是碳元素的同素异形体</p>
+                        <p class="p-3 rounded-md bg-white border hover:border-indigo-400 hover:bg-indigo-50 transition cursor-pointer"><strong>(D)</strong> 质子数相同，电子数也相同的粒子一定是同一种原子</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- NEW: 例题 5 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-emerald-500 rounded"></span>练习 (五) 解析</h2>
+                <div class="mt-8 bg-emerald-50 border border-emerald-200 p-8 rounded-lg text-xl">
+                    <h3 class="font-bold text-2xl text-emerald-800">答案：(C)</h3>
+                     <div class="mt-6 text-lg text-slate-700 space-y-4">
+                        <p><strong>解析：</strong></p>
+                        <ul class="list-none space-y-3">
+                            <li><strong>(A) 错误。</strong> O₂ (氧气) 和 O₃ (臭氧) 是由同一种元素（氧）组成的不同<strong class="text-red-600">单质</strong>，它们互为<strong class="text-indigo-600">同素异形体</strong>。同位素研究的是原子。</li>
+                            <li><strong>(B) 错误。</strong> ¹H (氕) 和 ²H (氘) 是质子数相同、中子数不同的<strong class="text-red-600">原子</strong>，它们互为<strong class="text-indigo-600">同位素</strong>。</li>
+                            <li><strong>(C) 正确。</strong> 金刚石和石墨都是由碳元素组成的结构不同的单质，互为同素异形体。</li>
+                            <li><strong>(D) 错误。</strong> 质子数相同，电子数也相同的粒子<strong class="text-red-600">不一定</strong>是同一种原子。例如，¹²C (6质子, 6电子) 和 ¹³C (6质子, 6电子) 都是碳原子，质子数和电子数都相同，但它们是不同的<strong class="text-indigo-600">核素</strong>（同位素）。因此“同一种原子”的说法不严谨。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看，下节课再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity disabled:opacity-50 disabled:cursor-not-allowed">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition-opacity disabled:opacity-50 disabled:cursor-not-allowed">下一页</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section) => {
+                    section.classList.remove('active');
+                });
+
+                // 确保索引在有效范围内
+                if (pageIndex >= 0 && pageIndex < totalPages) {
+                    sections[pageIndex].classList.add('active');
+                    pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                }
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') nextBtn.click();
+                if (e.key === 'ArrowLeft') prevBtn.click();
+            });
+
+            // 初始化显示第一页
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

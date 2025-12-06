@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>化学反应与电能（增强图版）</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Noto Serif SC', serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: #f1f5f9;
+    }
+    #presentation-container {
+      max-width: 56rem;
+      margin: 2rem auto;
+      background-color: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      overflow: hidden;
+    }
+    .section {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 4rem 2.5rem;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 80vh;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+    .section.active { display: flex; opacity: 1; }
+    #navigation {
+      position: sticky;
+      bottom: 0;
+      background: #f8fafc;
+      padding: 1rem;
+      max-width: 56rem;
+      margin: 0 auto;
+      border-top: 1px solid #e2e8f0;
+      z-index: 10;
+    }
+    .mono { font-family: 'Courier New', Courier, monospace; font-weight: 600; }
+    code {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #eef2ff;
+      color: #4338ca;
+      padding: 0.2rem 0.5rem;
+      border-radius: 0.25rem;
+      font-size: 0.9em;
+      font-weight: 600;
+    }
+    figure { margin: 0; }
+    figcaption { font-size: 0.9rem; color: #475569; text-align: center; margin-top: 0.5rem; }
+    .svg-diagram { width: 100%; height: auto; border: 1px solid #e5e7eb; border-radius: 0.375rem; background: #ffffff; }
+    .thumb { width: 100%; height: auto; background: #ffffff; border: 1px solid #e5e7eb; border-radius: 0.375rem; }
+    .chip {
+      display: inline-block; padding: 2px 8px; border-radius: 9999px;
+      border: 1px solid rgba(0,0,0,0.1); font-size: 12px; color: #334155; background: #f8fafc;
+    }
+    @media print {
+      @page { size: landscape; margin: 0; }
+      body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+      .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+      .section:last-child { page-break-after: auto; }
+      #navigation { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div id="presentation-container">
+
+    <!-- 封面页 -->
+    <section class="section">
+      <div class="w-full max-w-4xl mx-auto text-center">
+        <svg class="w-24 h-24 mx-auto text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l4.5-4.5m0 0l4.5 4.5m-4.5-4.5v11.25m6-11.25l4.5-4.5m0 0l4.5 4.5m-4.5-4.5v11.25" />
+        </svg>
+        <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">化学反应与电能</h1>
+        <p class="text-2xl text-slate-600 mt-2">—— 原电池初步</p>
+      </div>
+    </section>
+
+    <!-- 火力发电：能量转化流程图 -->
+    <section class="section">
+      <div class="w-full max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+          <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>
+          能量转化：从火力发电谈起
+        </h2>
+        <p class="mt-8 text-xl text-slate-700">火力发电是中国目前主要的发电方式，其能量转化过程较为<strong class="text-orange-600">间接</strong>。</p>
+
+        <div class="mt-8 bg-orange-50 border border-orange-200 p-6 rounded-lg">
+          <h3 class="font-bold text-orange-800 text-xl mb-4">能量转化流程：</h3>
+          <figure>
+            <svg class="svg-diagram" viewBox="0 0 960 240" role="img" aria-label="火电能量转化流程图">
+              <defs>
+                <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                  <path d="M0,0 L0,6 L9,3 z"></path>
+                </marker>
+              </defs>
+              <!-- Boxes -->
+              <g font-family="Noto Serif SC" font-size="18" fill="#0f172a">
+                <rect x="20"  y="60" width="200" height="80" rx="10" fill="#fde68a" stroke="#f59e0b"/>
+                <text x="120" y="105" text-anchor="middle">化学能</text>
+                <text x="120" y="130" text-anchor="middle" font-size="14">（燃料燃烧）</text>
+
+                <rect x="260" y="60" width="200" height="80" rx="10" fill="#fee2e2" stroke="#ef4444"/>
+                <text x="360" y="105" text-anchor="middle">热能</text>
+                <text x="360" y="130" text-anchor="middle" font-size="14">（蒸汽）</text>
+
+                <rect x="500" y="60" width="200" height="80" rx="10" fill="#e0f2fe" stroke="#38bdf8"/>
+                <text x="600" y="105" text-anchor="middle">机械能</text>
+                <text x="600" y="130" text-anchor="middle" font-size="14">（汽轮机）</text>
+
+                <rect x="740" y="60" width="200" height="80" rx="10" fill="#dcfce7" stroke="#22c55e"/>
+                <text x="840" y="105" text-anchor="middle">电能</text>
+                <text x="840" y="130" text-anchor="middle" font-size="14">（发电机）</text>
+              </g>
+              <!-- Arrows -->
+              <g stroke="#334155" stroke-width="2" fill="none" marker-end="url(#arrow)">
+                <line x1="220" y1="100" x2="260" y2="100"></line>
+                <line x1="460" y1="100" x2="500" y2="100"></line>
+                <line x1="700" y1="100" x2="740" y2="100"></line>
+              </g>
+              <text x="480" y="200" text-anchor="middle" fill="#ef4444" font-size="16">多次能量转化 → 效率降低</text>
+            </svg>
+            <figcaption>化学能 → 热能 → 机械能 → 电能</figcaption>
+          </figure>
+          <p class="text-lg text-slate-600 text-center mt-4">化学能 (燃料燃烧) → 热能 (水蒸汽) → 机械能 (汽轮机) → <strong class="text-red-600">电能</strong> (发电机)</p>
+        </div>
+
+        <p class="mt-6 text-xl text-slate-600"><strong>特点：</strong>能量<strong class="text-red-600">多次转化</strong>，效率不高，且存在环境污染问题。电能属于<strong class="text-red-600">二次能源</strong>。</p>
+      </div>
+    </section>
+
+    <!-- 原电池引入：化学能→电能 -->
+    <section class="section">
+      <div class="w-full max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+          <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>
+          思考：化学能能否直接变电能？
+        </h2>
+        <p class="mt-8 text-xl text-slate-700">火力发电效率不高，有没有办法让<strong class="text-sky-600">化学能直接转化为电能</strong>呢？</p>
+
+        <figure class="mt-8">
+          <svg class="svg-diagram" viewBox="0 0 960 260" role="img" aria-label="化学能转电能概念图">
+            <defs>
+              <marker id="arrow2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                <path d="M0,0 L0,6 L9,3 z"></path>
+              </marker>
+            </defs>
+            <g font-family="Noto Serif SC">
+              <!-- Battery icon -->
+              <rect x="60" y="60" width="180" height="100" rx="12" fill="#f0f9ff" stroke="#38bdf8" stroke-width="2"/>
+              <rect x="235" y="95" width="15" height="30" rx="4" fill="#0ea5e9"/>
+              <text x="150" y="120" text-anchor="middle" font-size="18" fill="#0f172a">原电池</text>
+              <text x="150" y="145" text-anchor="middle" font-size="14" fill="#64748b">Galvanic / Voltaic</text>
+
+              <!-- chemical energy -->
+              <rect x="360" y="50" width="220" height="60" rx="10" fill="#fde68a" stroke="#f59e0b"/>
+              <text x="470" y="85" text-anchor="middle" font-size="18" fill="#0f172a">化学能（氧化还原）</text>
+
+              <!-- electrical energy -->
+              <rect x="720" y="150" width="180" height="60" rx="10" fill="#dcfce7" stroke="#22c55e"/>
+              <text x="810" y="185" text-anchor="middle" font-size="18" fill="#0f172a">电能</text>
+
+              <g stroke="#334155" stroke-width="2" fill="none" marker-end="url(#arrow2)">
+                <path d="M240,110 C300,110 320,80 360,80" />
+                <path d="M580,80 C660,120 650,180 720,180" />
+              </g>
+              <text x="510" y="140" text-anchor="middle" font-size="16" fill="#ef4444">直接转化</text>
+            </g>
+          </svg>
+          <figcaption>利用氧化还原反应直接把化学能输出为电能</figcaption>
+        </figure>
+
+        <p class="mt-6 text-2xl text-center text-slate-700 font-bold">
+          答案是肯定的！实现这种转化的装置就叫做——
+          <strong class="text-red-600">原电池 (Galvanic Cell / Voltaic Cell)</strong>。
+        </p>
+      </div>
+    </section>
+
+    <!-- 实验对比：实验一 / 实验二 -->
+    <section class="section">
+      <div class="w-full max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+          <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>
+          实验对比：探究原电池原理
+        </h2>
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+          <!-- 实验一 -->
+          <div class="bg-gray-50 border border-gray-200 p-6 rounded-lg">
+            <h3 class="font-bold text-gray-800 text-xl">实验一：Zn棒插入稀硫酸</h3>
+            <figure>
+              <svg class="svg-diagram" viewBox="0 0 480 300" role="img" aria-label="Zn与稀硫酸反应示意图">
+                <!-- beaker -->
+                <path d="M100,40 L380,40 L360,260 L120,260 Z" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+                <!-- solution -->
+                <path d="M120,200 L360,200 L350,250 L130,250 Z" fill="#93c5fd" opacity="0.6" stroke="#60a5fa"/>
+                <!-- Zn rod -->
+                <rect x="160" y="120" width="20" height="140" fill="#94a3b8" stroke="#64748b"/>
+                <text x="170" y="115" text-anchor="middle" font-size="14" fill="#334155">Zn</text>
+                <!-- bubbles near Zn (should be near rod) -->
+                <g fill="#93c5fd">
+                  <circle cx="150" cy="210" r="4"/><circle cx="145" cy="225" r="3"/><circle cx="155" cy="235" r="2.5"/>
+                </g>
+                <text x="240" y="285" text-anchor="middle" font-size="16" fill="#334155">Zn + 2H⁺ → Zn²⁺ + H₂↑</text>
+              </svg>
+              <figcaption>直接反应：化学能→热，未形成电流</figcaption>
+            </figure>
+            <p class="mt-3 text-slate-600 mono">Zn + 2H⁺ → Zn²⁺ + H₂↑</p>
+            <p class="mt-2 text-slate-600">现象：Zn棒<strong class="text-red-600">溶解</strong>，表面有<strong class="text-red-600">气泡</strong>。</p>
+            <p class="mt-1 text-slate-600">本质：<strong class="text-red-600">直接</strong>的氧化还原反应，化学能主要转化为<strong class="text-red-600">热能</strong>，<strong class="text-red-600">无电流</strong>产生。</p>
+          </div>
+
+          <!-- 实验二 -->
+          <div class="bg-teal-50 border border-teal-200 p-6 rounded-lg">
+            <h3 class="font-bold text-teal-800 text-xl">实验二：Zn棒、Cu棒+导线插入稀硫酸</h3>
+            <figure>
+              <svg class="svg-diagram" viewBox="0 0 480 300" role="img" aria-label="Zn/Cu 原电池示意图（同槽酸溶液）">
+                <defs>
+                  <marker id="eArrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                    <path d="M0,0 L0,6 L9,3 z"></path>
+                  </marker>
+                </defs>
+                <!-- beaker -->
+                <path d="M80,40 L400,40 L380,260 L100,260 Z" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+                <!-- solution -->
+                <path d="M100,200 L380,200 L370,250 L110,250 Z" fill="#99f6e4" opacity="0.6" stroke="#14b8a6"/>
+                <!-- Zn rod (left) -->
+                <rect x="140" y="120" width="20" height="140" fill="#94a3b8" stroke="#64748b"/>
+                <text x="150" y="115" text-anchor="middle" font-size="14" fill="#334155">Zn(-)</text>
+                <!-- Cu rod (right) -->
+                <rect x="320" y="100" width="20" height="160" fill="#c084fc" stroke="#7c3aed"/>
+                <text x="330" y="95" text-anchor="middle" font-size="14" fill="#334155">Cu(+)</text>
+                <!-- bubbles near Cu -->
+                <g fill="#99f6e4">
+                  <circle cx="330" cy="210" r="4"/><circle cx="335" cy="225" r="3"/><circle cx="325" cy="235" r="2.5"/>
+                </g>
+                <!-- external wire -->
+                <path d="M150,60 C220,10 300,10 330,60" fill="none" stroke="#111827" stroke-width="2" />
+                <!-- electron flow arrow -->
+                <path d="M160,55 C230,15 290,15 325,55" fill="none" stroke="#ef4444" stroke-width="2" marker-end="url(#eArrow)"/>
+                <text x="240" y="20" text-anchor="middle" font-size="14" fill="#ef4444">e⁻</text>
+                <!-- half reactions -->
+                <text x="60" y="290" font-size="14" fill="#334155">负极(Zn): Zn - 2e⁻ → Zn²⁺</text>
+                <text x="270" y="290" font-size="14" fill="#334155">正极(Cu): 2H⁺ + 2e⁻ → H₂↑</text>
+              </svg>
+              <figcaption>间接反应：电子经外电路定向移动→产生电流</figcaption>
+            </figure>
+            <p class="mt-3 text-slate-600 mono">负极(Zn): Zn - 2e⁻ → Zn²⁺</p>
+            <p class="mt-1 text-slate-600 mono">正极(Cu): 2H⁺ + 2e⁻ → H₂↑</p>
+            <p class="mt-2 text-slate-600">现象：Zn棒溶解，<strong class="text-red-600">Cu棒</strong>表面有<strong class="text-red-600">气泡</strong>，导线中有<strong class="text-red-600">电流</strong>。</p>
+            <p class="mt-1 text-slate-600">本质：<strong class="text-red-600">间接</strong>的氧化还原反应，化学能主要转化为<strong class="text-red-600">电能</strong>。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 原电池的定义与电极 -->
+    <section class="section">
+      <div class="w-full max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+          <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>
+          原电池的定义与电极
+        </h2>
+        <p class="mt-8 text-xl text-slate-700"><strong>定义：</strong>利用<strong class="text-indigo-600">自发的氧化还原反应</strong>原理，将<strong class="text-red-600">化学能</strong>转化为<strong class="text-red-600">电能</strong>的装置。</p>
+
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+          <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+            <h3 class="font-bold text-red-800 text-xl">负极 (Negative Electrode)</h3>
+            <p class="mt-3 text-slate-600">电子<strong class="text-red-700">流出</strong>的一极。</p>
+            <p class="mt-2 text-slate-600"><strong class="text-red-700">失</strong>电子，发生<strong class="text-red-700">氧化</strong>反应。</p>
+            <p class="mt-2 text-slate-600">通常由<strong class="text-red-700">较活泼</strong>的金属或还原剂构成。</p>
+          </div>
+          <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+            <h3 class="font-bold text-blue-800 text-xl">正极 (Positive Electrode)</h3>
+            <p class="mt-3 text-slate-600">电子<strong class="text-blue-700">流入</strong>的一极。</p>
+            <p class="mt-2 text-slate-600"><strong class="text-blue-700">得</strong>电子，发生<strong class="text-blue-700">还原</strong>反应。</p>
+            <p class="mt-2 text-slate-600">通常由<strong class="text-blue-700">较不活泼</strong>的金属、石墨或氧化剂构成。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 原电池构成条件：带盐桥的标准示意 -->
+    <section class="section">
+      <div class="w-full max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+          <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>
+          原电池的构成条件
+        </h2>
+        <p class="mt-8 text-xl text-slate-700">理论上，任何<strong class="text-purple-600">自发的氧化还原反应</strong>都可以设计成原电池。一般需要满足以下条件：</p>
+        <div class="mt-8 bg-purple-50 border border-purple-200 p-8 rounded-lg text-lg">
+          <ul class="list-decimal list-inside space-y-3">
+            <li>具有<strong class="text-red-600">活动性不同</strong>的两个电极 (或一种金属+石墨)。</li>
+            <li>两个电极都插入<strong class="text-red-600">电解质溶液</strong> (或熔融电解质) 中。</li>
+            <li>两电极用<strong class="text-red-600">导线连接</strong>，形成<strong class="text-red-600">闭合回路</strong>。</li>
+            <li>(本质) 能发生<strong class="text-red-600">自发的氧化还原反应</strong>。</li>
+          </ul>
+
+          <figure class="mt-6">
+            <svg class="svg-diagram" viewBox="0 0 960 360" role="img" aria-label="带盐桥的原电池标准示意图">
+              <defs>
+                <marker id="arrowIon" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                  <path d="M0,0 L0,6 L9,3 z"></path>
+                </marker>
+              </defs>
+              <!-- left beaker -->
+              <path d="M80,40 L400,40 L380,320 L100,320 Z" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+              <path d="M100,240 L380,240 L370,310 L110,310 Z" fill="#bfdbfe" opacity="0.6" stroke="#60a5fa"/>
+              <rect x="200" y="120" width="20" height="200" fill="#94a3b8" stroke="#64748b"/>
+              <text x="210" y="110" text-anchor="middle" fill="#334155">Zn</text>
+              <text x="140" y="265" fill="#334155">Zn²⁺(aq)</text>
+
+              <!-- right beaker -->
+              <path d="M560,40 L880,40 L860,320 L580,320 Z" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+              <path d="M580,240 L860,240 L850,310 L590,310 Z" fill="#ddd6fe" opacity="0.6" stroke="#a78bfa"/>
+              <rect x="740" y="100" width="20" height="220" fill="#c084fc" stroke="#7c3aed"/>
+              <text x="750" y="90" text-anchor="middle" fill="#334155">Cu</text>
+              <text x="610" y="265" fill="#334155">Cu²⁺(aq)</text>
+
+              <!-- salt bridge -->
+              <path d="M380,180 C440,120 600,120 660,180" fill="none" stroke="#334155" stroke-width="6"/>
+              <text x="520" y="110" text-anchor="middle" fill="#334155">盐桥</text>
+
+              <!-- external wire -->
+              <path d="M210,60 C340,10 600,10 750,60" fill="none" stroke="#111827" stroke-width="2" />
+              <path d="M220,55 C350,15 590,15 740,55" fill="none" stroke="#ef4444" stroke-width="2" marker-end="url(#arrowIon)"/>
+              <text x="480" y="20" text-anchor="middle" fill="#ef4444">e⁻ 从 Zn(负极) → Cu(正极)</text>
+
+              <!-- ion flows in bridge -->
+              <path d="M500,165 C520,155 580,155 600,165" fill="none" stroke="#0ea5e9" stroke-width="2" marker-end="url(#arrowIon)"/>
+              <text x="480" y="155" text-anchor="end" fill="#0ea5e9" font-size="12">阴离子 →</text>
+              <path d="M540,195 C520,205 460,205 440,195" fill="none" stroke="#22c55e" stroke-width="2" marker-end="url(#arrowIon)"/>
+              <text x="560" y="205" fill="#22c55e" font-size="12">← 阳离子</text>
+            </svg>
+            <figcaption>标准原电池：外电路电子流，盐桥维持溶液电中性</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 随堂练习(一) -->
+    <section class="section">
+      <div class="w-full max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+          <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>
+          随堂练习 (一)
+        </h2>
+        <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+          <p>原电池是将什么能转化为电能的装置？</p>
+          <div class="mt-6 space-y-3 text-lg">
+            <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 热能</p>
+            <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 化学能</p>
+            <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 机械能</p>
+            <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 光能</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 解析(一) -->
+    <section class="section">
+      <div class="w-full max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+          <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>
+          练习 (一)：解析
+        </h2>
+        <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+          <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+          <p><strong>解析：</strong>原电池利用自发的氧化还原反应，把<strong class="text-green-700">化学能</strong>直接转化为<strong class="text-green-700">电能</strong>。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 随堂练习(二) -->
+    <section class="section">
+      <div class="w-full max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+          <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>
+          随堂练习 (二)
+        </h2>
+        <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+          <p>在锌铜原电池（电解质为稀硫酸）中，正极发生的主要反应是？</p>
+          <div class="mt-6 space-y-3 text-lg">
+            <p class="p-3 rounded-md bg-white border mono"><strong>(A)</strong> Zn - 2e⁻ → Zn²⁺</p>
+            <p class="p-3 rounded-md bg-white border mono"><strong>(B)</strong> Cu - 2e⁻ → Cu²⁺</p>
+            <p class="p-3 rounded-md bg-white border mono"><strong>(C)</strong> 2H⁺ + 2e⁻ → H₂↑</p>
+            <p class="p-3 rounded-md bg-white border mono"><strong>(D)</strong> Cu²⁺ + 2e⁻ → Cu</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 解析(二) -->
+    <section class="section">
+      <div class="w-full max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+          <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>
+          练习 (二)：解析
+        </h2>
+        <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+          <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+          <p><strong>解析：</strong>锌较活泼作负极，铜作正极，溶液中的 H⁺ 在正极得电子生成 H₂。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 随堂练习(三) -->
+    <section class="section">
+      <div class="w-full max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+          <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>
+          随堂练习 (三)
+        </h2>
+        <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+          <p>下列关于原电池负极的描述，错误的是？</p>
+          <div class="mt-6 space-y-3 text-lg">
+            <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 电子流出的一极</p>
+            <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 发生还原反应</p>
+            <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 通常是较活泼的金属</p>
+            <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 失去电子</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 解析(三) -->
+    <section class="section">
+      <div class="w-full max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+          <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>
+          练习 (三)：解析
+        </h2>
+        <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+          <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+          <p><strong>解析：</strong>负极发生氧化（失电子），发生还原的是正极。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 随堂练习(四)：四图选一 -->
+    <section class="section">
+      <div class="w-full max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+          <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>
+          随堂练习 (四)
+        </h2>
+        <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+          <p>下列装置能够构成原电池的是？</p>
+
+          <div class="mt-6 grid grid-cols-2 gap-4">
+            <!-- A: 缺少电解质 -->
+            <figure>
+              <svg class="thumb" viewBox="0 0 360 220" role="img" aria-label="选项A：无电解质">
+                <path d="M40,160 L320,160" stroke="#94a3b8" stroke-width="2"/>
+                <rect x="80" y="60" width="20" height="100" fill="#94a3b8" stroke="#64748b"/>
+                <rect x="260" y="60" width="20" height="100" fill="#c084fc" stroke="#7c3aed"/>
+                <path d="M90,60 C160,20 220,20 270,60" fill="none" stroke="#111827" stroke-width="2"/>
+                <text x="20" y="30" fill="#ef4444" font-size="14">×</text>
+                <text x="180" y="200" text-anchor="middle" fill="#334155" font-size="12">无电解质</text>
+              </svg>
+              <figcaption>（A）无电解质</figcaption>
+            </figure>
+
+            <!-- B: 满足条件 -->
+            <figure>
+              <svg class="thumb" viewBox="0 0 360 220" role="img" aria-label="选项B：满足全部条件">
+                <path d="M40,40 L170,40 L160,180 L50,180 Z" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+                <path d="M60,150 L160,150 L155,175 L65,175 Z" fill="#bfdbfe" opacity="0.6" stroke="#60a5fa"/>
+                <rect x="80" y="80" width="15" height="95" fill="#94a3b8" stroke="#64748b"/>
+
+                <path d="M190,40 L320,40 L310,180 L200,180 Z" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+                <path d="M210,150 L310,150 L305,175 L215,175 Z" fill="#ddd6fe" opacity="0.6" stroke="#a78bfa"/>
+                <rect x="260" y="70" width="15" height="105" fill="#c084fc" stroke="#7c3aed"/>
+
+                <path d="M88,50 C140,10 250,10 268,50" fill="none" stroke="#111827" stroke-width="2"/>
+                <path d="M160,110 C175,95 195,95 210,110" fill="none" stroke="#334155" stroke-width="4"/>
+                <text x="180" y="200" text-anchor="middle" fill="#16a34a" font-size="14">√ 满足条件</text>
+              </svg>
+              <figcaption>（B）满足全部条件</figcaption>
+            </figure>
+
+            <!-- C: 无自发反应 -->
+            <figure>
+              <svg class="thumb" viewBox="0 0 360 220" role="img" aria-label="选项C：无自发反应">
+                <path d="M40,40 L170,40 L160,180 L50,180 Z" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+                <path d="M60,150 L160,150 L155,175 L65,175 Z" fill="#bfdbfe" opacity="0.6" stroke="#60a5fa"/>
+                <rect x="80" y="80" width="15" height="95" fill="#c084fc" stroke="#7c3aed"/>
+                <text x="87" y="75" text-anchor="middle" font-size="12" fill="#334155">Cu</text>
+
+                <path d="M190,40 L320,40 L310,180 L200,180 Z" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+                <path d="M210,150 L310,150 L305,175 L215,175 Z" fill="#bfdbfe" opacity="0.6" stroke="#60a5fa"/>
+                <rect x="260" y="80" width="15" height="95" fill="#374151" stroke="#111827"/>
+                <text x="267" y="75" text-anchor="middle" font-size="12" fill="#334155">C</text>
+
+                <path d="M88,50 C140,10 250,10 268,50" fill="none" stroke="#111827" stroke-width="2"/>
+                <text x="180" y="200" text-anchor="middle" fill="#ef4444" font-size="14">× 无自发反应</text>
+              </svg>
+              <figcaption>（C）无自发反应</figcaption>
+            </figure>
+
+            <!-- D: 非电解质 -->
+            <figure>
+              <svg class="thumb" viewBox="0 0 360 220" role="img" aria-label="选项D：非电解质乙醇">
+                <path d="M40,40 L170,40 L160,180 L50,180 Z" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+                <path d="M60,150 L160,150 L155,175 L65,175 Z" fill="#fde68a" opacity="0.6" stroke="#f59e0b"/>
+                <text x="110" y="165" text-anchor="middle" font-size="12" fill="#92400e">乙醇</text>
+
+                <path d="M190,40 L320,40 L310,180 L200,180 Z" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+                <path d="M210,150 L310,150 L305,175 L215,175 Z" fill="#fde68a" opacity="0.6" stroke="#f59e0b"/>
+                <text x="260" y="165" text-anchor="middle" font-size="12" fill="#92400e">乙醇</text>
+
+                <path d="M88,50 C140,10 250,10 268,50" fill="none" stroke="#111827" stroke-width="2"/>
+                <text x="180" y="200" text-anchor="middle" fill="#ef4444" font-size="14">× 非电解质</text>
+              </svg>
+              <figcaption>（D）非电解质</figcaption>
+            </figure>
+          </div>
+
+          <p class="text-center mt-4">(A) (B) (C) (D)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 解析(四) -->
+    <section class="section">
+      <div class="w-full max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+          <span class="absolute bottom-0 left-0 w-1-4 h-1 bg-green-500 rounded"></span>
+          练习 (四)：解析
+        </h2>
+        <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+          <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+          <p><strong>解析：</strong>构成原电池需要满足：①两个活动性不同的电极；②电解质溶液；③闭合回路；④自发的氧化还原反应。<br>
+          A. 缺少电解质溶液。<br>
+          B. <span class="text-green-700 font-bold">满足所有条件</span>。<br>
+          C. Cu与C不与稀硫酸发生自发氧化还原。<br>
+          D. 乙醇为非电解质。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 随堂练习(五) -->
+    <section class="section">
+      <div class="w-full max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+          <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>
+          随堂练习 (五)
+        </h2>
+        <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+          <p>在如图所示的原电池中（A比B活泼），关于电子流向的说法正确的是？</p>
+          <figure class="mt-4">
+            <svg class="svg-diagram" viewBox="0 0 960 260" role="img" aria-label="电子流向示意图（A→B）">
+              <defs>
+                <marker id="eFlow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                  <path d="M0,0 L0,6 L9,3 z"></path>
+                </marker>
+              </defs>
+              <g>
+                <rect x="180" y="80" width="20" height="120" fill="#94a3b8" stroke="#64748b"/>
+                <text x="190" y="70" text-anchor="middle" fill="#334155">A(活泼)</text>
+                <rect x="760" y="80" width="20" height="120" fill="#c084fc" stroke="#7c3aed"/>
+                <text x="770" y="70" text-anchor="middle" fill="#334155">B</text>
+                <path d="M190,70 C320,20 620,20 770,70" fill="none" stroke="#111827" stroke-width="2"/>
+                <path d="M200,65 C330,25 610,25 760,65" fill="none" stroke="#ef4444" stroke-width="2" marker-end="url(#eFlow)"/>
+                <text x="480" y="18" text-anchor="middle" fill="#ef4444">e⁻</text>
+              </g>
+            </svg>
+            <figcaption>电子从更活泼的 A(负极) 经外电路流向 B(正极)</figcaption>
+          </figure>
+          <div class="mt-6 space-y-3 text-lg">
+            <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 电子从B经导线流向A</p>
+            <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 电子从A经导线流向B</p>
+            <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 电子从A经溶液流向B</p>
+            <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 电子从B经溶液流向A</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 解析(五) -->
+    <section class="section">
+      <div class="w-full max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+          <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>
+          练习 (五)：解析
+        </h2>
+        <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+          <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+          <p><strong>解析：</strong>较活泼金属为负极，电子从负极经外电路流向正极；电子不在溶液中移动。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 结束页 -->
+    <section class="section">
+      <div class="w-full max-w-4xl mx-auto text-center">
+        <svg class="w-24 h-24 mx-auto text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+        <p class="mt-8 text-2xl text-slate-600">感谢观看！</p>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- 导航 -->
+  <div id="navigation" class="text-center">
+    <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+    <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+    <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('.section');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const pageIndicator = document.getElementById('page-indicator');
+      let currentPage = 0;
+      const totalPages = sections.length;
+
+      function showPage(pageIndex) {
+        sections.forEach((section) => section.classList.remove('active'));
+        sections[pageIndex].classList.add('active');
+        pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+        prevBtn.disabled = pageIndex === 0;
+        nextBtn.disabled = pageIndex === totalPages - 1;
+        prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+        prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+        nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+        nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+      }
+
+      nextBtn.addEventListener('click', () => {
+        if (currentPage < totalPages - 1) {
+          currentPage++;
+          showPage(currentPage);
+          window.scrollTo(0, 0);
+        }
+      });
+
+      prevBtn.addEventListener('click', () => {
+        if (currentPage > 0) {
+          currentPage--;
+          showPage(currentPage);
+          window.scrollTo(0, 0);
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' && currentPage < totalPages - 1) nextBtn.click();
+        else if (e.key === 'ArrowLeft' && currentPage > 0) prevBtn.click();
+      });
+
+      showPage(0);
+    });
+  </script>
+</body>
+</html>

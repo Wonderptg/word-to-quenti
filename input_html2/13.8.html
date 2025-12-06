@@ -1,0 +1,415 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>概率与统计：统计模型与一元线性回归 - PPT</title>
+ <script src="https://cdn.tailwindcss.com"></script>
+ 
+ <!-- MathJax Configuration -->
+ <script>
+ window.MathJax = {
+ tex: {
+ inlineMath: [['$', '$'], ['\\(', '\\)']],
+ displayMath: [['$$', '$$'], ['\\[', '\\]']],
+ processEscapes: true
+ },
+ svg: { fontCache: 'global' }
+ };
+ </script>
+ <script id="MathJax-script" async src="https://cdn.bootcdn.net/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+ <style>
+ html, body {
+ margin: 0;
+ padding: 0;
+ font-family: 'Noto Serif SC', serif;
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
+ background-color: #f1f5f9;
+ }
+ 
+ #presentation-container {
+ max-width: 64rem; /* 1024px for standard 4:3/16:9 feel */
+ margin: 2rem auto;
+ background-color: white;
+ border-radius: 0.5rem;
+ box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+ }
+
+ .section {
+ width: 100%;
+ box-sizing: border-box;
+ padding: 3rem 4rem;
+ position: relative; 
+ min-height: 600px; /* Increased height for better PPT framing */
+ display: flex;
+ flex-direction: column;
+ justify-content: center; /* Center content vertically */
+ align-items: center; /* Center content horizontally */
+ text-align: center;
+ }
+ 
+ .section:not(:last-child) {
+ border-bottom: 8px solid #f1f5f9; /* Gap between slides */
+ }
+ 
+ h1 { font-size: 2.5rem; line-height: 1.2; font-weight: 700; color: #1e293b; margin-bottom: 1rem; }
+ h2 { font-size: 2rem; line-height: 1.3; font-weight: 600; color: #334155; margin-bottom: 2rem; }
+ h3 { font-size: 1.75rem; line-height: 1.4; font-weight: 600; color: #1e293b; margin-bottom: 1.5rem; }
+ p, li { font-size: 1.25rem; line-height: 1.75; color: #475569; margin-bottom: 1rem; }
+ 
+ .formula-box {
+ background-color: #f8fafc;
+ /* No borders per request, just soft background */
+ padding: 2rem;
+ margin: 1.5rem 0;
+ border-radius: 0.5rem;
+ font-size: 1.4rem;
+ width: 100%;
+ max-width: 90%;
+ text-align: center;
+ }
+
+ ul { list-style-type: disc; text-align: left; padding-left: 2rem; display: inline-block; }
+ li { margin-bottom: 0.75rem; }
+
+ @media print {
+ body { background: none; }
+ #presentation-container { box-shadow: none; margin: 0; max-width: 100%; }
+ .section { min-height: 100vh; border-bottom: none; page-break-after: always; }
+ }
+ </style>
+</head>
+<body>
+
+ <div id="presentation-container">
+ 
+    <!-- Slide 1: Cover -->
+    <div class="section bg-gradient-to-br from-blue-50 to-white">
+        <h1 class="text-7xl font-bold text-blue-900 mb-6">统计模型与一元线性回归</h1>
+        <p class="text-2xl text-gray-500">概率与统计</p>
+    </div>
+
+ <!-- Slide 2: Determination vs Correlation -->
+ <div class="section">
+ <h2>确定性关系 vs 相关关系</h2>
+ <div class="grid grid-cols-2 gap-12 text-left w-full max-w-4xl">
+ <div class="bg-gray-50 p-6 rounded-lg">
+ <h3 class="text-center text-blue-600 mb-4">函数关系</h3>
+ <p>一种<strong>确定的关系</strong>。</p>
+ <p>对于定义域里任意实数 $x$，存在<strong>唯一</strong>实数 $y$ 对应。</p>
+ <p>没有随机性，精准对应。</p>
+ </div>
+ <div class="bg-gray-50 p-6 rounded-lg">
+ <h3 class="text-center text-rose-600 mb-4">相关关系</h3>
+ <p>存在<strong>随机性</strong>和“噪音”。</p>
+ <p>无法用精确函数刻画。</p>
+ <p>需要使用<strong>统计模型</strong>。</p>
+ </div>
+ </div>
+ </div>
+
+ <!-- Slide 3: Example Intro -->
+ <div class="section">
+ <h2>例子：污水处理厂的污染指数</h2>
+ <p>我们收集了前 7 年的数据，研究年份 $x$ 和污染指数 $y$ 的关系：</p>
+ <div class="mt-6 flex justify-center">
+ <table class="text-xl text-left border-collapse">
+ <tr class="border-b border-gray-300">
+ <th class="py-2 px-6 font-semibold">年份 $x$</th>
+ <th class="py-2 px-6 font-semibold">污染指数 $y$</th>
+ </tr>
+ <tr><td class="py-2 px-6">1</td><td class="py-2 px-6">6.1</td></tr>
+ <tr><td class="py-2 px-6">2</td><td class="py-2 px-6">5.2</td></tr>
+ <tr><td class="py-2 px-6">...</td><td class="py-2 px-6">...</td></tr>
+ <tr><td class="py-2 px-6">7</td><td class="py-2 px-6">3.1</td></tr>
+ </table>
+ </div>
+ </div>
+
+ <!-- Slide 4: Scatter Plot SVG -->
+ <div class="section">
+ <h2>散点图与直观猜测</h2>
+ <!-- Scaled down slightly to fit slide perfectly -->
+ <div style="transform: scale(0.9);">
+ <svg width="600" height="400" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+ <rect width="100%" height="100%" fill="#fff" rx="8" />
+ <g stroke="#eee" stroke-width="1">
+ <line x1="50" y1="280" x2="550" y2="280" /> 
+ <line x1="50" y1="210" x2="550" y2="210" /> 
+ <line x1="50" y1="140" x2="550" y2="140" /> 
+ </g>
+ <line x1="50" y1="350" x2="550" y2="350" stroke="black" stroke-width="2" marker-end="url(#arrow)" />
+ <text x="560" y="355" font-size="14" font-weight="bold">x (年)</text>
+ <line x1="50" y1="350" x2="50" y2="50" stroke="black" stroke-width="2" marker-end="url(#arrow)" />
+ <text x="40" y="40" font-size="14" font-weight="bold">y (指数)</text>
+ <text x="110" y="370" class="axis-label" text-anchor="middle">1</text>
+ <text x="170" y="370" class="axis-label" text-anchor="middle">2</text>
+ <text x="230" y="370" class="axis-label" text-anchor="middle">3</text>
+ <text x="290" y="370" class="axis-label" text-anchor="middle">4</text>
+ <text x="350" y="370" class="axis-label" text-anchor="middle">5</text>
+ <text x="410" y="370" class="axis-label" text-anchor="middle">6</text>
+ <text x="470" y="370" class="axis-label" text-anchor="middle">7</text>
+ <circle cx="110" cy="136.5" r="5" fill="#3f51b5" /> 
+ <circle cx="170" cy="168.0" r="5" fill="#3f51b5" /> 
+ <circle cx="230" cy="178.5" r="5" fill="#3f51b5" /> 
+ <circle cx="290" cy="199.5" r="5" fill="#3f51b5" /> 
+ <circle cx="350" cy="206.5" r="5" fill="#3f51b5" /> 
+ <circle cx="410" cy="224.0" r="5" fill="#3f51b5" /> 
+ <circle cx="470" cy="241.5" r="5" fill="#3f51b5" /> 
+ <line x1="80" y1="122.5" x2="500" y2="262.5" stroke="#c51162" stroke-width="3" stroke-dasharray="5,5" />
+ <text x="320" y="100" fill="#c51162" font-size="14" font-weight="bold">直观猜测线: y = -0.5x + 6.5</text>
+ <defs>
+ <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+ <path d="M0,0 L0,6 L9,3 z" fill="black" />
+ </marker>
+ </defs>
+ </svg>
+ </div>
+ <p class="mt-4 text-sm text-gray-500">点虽不在直线上，但都离某一条直线不太远。</p>
+ </div>
+
+ <!-- Slide 5: Linear Regression Model Definition -->
+ <div class="section">
+ <h2>一元线性回归模型</h2>
+ <p>我们寻找一条“最好”的直线来刻画这种关系。</p>
+ <p>回归直线方程：</p>
+ <div class="formula-box">
+ $$ \hat{y} = \hat{b}x + \hat{a} $$
+ </div>
+ <p class="text-gray-600 mt-4">注意：$\hat{y}$ (y-hat) 代表预测值，区别于真实数据 $y$。</p>
+ </div>
+
+ <!-- Slide 6: Least Squares Method -->
+ <div class="section">
+ <h2>最小二乘法 (Least Squares Method)</h2>
+ <p><strong>目标：</strong> 让预测值 $\hat{y}$ 和真实值 $y$ 之间的“距离”最小。</p>
+ <p>我们选择让<strong>误差的平方和</strong>最小：</p>
+ <div class="formula-box">
+ $$ Q = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 $$
+ </div>
+ <p class="mt-4">这种方法在数学上更易计算解析式。</p>
+ </div>
+
+ <!-- Slide 7: Regression Coefficients -->
+ <div class="section">
+ <h2>回归系数公式</h2>
+ <p>通过最小二乘法推导出的最优 $\hat{b}$ 和 $\hat{a}$：</p>
+ <div class="formula-box">
+ $$ \hat{b} = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n} (x_i - \bar{x})^2} $$
+ $$ \hat{a} = \bar{y} - \hat{b}\bar{x} $$
+ </div>
+ <p class="text-sm mt-4 text-gray-500">其中 $\bar{x}, \bar{y}$ 分别为样本均值。</p>
+ </div>
+
+ <!-- Slide 8: Calculation Step 1 & 2 -->
+ <div class="section">
+ <h2>实例计算：步骤 1 & 2</h2>
+ <div class="w-full max-w-3xl text-left bg-blue-50 p-8 rounded-lg">
+ <p class="font-bold">第一步：算平均数</p>
+ <ul class="mb-6">
+ <li>$\bar{x} = 4$ (第1年到第7年的中心)</li>
+ <li>$\bar{y} = 4.4$ (污染指数平均值)</li>
+ </ul>
+
+ <p class="font-bold">第二步：算分子分母</p>
+ <ul>
+ <li><strong>分母</strong> (方差相关): $\sum (x_i - \bar{x})^2 = 28$</li>
+ <li><strong>分子</strong> (协方差相关): $\sum (x_i - \bar{x})(y_i - \bar{y}) \approx -13.3$</li>
+ </ul>
+ </div>
+ </div>
+
+ <!-- Slide 9: Calculation Step 3 -->
+ <div class="section">
+ <h2>实例计算：步骤 3 (结果)</h2>
+ <p>代入公式计算：</p>
+ <div class="formula-box">
+ $$ \hat{b} = \frac{-13.3}{28} \approx -0.475 $$
+ $$ \hat{a} = 4.4 - (-0.475 \times 4) = 6.3 $$
+ </div>
+ <p class="mt-6 text-xl font-bold text-blue-800">最终回归直线方程：</p>
+ <p class="text-2xl mt-2">$$ \hat{y} = -0.475x + 6.3 $$</p>
+ <p class="text-sm mt-4 text-gray-500">(与直观猜测 $y = -0.5x + 6.5$ 非常接近)</p>
+ </div>
+
+ <!-- Slide 10: Properties -->
+ <div class="section">
+ <h2>回归直线的两个重要性质</h2>
+ <div class="space-y-8 max-w-4xl">
+ <div class="bg-indigo-50 p-6 rounded-lg">
+ <h3 class="text-indigo-800 text-xl font-bold mb-2">1. 必过样本中心点</h3>
+ <p>回归直线一定经过点 $(\bar{x}, \bar{y})$。</p>
+ <p class="text-sm text-gray-500">由公式 $\hat{a} = \bar{y} - \hat{b}\bar{x}$ 决定。</p>
+ </div>
+ <div class="bg-indigo-50 p-6 rounded-lg">
+ <h3 class="text-indigo-800 text-xl font-bold mb-2">2. 斜率决定相关方向</h3>
+ <ul class="list-none pl-0">
+ <li>$\hat{b} > 0$：正相关 ($x \uparrow, y \uparrow$)</li>
+ <li>$\hat{b} < 0$：负相关 ($x \uparrow, y \downarrow$)</li>
+ </ul>
+ </div>
+ </div>
+ </div>
+
+ <!-- Slide 11: Correlation Coefficient Formula -->
+ <div class="section">
+ <h2>线性相关系数 $r$</h2>
+ <p>用于衡量线性关系的<strong>强弱</strong>。</p>
+ <div class="formula-box" style="font-size: 1.2rem;">
+ $$ r = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n} (x_i - \bar{x})^2} \sqrt{\sum_{i=1}^{n} (y_i - \bar{y})^2}} $$
+ </div>
+ <div class="flex gap-4 mt-4 justify-center">
+ <span class="bg-green-100 text-green-800 px-4 py-2 rounded">数值稳定</span>
+ <span class="bg-green-100 text-green-800 px-4 py-2 rounded">去单位化 (无量纲)</span>
+ </div>
+ </div>
+
+ <!-- Slide 12: Properties of r -->
+ <div class="section">
+ <h2>$r$ 的性质</h2>
+ <ul class="space-y-4 text-xl">
+ <li><strong>符号：</strong> 与 $\hat{b}$ 一致。$r>0$ 正相关，$r<0$ 负相关。</li>
+ <li><strong>范围：</strong> $|r| \le 1$。</li>
+ <li><strong>强弱：</strong> 
+ <ul class="mt-2 text-gray-600">
+ <li>$|r| \to 1$：相关性<strong>强</strong> (点贴近直线)。</li>
+ <li>$|r| \to 0$：相关性<strong>弱</strong>。</li>
+ </ul>
+ </li>
+ <li><strong>特例：</strong> $|r| = 1$ 时，所有点都在直线上。</li>
+ </ul>
+ </div>
+
+ <!-- Quiz 1 -->
+ <div class="section">
+ <h3>1. 我们使用什么方法来确定回归直线方程的系数？</h3>
+ <div class="flex flex-col gap-4 text-left w-full max-w-xl">
+ <div class="p-4 bg-gray-50 rounded">A. 绝对值求和法</div>
+ <div class="p-4 bg-gray-50 rounded">B. 最小二乘法</div>
+ <div class="p-4 bg-gray-50 rounded">C. 最大似然估计</div>
+ <div class="p-4 bg-gray-50 rounded">D. 随机猜测法</div>
+ </div>
+ </div>
+
+ <!-- Quiz 1 Answer -->
+ <div class="section">
+ <h3 class="text-gray-400 mb-6">1. 我们使用什么方法来确定回归直线方程的系数？</h3>
+ <div class="p-8 bg-green-50 rounded-lg w-full max-w-2xl">
+ <p class="text-2xl font-bold text-green-700 mb-4">✅ 答案：B. 最小二乘法</p>
+ <hr class="border-green-200 my-4">
+ <p class="text-left text-green-900">
+ <strong>解析：</strong> 我们选择让误差的平方和 ($Q = \sum (y_i - \hat{y}_i)^2$) 最小的方法，即“最小二乘法”。绝对值处理起来在数学上较为复杂。
+ </p>
+ </div>
+ </div>
+
+ <!-- Quiz 2 -->
+ <div class="section">
+ <h3>2. 线性回归直线 $\hat{y} = \hat{b}x + \hat{a}$ 一定经过哪一个点？</h3>
+ <div class="flex flex-col gap-4 text-left w-full max-w-xl">
+ <div class="p-4 bg-gray-50 rounded">A. $(0, 0)$</div>
+ <div class="p-4 bg-gray-50 rounded">B. $(x_1, y_1)$</div>
+ <div class="p-4 bg-gray-50 rounded">C. $(\bar{x}, \bar{y})$</div>
+ <div class="p-4 bg-gray-50 rounded">D. $(\bar{x}, 0)$</div>
+ </div>
+ </div>
+
+ <!-- Quiz 2 Answer -->
+ <div class="section">
+ <h3 class="text-gray-400 mb-6">2. 线性回归直线 $\hat{y} = \hat{b}x + \hat{a}$ 一定经过哪一个点？</h3>
+ <div class="p-8 bg-green-50 rounded-lg w-full max-w-2xl">
+ <p class="text-2xl font-bold text-green-700 mb-4">✅ 答案：C. $(\bar{x}, \bar{y})$</p>
+ <hr class="border-green-200 my-4">
+ <p class="text-left text-green-900">
+ <strong>解析：</strong> 这是回归直线的重要性质。根据公式 $\hat{a} = \bar{y} - \hat{b}\bar{x}$，移项可得 $\bar{y} = \hat{b}\bar{x} + \hat{a}$，即直线必过样本中心 $(\bar{x}, \bar{y})$。
+ </p>
+ </div>
+ </div>
+
+ <!-- Quiz 3 -->
+ <div class="section">
+ <h3>3. 关于相关系数 $r$，下列说法正确的是？</h3>
+ <div class="flex flex-col gap-4 text-left w-full max-w-xl">
+ <div class="p-4 bg-gray-50 rounded">A. $r$ 的值可以大于 1</div>
+ <div class="p-4 bg-gray-50 rounded">B. $r$ 带有单位，受度量单位影响</div>
+ <div class="p-4 bg-gray-50 rounded">C. $|r|$ 越接近 1，线性相关性越强</div>
+ <div class="p-4 bg-gray-50 rounded">D. $r = 0$ 表示两个变量没有任何关系</div>
+ </div>
+ </div>
+
+ <!-- Quiz 3 Answer -->
+ <div class="section">
+ <h3 class="text-gray-400 mb-6">3. 关于相关系数 $r$，下列说法正确的是？</h3>
+ <div class="p-8 bg-green-50 rounded-lg w-full max-w-2xl">
+ <p class="text-2xl font-bold text-green-700 mb-4">✅ 答案：C. $|r|$ 越接近 1，线性相关性越强</p>
+ <hr class="border-green-200 my-4">
+ <div class="text-left text-green-900 text-base space-y-2">
+ <p><strong>A 错：</strong> $|r| \le 1$。</p>
+ <p><strong>B 错：</strong> $r$ 是无量纲的，没有单位。</p>
+ <p><strong>D 错：</strong> $r=0$ 仅表示没有<strong>线性</strong>关系，可能有其他非线性关系。</p>
+ </div>
+ </div>
+ </div>
+
+ <!-- Quiz 4 -->
+ <div class="section">
+ <h3>4. 如果计算出回归系数 $\hat{b} < 0$，那么相关系数 $r$ 应该是？</h3>
+ <div class="flex flex-col gap-4 text-left w-full max-w-xl">
+ <div class="p-4 bg-gray-50 rounded">A. 正数</div>
+ <div class="p-4 bg-gray-50 rounded">B. 负数</div>
+ <div class="p-4 bg-gray-50 rounded">C. 零</div>
+ <div class="p-4 bg-gray-50 rounded">D. 无法确定</div>
+ </div>
+ </div>
+
+ <!-- Quiz 4 Answer -->
+ <div class="section">
+ <h3 class="text-gray-400 mb-6">4. 如果计算出回归系数 $\hat{b} < 0$，那么相关系数 $r$ 应该是？</h3>
+ <div class="p-8 bg-green-50 rounded-lg w-full max-w-2xl">
+ <p class="text-2xl font-bold text-green-700 mb-4">✅ 答案：B. 负数</p>
+ <hr class="border-green-200 my-4">
+ <p class="text-left text-green-900">
+ <strong>解析：</strong> 相关系数 $r$ 的符号与回归系数 $\hat{b}$ 的符号是一致的。两者都由分子的正负决定，表示相关的方向。
+ </p>
+ </div>
+ </div>
+
+ <!-- Quiz 5 -->
+ <div class="section">
+ <h3>5. 如果所有的数据点都严格落在回归直线上，那么 $|r|$ 等于多少？</h3>
+ <div class="flex flex-col gap-4 text-left w-full max-w-xl">
+ <div class="p-4 bg-gray-50 rounded">A. 0</div>
+ <div class="p-4 bg-gray-50 rounded">B. 0.5</div>
+ <div class="p-4 bg-gray-50 rounded">C. 1</div>
+ <div class="p-4 bg-gray-50 rounded">D. 无穷大</div>
+ </div>
+ </div>
+
+ <!-- Quiz 5 Answer -->
+ <div class="section">
+ <h3 class="text-gray-400 mb-6">5. 如果所有的数据点都严格落在回归直线上，那么 $|r|$ 等于多少？</h3>
+ <div class="p-8 bg-green-50 rounded-lg w-full max-w-2xl">
+ <p class="text-2xl font-bold text-green-700 mb-4">✅ 答案：C. 1</p>
+ <hr class="border-green-200 my-4">
+ <p class="text-left text-green-900">
+ <strong>解析：</strong> 当 $|r|=1$ 时，表示完全线性相关，此时所有样本点都精确地落在回归直线上。
+ </p>
+ </div>
+ </div>
+
+ <!-- Closing Slide -->
+ <div class="section bg-slate-50">
+ <h2 class="text-3xl text-blue-600 mb-4">课程结束</h2>
+ <p>感谢大家的聆听！</p>
+ <p class="text-gray-500 mt-8">“祝学不恐怖，怕就抓不着”</p>
+ </div>
+
+ </div>
+
+</body>
+</html>

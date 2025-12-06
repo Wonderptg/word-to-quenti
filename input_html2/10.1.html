@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>导数通关秘籍 (演示版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <!-- MathJax Library -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 64rem; /* 调整为更宽的比例以适应PPT展示 */
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 4rem;
+            position: relative; 
+            min-height: 600px; /* 增加高度以适应图片 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            page-break-after: always; /* 打印时强制分页 */
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 6px solid #3b82f6;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border-radius: 0.25rem;
+            font-size: 1.25rem;
+            line-height: 1.8;
+            overflow-x: auto;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .highlight-box {
+            background-color: #fffbe6;
+            border: 2px dashed #f59e0b;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-size: 1.1rem;
+            margin-top: 1.5rem;
+        }
+
+        .image-placeholder {
+            background-color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 1.2rem;
+            border-radius: 0.5rem;
+            margin: 1.5rem auto;
+            overflow: hidden;
+        }
+
+        .image-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Use contain for better fit */
+        }
+
+        /* 简单的交互样式 */
+        .option-item {
+            transition: all 0.2s;
+        }
+        .option-item:hover {
+            background-color: #f8fafc;
+            border-color: #3b82f6;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0mm;
+            }
+
+            body, html {
+                width: 100%;
+                height: 100%;
+                background-color: white;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            #presentation-container {
+                margin: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+                width: 100% !important;
+                max-width: none !important;
+            }
+            
+            .section {
+                height: 100vh !important;
+                width: 100vw !important;
+                max-width: none !important;
+                min-height: 0 !important;
+                page-break-after: always !important;
+                break-after: page !important;
+                page-break-inside: avoid !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                align-items: center !important;
+                padding: 1cm !important; /* 打印时的内边距 */
+                border-bottom: none !important;
+            }
+
+            /* 确保内部容器居中且不超宽 */
+            .section > div {
+                width: 90% !important;
+                max-width: 100% !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-6xl font-bold text-slate-800 mb-6">导数通关秘籍</h1>
+                <p class="text-3xl text-slate-600 mt-4">从小白到大神的进阶之路</p>
+                <div class="mt-12 p-6 bg-blue-50 rounded-xl inline-block">
+                    <p class="text-2xl text-blue-800 font-semibold">"不整虚头巴脑的定义，主打实用主义"</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第一部分：导数概念 -->
+        <div class="section">
+             <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-4 mb-8">一、导数到底是啥？</h2>
+            <div class="w-full max-w-5xl mx-auto grid grid-cols-2 gap-8 items-center">
+                <div>
+                    <p class="text-xl mb-4"><strong>问题：</strong> 在 $x=2$ 这一点的“陡峭程度”（切线斜率）是多少？</p>
+                    <p class="text-xl mb-4"><strong>牛顿的困境：</strong> 只有一个点，怎么求斜率 $\frac{y_2-y_1}{x_2-x_1}$？</p>
+                    <p class="text-xl text-blue-700 font-bold">极限思想：</p>
+                    <ul class="list-disc list-inside text-lg space-y-2 text-slate-700">
+                        <li>找个邻居 $x=2.1$，连成<strong>割线</strong>。</li>
+                        <li>让邻居<strong>无限靠近</strong>。</li>
+                        <li>割线变身<strong>切线</strong>！</li>
+                    </ul>
+                </div>
+                <div class="image-placeholder h-64 bg-slate-50 border border-slate-200 rounded-xl overflow-hidden">
+                    <!-- SVG 重绘：精确切线与无遮挡布局 -->
+                    <svg viewBox="0 0 400 300" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#94a3b8" />
+                            </marker>
+                        </defs>
+                        <!-- 坐标轴 -->
+                        <line x1="30" y1="280" x2="380" y2="280" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrow)" />
+                        <line x1="30" y1="280" x2="30" y2="20" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrow)" />
+                        
+                        <!-- 曲线: M 50,250 Q 200,50 350,250 (开口向下的抛物线弧段) -->
+                        <path d="M 50,250 Q 200,50 350,250" fill="none" stroke="#3b82f6" stroke-width="4" stroke-linecap="round" />
+                        
+                        <!-- 割线 (P与Q连线) -->
+                        <!-- P点在 t=0.3 处 (140, 166), Q点在 t=0.5 处 (200, 150) -->
+                        <!-- 延长线计算: dx=60, dy=-16. 斜率约为 -0.266 -->
+                        <line x1="60" y1="187" x2="320" y2="118" stroke="#ef4444" stroke-width="2" stroke-dasharray="6,4" />
+                        <text x="325" y="125" font-size="14" fill="#ef4444" font-weight="bold">割线</text>
+                        
+                        <!-- 切线 (P点切线) -->
+                        <!-- 理论斜率计算后，绘制切线 -->
+                        <line x1="40" y1="219" x2="280" y2="92" stroke="#1e40af" stroke-width="3" opacity="0.6" />
+                        <text x="285" y="95" font-size="14" fill="#1e40af" font-weight="bold">切线</text>
+                        
+                        <!-- 点 P (固定点) -->
+                        <circle cx="140" cy="166" r="6" fill="#1e40af" stroke="white" stroke-width="2" />
+                        <!-- 文字放在左下方，避免遮挡 -->
+                        <text x="80" y="190" font-size="16" font-weight="bold" fill="#1e40af">P (固定)</text>
+                    
+                        <!-- 点 Q (动点) -->
+                        <circle cx="200" cy="150" r="6" fill="#ef4444" stroke="white" stroke-width="2" />
+                        <!-- 文字放在正上方，避免遮挡 -->
+                        <text x="190" y="135" font-size="16" font-weight="bold" fill="#ef4444">Q (动点)</text>
+                        
+                        <!-- 逼近箭头: 从Q指向P -->
+                        <path d="M 185,160 Q 170,180 155,175" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)" />
+                        <text x="165" y="200" font-size="12" fill="#64748b" font-weight="bold">Δx → 0</text>
+                    </svg>
+                </div>
+            </div>
+            <div class="formula-box">
+                $$f'(x) = \lim_{\Delta x \to 0} \frac{f(x + \Delta x) - f(x)}{\Delta x}$$
+            </div>
+        </div>
+        
+        <!-- 第二部分：基础公式 1 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-4 mb-8">二、常用工具包 (1)：常数与幂函数</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold text-slate-700 mb-2">1. 常数函数</h3>
+                    <p class="text-lg text-slate-600 mb-2">图像是水平线，没有斜率。</p>
+                    <div class="formula-box text-xl">
+                        $$(C)' = 0$$
+                        <div class="text-base text-gray-500 mt-2 font-normal">例：$(5)' = 0, \quad (\pi)' = 0$</div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-700 mb-2">2. 幂函数 (核心)</h3>
+                    <div class="highlight-box">
+                        <p class="font-bold text-xl text-amber-700">口诀：把帽子摘下来，头上减一根毛</p>
+                    </div>
+                    <div class="formula-box text-xl">
+                        $$(x^n)' = n \cdot x^{n-1}$$
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mt-4 text-lg">
+                        <div class="bg-gray-50 p-4 rounded text-center">
+                            例1：$(x^5)' = 5x^4$
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded text-center">
+                            例2：$(\sqrt[3]{x})' = (x^{\frac{1}{3}})' = \frac{1}{3}x^{-\frac{2}{3}}$
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第二部分：基础公式 2 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-4 mb-8">二、常用工具包 (2)：三角与指对</h2>
+            <div class="w-full max-w-4xl mx-auto space-y-8">
+                
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-700 border-l-4 border-rose-500 pl-3">3. 三角函数 (易错)</h3>
+                    <div class="grid grid-cols-2 gap-6 mt-4">
+                        <div class="bg-blue-50 p-6 rounded-lg text-center text-xl font-serif">
+                            $(\sin x)' = \cos x$
+                        </div>
+                        <div class="bg-rose-50 p-6 rounded-lg text-center text-xl font-serif relative overflow-hidden">
+                            $(\cos x)' = -\sin x$
+                            <div class="absolute top-0 right-0 bg-rose-500 text-white text-xs px-2 py-1">注意负号</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-700 border-l-4 border-rose-500 pl-3">4. 指数与对数</h3>
+                    <div class="grid grid-cols-2 gap-6 mt-4">
+                        <div class="bg-gray-50 p-6 rounded-lg">
+                            <p class="text-center text-xl mb-2 font-bold">$$(e^x)' = e^x$$</p>
+                            <p class="text-center text-sm text-gray-500">数学界的小强，永远是自己</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-lg">
+                            <p class="text-center text-xl mb-2 font-bold">$$(\ln x)' = \frac{1}{x}$$</p>
+                            <p class="text-center text-sm text-gray-500">对数的导数是倒数</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 第三部分：运算法则 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-amber-500 pb-4 mb-8">三、运算法则 (避坑指南)</h2>
+            <div class="w-full max-w-5xl mx-auto space-y-6">
+                
+                <!-- 加减法 -->
+                <div class="p-4 border-b border-gray-200">
+                    <h3 class="text-2xl font-bold text-slate-700 inline-block mr-4">1. 加减法</h3>
+                    <span class="text-lg text-gray-600">各算各的，简单直接。</span>
+                    <p class="mt-2 text-xl font-serif">$(x^3 - \sin x)' = 3x^2 - \cos x$</p>
+                </div>
+
+                <!-- 乘法法则 -->
+                <div class="p-4 bg-amber-50 rounded-lg border border-amber-200">
+                    <h3 class="text-2xl font-bold text-amber-800 mb-2">2. 乘法法则 (重灾区！)</h3>
+                    <p class="text-lg mb-2">$(uv)' \neq u'v'$</p>
+                    <p class="text-xl font-bold text-center my-4 text-amber-900">“前导后不导，加上，前不导后导”</p>
+                    <div class="formula-box bg-white mt-0 border-amber-400">
+                        $$y = x \cdot \sin x \implies y' = 1 \cdot \sin x + x \cdot \cos x$$
+                    </div>
+                </div>
+
+                <!-- 除法法则 -->
+                <div class="p-4">
+                    <h3 class="text-2xl font-bold text-slate-700 mb-2">3. 除法法则</h3>
+                    <p class="text-lg">“分母先平方；上导下不导，减去，上不导下导”</p>
+                    <div class="formula-box mt-2 py-2">
+                         $$(\frac{u}{v})' = \frac{u'v - uv'}{v^2}$$
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 第四部分：复合函数 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-indigo-500 pb-4 mb-8">四、复合函数：洋葱剥皮法</h2>
+            <div class="w-full max-w-5xl mx-auto grid grid-cols-2 gap-10 items-center">
+                <div>
+                    <h3 class="text-2xl font-bold text-indigo-800 mb-4">口诀：由外向内，层层相乘</h3>
+                    <p class="text-xl mb-2"><strong>例题：</strong> $y = \cos(x^2 + 1)$</p>
+                    
+                    <div class="space-y-4 text-lg mt-6">
+                        <div class="p-3 bg-indigo-50 rounded border-l-4 border-indigo-400">
+                            <span class="font-bold">第一层（外）：</span> $\cos(\dots)$ 求导得 $-\sin(\dots)$
+                            <br><span class="text-gray-500">肚子里的东西先别动</span>
+                        </div>
+                        <div class="p-3 bg-indigo-50 rounded border-l-4 border-indigo-400">
+                            <span class="font-bold">第二层（内）：</span> $x^2+1$ 求导得 $2x$
+                        </div>
+                        <div class="p-3 bg-white shadow rounded text-center font-bold text-xl">
+                            结果：$-\sin(x^2+1) \cdot 2x$
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="image-placeholder h-80 bg-indigo-50 border border-indigo-100 rounded-xl overflow-hidden">
+                      <!-- SVG 重绘：调整半径和间距，防止文字遮挡 -->
+                    <svg viewBox="0 0 400 400" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Layer 1: 最外层 (半径180) -->
+                        <circle cx="200" cy="200" r="180" fill="#e0e7ff" stroke="#4338ca" stroke-width="3" stroke-dasharray="10,5"/>
+                        
+                        <!-- Layer 1 文字：放置在 r=180 和 r=110 之间的空隙 (上方 y=20 到 y=90 之间) -->
+                        <text x="200" y="55" text-anchor="middle" font-size="18" font-weight="bold" fill="#4338ca">外层: f(u)</text>
+                        <text x="200" y="80" text-anchor="middle" font-size="14" fill="#6366f1">先导这一层 (cos)</text>
+                
+                        <!-- Layer 2: 中间层 (半径110) -->
+                        <circle cx="200" cy="200" r="110" fill="#c7d2fe" stroke="#4338ca" stroke-width="3" />
+                        
+                        <!-- Layer 2 文字：放置在 r=110 和 r=50 之间的空隙 (上方 y=90 到 y=150 之间) -->
+                        <text x="200" y="115" text-anchor="middle" font-size="18" font-weight="bold" fill="#3730a3">内层: g(x)</text>
+                        <text x="200" y="140" text-anchor="middle" font-size="14" fill="#4f46e5">再乘这一层 (2x)</text>
+                
+                        <!-- Layer 3: 核心 (半径50) -->
+                        <circle cx="200" cy="200" r="50" fill="#818cf8" stroke="#312e81" stroke-width="3" />
+                        <!-- 核心文字：放置在中心 -->
+                        <text x="200" y="210" text-anchor="middle" font-size="24" font-weight="bold" fill="#ffffff">x</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第五部分：物理应用 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-4 mb-8">五、应用：降维打击物理题</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <div class="grid grid-cols-3 gap-8 mb-6">
+                    <div class="col-span-2">
+                        <p class="text-xl mb-4"><strong>位移公式：</strong> $h(t) = 20t - 5t^2$</p>
+                        <div class="highlight-box bg-emerald-50 border-emerald-400 text-emerald-900 font-bold text-2xl">
+                            结论：位移的导数 = 速度
+                        </div>
+                        <p class="text-xl mt-6">导函数：$v(t) = h'(t) = 20 - 10t$</p>
+                        <div class="mt-6 space-y-4">
+                            <p><strong>Q1: 1秒时的瞬时速度？</strong><br>代入 $t=1$: $v(1) = 20 - 10 = 10 m/s$</p>
+                            <p><strong>Q2: 何时到达最高点？</strong><br>最高点速度为0: $20 - 10t = 0 \implies t=2s$</p>
+                        </div>
+                    </div>
+                    <div class="image-placeholder bg-emerald-50 col-span-1 h-full border border-emerald-200 rounded-xl overflow-hidden">
+                         <!-- SVG 替代外部图片：抛物运动 -->
+                        <svg viewBox="0 0 300 400" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <marker id="arrow-red" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <path d="M0,0 L0,6 L9,3 z" fill="#dc2626" />
+                                </marker>
+                            </defs>
+                            <!-- 地面 -->
+                            <line x1="20" y1="350" x2="280" y2="350" stroke="#064e3b" stroke-width="3" />
+                            <text x="250" y="380" font-size="14" fill="#064e3b">地面</text>
+                            
+                            <!-- 轨迹 -->
+                            <path d="M 50,350 Q 150,50 250,350" fill="none" stroke="#10b981" stroke-width="4" stroke-dasharray="8,4" />
+                            
+                            <!-- 小球 at t -->
+                            <circle cx="90" cy="230" r="10" fill="#059669" />
+                            
+                            <!-- 速度矢量 -->
+                            <line x1="90" y1="230" x2="130" y2="150" stroke="#dc2626" stroke-width="4" marker-end="url(#arrow-red)" />
+                            <text x="140" y="160" font-size="16" font-weight="bold" fill="#dc2626">v(t)</text>
+                            <text x="140" y="180" font-size="12" fill="#b91c1c">瞬时速度</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <div class="bg-rose-600 text-white px-4 py-1 rounded-t-lg inline-block font-bold">课后小测 1/4</div>
+                <div class="bg-white border-2 border-gray-200 p-8 rounded-b-lg rounded-tr-lg shadow-lg">
+                    <h3 class="text-3xl font-bold text-slate-800 mb-6">题目 1</h3>
+                    <p class="text-2xl mb-8">常数函数 $y = \pi^2$ 的导数是多少？</p>
+                    <div class="space-y-4 text-xl">
+                        <div class="option-item p-4 border border-gray-200 rounded cursor-pointer">(A) $2\pi$</div>
+                        <div class="option-item p-4 border border-gray-200 rounded cursor-pointer">(B) $\pi$</div>
+                        <div class="option-item p-4 border border-gray-200 rounded cursor-pointer">(C) $0$</div>
+                        <div class="option-item p-4 border border-gray-200 rounded cursor-pointer">(D) $1$</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 解析 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-400 mb-4">题目 1 解析</h3>
+                <div class="bg-emerald-50 border-l-8 border-emerald-500 p-8 rounded shadow-sm">
+                    <p class="text-3xl font-bold text-emerald-800 mb-6">✅ 正确答案：(C)</p>
+                    <div class="text-xl leading-relaxed text-slate-700">
+                        <p>这是一个经典陷阱题！</p>
+                        <p class="mt-4">虽然 $\pi$ 是希腊字母，但它在数学中代表一个<strong>具体的数字</strong>（约等于 3.14）。</p>
+                        <p class="mt-2">因此 $\pi^2$ 也是一个<strong>常数</strong>。</p>
+                        <p class="mt-4 font-bold text-emerald-700">切记：常数的导数永远是 0。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <div class="bg-rose-600 text-white px-4 py-1 rounded-t-lg inline-block font-bold">课后小测 2/4</div>
+                <div class="bg-white border-2 border-gray-200 p-8 rounded-b-lg rounded-tr-lg shadow-lg">
+                    <h3 class="text-3xl font-bold text-slate-800 mb-6">题目 2</h3>
+                    <p class="text-2xl mb-8">函数 $f(x) = x^3$ 的导数 $f'(x)$ 是？</p>
+                    <div class="space-y-4 text-xl">
+                        <div class="option-item p-4 border border-gray-200 rounded cursor-pointer">(A) $3x$</div>
+                        <div class="option-item p-4 border border-gray-200 rounded cursor-pointer">(B) $3x^2$</div>
+                        <div class="option-item p-4 border border-gray-200 rounded cursor-pointer">(C) $x^2$</div>
+                        <div class="option-item p-4 border border-gray-200 rounded cursor-pointer">(D) $2x^3$</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 解析 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-400 mb-4">题目 2 解析</h3>
+                <div class="bg-emerald-50 border-l-8 border-emerald-500 p-8 rounded shadow-sm">
+                    <p class="text-3xl font-bold text-emerald-800 mb-6">✅ 正确答案：(B)</p>
+                    <div class="text-xl leading-relaxed text-slate-700">
+                        <p>考察<strong>幂函数求导法则</strong>。</p>
+                        <p class="mt-4 font-semibold text-amber-700">口诀：“把帽子摘下来，头上减一根毛”</p>
+                        <ul class="list-disc list-inside mt-4 space-y-2">
+                            <li>指数 3 拿到前面系数位置。</li>
+                            <li>指数变成 $3-1 = 2$。</li>
+                        </ul>
+                        <p class="mt-4 text-center text-2xl font-bold">$(x^3)' = 3x^2$</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <div class="bg-rose-600 text-white px-4 py-1 rounded-t-lg inline-block font-bold">课后小测 3/4</div>
+                <div class="bg-white border-2 border-gray-200 p-8 rounded-b-lg rounded-tr-lg shadow-lg">
+                    <h3 class="text-3xl font-bold text-slate-800 mb-6">题目 3 (复合函数)</h3>
+                    <p class="text-2xl mb-8">函数 $y = \sin(2x)$ 的导数是？</p>
+                    <div class="space-y-4 text-xl">
+                        <div class="option-item p-4 border border-gray-200 rounded cursor-pointer">(A) $\cos(2x)$</div>
+                        <div class="option-item p-4 border border-gray-200 rounded cursor-pointer">(B) $-\cos(2x)$</div>
+                        <div class="option-item p-4 border border-gray-200 rounded cursor-pointer">(C) $2\sin(2x)$</div>
+                        <div class="option-item p-4 border border-gray-200 rounded cursor-pointer">(D) $2\cos(2x)$</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 解析 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-400 mb-4">题目 3 解析</h3>
+                <div class="bg-emerald-50 border-l-8 border-emerald-500 p-8 rounded shadow-sm">
+                    <p class="text-3xl font-bold text-emerald-800 mb-6">✅ 正确答案：(D)</p>
+                    <div class="text-xl leading-relaxed text-slate-700">
+                        <p>这是一道典型的<strong>复合函数</strong>题目（链式法则）。</p>
+                        <div class="mt-4 space-y-2">
+                            <p><strong>第一步 (外层)：</strong> $\sin$ 求导变成 $\cos$。得到 $\cos(2x)$。</p>
+                            <p><strong>第二步 (内层)：</strong> 肚子里的 $2x$ 求导变成 $2$。</p>
+                            <p><strong>第三步 (相乘)：</strong> $\cos(2x) \cdot 2$。</p>
+                        </div>
+                        <p class="mt-4 text-center text-2xl font-bold">$y' = 2\cos(2x)$</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <div class="bg-rose-600 text-white px-4 py-1 rounded-t-lg inline-block font-bold">课后小测 4/4</div>
+                <div class="bg-white border-2 border-gray-200 p-8 rounded-b-lg rounded-tr-lg shadow-lg">
+                    <h3 class="text-3xl font-bold text-slate-800 mb-6">题目 4 (计算题)</h3>
+                    <p class="text-2xl mb-8">已知位移公式 $s(t) = t^2 + 2t$，求 $t=3$ 时的瞬时速度。</p>
+                    <div class="space-y-4 text-xl">
+                        <div class="option-item p-4 border border-gray-200 rounded cursor-pointer">(A) 5</div>
+                        <div class="option-item p-4 border border-gray-200 rounded cursor-pointer">(B) 6</div>
+                        <div class="option-item p-4 border border-gray-200 rounded cursor-pointer">(C) 8</div>
+                        <div class="option-item p-4 border border-gray-200 rounded cursor-pointer">(D) 15</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 解析 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-400 mb-4">题目 4 解析</h3>
+                <div class="bg-emerald-50 border-l-8 border-emerald-500 p-8 rounded shadow-sm">
+                    <p class="text-3xl font-bold text-emerald-800 mb-6">✅ 正确答案：(C)</p>
+                    <div class="text-xl leading-relaxed text-slate-700">
+                        <p><strong>核心知识点：</strong> 瞬时速度是位移的导数。</p>
+                        <div class="bg-white p-4 rounded mt-4 border border-emerald-100">
+                            <p>1. 先求导函数：</p>
+                            <p class="text-center font-bold my-2">$v(t) = s'(t) = (t^2)' + (2t)' = 2t + 2$</p>
+                            <p>2. 代入时间 $t=3$：</p>
+                            <p class="text-center font-bold my-2">$v(3) = 2 \times 3 + 2 = 6 + 2 = 8$</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 总结页 -->
+         <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-5xl font-bold text-slate-800 mb-10">通关总结：三板斧</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                    <div class="bg-blue-50 p-6 rounded-xl border border-blue-100">
+                        <h3 class="text-2xl font-bold text-blue-800 mb-4">第一板斧</h3>
+                        <p class="text-lg"><strong>背熟基础公式</strong><br>特别是幂函数 $(x^n)'$ 和对数 $(\ln x)'$。</p>
+                    </div>
+                    <div class="bg-amber-50 p-6 rounded-xl border border-amber-100">
+                        <h3 class="text-2xl font-bold text-amber-800 mb-4">第二板斧</h3>
+                        <p class="text-lg"><strong>运算法则别混</strong><br>乘法法则要相加，除法法则要相减。</p>
+                    </div>
+                    <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-100">
+                        <h3 class="text-2xl font-bold text-indigo-800 mb-4">第三板斧</h3>
+                        <p class="text-lg"><strong>复合函数剥洋葱</strong><br>千万记得乘以内层的导数！</p>
+                    </div>
+                </div>
+                <p class="text-2xl mt-12 text-slate-500 font-semibold">导数第一问，稳拿送分题！</p>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

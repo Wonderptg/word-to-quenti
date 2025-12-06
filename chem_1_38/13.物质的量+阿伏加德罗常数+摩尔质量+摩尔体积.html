@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>化学计量的核心：物质的量</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Screen display styles */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* Page background color */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* Controlled by JS */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+
+        /* Print-specific styles */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- Cover Page -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                </svg>
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">化学计量的核心：物质的量</h1>
+                <p class="text-2xl text-slate-600 mt-2">—— 连接微观粒子与宏观世界的桥梁</p>
+            </div>
+        </div>
+
+        <!-- Concept Introduction -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>为什么要学习“物质的量”？</h2>
+                <div class="mt-8 flex flex-col md:flex-row items-center gap-8">
+                    <div class="flex-1">
+                        <svg viewBox="0 0 200 200" class="w-full">
+                            <!-- Beaker -->
+                            <path d="M30 180 L30 50 Q30 30 50 30 L150 30 Q170 30 170 50 L170 180 Z" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="2"/>
+                            <!-- Water -->
+                            <path d="M32 178 L32 100 Q100 80 168 100 L168 178 Z" fill="#7dd3fc"/>
+                            <!-- Label -->
+                            <text x="100" y="150" font-size="12" text-anchor="middle" fill="#0369a1" font-weight="bold">100mL H₂O</text>
+                            <!-- Zoom circle -->
+                            <circle cx="100" cy="80" r="30" fill="rgba(255,255,255,0.7)" stroke="#fb923c" stroke-width="2" stroke-dasharray="4"/>
+                            <!-- Molecules -->
+                            <circle cx="90" cy="75" r="2" fill="#0c4a6e"/><circle cx="100" cy="72" r="2" fill="#0c4a6e"/><circle cx="110" cy="78" r="2" fill="#0c4a6e"/>
+                            <circle cx="95" cy="85" r="2" fill="#0c4a6e"/><circle cx="105" cy="88" r="2" fill="#0c4a6e"/><circle cx="88" cy="88" r="2" fill="#0c4a6e"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1 bg-sky-50 border border-sky-200 p-8 rounded-lg text-center">
+                        <p class="text-2xl text-sky-800">100mL 水中约有 <strong class="mono text-red-600">3.3 x 10²⁴</strong> 个水分子！</p>
+                        <p class="mt-6 text-xl text-slate-700">直接数粒子数目是<strong class="text-red-600">不现实</strong>的，我们需要一个更宏观的“集合”单位来描述微观粒子。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Core Definition -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>定义与使用规则</h2>
+                 <p class="mt-8 text-xl text-slate-700"><strong>物质的量 (n)</strong> 是一个物理量，表示含有一定数目粒子的<strong class="text-teal-600">集合体</strong>，单位为<strong class="text-teal-600">摩尔 (mol)</strong>。</p>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                    <div class="bg-green-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-green-800">正确用法 (√)</h3>
+                        <p class="mt-2">√ 1 mol 电子</p>
+                        <p class="mt-2">√ 1 mol H₂O 分子</p>
+                        <p class="mt-2">√ 1 mol Na⁺</p>
+                        <p class="mt-2 text-sm text-slate-500">*只适用于微观粒子*</p>
+                    </div>
+                    <div class="bg-red-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-red-800">错误用法 (×)</h3>
+                        <p class="mt-2">× 1 mol 苹果</p>
+                        <p class="mt-2">× 1 mol 氧</p>
+                        <p class="mt-2 text-sm text-slate-500">*必须指明粒子种类*</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Avogadro's Constant -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>阿伏加德罗常数 (Nₐ)</h2>
+                 <p class="mt-8 text-xl text-slate-700">1 摩尔任何粒子的集合体，所含的粒子数都是一个固定的值，这个值就是阿伏加德罗常数。</p>
+                 <div class="mt-8 bg-orange-50 border border-orange-200 p-8 rounded-lg text-center">
+                    <p class="text-2xl font-bold text-orange-800">Nₐ ≈ <span class="mono">6.02 x 10²³</span> mol⁻¹</p>
+                 </div>
+                 <div class="mt-6 bg-indigo-50 border border-indigo-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-indigo-800 text-xl">核心公式 1：</h3>
+                    <p class="mono text-center bg-indigo-100 p-3 rounded mt-3 text-lg">n = N / Nₐ</p>
+                    <p class="mt-2 text-slate-600 text-lg">物质的量 (n) = 粒子总数 (N) / 阿伏加德罗常数 (Nₐ)</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- Molar Mass Part 1: Concept -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>摩尔质量 (M) - 质量的桥梁</h2>
+                 <p class="mt-8 text-xl text-slate-700"><strong>摩尔质量 (M)</strong> 指<strong class="text-indigo-600">单位物质的量</strong>的物质所具有的质量。</p>
+                 
+                 <!-- New Diagram -->
+                 <div class="mt-8 w-full flex flex-col md:flex-row items-center justify-between text-center gap-4">
+                    
+                    <!-- Panel 1: Micro -->
+                    <div class="flex-1 bg-slate-50 p-4 rounded-lg shadow-sm w-full">
+                        <h3 class="font-bold text-lg text-slate-700">① 微观粒子</h3>
+                        <svg class="w-20 h-20 mx-auto my-2" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="40" fill="#c7d2fe" stroke="#818cf8" stroke-width="2"/>
+                            <text x="50" y="58" text-anchor="middle" font-size="24" fill="#3730a3" font-weight="bold">C</text>
+                        </svg>
+                        <p class="text-slate-600">1个碳原子</p>
+                        <p class="font-semibold text-slate-800">相对原子质量 ≈ 12</p>
+                    </div>
+        
+                    <!-- Arrow -->
+                    <div class="text-indigo-500 p-2">
+                        <svg class="w-12 h-12 transform md:rotate-0 rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        <p class="mono font-bold text-sm">× 6.02x10²³</p>
+                    </div>
+        
+                    <!-- Panel 2: Macro -->
+                    <div class="flex-1 bg-indigo-50 p-4 rounded-lg shadow-sm w-full">
+                        <h3 class="font-bold text-lg text-indigo-700">② 宏观集合</h3>
+                        <svg class="w-20 h-20 mx-auto my-2" viewBox="0 0 100 100">
+                             <path d="M20 85 Q50 65 80 85 L80 90 L20 90 Z" fill="#e2e8f0"/>
+                             <text x="50" y="78" text-anchor="middle" font-size="14" fill="#1e293b" font-weight="bold">1 mol 碳</text>
+                        </svg>
+                        <p class="text-indigo-600">1摩尔碳原子</p>
+                        <p class="font-semibold text-indigo-800">摩尔质量 ≈ 12 g/mol</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- Molar Mass Part 2: Conclusion & Formula -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>摩尔质量 - 结论与公式</h2>
+                 <p class="mt-8 text-xl text-center bg-yellow-100 text-yellow-800 p-4 rounded-lg"><strong>关键结论：</strong>以 g/mol 为单位时，摩尔质量在<strong class="text-red-600">数值上</strong>等于其相对原子/分子质量。</p>
+                 <div class="mt-6 bg-indigo-50 border border-indigo-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-indigo-800 text-xl">核心公式 2：</h3>
+                    <p class="mono text-center bg-indigo-100 p-3 rounded mt-3 text-lg">n = m / M</p>
+                    <p class="mt-2 text-slate-600 text-lg">物质的量 (n) = 质量 (m) / 摩尔质量 (M)</p>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- Molar Volume of Gas at STP -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-emerald-500 rounded"></span>标况下的气体摩尔体积</h2>
+                <p class="mt-8 text-xl text-slate-700">在<strong class="text-emerald-600">标准状况 (标况)</strong> 下，即 <strong class="text-emerald-600">0℃, 101 kPa</strong> 时, 1 mol 任何气体的体积都基本相同。</p>
+                <div class="my-6">
+                    <div class="text-center text-lg font-semibold text-emerald-800 mb-2">标况下 (0℃, 101 kPa)</div>
+                    <svg viewBox="0 0 400 150" class="w-full">
+                        <!-- Box 1: H2 -->
+                        <rect x="20" y="20" width="100" height="100" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+                        <text x="70" y="60" text-anchor="middle" font-size="14" font-weight="bold" fill="#15803d">1 mol H₂</text>
+                        <text x="70" y="85" text-anchor="middle" font-size="14" fill="#15803d" class="mono text-red-600">≈ 22.4 L</text>
+                        <!-- Box 2: O2 -->
+                        <rect x="150" y="20" width="100" height="100" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+                        <text x="200" y="60" text-anchor="middle" font-size="14" font-weight="bold" fill="#15803d">1 mol O₂</text>
+                        <text x="200" y="85" text-anchor="middle" font-size="14" fill="#15803d" class="mono text-red-600">≈ 22.4 L</text>
+                        <!-- Box 3: CO2 -->
+                        <rect x="280" y="20" width="100" height="100" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+                        <text x="330" y="60" text-anchor="middle" font-size="14" font-weight="bold" fill="#15803d">1 mol CO₂</text>
+                        <text x="330" y="85" text-anchor="middle" font-size="14" fill="#15803d" class="mono text-red-600">≈ 22.4 L</text>
+                    </svg>
+                </div>
+                 <div class="mt-6 bg-indigo-50 border border-indigo-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-indigo-800 text-xl">核心公式 3：</h3>
+                    <p class="mono text-center bg-indigo-100 p-3 rounded mt-3 text-lg">n = V / Vₘ</p>
+                    <p class="mt-2 text-slate-600 text-lg">物质的量 (n) = 气体体积 (V) / 气体摩尔体积 (Vₘ), 标况下 Vₘ≈22.4 L/mol</p>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- Core Relationship Diagram Part 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>核心换算关系 (一)</h2>
+                <div class="mt-10 w-full grid grid-cols-1 md:grid-cols-2 gap-8">
+                    
+                    <!-- Panel 1: n <-> N -->
+                    <div class="bg-sky-50 border-2 border-sky-200 rounded-lg p-6 flex flex-col items-center text-center shadow-lg transition-transform hover:scale-105">
+                        <div class="bg-sky-500 text-white rounded-full p-3 mb-4">
+                            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-sky-800">微观粒子数 (N)</h3>
+                        <p class="text-slate-600 mt-2">连接微观与宏观的基石</p>
+                        <div class="w-full bg-sky-200 h-px my-4"></div>
+                        <p class="mono text-2xl bg-white p-3 rounded-md text-sky-900">n = N / Nₐ</p>
+                    </div>
+
+                    <!-- Panel 2: n <-> m -->
+                    <div class="bg-indigo-50 border-2 border-indigo-200 rounded-lg p-6 flex flex-col items-center text-center shadow-lg transition-transform hover:scale-105">
+                        <div class="bg-indigo-500 text-white rounded-full p-3 mb-4">
+                            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-indigo-800">宏观质量 (m)</h3>
+                        <p class="text-slate-600 mt-2">最常用的宏观物理量</p>
+                         <div class="w-full bg-indigo-200 h-px my-4"></div>
+                        <p class="mono text-2xl bg-white p-3 rounded-md text-indigo-900">n = m / M</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Core Relationship Diagram Part 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>核心换算关系 (二)</h2>
+                <div class="mt-10 w-full grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Panel 3: n <-> V(gas) -->
+                    <div class="bg-emerald-50 border-2 border-emerald-200 rounded-lg p-6 flex flex-col items-center text-center shadow-lg transition-transform hover:scale-105">
+                        <div class="bg-emerald-500 text-white rounded-full p-3 mb-4">
+                           <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-emerald-800">气体体积 (V)</h3>
+                        <p class="text-slate-600 mt-2">特殊条件下的快捷换算<br><strong class="text-red-600">(标准状况)</strong></p>
+                        <div class="w-full bg-emerald-200 h-px my-4"></div>
+                        <p class="mono text-2xl bg-white p-3 rounded-md text-emerald-900">n = V / Vₘ</p>
+                    </div>
+
+                    <!-- Panel 4: n <-> C -->
+                    <div class="bg-amber-50 border-2 border-amber-200 rounded-lg p-6 flex flex-col items-center text-center shadow-lg transition-transform hover:scale-105">
+                        <div class="bg-amber-500 text-white rounded-full p-3 mb-4">
+                           <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3h3m-3 4h3m-3 4h3m-3 4h3"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-amber-800">溶液浓度 (C)</h3>
+                        <p class="text-slate-600 mt-2">描述溶液组成的物理量</p>
+                        <div class="w-full bg-amber-200 h-px my-4"></div>
+                        <p class="mono text-2xl bg-white p-3 rounded-md text-amber-900">n = C · V<sub class="text-sm">(溶液)</sub></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Conditions for using 22.4L/mol -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-red-500 rounded"></span>使用 22.4 L/mol 的两大前提</h2>
+                 <p class="mt-8 text-xl text-slate-700">必须<strong class="text-red-600">同时满足</strong>以下两个条件，才能使用 22.4 L/mol 进行计算：</p>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg text-center flex flex-col items-center">
+                        <svg class="w-16 h-16 text-red-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        <h3 class="font-bold text-red-800 text-2xl">① 条件：标准状况</h3>
+                        <p class="mt-2 text-slate-600">(0℃, 101 kPa)</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg text-center flex flex-col items-center">
+                        <svg class="w-16 h-16 text-red-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path></svg>
+                        <h3 class="font-bold text-red-800 text-2xl">② 状态：气体</h3>
+                         <p class="mt-2 text-slate-600">(纯净气体或混合气体)</p>
+                    </div>
+                </div>
+                <p class="mt-6 text-lg text-slate-600"><strong>反例：</strong>标况下的水 (H₂O) 是液态或固态，1 mol 水的体积<strong class="text-red-600">不是</strong> 22.4 L。</p>
+            </div>
+        </div>
+        
+        <!-- Practice 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (一)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列说法中，可以使用“物质的量”这个物理量的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 5个苹果</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 0.5 mol 氧气分子</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 1 摩尔人</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 2 mol 氢</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Solution 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (一)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>物质的量只适用于描述微观粒子，且必须指明粒子的具体种类。(A)和(C)是宏观物体。(D)中的“氢”指代不明，可以是氢原子或氢分子。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practice 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (二)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>3.01 x 10²³ 个 CO₂ 分子的物质的量是多少？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 1 mol</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 0.5 mol</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 2 mol</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 6.02 x 10²³ mol</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Solution 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (二)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>根据公式 <code class="text-lg">n = N / Nₐ</code>，可得 n = (3.01 x 10²³) / (6.02 x 10²³ mol⁻¹) = 0.5 mol。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practice 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (三)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                     <div class="flex items-center gap-4">
+                        <svg class="h-16 w-16 text-sky-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M10 21.677a2.13 2.13 0 0 1-1.242-2.112V8.435a2.13 2.13 0 0 1 1.018-1.855l6.068-3.416a2.13 2.13 0 0 1 3.164 1.855v12.242a2.13 2.13 0 0 1-3.164 1.855l-4.826-2.72M10 8.435 4.932 5.519a2.13 2.13 0 0 0-3.164 1.855v6.252a2.13 2.13 0 0 0 3.164 1.855L10 12.765"/>
+                        </svg>
+                        <p>49g 硫酸 (H₂SO₄) 的物质的量是多少？ (H₂SO₄的摩尔质量为 98 g/mol)</p>
+                     </div>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 0.25 mol</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 0.5 mol</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 1 mol</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 2 mol</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Solution 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (三)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>根据公式 <code class="text-lg">n = m / M</code>，可得 n = 49g / 98 g/mol = 0.5 mol。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practice 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (四)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <div class="flex items-center gap-4">
+                        <svg class="w-16 h-16 text-cyan-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="4" width="6" height="16" rx="3" />
+                            <path d="M9 4v0a3 3 0 0 1 3-3v0a3 3 0 0 1 3 3v0" />
+                            <path d="M12 20h.01" />
+                        </svg>
+                         <p>在标准状况下，11.2 L 的氮气 (N₂) 的物质的量是多少？</p>
+                    </div>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 0.25 mol</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 0.5 mol</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 1 mol</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 2 mol</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Solution 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (四)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>根据公式 <code class="text-lg">n = V / Vₘ</code>，在标准状况下 Vₘ ≈ 22.4 L/mol，可得 n = 11.2 L / 22.4 L/mol = 0.5 mol。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practice 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (五)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列哪种情况下，1 mol 物质的体积约为 22.4 L？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 标准状况下的水</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 25℃, 101 kPa 时的氧气</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 标准状况下的氦气</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 标准状况下的酒精</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Solution 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (五)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>使用 22.4 L/mol 必须同时满足“标准状况”和“气体”两个条件。(A)和(D)在标况下不是气体，(B)不是标准状况。只有(C)同时满足两个条件。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- End Page -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看，下节课再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>
+

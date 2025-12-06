@@ -1,0 +1,416 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>概率统计第六节：正态分布 PPT</title>
+ <script src="https://cdn.tailwindcss.com"></script>
+ 
+ <!-- MathJax Configuration -->
+ <script>
+ window.MathJax = {
+ tex: {
+ inlineMath: [['$', '$'], ['\\(', '\\)']],
+ displayMath: [['$$', '$$'], ['\\[', '\\]']],
+ processEscapes: true
+ },
+ svg: { fontCache: 'global' }
+ };
+ </script>
+ <script id="MathJax-script" async src="https://cdn.bootcdn.net/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+ <style>
+ html, body {
+ margin: 0;
+ padding: 0;
+ font-family: 'Noto Serif SC', serif;
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
+ background-color: #f1f5f9;
+ }
+ 
+ #presentation-container {
+ max-width: 64rem; /* Increased width slightly for PPT feel */
+ margin: 2rem auto;
+ background-color: white;
+ border-radius: 0.5rem;
+ box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+ }
+
+ .section {
+ width: 100%;
+ box-sizing: border-box;
+ padding: 3rem 4rem;
+ position: relative; 
+ min-height: 600px; /* Consistent slide height */
+ display: flex;
+ flex-direction: column;
+ justify-content: center; 
+ align-items: center; 
+ text-align: center;
+ }
+ 
+ .section:not(:last-child) {
+ border-bottom: 1px solid #e5e7eb;
+ }
+ 
+ .formula-box {
+ background-color: #f8fafc;
+ border-left: 6px solid #3b82f6;
+ padding: 1.5rem;
+ margin: 1.5rem 0;
+ border-radius: 0.25rem;
+ font-size: 1.5rem;
+ width: auto;
+ display: inline-block;
+ }
+
+ h1 { font-size: 2.5rem; font-weight: 700; color: #1e293b; margin-bottom: 1rem; }
+ h2 { font-size: 2rem; font-weight: 600; color: #334155; margin-bottom: 1.5rem; }
+ h3 { font-size: 1.5rem; font-weight: 600; color: #475569; margin-bottom: 1rem; }
+ p, li { font-size: 1.25rem; color: #4b5563; line-height: 1.6; }
+ 
+ .highlight-text { color: #e11d48; font-weight: bold; }
+ 
+ /* SVG Styling */
+ svg {
+ max-width: 100%;
+ height: auto;
+ margin: 1rem 0;
+ }
+
+ /* Quiz Styles */
+ .quiz-option {
+ background-color: #f1f5f9;
+ padding: 1rem 2rem;
+ margin: 0.5rem;
+ border-radius: 0.5rem;
+ font-size: 1.25rem;
+ cursor: pointer;
+ transition: background-color 0.2s;
+ display: block;
+ width: 100%;
+ text-align: left;
+ }
+ .quiz-option:hover {
+ background-color: #e2e8f0;
+ }
+
+ @media print {
+ @page {
+ size: landscape;
+ margin: 0;
+ }
+ #presentation-container {
+ max-width: 100%;
+ margin: 0;
+ box-shadow: none;
+ }
+ .section {
+ height: 100vh;
+ page-break-after: always;
+ border-bottom: none;
+ }
+ }
+ </style>
+</head>
+<body>
+
+<div id="presentation-container">
+
+    <!-- 封面 -->
+    <div class="section">
+        <h1 class="text-7xl font-bold text-blue-900 mb-6">正态分布</h1>
+        <p class="text-2xl text-gray-500">概率统计第六节</p>
+    </div>
+
+ <!-- Slide 2: Intro -->
+ <div class="section">
+ <h2>从离散到连续</h2>
+ <div class="space-y-6 max-w-3xl">
+ <p>我们熟悉的二项分布（如扔硬币）是<strong>离散型</strong>的。</p>
+ <div class="bg-blue-50 p-6 rounded-lg text-left">
+ <p class="font-bold mb-2">历史难题：</p>
+ <p>当 $X \sim B(100, 0.5)$ 时，求 $P(X=50)$。</p>
+ <p class="mt-4">$$P(X=50) = C_{100}^{50} \times (0.5)^{100}$$</p>
+ <p class="mt-2 text-sm text-slate-500">在没有计算机的年代，计算巨大的组合数和指数是极度痛苦的。</p>
+ </div>
+ </div>
+ </div>
+
+ <!-- Slide 3: De Moivre's Visualization -->
+ <div class="section">
+ <h2>棣莫弗的智慧：直方图与曲线</h2>
+ <p>当 $n$ 增大时，二项分布的直方图顶端逐渐连成一条光滑曲线。</p>
+ 
+ <div class="my-4">
+ <svg width="600" height="336" viewBox="0 0 500 280">
+ <line x1="40" y1="250" x2="460" y2="250" stroke="black" stroke-width="2"/>
+ <text x="250" y="275" text-anchor="middle" font-family="sans-serif" font-size="14">x (成功次数)</text>
+ <rect x="70" y="243" width="40" height="7" fill="#bbdefb" stroke="#1a237e" stroke-width="1"/>
+ <rect x="115" y="208" width="40" height="42" fill="#bbdefb" stroke="#1a237e" stroke-width="1"/>
+ <rect x="160" y="145" width="40" height="105" fill="#bbdefb" stroke="#1a237e" stroke-width="1"/>
+ <rect x="205" y="110" width="40" height="140" fill="#7986cb" stroke="#1a237e" stroke-width="1"/>
+ <rect x="250" y="145" width="40" height="105" fill="#bbdefb" stroke="#1a237e" stroke-width="1"/>
+ <rect x="295" y="208" width="40" height="42" fill="#bbdefb" stroke="#1a237e" stroke-width="1"/>
+ <rect x="340" y="243" width="40" height="7" fill="#bbdefb" stroke="#1a237e" stroke-width="1"/>
+ <path d="M 50 248 Q 100 248 130 220 Q 160 190 180 140 Q 200 90 225 30 Q 250 90 270 140 Q 290 190 320 220 Q 350 248 400 248" fill="none" stroke="#e91e63" stroke-width="3" stroke-dasharray="5,3"/>
+ <text x="360" y="80" fill="#e91e63" font-weight="bold">拟合曲线</text>
+ <path d="M 350 85 Q 320 85 280 60" fill="none" stroke="#e91e63" marker-end="url(#arrow)"/>
+ <defs>
+ <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
+ <path d="M0,0 L0,6 L9,3 z" fill="#e91e63" />
+ </marker>
+ </defs>
+ </svg>
+ </div>
+ <p>特征：<strong>中间高，两边低，左右对称</strong>。</p>
+ </div>
+
+ <!-- Slide 4: Formula -->
+ <div class="section">
+ <h2>正态分布密度函数</h2>
+ <p>若随机变量 $X$ 服从正态分布，记作 $X \sim N(\mu, \sigma^2)$</p>
+ 
+ <div class="formula-box">
+ $$ \varphi_{\mu, \sigma}(x) = \frac{1}{\sqrt{2\pi}\sigma} e^{-\frac{(x-\mu)^2}{2\sigma^2}} $$
+ </div>
+
+ <div class="grid grid-cols-2 gap-8 text-left max-w-2xl mt-4">
+ <div class="bg-slate-50 p-4 rounded">
+ <span class="text-blue-600 font-bold text-xl">$\mu$ (均值)</span>
+ <p class="text-base mt-2">决定位置 (对称轴 $x=\mu$)</p>
+ </div>
+ <div class="bg-slate-50 p-4 rounded">
+ <span class="text-blue-600 font-bold text-xl">$\sigma$ (标准差)</span>
+ <p class="text-base mt-2">决定胖瘦 (数据分散程度)</p>
+ </div>
+ </div>
+ </div>
+
+ <!-- Slide 5: Visualizing Sigma -->
+ <div class="section">
+ <h2>$\sigma$ 决定了什么？</h2>
+ <div class="flex flex-row justify-center items-center space-x-12">
+ <ul class="text-left space-y-4">
+ <li>📉 <strong>$\sigma$ 越小</strong>：数据集中 $\rightarrow$ <span class="text-pink-600 font-bold">高瘦</span></li>
+ <li>📈 <strong>$\sigma$ 越大</strong>：数据分散 $\rightarrow$ <span class="text-indigo-800 font-bold">矮胖</span></li>
+ </ul>
+ <div class="w-1/2">
+ <svg width="500" height="280" viewBox="0 0 500 280">
+ <line x1="40" y1="250" x2="460" y2="250" stroke="black" stroke-width="2"/>
+ <line x1="250" y1="20" x2="250" y2="250" stroke="#999" stroke-dasharray="4"/>
+ <text x="250" y="270" text-anchor="middle" font-weight="bold">μ</text>
+ <path d="M 150 248 C 200 248, 210 240, 220 150 C 230 60, 240 40, 250 40 C 260 40, 270 60, 280 150 C 290 240, 300 248, 350 248" fill="none" stroke="#c51162" stroke-width="3"/>
+ <text x="290" y="60" fill="#c51162" font-weight="bold">σ 小</text>
+ <path d="M 50 248 C 120 248, 150 230, 200 170 C 230 140, 270 140, 300 170 C 350 230, 380 248, 450 248" fill="none" stroke="#1a237e" stroke-width="3"/>
+ <text x="360" y="160" fill="#1a237e" font-weight="bold">σ 大</text>
+ </svg>
+ </div>
+ </div>
+ </div>
+
+ <!-- Slide 6: Probability Definition -->
+ <div class="section">
+ <h2>连续型变量的概率</h2>
+ <p class="mb-8">对于连续型随机变量，函数值不代表概率，<br><strong>面积</strong>才代表概率。</p>
+ 
+ <div class="bg-red-50 p-8 rounded-xl max-w-3xl">
+ <h3 class="text-red-600 mb-4">🚨 核心概念</h3>
+ <p class="font-bold text-2xl mb-4">$$P(X=a) = 0$$</p>
+ <p>单点概率为 0，因为一条线的面积是 0。<br>我们只能求区间 $(a, b]$ 的概率（即积分面积）。</p>
+ </div>
+ </div>
+
+ <!-- Slide 7: 3 Sigma Rule -->
+ <div class="section">
+ <h2>3σ 原则 (Three-Sigma Rule)</h2>
+ <svg width="600" height="320" viewBox="0 0 600 320">
+ <defs>
+ <linearGradient id="gradArea" x1="0%" y1="0%" x2="0%" y2="100%">
+ <stop offset="0%" style="stop-color:#3f51b5;stop-opacity:0.2" />
+ <stop offset="100%" style="stop-color:#3f51b5;stop-opacity:0.05" />
+ </linearGradient>
+ <marker id="arrowGreen" markerWidth="6" markerHeight="6" refX="0" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#388e3c"/></marker>
+ <marker id="arrowGreenRev" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M6,0 L6,6 L0,3 z" fill="#388e3c"/></marker>
+ </defs>
+ <line x1="20" y1="280" x2="580" y2="280" stroke="#333" stroke-width="2"/>
+ <path d="M 20 278 L 100 275 C 150 275, 180 260, 200 220 C 220 180, 230 100, 250 80 C 270 60, 300 30, 300 30 S 330 60, 350 80 C 370 100, 380 180, 400 220 C 420 260, 450 275, 500 275 L 580 278" fill="url(#gradArea)" stroke="#303f9f" stroke-width="2.5"/>
+ <line x1="300" y1="30" x2="300" y2="280" stroke="#555" stroke-dasharray="4"/>
+ <text x="300" y="305" text-anchor="middle" font-weight="bold">μ</text>
+ <line x1="350" y1="80" x2="350" y2="280" stroke="#c2185b" stroke-width="1.5" stroke-dasharray="2"/>
+ <text x="350" y="305" text-anchor="middle" font-size="0.9em">μ+σ</text>
+ <line x1="250" y1="80" x2="250" y2="280" stroke="#c2185b" stroke-width="1.5" stroke-dasharray="2"/>
+ <text x="250" y="305" text-anchor="middle" font-size="0.9em">μ-σ</text>
+ <line x1="400" y1="220" x2="400" y2="280" stroke="#388e3c" stroke-width="1.5" stroke-dasharray="2"/>
+ <text x="400" y="305" text-anchor="middle" font-size="0.9em">μ+2σ</text>
+ <line x1="200" y1="220" x2="200" y2="280" stroke="#388e3c" stroke-width="1.5" stroke-dasharray="2"/>
+ <text x="200" y="305" text-anchor="middle" font-size="0.9em">μ-2σ</text>
+ <line x1="450" y1="265" x2="450" y2="280" stroke="#f57c00" stroke-width="1.5" stroke-dasharray="2"/>
+ <text x="450" y="305" text-anchor="middle" font-size="0.9em">μ+3σ</text>
+ <line x1="150" y1="265" x2="150" y2="280" stroke="#f57c00" stroke-width="1.5" stroke-dasharray="2"/>
+ <text x="150" y="305" text-anchor="middle" font-size="0.9em">μ-3σ</text>
+ <text x="300" y="160" text-anchor="middle" fill="#c2185b" font-weight="bold" font-size="1.2em">68.3%</text>
+ <path d="M 200 200 H 400" stroke="#388e3c" stroke-width="1" marker-end="url(#arrowGreen)" marker-start="url(#arrowGreenRev)"/>
+ <text x="300" y="195" text-anchor="middle" fill="#388e3c" font-size="0.9em">95.4%</text>
+ </svg>
+ <div class="flex space-x-8 text-lg font-bold">
+ <span class="text-pink-700">1σ: 68.3%</span>
+ <span class="text-green-700">2σ: 95.4%</span>
+ <span class="text-orange-600">3σ: 99.7%</span>
+ </div>
+ </div>
+
+ <!-- Slide 8: Standard Normal Distribution -->
+ <div class="section">
+ <h2>标准正态分布</h2>
+ <p>当 $\mu=0, \sigma=1$ 时，称为标准正态分布 $Z \sim N(0, 1)$。</p>
+ 
+ <p class="mt-6">任何正态分布 $X$ 均可转换：</p>
+ <div class="formula-box">
+ $$ Z = \frac{X - \mu}{\sigma} $$
+ </div>
+ 
+ <p class="mt-4 text-slate-500">重要对称性：$$ \Phi(a) + \Phi(-a) = 1 $$</p>
+ </div>
+
+ <!-- Slide 9: Quiz 1 -->
+ <div class="section">
+ <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-bold mb-4">课后小测</span>
+ <h3 class="text-2xl mb-8">1. 下列哪种情况对应的数据分布曲线最“瘦高”？</h3>
+ <div class="w-full max-w-lg">
+ <div class="quiz-option">A. $\sigma = 10$</div>
+ <div class="quiz-option">B. $\sigma = 5$</div>
+ <div class="quiz-option">C. $\sigma = 0.1$</div>
+ <div class="quiz-option">D. $\sigma = 1$</div>
+ </div>
+ </div>
+
+ <!-- Slide 10: Quiz 1 Answer -->
+ <div class="section">
+ <h2 class="text-green-600 font-bold mb-6">✅ 正确答案：C</h2>
+ <div class="bg-green-50 p-8 rounded-lg max-w-2xl text-left">
+ <p class="mb-4"><strong>解析：</strong></p>
+ <p>$\sigma$（标准差）衡量数据的分散程度。</p>
+ <ul class="list-disc pl-6 space-y-2">
+ <li>$\sigma$ 越大，曲线越矮胖（分散）。</li>
+ <li>$\sigma$ 越小，曲线越<strong>瘦高</strong>（集中）。</li>
+ </ul>
+ <p class="mt-4">0.1 是选项中最小的数值。</p>
+ </div>
+ </div>
+
+ <!-- Slide 11: Quiz 2 -->
+ <div class="section">
+ <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-bold mb-4">课后小测</span>
+ <h3 class="text-2xl mb-8">2. 对于连续型随机变量 $X$，概率 $P(X=10)$ 等于多少？</h3>
+ <div class="w-full max-w-lg">
+ <div class="quiz-option">A. 0.5</div>
+ <div class="quiz-option">B. 1</div>
+ <div class="quiz-option">C. 取决于 $\mu$</div>
+ <div class="quiz-option">D. 0</div>
+ </div>
+ </div>
+
+ <!-- Slide 12: Quiz 2 Answer -->
+ <div class="section">
+ <h2 class="text-green-600 font-bold mb-6">✅ 正确答案：D</h2>
+ <div class="bg-green-50 p-8 rounded-lg max-w-2xl text-left">
+ <p class="mb-4"><strong>解析：</strong></p>
+ <p>连续型随机变量取任意<strong>单个具体数值</strong>的概率均为 <strong>0</strong>。</p>
+ <p class="mt-2 text-slate-600 text-sm">（就好比一条线没有面积一样，只有区间才有面积/概率）</p>
+ </div>
+ </div>
+
+ <!-- Slide 13: Quiz 3 -->
+ <div class="section">
+ <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-bold mb-4">课后小测</span>
+ <h3 class="text-2xl mb-8">3. 根据 3σ 原则，数据落在 $(\mu - 2\sigma, \mu + 2\sigma)$ 区间内的概率大约是？</h3>
+ <div class="w-full max-w-lg">
+ <div class="quiz-option">A. 68.3%</div>
+ <div class="quiz-option">B. 95.4%</div>
+ <div class="quiz-option">C. 99.7%</div>
+ <div class="quiz-option">D. 50%</div>
+ </div>
+ </div>
+
+ <!-- Slide 14: Quiz 3 Answer -->
+ <div class="section">
+ <h2 class="text-green-600 font-bold mb-6">✅ 正确答案：B</h2>
+ <div class="bg-green-50 p-8 rounded-lg max-w-2xl text-left">
+ <p class="mb-4"><strong>解析：记忆 3σ 原则</strong></p>
+ <ul class="space-y-2">
+ <li>1σ 范围 $\approx$ 68.3%</li>
+ <li><strong>2σ 范围 $\approx$ 95.4%</strong></li>
+ <li>3σ 范围 $\approx$ 99.7%</li>
+ </ul>
+ </div>
+ </div>
+
+ <!-- Slide 15: Quiz 4 -->
+ <div class="section">
+ <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-bold mb-4">课后小测</span>
+ <h3 class="text-2xl mb-8">4. 正态分布曲线关于哪条直线对称？</h3>
+ <div class="w-full max-w-lg">
+ <div class="quiz-option">A. $x = 0$</div>
+ <div class="quiz-option">B. $x = \sigma$</div>
+ <div class="quiz-option">C. $x = \mu$</div>
+ <div class="quiz-option">D. $y = 0$</div>
+ </div>
+ </div>
+
+ <!-- Slide 16: Quiz 4 Answer -->
+ <div class="section">
+ <h2 class="text-green-600 font-bold mb-6">✅ 正确答案：C</h2>
+ <div class="bg-green-50 p-8 rounded-lg max-w-2xl text-left">
+ <p class="mb-4"><strong>解析：</strong></p>
+ <p>正态分布的钟形曲线关于<strong>期望（均值） $\mu$</strong> 对称。</p>
+ <p class="mt-2 text-slate-600">只有标准正态分布（$\mu=0$）才关于 $x=0$ 对称。</p>
+ </div>
+ </div>
+
+ <!-- Slide 17: Quiz 5 -->
+ <div class="section">
+ <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-bold mb-4">课后小测</span>
+ <h3 class="text-2xl mb-8">5. 如果 $X \sim N(10, 4)$，将其转化为标准正态分布 $Z$ 的变换公式是？</h3>
+ <div class="w-full max-w-lg">
+ <div class="quiz-option">A. $Z = \frac{X-10}{4}$</div>
+ <div class="quiz-option">B. $Z = \frac{X-10}{2}$</div>
+ <div class="quiz-option">C. $Z = \frac{X-10}{16}$</div>
+ <div class="quiz-option">D. $Z = X-10$</div>
+ </div>
+ <p class="text-sm bg-yellow-50 text-yellow-800 p-2 rounded mt-4">提示：注意 $N(\mu, \sigma^2)$ 的定义</p>
+ </div>
+
+ <!-- Slide 18: Quiz 5 Answer -->
+ <div class="section">
+ <h2 class="text-green-600 font-bold mb-6">✅ 正确答案：B</h2>
+ <div class="bg-green-50 p-8 rounded-lg max-w-2xl text-left">
+ <p class="mb-4"><strong>解析：</strong></p>
+ <p>1. 记号 $X \sim N(\mu, \sigma^2)$ 中，第一个参数是均值，第二个参数是<strong>方差</strong>。</p>
+ <p>2. 题目给出 $N(10, 4)$，说明 $\mu=10$，$\sigma^2=4$。</p>
+ <p>3. 因此标准差 $\sigma = \sqrt{4} = 2$。</p>
+ <p class="mt-4 border-t border-green-200 pt-4">代入公式：$$ Z = \frac{X-\mu}{\sigma} = \frac{X-10}{2} $$</p>
+ </div>
+ </div>
+
+ <!-- Slide 19: Summary -->
+ <div class="section">
+ <h2>📝 课堂总结</h2>
+ <div class="bg-slate-50 p-10 rounded-xl text-left shadow-sm">
+ <ol class="list-decimal space-y-4 text-xl text-slate-700 pl-6">
+ <li>正态分布图形：<strong>中间高、两边低</strong>，关于 $x=\mu$ 对称。</li>
+ <li>参数含义：$\mu$ 定位置，$\sigma$ 定胖瘦（越小越瘦）。</li>
+ <li>连续变量：<strong>概率 = 面积</strong>，单点概率为 0。</li>
+ <li><strong>3σ 原</strong>：记住 68.3%, 95.4%, 99.7%。</li>
+ </ol>
+ </div>
+ </div>
+
+ </div>
+
+</body>
+</html>

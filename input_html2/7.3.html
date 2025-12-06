@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>空间向量的应用 (可打印增强版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans SC', 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem; /* 896px */
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden; /* Ensures border-radius is respected by children */
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2.5rem;
+            position: relative; 
+            min-height: 550px; /* Adjusted for potentially more content */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 2px dashed #e5e7eb;
+        }
+        
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            overflow-x: auto;
+        }
+        
+        .slide-header {
+             text-align: center;
+             margin-bottom: 2rem;
+             padding-bottom: 0.75rem;
+             border-bottom: 3px solid;
+        }
+        
+        .slide-header h2 {
+            font-size: 2.25rem; /* 36px */
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+     <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                macros: {
+                    vec: ['\\overrightarrow{#1}', 1]
+                }
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+</head>
+<body class="bg-slate-100">
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 -->
+        <div class="section text-center">
+            <h1 class="text-5xl font-bold text-slate-800 mb-4 tracking-wider">空间向量与立体几何</h1>
+            <p class="text-2xl text-slate-600 mt-6">【万能钥匙】轻松搞定平行与垂直</p>
+            <p class="mt-12 text-xl text-cyan-600 font-semibold p-4 bg-cyan-50 rounded-lg">"把看不见的几何关系，变成算得出的代数问题"</p>
+        </div>
+
+        <!-- 身份识别 - 直线 -->
+        <div class="section">
+             <div class="slide-header border-sky-500"><h2>第一步：直线的“身份证”</h2></div>
+            <div class="w-full max-w-2xl mx-auto text-lg">
+                <div class="bg-sky-50 p-8 rounded-lg border border-sky-200 shadow-lg">
+                    <h3 class="font-bold text-3xl text-sky-800 text-center">方向向量 $\vec{v}$</h3>
+                    <p class="mt-6"><strong>比喻：</strong> 代表一条道路的走向，方向是定死的。</p>
+                    <p class="mt-4"><strong>如何找？</strong> 线上任取两点M, N，其方向向量就是 $\vec{MN}$。</p>
+                    <p class="mt-4 font-bold text-red-600 text-2xl text-center p-3 bg-white rounded-md">口诀：终点坐标 - 起点坐标</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 身份识别 - 平面 -->
+        <div class="section">
+             <div class="slide-header border-emerald-500"><h2>第二步：平面的“身份证”</h2></div>
+            <div class="w-full max-w-2xl mx-auto text-lg">
+                 <div class="bg-emerald-50 p-8 rounded-lg border border-emerald-200 shadow-lg">
+                    <h3 class="font-bold text-3xl text-emerald-800 text-center">法向量 $\vec{n}$</h3>
+                    <p class="mt-6"><strong>比喻：</strong> 像垂直于桌面的旗杆，唯一代表了平面的朝向。</p>
+                    <p class="mt-4"><strong>是什么？</strong> 一个与该平面上<strong>所有向量都垂直</strong>的向量。</p>
+                    <p class="mt-4 font-bold text-red-600 text-2xl text-center p-3 bg-white rounded-md">核心：方向向量代表线，法向量代表面</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 翻译宝典 -->
+        <div class="section">
+            <div class="slide-header border-amber-500"><h2>第三步：平行垂直的“翻译宝典”</h2></div>
+            <div class="w-full max-w-4xl mx-auto overflow-x-auto">
+                <table class="w-full text-left border-collapse text-lg">
+                    <thead>
+                        <tr class="bg-amber-100">
+                            <th class="p-3 border">几何语言 (看到的)</th>
+                            <th class="p-3 border">向量语言 (它想说的)</th>
+                            <th class="p-3 border">数学计算 (你要做的)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="p-3 border">线 // 线</td><td class="p-3 border">方向向量 $\vec{v_1} \parallel \vec{v_2}$</td><td class="p-3 border">$\vec{v_1} = k\vec{v_2}$ (共线)</td></tr>
+                        <tr><td class="p-3 border">线 ⊥ 线</td><td class="p-3 border">方向向量 $\vec{v_1} \perp \vec{v_2}$</td><td class="p-3 border">$\vec{v_1} \cdot \vec{v_2} = 0$ (点积为0)</td></tr>
+                        <tr><td class="p-3 border">面 // 面</td><td class="p-3 border">法向量 $\vec{n_1} \parallel \vec{n_2}$</td><td class="p-3 border">$\vec{n_1} = k\vec{n_2}$ (共线)</td></tr>
+                        <tr><td class="p-3 border">面 ⊥ 面</td><td class="p-3 border">法向量 $\vec{n_1} \perp \vec{n_2}$</td><td class="p-3 border">$\vec{n_1} \cdot \vec{n_2} = 0$ (点积为0)</td></tr>
+                        <tr class="bg-red-50"><td class="p-3 border font-bold">线 // 面 (重点)</td><td class="p-3 border">方向向量 $\vec{v}$ ⊥ 法向量 $\vec{n}$</td><td class="p-3 border font-bold">$\vec{v} \cdot \vec{n} = 0$</td></tr>
+                        <tr class="bg-red-50"><td class="p-3 border font-bold">线 ⊥ 面 (重点)</td><td class="p-3 border">方向向量 $\vec{v} \parallel$ 法向量 $\vec{n}$</td><td class="p-3 border font-bold">$\vec{v} = k\vec{n}$</td></tr>
+                    </tbody>
+                </table>
+                 <p class="mt-4 text-center bg-yellow-50 p-3 rounded-md text-base"><strong>理解关键：</strong> 想象笔(线)和本子(面)。笔平行于本子时，笔的方向一定垂直于本子的“旗杆”(法向量)。</p>
+            </div>
+        </div>
+        
+        <!-- 求法向量 - 标准解法 -->
+        <div class="section">
+             <div class="slide-header border-violet-500"><h2>第四步：如何活捉“法向量”？(标准解法)</h2></div>
+            <div class="w-full max-w-2xl mx-auto">
+                <div class="bg-violet-50 p-6 rounded-lg border border-violet-200 text-lg">
+                    <ol class="list-decimal list-inside space-y-4">
+                        <li><strong>找帮手：</strong> 在平面内找两个不共线的向量 $\vec{a}$ 和 $\vec{b}$。</li>
+                        <li><strong>设未知：</strong> 设法向量 $\vec{n}=(x,y,z)$。</li>
+                        <li><strong>列方程：</strong> 根据垂直定义，列出方程组：
+                            <div class="formula-box text-center">
+                            $$ \begin{cases} \vec{n} \cdot \vec{a} = 0 \\ \vec{n} \cdot \vec{b} = 0 \end{cases} $$
+                            </div>
+                        </li>
+                        <li><strong>巧求解：</strong> 大胆赋值！令 x=1 或 y=1，解出另外两个未知数即可。</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 求法向量 - 速算技巧 -->
+        <div class="section">
+             <div class="slide-header border-gray-500"><h2>第五步：法向量速算技巧</h2></div>
+             <div class="w-full max-w-2xl mx-auto">
+                <div class="bg-gray-50 p-8 rounded-lg border border-gray-200 text-center">
+                     <p class="font-bold text-red-600 text-3xl">口诀：坐标写两遍，掐头又去尾，交叉相乘减！</p>
+                     <p class="text-lg mt-6">例: 求 $\vec{a}=(2,1,0)$ 和 $\vec{b}=(0,1,-1)$ 的公垂向量 $\vec{n}$。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实战演练1 -->
+        <div class="section">
+            <div class="slide-header border-green-500"><h2>第六步：实战演练 - 经典证明</h2></div>
+            <div class="w-full max-w-4xl mx-auto flex flex-col items-center">
+                <p class="text-xl font-bold bg-green-50 p-4 rounded-lg w-full text-center">例1：在正方体 $ABCD-A'B'C'D'$ 中，证明 $A'C \perp BD$。</p>
+                <div class="mt-8">
+                    <svg viewBox="0 0 220 180" class="w-80 h-auto">
+                        <!-- Back lines (dashed) -->
+                        <line x1="50" y1="50" x2="150" y2="50" stroke="gray" stroke-dasharray="4" stroke-width="1.5"></line> <!-- D'C' -->
+                        <line x1="50" y1="50" x2="50" y2="150" stroke="gray" stroke-dasharray="4" stroke-width="1.5"></line> <!-- D'D -->
+                        <line x1="50" y1="150" x2="150" y2="150" stroke="gray" stroke-dasharray="4" stroke-width="1.5"></line> <!-- DC -->
+
+                        <!-- Visible lines (solid) -->
+                        <line x1="100" y1="20" x2="200" y2="20" stroke="black" stroke-width="1.5"></line> <!-- A'B' -->
+                        <line x1="100" y1="20" x2="100" y2="120" stroke="black" stroke-width="1.5"></line> <!-- A'A -->
+                        <line x1="100" y1="120" x2="200" y2="120" stroke="black" stroke-width="1.5"></line> <!-- AB -->
+                        <line x1="200" y1="20" x2="200" y2="120" stroke="black" stroke-width="1.5"></line> <!-- B'B -->
+                        <line x1="50" y1="50" x2="100" y2="20" stroke="black" stroke-width="1.5"></line> <!-- D'A' -->
+                        <line x1="150" y1="50" x2="200" y2="20" stroke="black" stroke-width="1.5"></line> <!-- C'B' -->
+                        <line x1="50" y1="150" x2="100" y2="120" stroke="black" stroke-width="1.5"></line> <!-- DA -->
+                        <line x1="150" y1="150" x2="200" y2="120" stroke="black" stroke-width="1.5"></line> <!-- CB -->
+
+                        <!-- Lines for the proof -->
+                        <line x1="100" y1="20" x2="150" y2="150" stroke="#ef4444" stroke-width="2.5"></line> <!-- A'C (red-500) -->
+                        <line x1="200" y1="120" x2="50" y2="150" stroke="#3b82f6" stroke-width="2.5"></line> <!-- BD (blue-500) -->
+
+                        <!-- Labels -->
+                        <text x="95" y="15" font-size="14" fill="black" font-weight="bold">A'</text>
+                        <text x="205" y="15" font-size="14" fill="black" font-weight="bold">B'</text>
+                        <text x="155" y="45" font-size="14" fill="black" font-weight="bold">C'</text>
+                        <text x="40" y="45" font-size="14" fill="black" font-weight="bold">D'</text>
+                        <text x="90" y="135" font-size="14" fill="black" font-weight="bold">A</text>
+                        <text x="205" y="135" font-size="14" fill="black" font-weight="bold">B</text>
+                        <text x="155" y="165" font-size="14" fill="black" font-weight="bold">C</text>
+                        <text x="40" y="165" font-size="14" fill="black" font-weight="bold">D</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题 1 -->
+        <div class="section">
+             <div class="slide-header border-gray-500"><h2>第七步：随堂练习 (1/4)</h2></div>
+            <div class="w-full max-w-4xl mx-auto">
+                <div class="text-base md:text-lg">
+                    <div class="bg-gray-50 p-6 rounded-lg text-xl"><strong>1.</strong> 若直线 $l$ // 平面 $\alpha$，则 $l$ 的方向向量 $\vec{v}$ 和 $\alpha$ 的法向量 $\vec{n}$ 的关系是？<br/><br/>
+                        (A) $\vec{v} = k\vec{n}$ <br/><br/>
+                        (B) $\vec{v} \cdot \vec{n} = 0$ <br/><br/>
+                        (C) $\vec{v} + \vec{n} = \vec{0}$ <br/><br/>
+                        (D) 无法确定
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题 2 -->
+        <div class="section">
+             <div class="slide-header border-gray-500"><h2>第八步：随堂练习 (2/4)</h2></div>
+            <div class="w-full max-w-4xl mx-auto">
+                <div class="text-base md:text-lg">
+                    <div class="bg-gray-50 p-6 rounded-lg text-xl"><strong>2.</strong> 平面 $\alpha$ 的法向量 $\vec{n_1}=(1,2,-1)$, 平面 $\beta$ 的法向量 $\vec{n_2}=(-2,-4,2)$，则两平面关系是？<br/><br/>
+                        (A) 平行 <br/><br/>
+                        (B) 垂直 <br/><br/>
+                        (C) 相交不垂直 <br/><br/>
+                        (D) 重合
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 -->
+        <div class="section">
+             <div class="slide-header border-gray-500"><h2>第九步：随堂练习 (3/4)</h2></div>
+            <div class="w-full max-w-4xl mx-auto">
+                <div class="text-base md:text-lg">
+                    <div class="bg-gray-50 p-6 rounded-lg text-xl"><strong>3.</strong> 两直线方向向量为 $\vec{a}=(x,-2,1)$ 和 $\vec{b}=(2,3,4)$。若两直线垂直，则 $x$ 的值是？<br/><br/>
+                        (A) -1 <br/><br/>
+                        (B) 0 <br/><br/>
+                        (C) 1 <br/><br/>
+                        (D) 2
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 -->
+        <div class="section">
+             <div class="slide-header border-gray-500"><h2>第十步：随堂练习 (4/4)</h2></div>
+            <div class="w-full max-w-4xl mx-auto">
+                <div class="text-base md:text-lg">
+                    <div class="bg-gray-50 p-6 rounded-lg text-xl"><strong>4.</strong> 由向量 $\vec{OA}=(1,1,0)$ 和 $\vec{OB}=(0,1,1)$ 确定的平面的一个法向量可以是？<br/><br/>
+                        (A) $(-1,-1,1)$ <br/><br/>
+                        (B) $(1,1,1)$ <br/><br/>
+                        (C) $(1,-1,1)$ <br/><br/>
+                        (D) $(1,1,-1)$
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题解析 -->
+        <div class="section">
+             <div class="slide-header border-teal-500"><h2>第十一步：练习题解析</h2></div>
+            <div class="w-full max-w-4xl mx-auto">
+                <div class="space-y-3 text-base">
+                    <div class="bg-teal-50 p-4 rounded-lg">
+                        <p><strong>1. 答案：B</strong></p>
+                        <p><strong>解析：</strong> 核心概念。线面平行，意味着线的方向向量垂直于面的法向量。向量垂直的代数表示就是数量积为0。</p>
+                    </div>
+                    <div class="bg-teal-50 p-4 rounded-lg">
+                        <p><strong>2. 答案：A</strong></p>
+                        <p><strong>解析：</strong> 观察可得 $\vec{n_2} = -2 \vec{n_1}$，两个法向量共线，因此两平面平行。</p>
+                    </div>
+                    <div class="bg-teal-50 p-4 rounded-lg">
+                        <p><strong>3. 答案：C</strong></p>
+                        <p><strong>解析：</strong> 两直线垂直，则其方向向量点积为0。$x \cdot 2 + (-2) \cdot 3 + 1 \cdot 4 = 0 \implies 2x - 6 + 4 = 0 \implies 2x=2 \implies x=1$。</p>
+                    </div>
+                    <div class="bg-teal-50 p-4 rounded-lg">
+                        <p><strong>4. 答案：C</strong></p>
+                        <p><strong>解析：</strong> 设法向量 $\vec{n}=(x,y,z)$。列方程组 $\begin{cases} \vec{n} \cdot \vec{OA} = x+y=0 \\ \vec{n} \cdot \vec{OB} = y+z=0 \end{cases}$。令 y=-1, 则 x=1, z=1。所以一个法向量可以是 $(1,-1,1)$。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 总结 -->
+        <div class="section">
+            <div class="slide-header border-blue-500"><h2>第十二步：课堂总结 - 向量解题四步法</h2></div>
+            <div class="w-full max-w-4xl mx-auto">
+                <ol class="list-decimal list-inside space-y-6 text-2xl text-slate-700">
+                    <li class="p-4 bg-blue-50 rounded-lg">
+                        <span class="font-bold">建系写坐标</span>
+                        <p class="text-lg mt-1 text-slate-600">把几何图形数字化，这是所有计算的基础。</p>
+                    </li>
+                    <li class="p-4 bg-green-50 rounded-lg">
+                        <span class="font-bold">翻译几何关系</span>
+                        <p class="text-lg mt-1 text-slate-600">使用“翻译宝典”将平行/垂直问题转为向量关系。</p>
+                    </li>
+                    <li class="p-4 bg-amber-50 rounded-lg">
+                        <span class="font-bold">计算所需向量</span>
+                        <p class="text-lg mt-1 text-slate-600">缺什么算什么（方向向量/法向量），进行点积或比例判断。</p>
+                    </li>
+                     <li class="p-4 bg-red-50 rounded-lg">
+                        <span class="font-bold">得出几何结论</span>
+                        <p class="text-lg mt-1 text-slate-600">计算结果是什么，几何结论就是什么。</p>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
+

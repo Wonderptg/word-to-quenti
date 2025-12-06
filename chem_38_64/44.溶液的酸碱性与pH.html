@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>溶液的酸碱性与pH</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        
+        /* 表格样式 */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+        }
+        .styled-table th, .styled-table td {
+            border: 1px solid #cbd5e1;
+            padding: 0.75rem 1rem;
+            text-align: center;
+        }
+        .styled-table thead {
+            background-color: #f8fafc;
+        }
+        .styled-table th {
+            font-weight: 700;
+            color: #334155;
+        }
+        .styled-table tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+        .styled-table tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">水溶液中的离子反应与平衡</h1>
+                <p class="text-2xl text-slate-600 mt-2">（三）溶液的酸碱性与 pH</p>
+            </div>
+        </div>
+        
+        <!-- 溶液 pH 的定义 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>溶液 pH 的定义</h2>
+                <div class="mt-8 bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-blue-800 text-xl">定义：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">溶液的 pH 指的是<strong class="text-blue-700">氢离子浓度的负对数</strong>，常用来表示溶液的酸碱性强弱。</p>
+                </div>
+                <div class="mt-8 bg-gray-100 p-6 rounded-lg text-center">
+                    <p class="text-3xl mono font-bold text-blue-700">pH = -log[H⁺]</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 为什么要定义 pH？ -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>为什么要定义 pH？</h2>
+                <p class="mt-8 text-xl text-slate-700">水溶液中的 [H⁺] 浓度通常很小，用科学计数法表示很不方便。</p>
+                <p class="mt-4 text-xl text-slate-700">例如，25°C 纯水中：</p>
+                <p class="mono mt-4 text-2xl text-center text-red-600">[H⁺] = 10⁻⁷ mol/L</p>
+                <p class="mt-4 text-xl text-slate-700">为了方便比较，我们取负对数，将其转换为一个简单的正数：</p>
+                <p class="mono mt-4 text-2xl text-center text-blue-600">pH = -log(10⁻⁷) = 7</p>
+                <p class="mt-4 text-xl text-slate-700 text-center">这样，复杂的 <code>10⁻⁷</code> 就变成了易于理解的 <code>7</code>。</p>
+            </div>
+        </div>
+        
+        <!-- pH 计算示例 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>pH 计算示例 (25°C)</h2>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800 text-xl">酸溶液</h3>
+                        <p class="mt-3 text-slate-600 mono">10⁻² mol/L 的 HCl 溶液：</p>
+                        <p class="mt-2 text-slate-600 mono">[H⁺] = 10⁻² mol/L</p>
+                        <p class="mt-2 text-slate-600 mono text-blue-700 font-bold">pH = -log(10⁻²) = 2</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-red-800 text-xl">碱溶液</h3>
+                        <p class="mt-3 text-slate-600 mono">10⁻² mol/L 的 NaOH 溶液：</p>
+                        <p class="mt-2 text-slate-600 mono">[OH⁻] = 10⁻² mol/L</p>
+                        <p class="mt-2 text-slate-600 mono">[H⁺] = Kw / [OH⁻] = 10⁻¹⁴ / 10⁻² = 10⁻¹²</p>
+                        <p class="mt-2 text-slate-600 mono text-red-700 font-bold">pH = -log(10⁻¹²) = 12</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- pH 与酸碱性 (25°C) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>pH 与酸碱性 (25°C)</h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                        <p class="text-lg text-center"><strong class="text-blue-700">pH < 7</strong> ⟹ [H⁺] > 10⁻⁷ ⟹ <strong class="text-blue-700">酸性</strong></p>
+                        <p class="text-lg text-center">(pH 越小，[H⁺] 越大，酸性越强)</p>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 p-4 rounded-lg">
+                        <p class="text-lg text-center"><strong class="text-green-700">pH = 7</strong> ⟹ [H⁺] = 10⁻⁷ ⟹ <strong class="text-green-700">中性</strong></p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                        <p class="text-lg text-center"><strong class="text-red-700">pH > 7</strong> ⟹ [H⁺] < 10⁻⁷ ⟹ <strong class="text-red-700">碱性</strong></p>
+                        <p class="text-lg text-center">(pH 越大，[H⁺] 越小，碱性越强)</p>
+                    </div>
+                 </div>
+                 <div class="mt-8 bg-gray-100 p-4 rounded-lg text-center">
+                    <p class="text-lg text-slate-700">注意：pH 与 [H⁺] 呈<strong class="text-red-600">反比</strong>关系。</p>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 溶液酸碱性的本质 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>溶液酸碱性的本质</h2>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">牢记定义：</h3>
+                    <p>溶液的酸碱性<strong class="text-red-900">本质</strong>上取决于 <code class="bg-red-200">[H⁺]</code> 和 <code class="bg-red-200">[OH⁻]</code> 的<strong class="text-red-900">相对大小</strong>，这<strong class="text-red-900">与温度无关</strong>。</p>
+                </div>
+                 <div class="mt-8 space-y-3 text-lg">
+                    <p class="p-3 rounded-md bg-blue-50 border border-blue-200 text-center font-bold text-blue-700 text-xl">酸性溶液：[H⁺] > [OH⁻]</p>
+                    <p class="p-3 rounded-md bg-green-50 border border-green-200 text-center font-bold text-green-700 text-xl">中性溶液：[H⁺] = [OH⁻]</p>
+                    <p class="p-3 rounded-md bg-red-50 border border-red-200 text-center font-bold text-red-700 text-xl">碱性溶液：[H⁺] < [OH⁻]</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 酸碱性判断的误区 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>酸碱性判断的误区</h2>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">误区：“pH = 7 的溶液一定是中性。”</h3>
+                    <p class="text-2xl text-center font-bold mt-4">× 错误</p>
+                </div>
+                 <div class="mt-6 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">辨析：</h3>
+                    <p class="mt-3 text-slate-600 text-lg"><code>pH = 7</code> 只表示 <code>[H⁺] = 10⁻⁷ mol/L</code>。</p>
+                    <p class="mt-2 text-slate-600 text-lg"><strong>在 25°C 时：</strong>Kw = 10⁻¹⁴。中性时 <code>[H⁺] = [OH⁻] = 10⁻⁷</code>。此时 pH = 7 确实是中性。</p>
+                    <p class="mt-2 text-slate-600 text-lg"><strong>在 80°C 时：</strong>温度升高，水电离吸热，Kw > 10⁻¹⁴ (例如 10⁻¹³)。<br/>
+                    此时中性应为 <code>[H⁺] = [OH⁻] = 10⁻⁶·⁵</code> (pH = 6.5)。<br/>
+                    如果你在 80°C 测得 <code>pH = 7</code> (即 [H⁺] = 10⁻⁷)，那么 <code>[OH⁻] = 10⁻¹³ / 10⁻⁷ = 10⁻⁶</code>。<br/>
+                    因为 <code>[H⁺] < [OH⁻]</code> (10⁻⁷ < 10⁻⁶)，所以该溶液是<strong class="text-red-600">碱性</strong>的。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- pH 补充说明 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>pH 补充说明</h2>
+                 <div class="mt-8 space-y-4 text-lg">
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong>1. 碱性溶液不一定是碱：</strong><br/>如 <code>Na₂CO₃</code> (纯碱) 溶液，因水解导致 <code>[OH⁻] > [H⁺]</code> 显碱性，但它本身是盐。</div>
+                    
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong>2. 任何水溶液中：</strong><code>[H⁺] (水)</code> <strong class="text-red-600">一定等于</strong> <code>[OH⁻] (水)</code>。</div>
+
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong>3. 浓度 > 1 M 时：</strong><br/>当 <code>[H⁺]</code> 或 <code>[OH⁻]</code> 大于 1 mol/L 时 (如 6 M HCl)，pH 会出现负值，此时已无意义。我们<strong class="text-blue-600">直接使用浓度</strong>表示，不再使用 pH。</div>
+
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong>4. pH 常用范围：</strong><br/><code>pH = 0</code> 对应 <code>[H⁺] = 1 M</code><br/><code>pH = 14</code> 对应 <code>[OH⁻] = 1 M</code> (在 25°C)</div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 溶液酸碱性的测定 (定性) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>溶液酸碱性的测定 (定性)</h2>
+                <p class="mt-8 text-xl text-slate-700">使用<strong class="text-purple-700">酸碱指示剂</strong>，只能粗略判断 pH 范围。</p>
+                <div class="mt-8 overflow-x-auto">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>指示剂</th>
+                                <th>pH 变色范围</th>
+                                <th>低 pH 颜色</th>
+                                <th>高 pH 颜色</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold">石蕊</td>
+                                <td class="mono">5.0 ~ 8.0</td>
+                                <td class="text-red-600 font-bold">红</td>
+                                <td class="text-blue-600 font-bold">蓝</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">酚酞</td>
+                                <td class="mono">8.2 ~ 10.0</td>
+                                <td class="font-bold">无色</td>
+                                <td class="text-red-600 font-bold">红</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">甲基橙</td>
+                                <td class="mono">3.1 ~ 4.4</td>
+                                <td class="text-red-600 font-bold">红</td>
+                                <td class="text-yellow-500 font-bold">黄</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 溶液酸碱性的测定 (定量) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>溶液酸碱性的测定 (定量)</h2>
+                <div class="mt-8 bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-blue-800 text-xl">1. pH 试纸 (广泛)</h3>
+                    <p class="mt-3 text-slate-600 text-lg">将多种指示剂混合制成，可测定 pH 范围 (如 1 ~ 14)。</p>
+                    <p class="mt-2 text-slate-600 text-lg">精度较低，测得的 pH 值为<strong class="text-red-600">整数</strong>。</p>
+                </div>
+                 <div class="mt-8 bg-green-50 border border-green-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-green-800 text-xl">2. pH 计 (酸度计)</h3>
+                    <p class="mt-3 text-slate-600 text-lg">精密电子仪器，可<strong class="text-green-700">精确测量</strong>溶液 pH，可读至小数。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- pH 试纸的使用方法 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>pH 试纸的使用方法</h2>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">正确操作：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">1. 取一小块试纸放在干净的玻璃板（或表面皿）上。</p>
+                    <p class="mt-2 text-slate-600 text-lg">2. 用<strong class="text-blue-600">干净的玻璃棒</strong>蘸取待测液，点在试纸<strong class="text-blue-600">中央</strong>。</p>
+                    <p class="mt-2 text-slate-600 text-lg">3. 显色后，立即与<strong class="text-blue-600">标准比色卡</strong>对比读数。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- pH 试纸的注意事项 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>pH 试纸的注意事项 (陷阱)</h2>
+                 <div class="mt-8 space-y-4 text-lg">
+                    <div class="bg-red-100 text-red-800 p-4 rounded-lg font-semibold"><strong class="font-bold text-red-900 text-xl">× 错误一：</strong>将 pH 试纸<strong class="text-red-900">浸入</strong>待测液中。<br/>(会污染整瓶试剂)</div>
+                    <div class="bg-red-100 text-red-800 p-4 rounded-lg font-semibold"><strong class="font-bold text-red-900 text-xl">× 错误二：</strong>先用<strong class="text-red-900">水湿润</strong> pH 试纸再测溶液。<br/>(相当于稀释了溶液，导致测量不准)</div>
+                    <div class="bg-red-100 text-red-800 p-4 rounded-lg font-semibold"><strong class="font-bold text-red-900 text-xl">× 错误三：</strong>读数为小数 (如 5.2)。<br/>(广泛pH试纸只能读出整数)</div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- pH 的应用 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>pH 的应用</h2>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800 text-2xl">医疗</h3>
+                        <p class="mt-3 text-slate-600">血液 pH (约7.35-7.45) 是诊断疾病的重要参数。</p>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-green-800 text-2xl">农业</h3>
+                        <p class="mt-3 text-slate-600">调控土壤 pH，适应作物生长。</p>
+                    </div>
+                    <div class="bg-cyan-50 border border-cyan-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-cyan-800 text-2xl">工业/环保</h3>
+                        <p class="mt-3 text-slate-600">控制化工反应条件，监测废水排放。</p>
+                    </div>
+                    <div class="bg-indigo-50 border border-indigo-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-indigo-800 text-2xl">科研</h3>
+                        <p class="mt-3 text-slate-600">研究生命活动和化学反应。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（一）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">pH 的数学定义是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(A)</strong> log[H⁺]</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(B)</strong> -log[OH⁻]</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(C)</strong> -log[H⁺]</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(D)</strong> [H⁺] / [OH⁻]</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（一）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>pH 被定义为氢离子浓度的<strong class="text-red-600">负对数</strong>，即 <code>pH = -log[H⁺]</code>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（二）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">在 25°C 时，某溶液的 pH = 10，该溶液呈？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 酸性</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 中性</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 碱性</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 无法判断</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（二）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>在 25°C 时，pH = 7 为中性。因为 <code>10 > 7</code>，所以该溶液呈<strong class="text-red-600">碱性</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（三）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">在 25°C 时，0.01 mol/L 的 HCl 溶液的 pH 是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(A)</strong> 1</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(B)</strong> 2</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(C)</strong> 12</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(D)</strong> 14</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（三）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>HCl 是强酸，完全电离。<code>[H⁺] = 0.01 mol/L = 10⁻² mol/L</code>。</p>
+                    <p class="mono mt-2">pH = -log[H⁺] = -log(10⁻²) = 2</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（四）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">在 25°C 时，0.01 mol/L 的 NaOH 溶液的 pH 是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(A)</strong> 1</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(B)</strong> 2</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(C)</strong> 12</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(D)</strong> 14</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（四）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>NaOH 是强碱，完全电离。<code>[OH⁻] = 0.01 mol/L = 10⁻² mol/L</code>。</p>
+                    <p class="mono mt-2">[H⁺] = Kw / [OH⁻] = 10⁻¹⁴ / 10⁻² = 10⁻¹² mol/L</p>
+                    <p class="mono mt-2">pH = -log[H⁺] = -log(10⁻¹²) = 12</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（五）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">使用广泛 pH 试纸测定溶液 pH 时，<strong class="text-red-600">错误</strong>的操作是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 用玻璃棒蘸取溶液点在试纸上</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 先用蒸馏水将试纸湿润</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 将试纸的颜色与标准比色卡对比</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 读出的 pH 值为整数</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 5 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（五）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>测定溶液 pH 时，<strong class="text-red-600">不能</strong>用水湿润 pH 试纸，否则相当于将待测溶液稀释，导致测量结果不准确。</p>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                 </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看！下节课我们将学习 pH 的计算！</p>
+                <p class="mt-4 text-2xl text-slate-600">下节课再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- 导航控件 -->
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <!-- JS 逻辑 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

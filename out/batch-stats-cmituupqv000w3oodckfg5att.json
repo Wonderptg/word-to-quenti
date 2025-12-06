@@ -1,0 +1,198 @@
+{
+  "timestamp": "2025-12-06T09:16:36.331Z",
+  "inputDir": "input_html2",
+  "studySetId": "cmituupqv000w3oodckfg5att",
+  "studySetUrl": "http://cika.dzexam.cn/cmituupqv000w3oodckfg5att",
+  "totalFiles": 34,
+  "successCount": 31,
+  "failCount": 0,
+  "totalCards": 204,
+  "results": [
+    {
+      "file": "7.4.html",
+      "success": true,
+      "cards": 13,
+      "error": null
+    },
+    {
+      "file": "7.5.html",
+      "success": true,
+      "cards": 11,
+      "error": null
+    },
+    {
+      "file": "8.1.html",
+      "success": true,
+      "cards": 11,
+      "error": null
+    },
+    {
+      "file": "8.10.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "8.2.html",
+      "success": true,
+      "cards": 11,
+      "error": null
+    },
+    {
+      "file": "8.3.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "8.4.html",
+      "success": true,
+      "cards": 11,
+      "error": null
+    },
+    {
+      "file": "8.5.html",
+      "success": true,
+      "cards": 11,
+      "error": null
+    },
+    {
+      "file": "8.6.html",
+      "success": true,
+      "cards": 10,
+      "error": null
+    },
+    {
+      "file": "8.7.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "8.8.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "8.9.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "9.1.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "9.2.html",
+      "success": true,
+      "cards": 10,
+      "error": null
+    },
+    {
+      "file": "9.3.html",
+      "success": true,
+      "cards": 12,
+      "error": null
+    },
+    {
+      "file": "10.1.html",
+      "success": true,
+      "cards": 18,
+      "error": null
+    },
+    {
+      "file": "10.2.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "10.3.html",
+      "success": true,
+      "cards": 13,
+      "error": null
+    },
+    {
+      "file": "11.1.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "12.1.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "12.2.html",
+      "success": true,
+      "cards": 12,
+      "error": null
+    },
+    {
+      "file": "12.3.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "13.1.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "13.2.html",
+      "success": true,
+      "cards": 12,
+      "error": null
+    },
+    {
+      "file": "13.3.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "13.4.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "13.5.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "13.6.html",
+      "success": true,
+      "cards": 15,
+      "error": null
+    },
+    {
+      "file": "13.7.html",
+      "success": true,
+      "cards": 13,
+      "error": null
+    },
+    {
+      "file": "13.8.html",
+      "success": true,
+      "cards": 12,
+      "error": null
+    },
+    {
+      "file": "13.9.html",
+      "success": true,
+      "cards": 9,
+      "error": null
+    }
+  ]
+}

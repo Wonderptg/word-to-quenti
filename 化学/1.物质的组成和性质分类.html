@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>化学世界的分类艺术</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2rem;
+            min-height: 50vh; /* 保证每页有足够的高度 */
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        .diagram-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background-color: #f8fafc;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .analysis-box {
+            margin-top: 1.5rem;
+            background-color: #f8fafc;
+            border-left: 4px solid #10b981;
+            padding: 1rem 1.5rem;
+            border-radius: 0.25rem;
+        }
+        
+        .question-option {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            margin-top: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 1.125rem;
+            text-align: left;
+            background-color: #f8fafc;
+            transition: background-color 0.2s;
+        }
+        .question-option:hover {
+            background-color: #eef2ff;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- ... (前面1-12张幻灯片内容保持不变) ... -->
+        
+        <!-- Slide 1: 开场 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">化学世界的分类艺术</h1>
+            </div>
+        </div>
+        
+        <!-- Slide 2: 引入 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2">为什么要学习分类？</h2>
+                <div class="mt-8 text-xl text-slate-700 leading-relaxed">
+                    <p>世界上有几千万种物质，如果一个一个去学，那学到天荒地老也学不完。</p>
+                    <p class="mt-6">所以，聪明的化学家们想了一个办法——<strong class="text-teal-600">分类</strong>！</p>
+                    <p class="mt-4">就像整理你的播放列表，给物质分好类，我们就能“举一反三”，抓住一大类物质的共同特性。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: 知识回顾 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">热身：回顾与衔接</h2>
+                <p class="mt-8 text-xl text-slate-700">我们来认识一个新朋友：<strong class="text-blue-600">同素异形体</strong>。</p>
+                <div class="diagram-container">
+                    <svg width="400" height="180" viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="200" cy="50" r="20" fill="#f97316" /><text x="200" y="55" text-anchor="middle" fill="white" font-size="16">P</text>
+                        <text x="200" y="20" text-anchor="middle" font-size="14">同一种元素(磷)</text>
+                        <path d="M 200 70 L 120 100" stroke="#d1d5db" stroke-width="2" />
+                        <path d="M 200 70 L 280 100" stroke="#d1d5db" stroke-width="2" />
+                        <g transform="translate(120, 130)">
+                            <text x="0" y="30" text-anchor="middle" font-size="14">红磷 (结构不同)</text>
+                            <circle cx="-10" cy="-5" r="8" fill="#ef4444"/><circle cx="10" cy="-5" r="8" fill="#ef4444"/><circle cx="0" cy="10" r="8" fill="#ef4444"/>
+                        </g>
+                        <g transform="translate(280, 130)">
+                            <text x="0" y="30" text-anchor="middle" font-size="14">白磷 (结构不同)</text>
+                            <rect x="-10" y="-10" width="20" height="20" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="mt-6 bg-blue-50 p-6 rounded-lg text-lg">
+                    <p class="font-bold text-blue-800">定义：</p>
+                    <p class="mt-2">同一种元素，因原子排列方式不同，形成的几种不同单质。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: 知识回顾 - 小陷阱 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-red-500 pb-2">一个小陷阱！</h2>
+                <div class="diagram-container">
+                    <svg width="200" height="180" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Lid -->
+                        <rect x="70" y="30" width="60" height="10" rx="3" fill="#a3a3a3"/>
+                        <rect x="75" y="40" width="50" height="5" fill="#cbd5e1"/>
+                        
+                        <!-- Jar Body -->
+                        <rect x="60" y="45" width="80" height="100" rx="5" fill="#e0f2fe" opacity="0.6"/>
+                        <rect x="60" y="45" width="80" height="100" rx="5" fill="none" stroke="#94a3b8" stroke-width="2"/>
+                        
+                        <!-- Contents: Mixture -->
+                        <!-- Red Phosphorus (circles) -->
+                        <circle cx="80" cy="70" r="6" fill="#ef4444"/>
+                        <circle cx="120" cy="85" r="6" fill="#ef4444"/>
+                        <circle cx="95" cy="110" r="6" fill="#ef4444"/>
+                        <circle cx="125" cy="125" r="6" fill="#ef4444"/>
+                        
+                        <!-- White Phosphorus (squares) -->
+                        <rect x="100" y="65" width="12" height="12" fill="white" stroke="#94a3b8" stroke-width="1.5"/>
+                        <rect x="75" y="95" width="12" height="12" fill="white" stroke="#94a3b8" stroke-width="1.5"/>
+                        <rect x="115" y="105" width="12" height="12" fill="white" stroke="#94a3b8" stroke-width="1.5"/>
+                        
+                        <text x="100" y="165" text-anchor="middle" font-size="14">红磷 + 白磷 (混合物)</text>
+                    </svg>
+                </div>
+                <div class="mt-8 bg-red-50 p-6 rounded-lg text-xl">
+                    <p class="mt-4"><strong>1. 罐子里有几种元素？</strong></p>
+                    <p class="ml-4 font-bold text-red-700">→ 一种（磷元素）。</p>
+                    <p class="mt-4"><strong>2. 它是纯净物吗？</strong></p>
+                    <p class="ml-4 font-bold text-red-700">→ 不是！它是由红磷和白磷两种不同物质组成的<strong class="text-red-600">混合物</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: 核心知识 - 分类工具 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800">两种分类的超级工具</h2>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 text-2xl">
+                    <div class="bg-indigo-50 p-8 rounded-lg shadow">
+                        <p class="font-bold text-indigo-800">树状分类法</p>
+                        <p class="text-lg mt-2 text-slate-600">像画一棵家族树</p>
+                    </div>
+                    <div class="bg-green-50 p-8 rounded-lg shadow">
+                        <p class="font-bold text-green-800">交叉分类法</p>
+                        <p class="text-lg mt-2 text-slate-600">像给一个人贴标签</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: 树状分类法 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-indigo-500 pb-2">工具一：树状分类法</h2>
+                <p class="mt-6 text-xl text-slate-700">我们来为“化合物”画一棵家族树：</p>
+                <div class="diagram-container">
+                    <svg width="450" height="300" viewBox="0 0 450 300" xmlns="http://www.w3.org/2000/svg">
+                        <g text-anchor="middle" font-size="14">
+                            <rect x="175" y="10" width="100" height="30" rx="5" fill="#f1f5f9"/>
+                            <text x="225" y="30">化合物</text>
+                            
+                            <path d="M 225 40 V 60" stroke="#cbd5e1" stroke-width="2"/>
+                            <path d="M 100 60 H 350" stroke="#cbd5e1" stroke-width="2"/>
+                            <path d="M 100 60 V 80" stroke="#cbd5e1" stroke-width="2"/>
+                            <path d="M 350 60 V 80" stroke="#cbd5e1" stroke-width="2"/>
+                            
+                            <rect x="50" y="80" width="100" height="30" rx="5" fill="#e0e7ff"/>
+                            <text x="100" y="100">有机化合物</text>
+                            
+                            <rect x="300" y="80" width="100" height="30" rx="5" fill="#e0e7ff"/>
+                            <text x="350" y="100">无机化合物</text>
+                            
+                            <path d="M 350 110 V 130" stroke="#a5b4fc" stroke-width="2"/>
+                            <path d="M 200 130 H 400" stroke="#a5b4fc" stroke-width="2"/>
+                            <path d="M 200 130 V 150" stroke="#a5b4fc" stroke-width="2"/>
+                            <path d="M 267 130 V 150" stroke="#a5b4fc" stroke-width="2"/>
+                            <path d="M 333 130 V 150" stroke="#a5b4fc" stroke-width="2"/>
+                            <path d="M 400 130 V 150" stroke="#a5b4fc" stroke-width="2"/>
+
+                            <rect x="175" y="150" width="50" height="25" rx="5" fill="#bae6fd"/><text x="200" y="167">氧化物</text>
+                            <rect x="242" y="150" width="50" height="25" rx="5" fill="#bae6fd"/><text x="267" y="167">酸</text>
+                            <rect x="308" y="150" width="50" height="25" rx="5" fill="#bae6fd"/><text x="333" y="167">碱</text>
+                            <rect x="375" y="150" width="50" height="25" rx="5" fill="#bae6fd"/><text x="400" y="167">盐</text>
+                            
+                            <path d="M 267 175 V 195" stroke="#7dd3fc" stroke-width="2"/>
+                            <path d="M 237 195 H 297" stroke="#7dd3fc" stroke-width="2"/>
+                            <path d="M 237 195 V 215" stroke="#7dd3fc" stroke-width="2"/>
+                            <path d="M 297 195 V 215" stroke="#7dd3fc" stroke-width="2"/>
+
+                            <rect x="202" y="215" width="70" height="25" rx="5" fill="#cffafe"/><text x="237" y="232">含氧酸</text>
+                            <rect x="262" y="215" width="70" height="25" rx="5" fill="#cffafe"/><text x="297" y="232">无氧酸</text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 7: 交叉分类法 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">工具二：交叉分类法</h2>
+                <p class="mt-6 text-xl text-slate-700">我们来给 <code>盐酸 (HCl)</code> 贴上不同的标签：</p>
+                <div class="diagram-container">
+                    <svg width="400" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="200" cy="100" r="40" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="3"/>
+                        <text x="200" y="105" text-anchor="middle" font-size="24">HCl</text>
+                        <g text-anchor="middle" font-size="14">
+                            <rect x="180" y="10" width="100" height="25" rx="12.5" fill="#dcfce7"/><text x="230" y="27" fill="#15803d">无氧酸</text>
+                            <rect x="300" y="87.5" width="80" height="25" rx="12.5" fill="#dcfce7"/><text x="340" y="105" fill="#15803d">强酸</text>
+                            <rect x="10" y="87.5" width="100" height="25" rx="12.5" fill="#dcfce7"/><text x="60" y="105" fill="#15803d">挥发性酸</text>
+                        </g>
+                        <path d="M 200 60 Q 210 40, 230 35" stroke="#15803d" stroke-width="2" fill="none" stroke-dasharray="3,3"/>
+                        <path d="M 240 100 Q 280 100, 300 100" stroke="#15803d" stroke-width="2" fill="none" stroke-dasharray="3,3"/>
+                        <path d="M 160 100 Q 130 100, 110 100" stroke="#15803d" stroke-width="2" fill="none" stroke-dasharray="3,3"/>
+                    </svg>
+                </div>
+                <p class="mt-8 text-xl text-center font-semibold">同一种物质，从不同角度看，可以有好几个“身份”。</p>
+            </div>
+        </div>
+
+        <!-- Slide 8: 氧化物分类 - 定义 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">聚焦：氧化物的分类</h2>
+                 <div class="mt-8 bg-purple-50 p-6 rounded-lg text-xl">
+                    <p class="font-bold text-purple-800">定义：</p>
+                    <p class="mt-2">由<strong class="text-purple-600">两种</strong>元素组成，其中一种<strong class="text-purple-600">必须是氧元素</strong>的化合物。</p>
+                    <hr class="my-4 border-purple-200">
+                    <p class="font-bold text-purple-800">反例：</p>
+                    <p class="mt-2">高锰酸钾 (<code>KMnO₄</code>)，含有氧，但由三种元素组成，所以它<strong class="text-red-600">不是</strong>氧化物！</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: 酸性氧化物 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-red-500 pb-2">第一派：酸性氧化物</h2>
+                 <div class="diagram-container">
+                    <svg width="250" height="120" viewBox="0 0 250 120" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="60" cy="60" r="30" fill="#fecaca"/><text x="60" y="65" text-anchor="middle" font-size="14">SO₂</text>
+                        <path d="M 100 60 L 140 60" stroke="black" stroke-width="2"/>
+                        <text x="115" y="55" font-size="20">+</text>
+                        <circle cx="180" cy="60" r="30" fill="#dbeafe"/><text x="180" y="65" text-anchor="middle" font-size="12">Ca(OH)₂</text>
+                    </svg>
+                 </div>
+                 <div class="mt-8 bg-red-50 p-6 rounded-lg text-lg">
+                    <p class="text-xl font-bold text-red-800">特点：</p>
+                    <p class="mt-2">能与<strong class="text-red-600">碱</strong>反应生成盐和水。</p>
+                     <p class="text-xl font-bold text-red-800 mt-4">主要成员：</p>
+                     <p class="mt-2">大部分<strong class="text-red-600">非金属氧化物</strong> (如 <code>SO₂</code>, <code>CO₂</code>) 和少数<strong class="text-red-600">高价金属氧化物</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: 碱性氧化物 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-sky-500 pb-2">第二派：碱性氧化物</h2>
+                 <div class="diagram-container">
+                    <svg width="250" height="120" viewBox="0 0 250 120" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="60" cy="60" r="30" fill="#bae6fd"/><text x="60" y="65" text-anchor="middle" font-size="14">CuO</text>
+                        <path d="M 100 60 L 140 60" stroke="black" stroke-width="2"/>
+                        <text x="115" y="55" font-size="20">+</text>
+                        <circle cx="180" cy="60" r="30" fill="#fecaca"/><text x="180" y="65" text-anchor="middle" font-size="14">HCl</text>
+                    </svg>
+                 </div>
+                 <div class="mt-8 bg-sky-50 p-6 rounded-lg text-lg">
+                    <p class="text-xl font-bold text-sky-800">特点：</p>
+                    <p class="mt-2">能与<strong class="text-sky-600">酸</strong>反应生成盐和水。</p>
+                     <p class="text-xl font-bold text-sky-800 mt-4">主要成员：</p>
+                     <p class="mt-2">绝大多数<strong class="text-sky-600">金属氧化物</strong> (如 <code>CuO</code>, <code>MgO</code>)。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: 两性氧化物 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">第三派：两性氧化物</h2>
+                 <div class="diagram-container">
+                     <svg width="400" height="150" viewBox="0 0 400 150" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="200" cy="75" r="35" fill="#fef3c7"/><text x="200" y="80" text-anchor="middle">Al₂O₃</text>
+                        <circle cx="80" cy="75" r="30" fill="#fecaca"/><text x="80" y="80" text-anchor="middle">酸</text>
+                        <circle cx="320" cy="75" r="30" fill="#dbeafe"/><text x="320" y="80" text-anchor="middle">碱</text>
+                        <path d="M 110 75 L 165 75" stroke="#a16207" stroke-width="2"/>
+                        <path d="M 235 75 L 290 75" stroke="#a16207" stroke-width="2"/>
+                        <text x="130" y="70" font-size="20">+</text>
+                        <text x="255" y="70" font-size="20">+</text>
+                    </svg>
+                 </div>
+                 <div class="mt-8 bg-amber-50 p-6 rounded-lg text-lg">
+                    <p class="text-xl font-bold text-amber-800">特点：</p>
+                    <p class="mt-2">既能与<strong class="text-amber-600">酸</strong>反应，又能与<strong class="text-amber-600">强碱</strong>反应，都生成盐和水。</p>
+                     <p class="text-xl font-bold text-amber-800 mt-4">头号代表：</p>
+                     <p class="mt-2">氧化铝 (<code>Al₂O₃</code>)，是考试的最爱。</p>
+                     <p class="text-xl font-bold text-amber-800 mt-4">其他成员：</p>
+                     <p class="mt-2">氧化锌 (<code>ZnO</code>)等。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: 实战演练 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-emerald-500 pb-2">小试牛刀</h2>
+                <div class="mt-8 text-xl space-y-4">
+                    <p>1. 五氧化二磷 (P₂O₅) 是？ → <strong class="text-emerald-700">酸性氧化物</strong></p>
+                    <p>2. 氧化镁 (MgO) 是？ → <strong class="text-emerald-700">碱性氧化物</strong></p>
+                    <p>3. 氧化锌 (ZnO) 既溶于酸又溶于强碱，说明它是？ → <strong class="text-emerald-700">两性氧化物</strong></p>
+                    <p>4. 钻石和石墨的关系是？ → <strong class="text-emerald-700">同素异形体</strong></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- NEW SLIDES START HERE -->
+
+        <!-- Question 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-cyan-500 pb-2">基础练习 1/5</h2>
+                <div class="mt-8 text-xl">
+                    <p class="font-semibold">钻石和石墨都是由碳元素组成的，但物理性质差异很大。它们之间的关系是？</p>
+                    <div class="mt-6">
+                        <button class="question-option">A. 同分异构体</button>
+                        <button class="question-option">B. 同素异形体</button>
+                        <button class="question-option">C. 同位素</button>
+                        <button class="question-option">D. 同一物质</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Answer 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-emerald-500 pb-2">答案与解析 1/5</h2>
+                <div class="mt-8 text-xl">
+                    <p class="font-semibold text-2xl">正确答案：B. 同素异形体</p>
+                    <div class="analysis-box">
+                        <p class="mt-2 text-slate-700">这道题考察“同素异形体”的定义。由同一种元素组成，但结构和性质不同的几种单质，互称为同素异形体。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-cyan-500 pb-2">基础练习 2/5</h2>
+                <div class="mt-8 text-xl">
+                    <p class="font-semibold">下列物质中，不属于氧化物的是？</p>
+                    <div class="mt-6">
+                        <button class="question-option">A. <code>CO₂</code> (二氧化碳)</button>
+                        <button class="question-option">B. <code>MgO</code> (氧化镁)</button>
+                        <button class="question-option">C. <code>KClO₃</code> (氯酸钾)</button>
+                        <button class="question-option">D. <code>H₂O</code> (水)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Answer 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-emerald-500 pb-2">答案与解析 2/5</h2>
+                <div class="mt-8 text-xl">
+                    <p class="font-semibold text-2xl">正确答案：C. <code>KClO₃</code> (氯酸钾)</p>
+                    <div class="analysis-box">
+                        <p class="mt-2 text-slate-700">氧化物的定义是“由两种元素组成，且其中一种是氧元素”。<code>KClO₃</code> 由钾、氯、氧三种元素组成，所以不是氧化物。A, B, D都符合定义。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-cyan-500 pb-2">基础练习 3/5</h2>
+                <div class="mt-8 text-xl">
+                    <p class="font-semibold"><code>CO₂</code>是一种无色无味的气体，它能与澄清石灰水(碱)反应生成白色沉淀。根据此性质，<code>CO₂</code>属于哪一类氧化物？</p>
+                    <div class="mt-6">
+                        <button class="question-option">A. 酸性氧化物</button>
+                        <button class="question-option">B. 碱性氧化物</button>
+                        <button class="question-option">C. 两性氧化物</button>
+                        <button class="question-option">D. 不成盐氧化物</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Answer 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-emerald-500 pb-2">答案与解析 3/5</h2>
+                <div class="mt-8 text-xl">
+                    <p class="font-semibold text-2xl">正确答案：A. 酸性氧化物</p>
+                    <div class="analysis-box">
+                        <p class="mt-2 text-slate-700">能与碱反应生成盐和水的氧化物，叫做酸性氧化物。这是一个核心定义。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-cyan-500 pb-2">基础练习 4/5</h2>
+                <div class="mt-8 text-xl">
+                    <p class="font-semibold">有一种白色固体，既能溶于盐酸，又能溶于氢氧化钠溶液。这种固体可能是？</p>
+                    <div class="mt-6">
+                        <button class="question-option">A. <code>MgO</code> (氧化镁)</button>
+                        <button class="question-option">B. <code>Al₂O₃</code> (氧化铝)</button>
+                        <button class="question-option">C. <code>SO₃</code> (三氧化硫)</button>
+                        <button class="question-option">D. <code>CuO</code> (氧化铜)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Answer 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-emerald-500 pb-2">答案与解析 4/5</h2>
+                <div class="mt-8 text-xl">
+                    <p class="font-semibold text-2xl">正确答案：B. <code>Al₂O₃</code> (氧化铝)</p>
+                    <div class="analysis-box">
+                        <p class="mt-2 text-slate-700">既能与酸反应，又能与强碱反应的氧化物，叫做两性氧化物。氧化铝是典型的代表。<code>MgO</code>和<code>CuO</code>是碱性氧化物，只与酸反应。<code>SO₃</code>是酸性氧化物，只与碱反应。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Question 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-cyan-500 pb-2">基础练习 5/5</h2>
+                <div class="mt-8 text-xl">
+                    <p class="font-semibold">对<code>HCl</code>(盐酸)进行分类时，小明说它是“无氧酸”，小红说它是“一元酸”。他们使用的分类方法是？</p>
+                    <div class="mt-6">
+                        <button class="question-option">A. 树状分类法</button>
+                        <button class="question-option">B. 交叉分类法</button>
+                        <button class="question-option">C. 经验分类法</button>
+                        <button class="question-option">D. 逻辑分类法</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Answer 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-emerald-500 pb-2">答案与解析 5/5</h2>
+                <div class="mt-8 text-xl">
+                    <p class="font-semibold text-2xl">正确答案：B. 交叉分类法</p>
+                    <div class="analysis-box">
+                        <p class="mt-2 text-slate-700">根据不同的分类标准（是否含氧、能电离出几个H⁺），对同一对象进行多种分类的方法，就是交叉分类法。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: 总结 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-gray-500 pb-2">今日总结</h2>
+                <div class="mt-8 text-xl space-y-4">
+                    <p>• 我们学会了用<strong class="text-gray-700">树状</strong>和<strong class="text-gray-700">交叉</strong>两种方法来分类物质。</p>
+                    <p>• 我们认识了氧化物家族的三大门派：<strong class="text-red-600">酸性</strong>、<strong class="text-sky-600">碱性</strong>和<strong class="text-amber-600">两性</strong>。</p>
+                    <p>• 今天我们学习的是化学的“语法”，学好语法才能读懂化学反应这本大书。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 14: 结束 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-5xl font-bold text-slate-800">课程结束</h2>
+                <p class="mt-8 text-2xl text-slate-700">下节课，我们将深入酸、碱、盐的世界。下课！</p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
+

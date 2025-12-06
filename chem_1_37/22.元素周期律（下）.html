@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>元素周期律 - 讲义总结</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper-bg: #fdfaf4;
+            --main-font-color: #3a3a3a;
+            --highlight-yellow: rgba(255, 229, 153, 0.7);
+            --highlight-blue: rgba(167, 213, 250, 0.6);
+            --highlight-pink: rgba(255, 192, 203, 0.6);
+            --highlight-green: rgba(181, 238, 155, 0.6);
+            --tape-bg: rgba(255, 179, 102, 0.7);
+            --border-color: #dcdcdc;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #e9e9e9;
+            color: var(--main-font-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        #handout-container {
+            width: 100%;
+            max-width: 800px;
+            background-color: var(--paper-bg);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            padding: 40px 50px;
+            box-sizing: border-box;
+            background-image:
+                linear-gradient(rgba(210, 210, 210, 0.5) 1px, transparent 1px);
+            background-size: 100% 2em;
+            line-height: 2em;
+            font-size: 20px;
+        }
+
+        h1 {
+            font-size: 42px;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: 700;
+        }
+        
+        h1::before {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: -20px;
+            right: -20px;
+            height: 20px;
+            background-color: var(--tape-bg);
+            border-radius: 3px;
+            transform: rotate(-1deg);
+            z-index: -1;
+            border-left: 2px dashed rgba(255,255,255,0.7);
+            border-right: 2px dashed rgba(255,255,255,0.7);
+        }
+
+        h2 {
+            font-size: 28px;
+            color: #34495e;
+            display: inline;
+            background: linear-gradient(to top, transparent 20%, var(--highlight-yellow) 20%, var(--highlight-yellow) 80%, transparent 80%);
+            margin: 40px 0 20px;
+            padding: 0 5px;
+            font-weight: 700;
+        }
+
+        h3 {
+            font-size: 24px;
+            color: #7f8c8d;
+            margin: 25px 0 10px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 5px;
+            display: inline-block;
+            font-weight: 700;
+        }
+        
+        p, li {
+             margin: 0;
+        }
+        ul {
+            list-style-type: '• ';
+            padding-left: 30px;
+        }
+        
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .keyword {
+            font-weight: 700;
+            font-size: 0.9em;
+            display: inline-block;
+            padding: 0px 8px;
+            border-radius: 5px;
+        }
+
+        .char-pink {
+             background-color: var(--highlight-pink);
+        }
+        
+        .char-blue {
+            background-color: var(--highlight-blue);
+        }
+        
+        .char-green {
+            background-color: var(--highlight-green);
+        }
+
+        .note-box {
+            background-color: rgba(236, 240, 241, 0.7);
+            border: 1px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin: 20px 0;
+            font-size: 0.9em;
+            line-height: 2.1em;
+        }
+        .note-box strong {
+            color: #2980b9;
+            font-weight: 700;
+        }
+        
+        .practice-zone {
+            margin-top: 30px;
+            border: 2px solid var(--border-color);
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #ffffff;
+            font-size: 0.9em;
+            line-height: 1.8;
+        }
+        
+        .practice-zone h3 {
+            margin-top: 0;
+            border: none;
+        }
+
+        .question {
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .question p { margin-bottom: 10px; }
+        
+        .mistake-zone {
+             background-color: rgba(255, 231, 231, 0.5);
+             border: 2px dashed #ffc4c4;
+             padding: 20px;
+             border-radius: 10px;
+             min-height: 150px;
+        }
+
+        .mistake-zone h3 { border: none; }
+        
+        @media (max-width: 600px) {
+            body { padding: 0; }
+            #handout-container {
+                padding: 25px 20px;
+                border-radius: 0;
+                line-height: 2em;
+                font-size: 18px;
+            }
+            h1 { font-size: 32px; }
+            h2 { font-size: 26px; }
+            h3 { font-size: 22px; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="handout-container">
+        <h1>元素周期律 (金属性与非金属性)</h1>
+        
+        <div class="section">
+            <h2>一、金属性递变规律</h2>
+            <p>金属性，即元素<span class="keyword char-blue">失电子</span>的倾向。以第三周期 (Na, Mg, Al) 为例。</p>
+            
+            <h3>判据1：<span class="keyword char-green">与水或酸反应剧烈程度</span></h3>
+            <div class="note-box">
+                <p>› <strong>钠 (Na):</strong> 与冷水剧烈反应。</p>
+                <p>› <strong>镁 (Mg):</strong> 与冷水反应缓慢，与热水或酸反应剧烈。</p>
+                <p>› <strong>铝 (Al):</strong> 与热水几乎不反应，与酸反应较慢。</p>
+                <p><strong>结论：</strong>金属性 <span class="keyword char-pink">Na > Mg > Al</span>。</p>
+            </div>
+
+            <h3>判据2：<span class="keyword char-green">最高价氧化物水化物碱性</span></h3>
+            <div class="note-box">
+                <p>› <strong>NaOH (氢氧化钠):</strong> 强碱。</p>
+                <p>› <strong>Mg(OH)₂ (氢氧化镁):</strong> 中强碱。</p>
+                <p>› <strong>Al(OH)₃ (氢氧化铝):</strong> 弱碱 (两性)。</p>
+                <p><strong>结论：</strong>碱性 <span class="keyword char-pink">NaOH > Mg(OH)₂ > Al(OH)₃</span>。</p>
+            </div>
+            
+            <h3>探究：<span class="keyword char-blue">Al(OH)₃ 的两性</span></h3>
+             <div class="note-box">
+                <strong>特征：</strong>既能与强酸反应 (显碱性)，也能与强碱反应 (显酸性)。
+                <p>$Al(OH)_3 + 3HCl = AlCl_3 + 3H_2O$</p>
+                <p>$Al(OH)_3 + NaOH = NaAlO_2 + 2H_2O$</p>
+                <p><strong>意义：</strong>体现了元素性质从<span class="keyword char-green">金属性向非金属性的过渡</span>。</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>二、非金属性递变规律</h2>
+            <p>非金属性，即元素<span class="keyword char-blue">得电子</span>的倾向。以第三周期 (Si, P, S, Cl) 为例。</p>
+
+            <h3>判据1：<span class="keyword char-green">与H₂反应及氢化物稳定性</span></h3>
+            <div class="note-box">
+                <p>› <strong>与H₂反应难易：</strong>Cl₂ (易) > S > P > Si (难)。</p>
+                <p>› <strong>氢化物稳定性：</strong>反应越容易，氢化物越稳定。</p>
+                <p><strong>结论：</strong>稳定性 <span class="keyword char-pink">HCl > H₂S > PH₃ > SiH₄</span>。</p>
+            </div>
+            
+            <h3>判据2：<span class="keyword char-green">最高价氧化物水化物酸性</span></h3>
+             <div class="note-box">
+                <p>› <strong>H₂SiO₃ (硅酸):</strong> 弱酸</p>
+                <p>› <strong>H₃PO₄ (磷酸):</strong> 中强酸</p>
+                <p>› <strong>H₂SO₄ (硫酸):</strong> 强酸</p>
+                <p>› <strong>HClO₄ (高氯酸):</strong> 最强无机酸</p>
+                <p><strong>结论：</strong>酸性 <span class="keyword char-pink">H₂SiO₃ < H₃PO₄ < H₂SO₄ < HClO₄</span>。</p>
+            </div>
+            
+            <h3>辨析：<span class="keyword char-blue">H-O-A 酸性模型</span></h3>
+             <div class="note-box">
+                <strong>原理：</strong>成酸元素A的<span class="keyword char-green">非金属性越强</span>，越能协助O拉动H-O键的电子，导致H越容易电离为H⁺，<span class="keyword char-pink">酸性越强</span>。
+            </div>
+            
+            <h3>提醒：<span class="keyword char-blue">必须比较“最高价”</span></h3>
+             <div class="note-box">
+                <strong>原因：</strong>很多元素有多种价态的含氧酸 (如HClO₄, HClO₃, H₂SO₄, H₂SO₃)。若不指明“最高价”，则无法比较。
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>三、随堂练习</h2>
+            <div class="practice-zone">
+                <div class="question">
+                    <p><strong>1.</strong> 下列元素中，金属性最强的是？</p>
+                    <p>   (A) Na   (B) Mg   (C) Al   (D) Si</p>
+                    <p>____________________________________________________</p>
+                </div>
+                 <div class="question">
+                    <p><strong>2.</strong> 下列元素的最高价氧化物对应水化物，酸性最强的是？</p>
+                    <p>   (A) H₂SiO₃   (B) H₃PO₄   (C) H₂SO₄   (D) HClO₄</p>
+                    <p>____________________________________________________</p>
+                </div>
+                <div class="question">
+                    <p><strong>3.</strong> 下列氢化物中，最稳定的是？</p>
+                    <p>   (A) SiH₄   (B) PH₃   (C) H₂S   (D) HCl</p>
+                     <p>____________________________________________________</p>
+                </div>
+                 <div class="question">
+                    <p><strong>4.</strong> 既能与HCl反应，又能与NaOH溶液反应的是？</p>
+                    <p>   (A) NaOH   (B) Al(OH)₃   (C) Mg(OH)₂   (D) H₂SO₄</p>
+                     <p>____________________________________________________</p>
+                </div>
+                <div class="question">
+                    <p><strong>5.</strong> 判断元素金属性强弱，不能作为依据的是？</p>
+                    <p>   (A) 与水反应的剧烈程度</p>
+                    <p>   (B) 最高价氧化物水化物的碱性强弱</p>
+                    <p>   (C) 元素的导电性强弱</p>
+                    <p>   (D) 元素失电子的难易程度</p>
+                     <p>____________________________________________________</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section mistake-zone">
+            <h3>我的易错点清单</h3>
+            <p>（在这里写下你容易混淆的概念或做错的题目！）</p>
+            <p>1. _________________________</p>
+            <p>2. _________________________</p>
+            <p>3. _________________________</p>
+        </div>
+
+    </div>
+
+</body>
+</html>

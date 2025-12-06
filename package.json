@@ -1,0 +1,26 @@
+{
+  "name": "word-to-quenti",
+  "version": "1.0.0",
+  "description": "HTML 课件 → Quenti 数学词卡批量导入工具",
+  "type": "module",
+  "scripts": {
+    "step0:images": "npx tsx scripts/extract-html-images.ts",
+    "step1:parse": "npx tsx scripts/html-to-cards-gemini.ts",
+    "step2:render": "npx tsx scripts/render-latex-to-png.ts",
+    "step3:upload": "npx tsx scripts/bulk-term-image-upload.ts",
+    "all": "npm run step0:images && npm run step1:parse && npm run step2:render && npm run step3:upload",
+    "batch": "npx tsx scripts/process-all.ts"
+  },
+  "dependencies": {
+    "@google/genai": "^0.14.0",
+    "cheerio": "^1.1.2",
+    "fast-glob": "^3.3.3",
+    "openai": "^6.10.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.25",
+    "playwright": "^1.40.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}

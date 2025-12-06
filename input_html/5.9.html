@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>玩转Tan的两角和差公式 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0.25rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.25rem;
+            line-height: 1.8;
+            overflow-x: auto; /* Handle potential overflow on small screens */
+        }
+
+        /* 打印样式 */
+        @media print {
+            @page {
+                size: landscape; /* 打印时横向 */
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always; /* 每个section占一页 */
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">玩转Tan的两角和差公式</h1>
+                <p class="text-2xl text-slate-600 mt-4">从推导到应用</p>
+                <p class="mt-8 text-xl text-cyan-600 font-semibold">"如何只用 tanα 和 tanβ 来表示 tan(α−β)？"</p>
+            </div>
+        </div>
+
+        <!-- 公式推导 (一)：思路起点 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-cyan-500 pb-2 mb-8">公式推导 (一)：思路与展开</h2>
+                <p class="text-xl leading-relaxed mb-4">目标明确：推导 tan(α+β)。看到Tan，我们最先想到的关系式是？没错，tanθ = sinθ/cosθ！</p>
+                <p class="text-xl leading-relaxed mb-4">所以，我们很自然地可以写出： tan(α+β) = sin(α+β)/cos(α+β)。接下来，代入Sin和Cos的和角公式：</p>
+                <div class="formula-box text-center mb-6" style="font-size: 1rem; line-height: 1.5;">
+                   (sinαcosβ + cosαsinβ) / (cosαcosβ - sinαsinβ)
+                </div>
+                <p class="text-xl leading-relaxed mt-8 mb-4">这个式子全是sin和cos，不够“纯净”。我们的目标是得到一个只含有 tanα 和 tanβ 的公式。怎么才能创造出tan呢？</p>
+            </div>
+        </div>
+
+        <!-- 公式推导 (二)：构造正切 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-cyan-500 pb-2 mb-8">公式推导 (二)：构造与化简</h2>
+                <p class="text-xl leading-relaxed mb-4">关键一步：为了凑出 tanα 和 tanβ，我们需要用sin除以cos。为了公平，我们将分式的分子分母四项同时除以一个“公分母”：<strong class="text-rose-500">cosαcosβ</strong>。</p>
+                <p class="text-xl leading-relaxed mb-4">我们看看会发生什么奇迹：</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6 text-lg">
+                    <div class="bg-slate-50 p-4 rounded-lg"><strong>分子第一项：</strong>(sinαcosβ)/(cosαcosβ) = <strong>tanα</strong></div>
+                    <div class="bg-slate-50 p-4 rounded-lg"><strong>分子第二项：</strong>(cosαsinβ)/(cosαcosβ) = <strong>tanβ</strong></div>
+                    <div class="bg-slate-50 p-4 rounded-lg"><strong>分母第一项：</strong>(cosαcosβ)/(cosαcosβ) = <strong>1</strong></div>
+                    <div class="bg-slate-50 p-4 rounded-lg"><strong>分母第二项：</strong>(sinαsinβ)/(cosαcosβ) = <strong>tanαtanβ</strong></div>
+                </div>
+                <p class="text-xl leading-relaxed mb-4">好了，见证奇迹的时刻！整理一下，我们得到了：</p>
+                <div class="formula-box text-center mb-8 bg-amber-50 border-amber-400">tan(α+β) = (tanα + tanβ) / (1 - tanαtanβ)</div>
+            </div>
+        </div>
+        
+        <!-- 公式推导 (三)：优雅变形 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-cyan-500 pb-2 mb-8">公式推导 (三)：变形与结论</h2>
+                <p class="text-xl leading-relaxed mb-4">那 tan(α−β) 怎么推呢？数学的美妙之处在于优雅。我们知道减法就是加上一个负数，只需将上面公式里所有的β，都换成 -β。</p>
+                <p class="text-xl leading-relaxed mb-4">回忆一下，Tan是奇函数，<strong>tan(−β) = −tanβ</strong>。代入上式：</p>
+                <div class="formula-box text-center mb-6" style="font-size: 1.1rem;">
+                    tan(α+(−β)) = (tanα + tan(−β)) / (1 - tanαtan(−β))
+                </div>
+                <p class="text-xl leading-relaxed mb-4">立即得到清爽的差角公式：</p>
+                <div class="formula-box text-center mb-8 bg-amber-50 border-amber-400">tan(α−β) = (tanα - tanβ) / (1 + tanαtanβ)</div>
+            </div>
+        </div>
+
+        <!-- 核心公式总结 -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-4">核心公式总结</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <div class="formula-box">
+                    tan(α + β) = (tanα + tanβ) / (1 - tanαtanβ)<br>
+                    tan(α - β) = (tanα - tanβ) / (1 + tanαtanβ)
+                </div>
+                <div class="mt-8 text-xl text-center bg-amber-100 p-4 rounded-lg">
+                    <p class="font-bold">记忆诀竅：</p>
+                    <p>“分子的符号跟着走，分母的符号反着来。”</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 应用一：拆角求值 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-amber-500 pb-2">典例精讲(一)：拆角求值</h2>
+                <div class="mt-6 text-lg bg-amber-50 p-6 rounded-lg">
+                    <p class="font-bold">例1：求 tan(105°) 的值。</p>
+                    <p class="mt-2"><strong>解：</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 应用二：据值求角 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-amber-500 pb-2">典例精讲(二)：据值求角</h2>
+                 <div class="mt-4 text-lg bg-amber-50 p-6 rounded-lg">
+                    <p class="font-bold">例2：已知 tanα=1/2, tanβ=1/3, 且α, β为锐角, 求 α+β。</p>
+                    <p class="mt-2"><strong>解：</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 应用三：代数结合 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2">典例精讲(三)：代数结合</h2>
+                <div class="mt-6 text-lg bg-emerald-50 p-6 rounded-lg">
+                    <p class="font-bold">例3：已知 tanα, tanβ 是方程 3x²−7x+2=0 的两根, 求 tan(α+β)。</p>
+                    <p class="mt-2"><strong>解：</strong></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 应用四：公式逆用 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2">典例精讲(四)：公式逆用</h2>
+                <div class="mt-6 text-lg bg-violet-50 p-6 rounded-lg">
+                    <p class="font-bold">巧用一：公式逆用</p>
+                    <p>(tan80° - tan20°) / (1 + tan80°tan20°)</p>
+                    <p><strong>解：</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 应用五：构造特殊角 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2">典例精讲(五)：构造特殊角</h2>
+                <div class="mt-4 text-lg bg-violet-50 p-6 rounded-lg">
+                    <p class="font-bold">巧用二：构造特殊角</p>
+                    <p>计算 (1+tan22°)(1+tan23°)</p>
+                     <p><strong>解：</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 (一) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (一)</h2>
+                <div class="space-y-3 text-base md:text-lg">
+                    <div class="bg-gray-50 p-3 rounded-lg"><strong>1.</strong> tan(15°) 的值是？<br/>(A) 2+√3 (B) 2-√3 (C) (√6-√2)/4 (D) 1</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 (二) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (二)</h2>
+                <div class="space-y-3 text-base md:text-lg">
+                    <div class="bg-gray-50 p-3 rounded-lg"><strong>2.</strong> (tan50°+tan10°)/(1-tan50°tan10°) 的值是？<br/>(A) tan(40°) (B) 1/√3 (C) 1 (D) √3</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 (三) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (三)</h2>
+                <div class="space-y-3 text-base md:text-lg">
+                    <div class="bg-gray-50 p-3 rounded-lg"><strong>3.</strong> 已知 tanα = 1/3，则 tan(α + π/4) 的值是？<br/>(A) 2 (B) -2 (C) 1/2 (D) -1/2</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 (四) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (四)</h2>
+                <div class="space-y-3 text-base md:text-lg">
+                    <div class="bg-gray-50 p-3 rounded-lg"><strong>4.</strong> tanα, tanβ 是 x²−4x+1=0 的两根, 则 tan(α+β) 的值是？<br/>(A) 4/3 (B) -4/3 (C) 2 (D) 不存在</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题解析 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析</h2>
+                <div class="space-y-3 text-base">
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>1. 答案：B</strong></p>
+                        <p><strong>解析：</strong>tan(15°)=tan(45°-30°)=(1-tan30°)/(1+tan30°) = (1-√3/3)/(1+√3/3) = 2-√3。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>2. 答案：D</strong></p>
+                        <p><strong>解析：</strong>结构为 tan(α+β), 等于 tan(50°+10°) = tan(60°) = √3。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>3. 答案：A</strong></p>
+                        <p><strong>解析：</strong>tan(α+π/4)=(tanα+1)/(1-tanα) = (1/3+1)/(1-1/3) = (4/3)/(2/3) = 2。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>4. 答案：D</strong></p>
+                        <p><strong>解析：</strong>由韦达定理, tanα+tanβ=4, tanα·tanβ=1。tan(α+β)=(tanα+tanβ)/(1-tanαtanβ) = 4/(1-1) = 4/0, 分母为0, 故不存在。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 新增：总结与展望 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-8">总结与展望</h2>
+                <p class="text-xl leading-relaxed mb-4">今天我们一起回顾一下：</p>
+                <ul class="list-disc pl-5 text-xl space-y-4">
+                    <li>我们用最基本的商数关系，<strong>推导出</strong>了Tangent的两角和差公式。</li>
+                    <li>我们找到了公式的<strong>记忆诀竅</strong>：‘分子符号跟着走，分母符号反着来’。</li>
+                    <li>我们学习了公式的<strong>三种用法</strong>：
+                        <ul class="list-decimal pl-6 mt-2">
+                            <li><strong>正着用：</strong>拆角、代入求值。</li>
+                            <li><strong>代数结合用：</strong>配合韦达定理。</li>
+                            <li><strong>逆着用和变着用：</strong>考验眼力和构造能力。</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p class="text-xl leading-relaxed mt-8">下节课，我们将继续深化，看看在更复杂的三角函数问题中，这个公式是如何作为核心工具发挥作用的。大家回去一定要多写几遍公式，把今天的例题消化透彻！</p>
+            </div>
+        </div>
+
+    </div>
+    
+</body>
+</html>
+

@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二氧化硫的性质</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        
+        /* 反应示意图容器样式 */
+        .reaction-diagram {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        
+        .reaction-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-lime-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18M3 12h18M5.636 5.636l12.728 12.728M5.636 18.364L18.364 5.636" />
+                    <circle cx="12" cy="12" r="3" fill="#a3e635"/>
+                 </svg>
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">二氧化硫 (SO₂)</h1>
+                <p class="text-2xl text-slate-600 mt-2">—— 性质多变的“考点之王”</p>
+            </div>
+        </div>
+
+        <!-- 物理性质 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>二氧化硫的物理性质</h2>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-8 rounded-lg text-lg text-slate-700 space-y-4">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <svg class="w-8 h-8 text-slate-500 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M20 12H4"/></svg>
+                        <p><strong>颜色/状态/气味：</strong><strong class="text-red-600">无色</strong>、有<strong class="text-red-600">刺激性气味</strong>的<strong class="text-red-600">有毒</strong>气体。</p>
+                    </div>
+                    <div class="flex items-center space-x-4 mb-4">
+                        <svg class="w-8 h-8 text-slate-500 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="14" width="18" height="6" rx="2"/><path d="M12 14V4"/><path d="M10 6L12 4L14 6"/></svg>
+                        <p><strong>密度：</strong>相对分子质量为64，密度比空气<strong class="text-red-600">大</strong>（比空气“重”）。</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                         <svg class="w-8 h-8 text-slate-500 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M20 12H4M15 9l-3 3-3-3M15 15l-3 3-3-3"/></svg>
+                        <p><strong>溶解性：</strong><strong class="text-red-600">易溶</strong>于水 (1体积水约溶40体积SO₂)。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 酸性氧化物性质 (原第3页) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-blue-500 rounded"></span>化学性质：酸性氧化物</h2>
+                 <p class="mt-8 text-xl text-slate-700">SO₂是典型的酸性氧化物，具有酸性氧化物的通性。可与水、碱性氧化物、碱反应。</p>
+                 
+                 <div class="mt-8 bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-blue-800 text-xl">与水反应：生成亚硫酸 (H₂SO₃)</h3>
+                    
+                    <!-- 图标已删除 -->
+                    <div class="reaction-diagram mt-4 justify-center space-x-4">
+                        <span class="text-3xl font-bold text-blue-600">SO₂</span>
+                        <span class="text-3xl font-bold">+</span>
+                        <span class="text-3xl font-bold text-cyan-500">H₂O</span>
+                        <span class="text-3xl text-gray-600 font-bold">⇌</span>
+                        <span class="text-3xl font-bold text-red-600">H₂SO₃</span>
+                    </div>
+                     <p class="mono text-center mt-3 bg-blue-100 p-2 rounded text-base">SO₂ + H₂O ⇌ H₂SO₃</p>
+                     <p class="text-slate-600 text-sm mt-1">亚硫酸(H₂SO₃)是<strong class="text-red-600">中强酸</strong>，不稳定易分解，反应可逆。</p>
+                 </div>
+                 
+                 <div class="mt-4 bg-indigo-50 border border-indigo-200 p-4 rounded-lg">
+                    <h3 class="font-bold text-indigo-800 text-lg">与碱反应 (以NaOH为例)</h3>
+                    <p class="mt-2 text-slate-700">SO₂是<strong class="text-red-600">二元酸性</strong>氧化物，生成盐类与SO₂的量有关：</p>
+                    <p class="mono text-center mt-2 text-sm md:text-base">SO₂ (少量) + 2OH⁻ → SO₃²⁻ + H₂O</p>
+                    <p class="mono text-center mt-1 text-sm md:text-base">SO₂ (过量) + OH⁻ → HSO₃⁻</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 还原性 1 (原第4页) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>化学性质：还原性 (Part 1)</h2>
+                 <p class="mt-8 text-xl text-slate-700">SO₂中的硫为+4价，可被氧化至+6价，表现出较强的<strong class="text-green-600">还原性</strong>。</p>
+                 <div class="mt-6 bg-green-50 border border-green-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-green-800 text-xl">与氧气反应 (工业制硫酸核心步骤)</h3>
+                    <div class="reaction-diagram mt-4">
+                        <div class="reaction-step">
+                            <span class="text-2xl font-bold text-green-600">SO₂</span>
+                            <span class="text-sm text-gray-500">+4价</span>
+                        </div>
+                        <div class="reaction-step flex flex-col items-center">
+                            <span class="text-lg text-gray-600 font-semibold">被氧化 (+2价)</span>
+                            <svg class="w-16 h-4 text-green-600" viewBox="0 0 100 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M0 10 L90 10"/><path d="M85 5 L95 10 L85 15" fill="currentColor"/></svg>
+                        </div>
+                         <div class="reaction-step">
+                            <span class="text-2xl font-bold text-green-600">SO₃</span>
+                            <span class="text-sm text-gray-500">+6价</span>
+                        </div>
+                    </div>
+                    <p class="mono text-center mt-3 bg-green-100 p-3 rounded text-base">2SO₂ + O₂ <span class="text-slate-500">(催化剂, 加热)</span> ⇌ 2SO₃</p>
+                 </div>
+                 <div class="mt-4 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <h3 class="font-semibold text-gray-700">工业制硫酸流程简述</h3>
+                    <p class="mt-2 text-slate-600 text-sm">1. S 或 FeS₂ 燃烧 → SO₂</p>
+                    <p class="mt-1 text-slate-600 text-sm">2. SO₂ 催化氧化 → SO₃</p>
+                    <p class="mt-1 text-slate-600 text-sm">3. SO₃ 被浓硫酸吸收 → 浓硫酸</p>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 还原性 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>化学性质：还原性 (Part 2)</h2>
+                 <p class="mt-8 text-xl text-slate-700">SO₂能被多种强氧化剂氧化，常使有色氧化剂褪色，<strong class="text-red-600">体现还原性</strong>。</p>
+                 <div class="mt-6 space-y-4">
+                     <div class="bg-green-50 border border-green-200 p-4 rounded-lg">
+                         <h3 class="font-bold text-green-800 text-lg">与卤素单质水溶液 (Cl₂, Br₂, I₂)</h3>
+                          <div class="reaction-diagram mt-4">
+                            <span class="text-2xl font-bold text-green-600">SO₂</span>
+                            <span class="text-2xl font-bold">+</span>
+                            <span class="text-2xl font-bold text-red-600">X₂</span>
+                            <span class="text-2xl font-bold">→</span>
+                            <span class="text-2xl font-bold text-blue-600">H₂SO₄</span>
+                            <span class="text-sm text-gray-500 absolute bottom-0">褪色</span>
+                        </div>
+                         <p class="mono text-center text-sm md:text-base mt-2">SO₂ + X₂ + 2H₂O → H₂SO₄ + 2HX (X=Cl, Br, I)</p>
+                         <p class="text-slate-600 text-sm mt-1">现象：卤素水溶液<strong class="text-red-600">褪色</strong>。</p>
+                     </div>
+                    <div class="bg-green-50 border border-green-200 p-4 rounded-lg">
+                         <h3 class="font-bold text-green-800 text-lg">与酸性KMnO₄溶液 (用于定性检验SO₂)</h3>
+                         <div class="reaction-diagram mt-4">
+                            <span class="text-2xl font-bold text-green-600">SO₂</span>
+                            <span class="text-2xl font-bold">+</span>
+                            <span class="text-2xl font-bold text-purple-600">KMnO₄</span>
+                            <span class="text-2xl font-bold">→</span>
+                            <span class="text-2xl font-bold text-gray-600">无色 Mn²⁺</span>
+                            <span class="text-sm text-gray-500 absolute bottom-0">紫红色褪去</span>
+                        </div>
+                         <p class="mono text-center text-sm md:text-base mt-2">5SO₂ + 2MnO₄⁻ + 2H₂O → 5SO₄²⁻ + 2Mn²⁺ + 4H⁺</p>
+                     </div>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 还原性 特例 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>还原性的特例与应用</h2>
+                  <div class="mt-8 bg-yellow-50 border border-yellow-200 p-8 rounded-lg">
+                    <h3 class="font-bold text-yellow-800 text-xl">重要特例：SO₂ 不与浓硫酸反应！</h3>
+                     <div class="reaction-diagram mt-4">
+                        <span class="text-2xl font-bold text-green-600">SO₂</span>
+                        <span class="text-2xl font-bold text-gray-600">+</span>
+                        <span class="text-2xl font-bold text-indigo-600">浓H₂SO₄</span>
+                        <span class="text-3xl text-red-600 font-bold ml-4">❌</span>
+                        <span class="text-2xl font-bold text-gray-600">=</span>
+                        <span class="text-2xl font-bold text-gray-600">无反应</span>
+                    </div>
+                    <p class="mt-3 text-lg text-slate-700">虽然浓硫酸有强氧化性，SO₂有还原性，但由于没有稳定的中间价态硫氧化物，两者<strong class="text-red-600">不发生氧化还原反应</strong>。</p>
+                    <p class="mt-3 text-lg text-slate-700 font-semibold">应用：可以用<strong class="text-red-600">浓硫酸</strong>干燥SO₂气体。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 氧化性 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>化学性质：氧化性 (较弱)</h2>
+                 <p class="mt-8 text-xl text-slate-700">SO₂中的+4价硫也可被还原至0价或-2价，表现出<strong class="text-orange-600">氧化性</strong>，但通常只在遇到<strong class="text-red-600">强还原剂</strong>时体现。</p>
+                 <div class="mt-8 bg-orange-50 border border-orange-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-orange-800 text-xl">与硫化氢 (H₂S) 反应</h3>
+                    <p class="mt-3 text-slate-600">典型的归中反应。</p>
+                    <div class="reaction-diagram mt-4">
+                        <div class="reaction-step">
+                            <span class="text-2xl font-bold text-orange-600">SO₂</span>
+                            <span class="text-sm text-gray-500">+4价</span>
+                        </div>
+                        <span class="text-2xl font-bold">+</span>
+                        <div class="reaction-step">
+                            <span class="text-2xl font-bold text-green-600">H₂S</span>
+                            <span class="text-sm text-gray-500">-2价</span>
+                        </div>
+                        <span class="text-2xl font-bold">→</span>
+                         <div class="reaction-step">
+                            <span class="text-2xl font-bold text-yellow-600">S↓</span>
+                            <span class="text-sm text-gray-500">0价</span>
+                        </div>
+                        <span class="text-2xl font-bold">+ H₂O</span>
+                    </div>
+                    <p class="mono text-center bg-orange-100 p-3 rounded mt-3">SO₂ + 2H₂S → 3S↓ + 2H₂O</p>
+                    <p class="mt-2 text-slate-600">现象：产生<strong class="text-yellow-600">淡黄色沉淀</strong>(硫单质)。</p>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 漂白性 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-pink-500 rounded"></span>化学性质：漂白性</h2>
+                <p class="mt-8 text-xl text-slate-700">SO₂能使某些有色物质（如<strong class="text-pink-600">品红溶液</strong>）褪色。</p>
+                 <div class="mt-8 bg-pink-50 border border-pink-200 p-6 rounded-lg text-lg space-y-3">
+                    <div class="reaction-diagram justify-center space-x-6">
+                        <div class="reaction-step">
+                            <span class="text-4xl text-rose-500">🔴</span>
+                            <span class="text-sm text-gray-500">品红 (有色)</span>
+                        </div>
+                        <span class="text-4xl font-bold">+</span>
+                         <div class="reaction-step">
+                            <span class="text-4xl text-blue-500">💨</span>
+                            <span class="text-sm text-gray-500">SO₂</span>
+                        </div>
+                        <span class="text-4xl font-bold">⇌</span>
+                        <div class="reaction-step">
+                            <span class="text-4xl text-gray-300">⚪</span>
+                            <span class="text-sm text-gray-500">无色物质</span>
+                        </div>
+                    </div>
+                    <p><strong>漂白原理：</strong>SO₂与有色物质<strong class="text-red-600">结合</strong>生成<strong class="text-red-600">不稳定</strong>的无色物质。</p>
+                    <p><strong>特点：</strong>这种漂白是<strong class="text-red-600">暂时性</strong>的，生成的无色物质不稳定，<strong class="text-red-600">加热</strong>后可恢复原来的颜色。</p>
+                    <p><strong>局限性：</strong><strong class="text-red-600">不能</strong>使石蕊、酚酞等酸碱指示剂褪色（只能使其变色）。</p>
+                    <p><strong>应用：</strong>可用于漂白纸浆、毛、丝等。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 漂白性对比 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-pink-500 rounded"></span>SO₂漂白性 vs 氯水漂白性</h2>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-pink-50 border border-pink-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-pink-800 text-xl">SO₂ (二氧化硫)</h3>
+                        <p class="mt-3 text-slate-600">原理：化合漂白 (生成不稳定无色物)</p>
+                        <p class="mt-2 text-slate-600">效果：<strong class="text-red-600">暂时性</strong>，加热可复原</p>
+                        <p class="mt-2 text-slate-600">范围：可漂白品红等</p>
+                         <p class="mt-2 text-slate-600"><strong class="text-red-600">不能</strong>漂白指示剂</p>
+                    </div>
+                    <div class="bg-cyan-50 border border-cyan-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-cyan-800 text-xl">氯水 (含HClO)</h3>
+                         <p class="mt-3 text-slate-600">原理：氧化漂白 (HClO强氧化性)</p>
+                         <p class="mt-2 text-slate-600">效果：<strong class="text-red-600">永久性</strong>，不可逆</p>
+                         <p class="mt-2 text-slate-600">范围：可漂白品红、石蕊等</p>
+                         <p class="mt-2 text-slate-600">能使石蕊<strong class="text-red-600">先变红后褪色</strong></p>
+                    </div>
+                </div>
+                 <p class="mt-6 text-xl text-red-600 font-semibold text-center">注意：若将SO₂和氯水混合，漂白性会<strong class="text-red-600">消失</strong>！<br>(SO₂ + Cl₂ + 2H₂O → H₂SO₄ + 2HCl)</p>
+            </div>
+        </div>
+
+        <!-- 易混淆褪色 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-yellow-500 rounded"></span>易混淆的“褪色”现象</h2>
+                 <div class="mt-8 space-y-4">
+                     <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
+                         <h3 class="font-bold text-yellow-800 text-lg">SO₂使品红褪色</h3>
+                         <p class="text-slate-600 mt-1">体现SO₂的<strong class="text-red-600">漂白性</strong>。</p>
+                     </div>
+                    <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
+                         <h3 class="font-bold text-yellow-800 text-lg">SO₂使溴水、酸性KMnO₄溶液褪色</h3>
+                         <p class="text-slate-600 mt-1">体现SO₂的<strong class="text-red-600">还原性</strong> (发生氧化还原反应)。</p>
+                     </div>
+                     <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
+                        <h3 class="font-bold text-yellow-800 text-lg">SO₂使含酚酞的NaOH溶液褪色</h3>
+                        <p class="text-slate-600 mt-1">体现SO₂的<strong class="text-red-600">酸性氧化物</strong>性质 (中和了NaOH)。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 例题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (一)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列关于SO₂的说法，错误的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 无色、有刺激性气味的气体</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 易溶于水，其水溶液是亚硫酸</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 具有漂白性，能使石蕊试液褪色</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 既有氧化性，又有还原性</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (一)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>SO₂具有漂白性，但其漂白范围有限，<strong class="text-green-700">不能</strong>使石蕊等酸碱指示剂褪色。它溶于水生成亚硫酸，会使石蕊试液<strong class="text-green-700">变红</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (二)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>将SO₂气体通入下列溶液中，溶液会褪色，且体现SO₂还原性的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 品红溶液</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 含有酚酞的NaOH溶液</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 紫色石蕊试液</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 酸性KMnO₄溶液</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (二)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>A. 使品红褪色体现漂白性。<br>B. 使含酚酞的NaOH溶液褪色体现酸性氧化物性质。<br>C. 使石蕊变红体现酸性，不褪色。<br>D. SO₂与酸性KMnO₄发生氧化还原反应，使紫红色褪去，体现SO₂的<strong class="text-green-700">还原性</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (三)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列关于SO₂和氯水漂白性的比较，正确的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 两者原理相同，都是氧化漂白</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> SO₂的漂白是永久性的</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 氯水的漂白是暂时性的</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 将两者混合，漂白性会减弱甚至消失</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (三)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>A. 原理不同，SO₂是化合漂白，氯水是氧化漂白。<br>B. SO₂漂白是暂时性的，加热可复原。<br>C. 氯水（HClO）漂白是永久性的。<br>D. SO₂和Cl₂会发生氧化还原反应 (<code>SO₂ + Cl₂ + 2H₂O → H₂SO₄ + 2HCl</code>)，使两者都失去漂白性，<strong class="text-green-700">正确</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (四)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>工业制硫酸的过程中，SO₂转化为SO₃需要的条件不包括？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 高温</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 催化剂 (V₂O₅)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 常压</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 氧气</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1-4 h-1 bg-green-500 rounded"></span>练习 (四)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>反应 <code>2SO₂ + O₂ ⇌ 2SO₃</code> 需要的条件是<strong class="text-green-700">高温</strong> (约400-500°C)、<strong class="text-green-700">催化剂</strong> (通常是V₂O₅) 和<strong class="text-green-700">氧气</strong>。工业生产中为了提高反应速率和平衡转化率，通常还会采用<strong class="text-green-700">加压</strong>的条件，而不是常压。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (五)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>能证明SO₂具有氧化性的反应是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(A)</strong> SO₂ + Br₂ + 2H₂O → H₂SO₄ + 2HBr</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(B)</strong> SO₂ + 2H₂S → 3S↓ + 2H₂O</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(C)</strong> SO₂ + 2NaOH → Na₂SO₃ + H₂O</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(D)</strong> SO₂ + H₂O ⇌ H₂SO₃</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (五)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>要体现SO₂的氧化性，SO₂中的硫元素化合价必须降低。<br>A. S元素化合价从+4升高到+6，体现还原性。<br>B. S元素化合价从+4降低到0，体现<strong class="text-green-700">氧化性</strong> (同时H₂S中的S从-2升高到0，体现还原性)。<br>C, D. 非氧化还原反应。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>平面向量基本定理 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入MathJax用于专业数学公式渲染 -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border-radius: 0.25rem;
+            font-size: 1.25rem;
+            line-height: 1.8;
+            overflow-x: auto;
+        }
+
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { height: 100vh; width: 100vw; page-break-after: always; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">平面向量基本定理</h1>
+                <p class="text-2xl text-slate-600 mt-4">“万物皆可拆”的艺术</p>
+                <p class="mt-8 text-xl text-cyan-600 font-semibold">"想象一下玩乐高，给你两种基础块，你就能拼出整个世界！"</p>
+            </div>
+        </div>
+
+        <!-- 定理内容 -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-4">定理内容与理解</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <p class="text-lg">如果 \(\vec{e}_1\) 和 \(\vec{e}_2\) 是同一平面内两个<strong>不共线</strong>的向量，那么对于这个平面内的<strong>任意</strong>向量 \(\vec{a}\)，<strong>有且只有</strong>一对实数 \(\lambda_1, \lambda_2\)，使得：</p>
+                <div class="formula-box text-2xl my-4 text-center">
+                    $$\vec{a} = \lambda_1\vec{e}_1 + \lambda_2\vec{e}_2$$
+                </div>
+                <ul class="list-disc list-inside mt-4 text-lg space-y-2">
+                    <li><strong>基底：</strong>我们称不共线的向量 \(\vec{e}_1, \vec{e}_2\) 为一组<strong>基底</strong>。</li>
+                    <li><strong>核心思想：</strong>一个字——<strong>拆</strong>！把任何复杂的向量，拆解成用基底表示的形式。</li>
+                     <li><strong>关键：</strong>表示方法是<strong>唯一</strong>的！这为我们列方程提供了理论基础。</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- 例题一 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-amber-500 pb-2 mb-4">第一关：常规拆解——“按图索骥”</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                 <div class="text-base bg-amber-50 p-4 rounded-lg">
+                    <div class="flex items-center gap-6">
+                        <div class="flex-1">
+                            <p class="font-bold">【例题一】</p>
+                            <p>在梯形ABCD中, \(AB \parallel DC\), \(DC=2AB\)。E是BC中点，用 \(\vec{AB}\) 和 \(\vec{AD}\) 作基底表示 \(\vec{AE}\)。</p>
+                        </div>
+                        <div class="w-2/5 flex justify-center items-center p-2 bg-white rounded-md border border-amber-200">
+                           <svg width="250" height="167" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+                               <defs>
+                                   <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                                       <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+                                   </marker>
+                               </defs>
+                               
+                               <!-- Trapezoid ABCD -->
+                               <path d="M 50 150 L 150 150 L 230 50 L 20 50 Z" fill="#fef3c7" stroke="#fbbf24" stroke-width="2"/>
+                               
+                               <!-- Points Labels -->
+                               <text x="45" y="168" font-size="14" font-family="serif" fill="#4a5568">A</text>
+                               <text x="155" y="168" font-size="14" font-family="serif" fill="#4a5568">B</text>
+                               <text x="235" y="50" font-size="14" font-family="serif" fill="#4a5568">C</text>
+                               <text x="5" y="50" font-size="14" font-family="serif" fill="#4a5568">D</text>
+                               <text x="195" y="98" font-size="14" font-family="serif" fill="#4a5568">E</text>
+   
+                               <!-- Midpoint E -->
+                               <circle cx="190" cy="100" r="3" fill="#4a5568"/>
+   
+                               <!-- Vector AE (target) -->
+                               <line x1="50" y1="150" x2="185" y2="103" stroke="#ef4444" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+                               <text x="110" y="135" font-size="14" font-family="serif" fill="#ef4444" font-style="italic">\(\vec{AE}\)</text>
+                               
+                               <!-- Vector AB (base) -->
+                               <line x1="50" y1="150" x2="145" y2="150" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+                                <text x="90" y="145" font-size="14" font-family="serif" fill="#3b82f6" font-style="italic">\(\vec{AB}\)</text>
+                              
+                               <!-- Vector AD (base) -->
+                               <line x1="50" y1="150" x2="25" y2="55" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+                               <text x="25" y="105" font-size="14" font-family="serif" fill="#3b82f6" font-style="italic">\(\vec{AD}\)</text>
+                           </svg>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 例题二 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2">第二关：进阶拆解——“双线作战”</h2>
+                 <div class="text-base bg-emerald-50 p-4 rounded-lg">
+                    <div class="flex items-center gap-6">
+                        <div class="flex-1">
+                            <p class="font-bold">【例题二】</p>
+                            <p>在\(\triangle OAB\)中, \(\vec{OC}=\frac{1}{3}\vec{OA}\), D是AB中点, OD与BC交于P。用 \(\vec{OA}\), \(\vec{OB}\) 表示 \(\vec{OP}\)。</p>
+                        </div>
+                        <div class="w-2/5 flex justify-center items-center p-2 bg-white rounded-md border border-emerald-200">
+                           <svg width="250" height="183" viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                   <marker id="arrowhead2" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                                       <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+                                   </marker>
+                               </defs>
+                               <!-- Triangle OAB -->
+                               <path d="M 50 200 L 250 200 L 150 50 Z" fill="#e7f7f0" stroke="#6ee7b7" stroke-width="2"/>
+                               
+                               <!-- Lines OD and BC -->
+                               <line x1="50" y1="200" x2="200" y2="125" stroke="#a3a3a3" stroke-width="1.5" stroke-dasharray="4"/> <!-- OD -->
+                               <line x1="150" y1="50" x2="116.7" y2="200" stroke="#a3a3a3" stroke-width="1.5" stroke-dasharray="4"/> <!-- BC -->
+   
+                               <!-- Points -->
+                               <circle cx="50" cy="200" r="3" fill="#4a5568"/>
+                               <text x="40" y="218" font-size="14" font-family="serif">O</text>
+                               <circle cx="250" cy="200" r="3" fill="#4a5568"/>
+                               <text x="255" y="218" font-size="14" font-family="serif">A</text>
+                               <circle cx="150" cy="50" r="3" fill="#4a5568"/>
+                               <text x="145" y="40" font-size="14" font-family="serif">B</text>
+                               <circle cx="116.7" cy="200" r="3" fill="#4a5568"/>
+                               <text x="110" y="218" font-size="14" font-family="serif">C</text>
+                               <circle cx="200" cy="125" r="3" fill="#4a5568"/>
+                               <text x="205" y="125" font-size="14" font-family="serif">D</text>
+                               <circle cx="140" cy="150" r="4" fill="#ef4444"/>
+                               <text x="125" y="150" font-size="14" font-family="serif" fill="#ef4444">P</text>
+   
+                               <!-- Vectors -->
+                               <line x1="50" y1="200" x2="245" y2="200" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead2)"/>
+                               <text x="140" y="195" font-size="14" font-family="serif" fill="#3b82f6">\(\vec{OA}\)</text>
+                               <line x1="50" y1="200" x2="145" y2="55" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead2)"/>
+                               <text x="75" y="120" font-size="14" font-family="serif" fill="#3b82f6">\(\vec{OB}\)</text>
+                               <line x1="50" y1="200" x2="137" y2="153" stroke="#ef4444" stroke-width="2.5" marker-end="url(#arrowhead2)"/>
+                               <text x="90" y="180" font-size="14" font-family="serif" fill="#ef4444">\(\vec{OP}\)</text>
+                           </svg>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 例题三 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-2 mb-4">第三关：终极技巧——“换基底”</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                 <div class="text-base bg-sky-50 p-4 rounded-lg">
+                    <div class="flex items-center gap-6">
+                        <div class="flex-1">
+                            <p class="font-bold">【例题三】</p>
+                            <p>在正方形ABCD中，E是BC中点, F是CD上靠近C的三等分点(\(CF = \frac{1}{3}CD\))。P在对角线AC上，若\(\vec{AP} = x\vec{AE} + y\vec{AF}\)，求x和y的关系式。</p>
+                        </div>
+                        <div class="w-2/5 flex justify-center items-center p-2 bg-white rounded-md border border-sky-200">
+                           <svg width="200" height="200" viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                   <marker id="arrowhead3" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                                       <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+                                   </marker>
+                               </defs>
+                               <!-- Square ABCD -->
+                               <rect x="50" y="50" width="150" height="150" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="2"/>
+   
+                               <!-- Lines -->
+                               <line x1="50" y1="200" x2="200" y2="50" stroke="#a3a3a3" stroke-width="1.5" stroke-dasharray="4"/> <!-- AC -->
+   
+                               <!-- Points -->
+                               <text x="40" y="218" font-size="14" font-family="serif">A</text>
+                               <text x="205" y="218" font-size="14" font-family="serif">B</text>
+                               <text x="205" y="45" font-size="14" font-family="serif">C</text>
+                               <text x="40" y="45" font-size="14" font-family="serif">D</text>
+                               <circle cx="200" cy="125" r="3" fill="#4a5568"/>
+                               <text x="210" y="128" font-size="14" font-family="serif">E</text>
+                               <circle cx="150" cy="50" r="3" fill="#4a5568"/>
+                               <text x="145" y="40" font-size="14" font-family="serif">F</text>
+                               <circle cx="125" cy="125" r="4" fill="#ef4444"/>
+                               <text x="115" y="120" font-size="14" font-family="serif" fill="#ef4444">P</text>
+   
+                               <!-- Vectors -->
+                               <line x1="50" y1="200" x2="195" y2="128" stroke="#f97316" stroke-width="2" marker-end="url(#arrowhead3)"/>
+                                <text x="135" y="170" font-size="14" font-family="serif" fill="#f97316">\(\vec{AE}\)</text>
+                               <line x1="50" y1="200" x2="146" y2="54" stroke="#f97316" stroke-width="2" marker-end="url(#arrowhead3)"/>
+                               <text x="80" y="120" font-size="14" font-family="serif" fill="#f97316">\(\vec{AF}\)</text>
+                               <line x1="50" y1="200" x2="122" y2="128" stroke="#ef4444" stroke-width="2.5" marker-end="url(#arrowhead3)"/>
+                                <text x="70" y="170" font-size="14" font-family="serif" fill="#ef4444">\(\vec{AP}\)</text>
+                           </svg>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (1/4)</h2>
+                <div class="text-base md-text-lg bg-gray-50 p-4 rounded-lg">
+                    <p class="font-bold text-xl">1. 下列哪组向量可以作为平面内所有向量的一组基底？</p>
+                    <ul class="list-none pl-4 mt-4 space-y-3 text-lg">
+                        <li>(A) \(\vec{e}_1 = (1, 2)\), \(\vec{e}_2 = (2, 4)\)</li>
+                        <li>(B) \(\vec{e}_1 = (0, 0)\), \(\vec{e}_2 = (1, 3)\)</li>
+                        <li>(C) \(\vec{e}_1 = (1, 0)\), \(\vec{e}_2 = (0, -1)\)</li>
+                        <li>(D) \(\vec{e}_1\) 和 \(\vec{e}_2\) 方向相同</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (2/4)</h2>
+                <div class="text-base md-text-lg bg-gray-50 p-4 rounded-lg">
+                    <p class="font-bold text-xl">2. 根据平面向量基本定理，如果 \(\vec{e}_1\) 和 \(\vec{e}_2\) 是一组基底，且向量 \(\vec{a} = 3\vec{e}_1 + 4\vec{e}_2\)，那么这种表示方法有几种？</p>
+                     <ul class="list-none pl-4 mt-4 space-y-3 text-lg">
+                        <li>(A) 一种</li>
+                        <li>(B) 两种</li>
+                        <li>(C) 无数种</li>
+                        <li>(D) 不确定</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (3/4)</h2>
+                <div class="text-base md-text-lg bg-gray-50 p-4 rounded-lg">
+                    <p class="font-bold text-xl">3. 在 \(\triangle ABC\) 中，点 D 是 BC 边上的中点，若以 \(\vec{AB}\) 和 \(\vec{AC}\) 为基底，则向量 \(\vec{AD}\) 可以表示为？</p>
+                     <ul class="list-none pl-4 mt-4 space-y-3 text-lg">
+                        <li>(A) \(\vec{AC} - \vec{AB}\)</li>
+                        <li>(B) \(\vec{AB} - \vec{AC}\)</li>
+                        <li>(C) \(\frac{1}{2}(\vec{AB} + \vec{AC})\)</li>
+                        <li>(D) \(\frac{1}{2}(\vec{AC} - \vec{AB})\)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (4/4)</h2>
+                <div class="text-base md-text-lg bg-gray-50 p-4 rounded-lg">
+                    <p class="font-bold text-xl">4. 已知向量 \(\vec{a}\) 与 \(\vec{b}\) 不共线，若向量 \(\vec{c} = 2\vec{a} + k\vec{b}\) 与向量 \(\vec{d} = -\vec{a} + 3\vec{b}\) 共线，则实数 k 的值是？</p>
+                     <ul class="list-none pl-4 mt-4 space-y-3 text-lg">
+                        <li>(A) 3</li>
+                        <li>(B) -3</li>
+                        <li>(C) 6</li>
+                        <li>(D) -6</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题解析 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析</h2>
+                 <div class="space-y-4 text-base">
+                     <div class="bg-emerald-50 p-4 rounded-lg">
+                         <p><strong>1. 答案： (C)</strong></p>
+                         <p class="mt-2"><strong>解析：</strong>根据基底的定义，作为基底的两个向量必须是<strong>不共线</strong>的。
+                            <br>(A) \(\vec{e}_2 = 2\vec{e}_1\)，共线。
+                            <br>(B) 零向量与任何向量共线。
+                            <br>(C) \((1, 0)\) 和 \((0, -1)\) 显然不共线。
+                            <br>(D) 方向相同即为共线。
+                         </p>
+                     </div>
+                     <div class="bg-emerald-50 p-4 rounded-lg">
+                         <p><strong>2. 答案： (A)</strong></p>
+                         <p class="mt-2"><strong>解析：</strong>平面向量基本定理的关键内容之一就是表示的<strong>唯一性</strong>。定理中明确指出“有且只有一对实数”，因此表示方法只有一种。</p>
+                     </div>
+                     <div class="bg-emerald-50 p-4 rounded-lg">
+                         <p><strong>3. 答案： (C)</strong></p>
+                         <p class="mt-2"><strong>解析：</strong>根据向量加法法则, \(\vec{AD} = \vec{AB} + \vec{BD}\)。因为 D 是 BC 的中点，所以 \(\vec{BD} = \frac{1}{2}\vec{BC}\)。而 \(\vec{BC} = \vec{AC} - \vec{AB}\)。代入整理得: \(\vec{AD} = \vec{AB} + \frac{1}{2}(\vec{AC} - \vec{AB}) = \frac{1}{2}\vec{AB} + \frac{1}{2}\vec{AC}\)。</p>
+                     </div>
+                     <div class="bg-emerald-50 p-4 rounded-lg">
+                         <p><strong>4. 答案： (D)</strong></p>
+                         <p class="mt-2"><strong>解析：</strong>因为 \(\vec{c}\) 和 \(\vec{d}\) 共线，所以存在实数 \(\mu\)，使得 \(\vec{c} = \mu\vec{d}\)。代入得 \(2\vec{a} + k\vec{b} = \mu(-\vec{a} + 3\vec{b})\)。根据唯一性，对应系数必须相等，得 \( \begin{cases} 2 = -\mu \\ k = 3\mu \end{cases} \)，解得 \(\mu = -2, k = -6\)。</p>
+                     </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 总结与展望 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-purple-500 pb-2 mb-4">总结与展望</h2>
+            <div class="w-full max-w-4xl mx-auto text-lg space-y-4">
+                <p><strong>解题核心：</strong>万物皆可<strong>“拆”</strong>！</p>
+                <div class="bg-purple-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-purple-800">三大策略</h3>
+                    <ul class="list-disc list-inside mt-2">
+                        <li><strong>常规题：</strong>找对路径，步步替换。</li>
+                        <li><strong>交点题：</strong>双重身份，列方程组。</li>
+                        <li><strong>难题：</strong>基底不好，果断换掉！(正交基底有奇效)</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg">
+                     <h3 class="font-bold text-gray-800">理论基石</h3>
+                     <p class="mt-2">平面向量基本定理是<strong>向量坐标化</strong>的理论基础。我们熟悉的平面直角坐标系，本质就是以互相垂直的单位向量 \(\vec{i}=(1,0)\) 和 \(\vec{j}=(0,1)\) 为基底。点(a, b)对应的向量就是 \(\vec{v} = a\vec{i} + b\vec{j}\)。</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
+

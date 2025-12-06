@@ -1,0 +1,550 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>统计初步：抽样与百分位数</title>
+ <script src="https://cdn.tailwindcss.com"></script>
+ 
+ <!-- MathJax Configuration -->
+ <script>
+ window.MathJax = {
+ tex: {
+ inlineMath: [['$', '$'], ['\\(', '\\)']],
+ displayMath: [['$$', '$$'], ['\\[', '\\]']],
+ processEscapes: true
+ },
+ svg: { fontCache: 'global' }
+ };
+ </script>
+ <script id="MathJax-script" async src="https://cdn.bootcdn.net/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+ <style>
+ html, body {
+ margin: 0;
+ padding: 0;
+ font-family: 'Noto Serif SC', serif;
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
+ background-color: #f1f5f9;
+ }
+ 
+ #presentation-container {
+ max-width: 56rem; /* max-w-4xl */
+ margin: 2rem auto;
+ background-color: white;
+ border-radius: 0.5rem;
+ box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+ }
+
+ .section {
+ width: 100%;
+ box-sizing: border-box;
+ padding: 3rem 4rem;
+ position: relative; 
+ min-height: 600px; /* Increased height for better PPT feel */
+ display: flex;
+ flex-direction: column;
+ justify-content: center; 
+ align-items: center; 
+ }
+ 
+ .section:not(:last-child) {
+ border-bottom: 1px solid #e5e7eb;
+ }
+ 
+ /* Custom formula box style replacing dashed borders */
+ .formula-box {
+ background-color: #eff6ff; /* blue-50 */
+ border-left: 6px solid #3b82f6; /* blue-500 */
+ padding: 1.5rem;
+ margin-top: 1.5rem;
+ margin-bottom: 1.5rem;
+ border-radius: 0.5rem;
+ font-size: 1.25rem;
+ line-height: 1.8;
+ width: 100%;
+ text-align: left;
+ }
+
+ .question-box {
+ background-color: #f8fafc; /* slate-50 */
+ padding: 2rem;
+ border-radius: 0.75rem;
+ width: 100%;
+ font-size: 1.3rem;
+ color: #1e293b;
+ }
+
+ .options-list {
+ margin-top: 1.5rem;
+ display: flex;
+ flex-direction: column;
+ gap: 1rem;
+ width: 100%;
+ }
+
+ .option-item {
+ background-color: white;
+ padding: 1rem 1.5rem;
+ border-radius: 0.5rem;
+ border: 1px solid #e2e8f0;
+ font-size: 1.15rem;
+ }
+
+ @media print {
+ @page {
+ size: landscape;
+ margin: 0;
+ }
+
+ body, html {
+ background-color: white;
+ -webkit-print-color-adjust: exact;
+ print-color-adjust: exact;
+ }
+
+ #presentation-container {
+ margin: 0;
+ padding: 0;
+ border: none;
+ box-shadow: none;
+ width: 100%;
+ max-width: 100%;
+ }
+ 
+ .section {
+ height: 100vh;
+ width: 100vw;
+ page-break-after: always;
+ border-bottom: none;
+ }
+ 
+ .section:last-child {
+ page-break-after: auto;
+ }
+ }
+ </style>
+</head>
+<body>
+
+ <div id="presentation-container">
+ 
+ <!-- Slide 1: Cover -->
+ <div class="section bg-slate-900 text-white">
+ <h1 class="text-5xl font-bold mb-4">概率与统计：统计初步</h1>
+ <h2 class="text-3xl text-blue-300 mb-8">第一节：抽样与百分位数</h2>
+ <div class="text-xl text-gray-300">
+ 
+ 
+ </div>
+ </div>
+
+ <!-- Slide 2: The Big Picture (SVG) -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-8 text-slate-800">统计学的三大任务</h2>
+ 
+ <div class="my-6 transform scale-110">
+ <!-- SVG copied from source -->
+ <svg width="600" height="220" viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+ <marker id="arrow" markerWidth="10" markerHeight="10" refX="10" refY="3" orient="auto" markerUnits="strokeWidth">
+ <path d="M0,0 L0,6 L10,3 z" fill="#333" />
+ </marker>
+ <marker id="arrow-dashed" markerWidth="10" markerHeight="10" refX="10" refY="3" orient="auto" markerUnits="strokeWidth">
+ <path d="M0,0 L0,6 L10,3 z" fill="#c51162" />
+ </marker>
+ </defs>
+ <!-- 1. 总体 -->
+ <rect x="50" y="50" width="120" height="100" rx="10" fill="#e8eaf6" stroke="#3f51b5" stroke-width="2"/>
+ <text x="110" y="105" text-anchor="middle" font-family="sans-serif" font-weight="bold" fill="#3f51b5" font-size="16">总体</text>
+ <!-- 2. 抽样 -->
+ <rect x="240" y="50" width="120" height="100" rx="10" fill="#e8f5e9" stroke="#4caf50" stroke-width="2"/>
+ <text x="300" y="90" text-anchor="middle" font-family="sans-serif" font-weight="bold" fill="#2e7d32" font-size="16">抽样</text>
+ <text x="300" y="115" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#2e7d32">(怎么抽?)</text>
+ <!-- 3. 样本特征 -->
+ <rect x="430" y="50" width="120" height="100" rx="10" fill="#fff3e0" stroke="#ff9800" stroke-width="2"/>
+ <text x="490" y="90" text-anchor="middle" font-family="sans-serif" font-weight="bold" fill="#ef6c00" font-size="16">样本特征</text>
+ <text x="490" y="115" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#ef6c00">(平均数, 百分位数)</text>
+ <!-- 连接线 -->
+ <line x1="170" y1="100" x2="240" y2="100" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+ <line x1="360" y1="100" x2="430" y2="100" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+ <!-- 估计回路 (虚线) -->
+ <path d="M 490 150 Q 300 210 110 152" fill="none" stroke="#c51162" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrow-dashed)"/>
+ <text x="300" y="195" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#c51162" font-weight="bold">用样本估计总体</text>
+ </svg>
+ </div>
+
+ <ul class="list-disc text-xl text-gray-700 mt-8 space-y-3 pl-8">
+ <li><strong>如何抽样？</strong> (随机数表、分层抽样)</li>
+ <li><strong>样本特征？</strong> (平均数、方差、<span class="text-blue-600 font-bold">百分位数</span>)</li>
+ <li><strong>如何估计？</strong> (用样本推总体)</li>
+ </ul>
+ </div>
+
+ <!-- Slide 3: Simple Random Sampling -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-6 text-slate-800">任务一：简单随机抽样</h2>
+ <h3 class="text-xl text-slate-500 mb-8">随机数表法 (Random Number Table)</h3>
+
+ <div class="bg-red-50 p-8 rounded-lg w-full max-w-3xl">
+ <h4 class="text-2xl font-bold text-red-800 mb-4">⚠️ 两大铁律</h4>
+ <ul class="text-xl space-y-4 text-red-900">
+ <li class="flex items-center">
+ <span class="bg-red-200 text-red-800 px-3 py-1 rounded-full text-sm font-bold mr-3">1</span>
+ <strong>超标不要：</strong> 数字超过总体编号范围，跳过。
+ </li>
+ <li class="flex items-center">
+ <span class="bg-red-200 text-red-800 px-3 py-1 rounded-full text-sm font-bold mr-3">2</span>
+ <strong>重复不要：</strong> 之前已经选过的号码，跳过。
+ </li>
+ </ul>
+ </div>
+ </div>
+
+ <!-- Slide 4: Example 1 Question -->
+ <div class="section">
+ <h2 class="text-2xl font-bold mb-6 text-blue-600">💡 案例：90个灯泡抽5个</h2>
+ 
+ <div class="question-box">
+ <p class="mb-4"><strong>情境：</strong> 有 $90$ 个灯泡，编号 $01$ 到 $90$。我们要用随机数表选出 $5$ 个。</p>
+ <p class="mb-4"><strong>规则：</strong> 指定从随机数表某位置开始，读出的连续两位数序列为：</p>
+ <p class="text-3xl text-center font-mono my-6 tracking-widest bg-white p-4 rounded shadow-sm">38, 65, 96, 45, 26, 20</p>
+ <p><strong>问题：</strong> 最终选出的编号是哪些？</p>
+ </div>
+ </div>
+
+ <!-- Slide 5: Example 1 Answer -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-6 text-green-600">案例解析</h2>
+ 
+ <div class="w-full max-w-3xl text-xl space-y-4">
+ <div class="flex items-center justify-between p-3 bg-green-50 rounded">
+ <span>1. 读到 <strong>38</strong></span>
+ <span class="text-green-700 font-bold">✅ 保留 (在 01-90 内)</span>
+ </div>
+ <div class="flex items-center justify-between p-3 bg-green-50 rounded">
+ <span>2. 读到 <strong>65</strong></span>
+ <span class="text-green-700 font-bold">✅ 保留 (在 01-90 内)</span>
+ </div>
+ <div class="flex items-center justify-between p-3 bg-red-50 rounded border-l-4 border-red-400">
+ <span>3. 读到 <strong>96</strong></span>
+ <span class="text-red-600 font-bold">❌ 抛弃 (超过 90)</span>
+ </div>
+ <div class="flex items-center justify-between p-3 bg-green-50 rounded">
+ <span>4. 读到 <strong>45</strong></span>
+ <span class="text-green-700 font-bold">✅ 保留</span>
+ </div>
+ <div class="flex items-center justify-between p-3 bg-green-50 rounded">
+ <span>5. 读到 <strong>26</strong></span>
+ <span class="text-green-700 font-bold">✅ 保留</span>
+ </div>
+ <div class="flex items-center justify-between p-3 bg-green-50 rounded">
+ <span>6. 读到 <strong>20</strong></span>
+ <span class="text-green-700 font-bold">✅ 保留</span>
+ </div>
+ </div>
+
+ <div class="mt-8 text-2xl font-bold text-slate-800">
+ 最终结果：$38, 65, 45, 26, 20$
+ </div>
+ </div>
+
+ <!-- Slide 6: Stratified Sampling -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-6 text-slate-800">分层随机抽样</h2>
+ <h3 class="text-xl text-slate-500 mb-8">Stratified Sampling</h3>
+
+ <div class="grid grid-cols-2 gap-8 w-full max-w-4xl">
+ <div class="bg-yellow-50 p-6 rounded-lg">
+ <h4 class="font-bold text-yellow-800 mb-2">为什么用？</h4>
+ <p class="text-lg">当个体之间差异很大时（如男生vs女生），简单随机抽样可能导致样本偏差。</p>
+ </div>
+ <div class="bg-blue-50 p-6 rounded-lg">
+ <h4 class="font-bold text-blue-800 mb-2">怎么用？</h4>
+ <p class="text-lg"><strong>按比例分配</strong>。先算各层比例，再在每层里去抽。</p>
+ </div>
+ </div>
+ </div>
+
+ <!-- Slide 7: Stratified Example Question -->
+ <div class="section">
+ <h2 class="text-2xl font-bold mb-6 text-blue-600">💡 案例：按比例抽样</h2>
+ 
+ <div class="question-box">
+ <p class="mb-4"><strong>已知：</strong> 高一年级有 $200$ 名男生，$300$ 名女生。</p>
+ <p class="mb-4"><strong>任务：</strong> 要抽取 $25$ 人调查对文史类课程的看法。</p>
+ <p class="mt-6 font-bold">问题：男生和女生各应抽取多少人？</p>
+ </div>
+ </div>
+
+ <!-- Slide 8: Stratified Example Answer -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-6 text-green-600">计算过程</h2>
+ 
+ <div class="formula-box">
+ <p class="mb-2"><strong>1. 计算总体比例：</strong></p>
+ <p>$$ \text{男}:\text{女} = 200:300 = 2:3 $$</p>
+ <p class="mb-2 mt-4"><strong>2. 按比例分配样本 ($n=25$)：</strong></p>
+ <ul class="list-none pl-0 mt-2 space-y-3">
+ <li>男生应抽：$$ 25 \times \frac{2}{2+3} = 25 \times \frac{2}{5} = 10 \text{ (人)} $$</li>
+ <li>女生应抽：$$ 25 \times \frac{3}{2+3} = 25 \times \frac{3}{5} = 15 \text{ (人)} $$</li>
+ </ul>
+ </div>
+ </div>
+
+ <!-- Slide 9: Percentiles Algorithm -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-4 text-slate-800">任务二：百分位数 (Percentile)</h2>
+ <p class="text-lg text-gray-500 mb-6">样本的数字特征</p>
+
+ <div class="bg-indigo-50 p-8 rounded-lg w-full max-w-4xl shadow-sm border border-indigo-100">
+ <h3 class="text-2xl font-bold text-indigo-800 mb-4 text-center">📐 计算三步走</h3>
+ 
+ <div class="space-y-6 text-xl">
+ <div class="flex">
+ <div class="font-bold text-indigo-600 w-24">第一步</div>
+ <div><strong>排队：</strong> 把数据从小到大排列 $x_1, x_2, \dots, x_n$。</div>
+ </div>
+ 
+ <div class="flex">
+ <div class="font-bold text-indigo-600 w-24">第二步</div>
+ <div><strong>定位：</strong> 计算位置指数 $i = n \times p\%$。</div>
+ </div>
+
+ <div class="flex">
+ <div class="font-bold text-indigo-600 w-24">第三步</div>
+ <div>
+ <strong>定值：</strong>
+ <ul class="ml-4 mt-2 space-y-2 text-base text-gray-700">
+ <li>👉 $i$ <strong>不是整数</strong> $\rightarrow$ 向上取整得 $i_0$，取第 $i_0$ 个数 ($x_{i_0}$)。</li>
+ <li>👉 $i$ <strong>是整数</strong> $\rightarrow$ 取第 $i$ 个和第 $i+1$ 个数的<strong>平均值</strong> $\frac{x_i + x_{i+1}}{2}$。</li>
+ </ul>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Slide 10: Percentile Example Question -->
+ <div class="section">
+ <h2 class="text-2xl font-bold mb-6 text-blue-600">💡 案例：8个数据的计算</h2>
+ 
+ <div class="question-box">
+ <p>假设有一组数据（共 $n=8$ 个），已经从小到大排好了。</p>
+ <div class="flex justify-center my-6 space-x-2">
+ <span class="p-3 bg-white border rounded">x₁</span>
+ <span class="p-3 bg-blue-100 border border-blue-300 rounded font-bold">3</span>
+ <span class="p-3 bg-blue-100 border border-blue-300 rounded font-bold">3</span>
+ <span class="p-3 bg-blue-100 border border-blue-300 rounded font-bold">5</span>
+ <span class="p-3 bg-white border rounded">...</span>
+ </div>
+ <p>已知：第 $2$ 个是 $3$，第 $3$ 个是 $3$，第 $4$ 个是 $5$。</p>
+ <div class="mt-6 p-4 bg-white rounded border border-gray-200">
+ <p class="mb-2"><strong>Q1:</strong> 求 25% 分位数。</p>
+ <p><strong>Q2:</strong> 求 40% 分位数。</p>
+ </div>
+ </div>
+ </div>
+
+ <!-- Slide 11: Percentile Example Answer -->
+ <div class="section">
+ <h2 class="text-3xl font-bold mb-2 text-green-600">案例解析</h2>
+ 
+ <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl">
+ <!-- Case 1 -->
+ <div class="bg-green-50 p-6 rounded-lg">
+ <h3 class="text-xl font-bold text-green-800 mb-3 border-b border-green-200 pb-2">1. 求 25% 分位数</h3>
+ <p class="mb-2 text-lg">计算位置：</p>
+ <p class="mb-4 text-2xl font-mono">$$ i = 8 \times 25\% = 2 $$</p>
+ <p class="mb-2">👉 结果是<strong>整数</strong>！</p>
+ <p class="mb-2">👉 取第 $2$ 和第 $3$ 个数的平均值：</p>
+ <p class="text-xl text-center bg-white p-2 rounded mt-2">$$ \frac{3+3}{2} = 3 $$</p>
+ </div>
+
+ <!-- Case 2 -->
+ <div class="bg-orange-50 p-6 rounded-lg">
+ <h3 class="text-xl font-bold text-orange-800 mb-3 border-b border-orange-200 pb-2">2. 求 40% 分位数</h3>
+ <p class="mb-2 text-lg">计算位置：</p>
+ <p class="mb-4 text-2xl font-mono">$$ i = 8 \times 40\% = 3.2 $$</p>
+ <p class="mb-2">👉 结果<strong>不是整数</strong>！</p>
+ <p class="mb-2">👉 向上取整，找第 $4$ 个数：</p>
+ <p class="text-xl text-center bg-white p-2 rounded mt-2">$$ x_4 = 5 $$</p>
+ </div>
+ </div>
+ </div>
+
+ <!-- Quiz Start -->
+ <div class="section bg-slate-800 text-white">
+ <h1 class="text-5xl font-bold">🧐 随堂小测</h1>
+ <p class="text-2xl mt-4 text-slate-300">共 5 题，请准备好纸笔</p>
+ </div>
+
+ <!-- Q1 -->
+ <div class="section">
+ <div class="question-box">
+ <div class="text-slate-500 font-bold mb-2">Question 1</div>
+ <p>在使用随机数表法从 $1$ 到 $90$ 的编号中抽取样本时，如果读出的数字是 $96$，应该怎么处理？</p>
+ 
+ <div class="options-list">
+ <div class="option-item">A. 取 $96$ 作为样本</div>
+ <div class="option-item">B. 取 $96$ 除以 $90$ 的余数（$06$）作为样本</div>
+ <div class="option-item">C. 舍弃该数字，继续读取下一个</div>
+ <div class="option-item">D. 重新开始选取起始位置</div>
+ </div>
+ </div>
+ </div>
+
+ <!-- A1 -->
+ <div class="section">
+ <h2 class="text-4xl font-bold text-green-600 mb-8">答案：C</h2>
+ <div class="text-2xl text-gray-700 max-w-3xl leading-relaxed">
+ <p><strong>解析：</strong></p>
+ <p>简单随机抽样使用随机数表时的原则之一是<strong>“超标不要”</strong>。$96$ 超过了最大编号 $90$，所以直接跳过，读取下一个数字。</p>
+ </div>
+ </div>
+
+ <!-- Q2 -->
+ <div class="section">
+ <div class="question-box">
+ <div class="text-slate-500 font-bold mb-2">Question 2</div>
+ <p>某校高一年级有男生 $200$ 人，女生 $300$ 人。若要用分层随机抽样抽取 $25$ 人进行调查，应该抽取女生多少人？</p>
+ 
+ <div class="options-list">
+ <div class="option-item">A. $10$ 人</div>
+ <div class="option-item">B. $12$ 人</div>
+ <div class="option-item">C. $13$ 人</div>
+ <div class="option-item">D. $15$ 人</div>
+ </div>
+ </div>
+ </div>
+
+ <!-- A2 -->
+ <div class="section">
+ <h2 class="text-4xl font-bold text-green-600 mb-8">答案：D</h2>
+ <div class="text-2xl text-gray-700 max-w-3xl leading-relaxed">
+ <p><strong>解析：</strong></p>
+ <p>女生比例为 $\frac{300}{200+300} = \frac{3}{5}$。</p>
+ <p>样本中女生人数应为 $25 \times \frac{3}{5} = 15$ 人。</p>
+ </div>
+ </div>
+
+ <!-- Q3 -->
+ <div class="section">
+ <div class="question-box">
+ <div class="text-slate-500 font-bold mb-2">Question 3</div>
+ <p>有一组数据从小到大排列为：$2, 4, 5, 5, 6, 8, 9, 10$。请问这组数据的 75% 分位数是多少？</p>
+ <p class="text-sm text-gray-500 mt-2">(提示：$n=8, p=75$)</p>
+ 
+ <div class="options-list">
+ <div class="option-item">A. $8$</div>
+ <div class="option-item">B. $8.5$</div>
+ <div class="option-item">C. $9$</div>
+ <div class="option-item">D. $6$</div>
+ </div>
+ </div>
+ </div>
+
+ <!-- A3 -->
+ <div class="section">
+ <h2 class="text-4xl font-bold text-green-600 mb-8">答案：B</h2>
+ <div class="formula-box max-w-3xl">
+ <p><strong>解析：</strong></p>
+ <ol class="list-decimal pl-6 space-y-2">
+ <li>位置计算：$i = 8 \times 75\% = 6$。</li>
+ <li>因为结果是<strong>整数</strong>，取第 $6$ 个数和第 $7$ 个数的平均值。</li>
+ <li>数据为：$2, 4, 5, 5, 6, \mathbf{8}, \mathbf{9}, 10$。</li>
+ <li>计算：$\frac{8+9}{2} = 8.5$。</li>
+ </ol>
+ </div>
+ </div>
+
+ <!-- Q4 -->
+ <div class="section">
+ <div class="question-box">
+ <div class="text-slate-500 font-bold mb-2">Question 4</div>
+ <p>计算百分位数时，如果 $n \times p\%$ 的结果是 $5.2$，我们应该取第几个数作为百分位数？</p>
+ 
+ <div class="options-list">
+ <div class="option-item">A. 第 $5$ 个数</div>
+ <div class="option-item">B. 第 $6$ 个数</div>
+ <div class="option-item">C. 第 $5$ 个数和第 $6$ 个数的平均值</div>
+ <div class="option-item">D. 第 $5.2$ 个数</div>
+ </div>
+ </div>
+ </div>
+
+ <!-- A4 -->
+ <div class="section">
+ <h2 class="text-4xl font-bold text-green-600 mb-8">答案：B</h2>
+ <div class="text-2xl text-gray-700 max-w-3xl leading-relaxed">
+ <p><strong>解析：</strong></p>
+ <p>当 $n \times p\%$ 不是整数时，按照规则应<strong>向上取整</strong>。</p>
+ <p>$5.2$ 向上取整为 $6$，所以取第 $6$ 个数。</p>
+ </div>
+ </div>
+
+ <!-- Q5 -->
+ <div class="section">
+ <div class="question-box">
+ <div class="text-slate-500 font-bold mb-2">Question 5</div>
+ <p>以下关于分层抽样的说法，哪一项是<strong>错误</strong>的？</p>
+ 
+ <div class="options-list">
+ <div class="option-item">A. 分层抽样适合个体差异较明显的总体</div>
+ <div class="option-item">B. 分层后，在每一层内通常采用简单随机抽样</div>
+ <div class="option-item">C. 分层抽样无法计算总体的方差</div>
+ <div class="option-item">D. 分层抽样能提供各层内部的详细信息</div>
+ </div>
+ </div>
+ </div>
+
+ <!-- A5 -->
+ <div class="section">
+ <h2 class="text-4xl font-bold text-green-600 mb-8">答案：C</h2>
+ <div class="text-2xl text-gray-700 max-w-3xl leading-relaxed">
+ <p><strong>解析：</strong></p>
+ <p><strong>C 是错的。</strong> 分层抽样不仅可以计算总体的平均数，也可以通过特定公式计算总体的方差（这是后续课程的“硬菜”内容）。</p>
+ <p>A、B、D 均是分层抽样的正确特点。</p>
+ </div>
+ </div>
+
+ <!-- Summary -->
+ <div class="section bg-blue-50">
+ <h2 class="text-3xl font-bold mb-8 text-slate-800">📝 课堂小结</h2>
+ 
+ <div class="grid grid-cols-2 gap-8 w-full max-w-5xl">
+ <div class="bg-white p-6 rounded-lg shadow-sm">
+ <h3 class="text-xl font-bold text-blue-600 mb-4">1. 怎么抽样？</h3>
+ <ul class="list-disc pl-6 space-y-2 text-lg">
+ <li><strong>简单随机抽样：</strong> 随机数表法（超标不要，重复不要）。</li>
+ <li><strong>分层抽样：</strong> 差异大时使用，按比例分配。</li>
+ </ul>
+ </div>
+ <div class="bg-white p-6 rounded-lg shadow-sm">
+ <h3 class="text-xl font-bold text-blue-600 mb-4">2. 怎么算百分位数？</h3>
+ <ul class="list-disc pl-6 space-y-2 text-lg">
+ <li><strong>Step 1:</strong> 排序。</li>
+ <li><strong>Step 2:</strong> 算 $n \times p\%$。</li>
+ <li><strong>Step 3:</strong> 
+ <ul class="list-none pl-4 mt-2 text-gray-600">
+ <li>是整数 $\rightarrow$ 取平均。</li>
+ <li>非整数 $\rightarrow$ 向上取整。</li>
+ </ul>
+ </li>
+ </ul>
+ </div>
+ </div>
+ 
+ <div class="mt-12 text-center text-gray-500">
+ 下节课预告：求和符号 $\Sigma$ 与方差的深入探索
+ </div>
+ </div>
+
+ </div>
+
+</body>
+</html>

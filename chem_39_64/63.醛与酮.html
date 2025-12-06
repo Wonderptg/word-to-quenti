@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>有机化学基础：醛与酮</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        
+        /* 表格样式 */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+        }
+        .styled-table th, .styled-table td {
+            border: 1px solid #cbd5e1;
+            padding: 0.75rem 1rem;
+            text-align: center;
+        }
+        .styled-table thead {
+            background-color: #f8fafc;
+        }
+        .styled-table th {
+            font-weight: 700;
+            color: #334155;
+        }
+        .styled-table tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+        .styled-table tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* 简单化学示意图区域（方便打印） */
+        .chem-figure {
+            margin-top: 1.75rem;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页（第1页：删掉“选择性必修三”） -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">有机化学基础：醛与酮</h1>
+            </div>
+        </div>
+        
+        <!-- 醛 (Aldehydes) - 定义与官能团（原第3页） -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                     <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-blue-500 rounded"></span>
+                     醛 (Aldehydes) - 定义与官能团
+                 </h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                        <strong class="font-bold text-blue-800 text-xl">定义：</strong>
+                        <p class="mt-2 text-lg text-slate-700">
+                            由<strong class="text-blue-600">烃基</strong>或<strong class="text-blue-600">氢原子</strong>与
+                            <strong class="text-red-600">醛基</strong>相连而构成的化合物。
+                        </p>
+                        <p class="mono text-center text-xl mt-2">R-CHO (R为烃基或H)</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="font-bold text-gray-700 text-xl">官能团：醛基</strong>
+                        <p class="mt-2 text-lg text-slate-700">
+                            结构式：<code class="text-xl">-C(=O)-H</code> (一个碳氧双键接一个氢)
+                        </p>
+                        <p class="mt-2 text-lg text-slate-700">结构简式：<code>-CHO</code></p>
+                    </div>
+                    <div class="bg-red-100 text-red-800 p-4 rounded-lg font-semibold">
+                        <strong class="font-bold text-red-900 text-xl">× 注意：</strong>
+                        <p class="mt-2 text-lg">
+                            醛基<strong class="text-red-600">不能</strong>简写为 <code>-COH</code>，这会与醇羟基 (C-O-H) 混淆。
+                        </p>
+                    </div>
+                 </div>
+
+                 <!-- 图保留 -->
+                 <div class="chem-figure grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+                    <div class="border border-sky-200 rounded-lg p-4 bg-sky-50 flex flex-col items-center">
+                        <span class="text-sm text-sky-700 font-semibold mb-2">正确写法：醛基</span>
+                        <svg viewBox="0 0 180 70" class="w-full max-w-xs">
+                            <rect x="5" y="5" width="170" height="60" rx="10" fill="#e0f2fe" stroke="#38bdf8"/>
+                            <text x="25" y="40" font-size="18" fill="#0f172a">R-CHO</text>
+                            <text x="120" y="40" font-size="14" fill="#22c55e">✔</text>
+                        </svg>
+                        <p class="mt-2 text-slate-700 text-sm">链端 &amp; 有 —CHO</p>
+                    </div>
+                    <div class="border border-rose-200 rounded-lg p-4 bg-rose-50 flex flex-col items-center">
+                        <span class="text-sm text-rose-700 font-semibold mb-2">错误写法：与醇羟基混淆</span>
+                        <svg viewBox="0 0 180 70" class="w-full max-w-xs">
+                            <rect x="5" y="5" width="170" height="60" rx="10" fill="#fee2e2" stroke="#fb7185"/>
+                            <text x="20" y="30" font-size="16" fill="#0f172a">R-COH</text>
+                            <text x="135" y="30" font-size="16" fill="#ef4444">✘</text>
+                            <text x="20" y="52" font-size="11" fill="#991b1b">容易看成 R-CH₂-OH</text>
+                        </svg>
+                        <p class="mt-2 text-slate-700 text-sm">写错会和醇的 —CH₂OH 混淆</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 饱和一元醛 - 通式（原第4页） -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                     <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-blue-500 rounded"></span>
+                     饱和一元醛 - 通式
+                 </h2>
+                <p class="mt-8 text-xl text-slate-700">“饱和”指烃基部分为烷基，“一元”指只含一个醛基。</p>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <p class="mt-2 text-lg text-slate-700">
+                        烷烃 (CₙH₂ₙ₊₂) 中 <code>C=O</code> 双键含 1 个 π 键，不饱和度为1，故少 2 个 H。
+                    </p>
+                    <p class="mt-4 text-center mono text-2xl font-bold text-blue-700">
+                        通式：CₙH₂ₙO (n ≥ 1)
+                    </p>
+                    <p class="mt-2 text-sm text-center text-slate-500">(n=1 为甲醛 HCHO)</p>
+                </div>
+
+                <!-- 图保留 -->
+                <div class="chem-figure flex flex-col gap-4 mt-8">
+                    <div class="flex flex-wrap justify-center gap-6">
+                        <svg viewBox="0 0 260 80" class="w-full max-w-md">
+                            <rect x="5" y="5" width="250" height="70" rx="10" fill="#eff6ff" stroke="#bfdbfe"/>
+                            <text x="30" y="30" font-size="14" fill="#0f172a">通式：</text>
+                            <text x="90" y="32" font-size="20" fill="#1d4ed8">CₙH₂ₙO</text>
+                            <text x="200" y="30" font-size="12" fill="#6b7280">(n ≥ 1)</text>
+                            <text x="30" y="55" font-size="12" fill="#4b5563">对应结构：R-CHO</text>
+                        </svg>
+                    </div>
+                    <div class="flex flex-wrap justify-center gap-4 text-sm text-slate-700">
+                        <div class="px-3 py-2 border rounded-lg bg-white">
+                            <span class="font-semibold">n=1：</span>HCHO（甲醛）
+                        </div>
+                        <div class="px-3 py-2 border rounded-lg bg-white">
+                            <span class="font-semibold">n=2：</span>CH₃CHO（乙醛）
+                        </div>
+                        <div class="px-3 py-2 border rounded-lg bg-white">
+                            <span class="font-semibold">n=3：</span>CH₃CH₂CHO（丙醛）
+                        </div>
+                    </div>
+                 </div>
+
+                 <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">同分异构体：</h3>
+                    <p>
+                        <code>CₙH₂ₙO</code> (n ≥ 3) 也是<strong class="text-red-900">饱和一元酮</strong>的通式。
+                        醛和酮互为<strong class="text-red-900">官能团异构</strong>。
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 重点物质：乙醛 (Acetaldehyde)（原第5页） -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                     <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>
+                     重点物质：乙醛 (CH₃CHO)
+                 </h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full">分子式</strong>
+                        <p class="text-lg mono mt-2">C₂H₄O</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full">结构简式</strong>
+                        <p class="text-lg mono mt-2">CH₃CHO</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full">核磁共振氢谱 (¹H NMR)</strong>
+                        <p class="mt-2 text-lg">
+                            有 <strong class="text-red-600">2 组</strong>不同的 H (<code>CH₃</code> 和 <code>CHO</code>)。<br/>
+                            峰面积之比 = <strong class="text-red-600">3 : 1</strong>。
+                        </p>
+                    </div>
+                 </div>
+
+                 <!-- 图保留 -->
+                 <div class="chem-figure flex justify-center mt-8">
+                    <svg viewBox="0 0 260 90" class="w-full max-w-md">
+                        <rect x="5" y="5" width="250" height="80" rx="10" fill="#f9fafb" stroke="#e5e7eb"/>
+                        <!-- CH3 -->
+                        <circle cx="60" cy="45" r="16" fill="#eff6ff" stroke="#3b82f6"/>
+                        <text x="60" y="49" text-anchor="middle" font-size="13" fill="#1e40af">CH₃</text>
+                        <!-- 连接线 -->
+                        <line x1="76" y1="45" x2="115" y2="45" stroke="#64748b" stroke-width="2"/>
+                        <!-- CHO -->
+                        <circle cx="135" cy="45" r="16" fill="#fee2e2" stroke="#ef4444"/>
+                        <text x="135" y="49" text-anchor="middle" font-size="13" fill="#991b1b">CHO</text>
+                        <text x="210" y="30" text-anchor="middle" font-size="12" fill="#6b7280">乙醛结构示意</text>
+                        <text x="210" y="52" text-anchor="middle" font-size="11" fill="#4b5563">两种化学环境的 H</text>
+                    </svg>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 乙醛的物理性质（原第6页；图已删） -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>
+                    乙醛的物理性质
+                 </h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full">色/态/味</strong>
+                        <p class="mt-2 text-lg">无色、<strong class="text-red-600">刺激性气味</strong>的液体</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full">密度</strong>
+                        <p class="mt-2 text-lg">比水<strong class="text-red-600">小</strong></p>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full">溶解性</strong>
+                        <p class="mt-2 text-lg"><strong class="text-blue-600">能与水、乙醇互溶</strong></p>
+                    </div>
+                 </div>
+                 <div class="mt-8 bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-blue-800 text-xl">溶解性分析：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">
+                        乙醛分子<strong class="text-red-600">之间</strong>没有 <code>O-H</code> 键，不能形成氢键。
+                    </p>
+                    <p class="mt-2 text-slate-600 text-lg">
+                        但乙醛 <code>C=O</code> 上的氧原子可以与<strong class="text-blue-700">水分子</strong>中的 H 形成氢键，因此易溶于水。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 乙醛的化学性质 (一)：加成反应 (加氢)（原第7页；图已删） -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>
+                    乙醛化学性质 (一)：加成 (加氢)
+                 </h2>
+                <p class="mt-8 text-xl text-slate-700">醛基 (<code>C=O</code>) 中的 π 键可以发生加成反应。</p>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">1. 催化加氢 (还原反应)</h3>
+                    <p class="mono mt-4 text-center text-xl">CH₃CHO + H₂ --(Ni/△)→ CH₃CH₂OH</p>
+                    <p class="mt-4 text-lg text-slate-700"><strong>历程：</strong>π 键断裂，H 分别加在 C 和 O 上，生成乙醇。</p>
+                    <p class="mt-2 text-lg text-slate-700">
+                        <strong>规律：</strong>醛 + H₂ → <strong class="text-blue-600">伯醇</strong> (—CH₂OH)。
+                    </p>
+                </div>
+                <div class="mt-8 bg-green-100 text-green-800 p-6 rounded-lg text-lg text-center font-semibold">
+                    <p>此反应是 <strong class="text-red-600">还原反应</strong> (加氢)。</p>
+                    <p>它与“乙醇催化氧化生成乙醛”互为<strong class="text-green-900">逆向反应</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 乙醛的化学性质 (二)：加成反应 (HCN)（原第8页） -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>
+                    乙醛化学性质 (二)：加成 (HCN)
+                 </h2>
+                <div class="mt-8 bg-red-50 border border-red-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-red-800 text-xl">C=O 键的极性：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">O 电负性大，<code>C=O</code> 是强极性键。</p>
+                    <p class="mono mt-2 text-center text-xl">
+                        C<sup>δ+</sup> = O<sup>δ-</sup>  (碳偏正电，氧偏负电)
+                    </p>
+                </div>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">与 HCN 加成 (正找负)：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">
+                        HCN 中的 <code>H⁺</code> (正) 加到 O (负) 上；<code>CN⁻</code> (负) 加到 C (正) 上。
+                    </p>
+                    <p class="mono mt-2 text-center text-xl">CH₃CHO + HCN → CH₃CH(OH)CN</p>
+                    <p class="mt-4 text-lg text-slate-700 text-center font-bold text-blue-600">应用：增长碳链 (C₂ → C₃)。</p>
+                </div>
+
+                <!-- 图保留 -->
+                <div class="chem-figure flex justify-center mt-8">
+                    <svg viewBox="0 0 320 140" class="w-full max-w-lg">
+                        <rect x="5" y="5" width="310" height="130" rx="12" fill="#fef2f2" stroke="#fecaca"/>
+                        <!-- 左：极性 -->
+                        <g transform="translate(35,35)">
+                            <text x="40" y="-8" text-anchor="middle" font-size="11" fill="#b91c1c">极性 C=O</text>
+                            <circle cx="20" cy="20" r="14" fill="#fee2e2" stroke="#f97373"/>
+                            <text x="20" y="24" text-anchor="middle" font-size="11" fill="#b91c1c">C</text>
+                            <text x="20" y="40" text-anchor="middle" font-size="10" fill="#b91c1c">δ+</text>
+                            <circle cx="70" cy="20" r="14" fill="#e5e7eb" stroke="#6b7280"/>
+                            <text x="70" y="24" text-anchor="middle" font-size="11" fill="#111827">O</text>
+                            <text x="70" y="40" text-anchor="middle" font-size="10" fill="#111827">δ-</text>
+                            <line x1="34" y1="20" x2="56" y2="20" stroke="#6b7280" stroke-width="2"/>
+                            <line x1="34" y1="16" x2="56" y2="16" stroke="#6b7280" stroke-width="1.5"/>
+                        </g>
+                        <!-- 右：正负相吸 -->
+                        <g transform="translate(190,30)">
+                            <text x="35" y="-5" text-anchor="middle" font-size="11" fill="#047857">正负相吸：加成</text>
+                            <!-- H+ 与 O -->
+                            <circle cx="15" cy="30" r="10" fill="#dcfce7" stroke="#22c55e"/>
+                            <text x="15" y="34" text-anchor="middle" font-size="9" fill="#166534">H⁺</text>
+                            <circle cx="65" cy="30" r="10" fill="#e5e7eb" stroke="#6b7280"/>
+                            <text x="65" y="34" text-anchor="middle" font-size="9" fill="#111827">O</text>
+                            <line x1="25" y1="30" x2="55" y2="30" stroke="#22c55e" stroke-width="1.5" stroke-dasharray="4 4"/>
+                            <!-- CN- 与 C -->
+                            <circle cx="15" cy="70" r="10" fill="#eff6ff" stroke="#3b82f6"/>
+                            <text x="15" y="74" text-anchor="middle" font-size="9" fill="#1e40af">CN⁻</text>
+                            <circle cx="65" cy="70" r="10" fill="#fee2e2" stroke="#f97373"/>
+                            <text x="65" y="74" text-anchor="middle" font-size="9" fill="#b91c1c">C</text>
+                            <line x1="25" y1="70" x2="55" y2="70" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="4 4"/>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 乙醛的化学性质 (三)：羟醛缩合（原第9页） -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>
+                    乙醛化学性质 (三)：羟醛缩合
+                 </h2>
+                <p class="mt-8 text-xl text-slate-700">
+                    含有 <strong class="text-red-600">α-H</strong> (醛基邻位碳上的H) 的醛，在一定条件下可以发生自身加成。
+                </p>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-lg">
+                        <h3 class="font-semibold text-lg">第一步：加成</h3>
+                        <p class="mono mt-2 text-sm">
+                            CH₃CHO + <span class="text-red-600">H</span>-CH₂CHO --(催化)→ CH₃CH(<span class="text-blue-600">OH</span>)-CH₂CHO
+                        </p>
+                        <p class="mt-2 text-lg text-slate-700">(生成 β-羟基醛)</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-lg">
+                         <h3 class="font-semibold text-lg">第二步：脱水 (消去)</h3>
+                        <p class="mono mt-2 text-sm">CH₃CH(OH)-CH₂CHO --(△)→ CH₃CH=CHCHO + H₂O</p>
+                        <p class="mt-2 text-lg text-slate-700">(生成 巴豆醛)</p>
+                    </div>
+                </div>
+                 <div class="mt-6 bg-blue-100 text-blue-800 p-4 rounded-lg text-lg text-center font-semibold">
+                    应用：增长碳链 (C₂ → C₄)。
+                </div>
+
+                <!-- 图保留 -->
+                <div class="chem-figure flex justify-center mt-8">
+                    <svg viewBox="0 0 340 120" class="w-full max-w-xl">
+                        <rect x="5" y="5" width="330" height="110" rx="12" fill="#f9fafb" stroke="#d1d5db"/>
+                        <!-- 2乙醛 -->
+                        <rect x="20" y="30" width="80" height="28" rx="6" fill="#eef2ff" stroke="#6366f1"/>
+                        <text x="60" y="48" text-anchor="middle" font-size="11" fill="#312e81">CH₃CHO</text>
+                        <text x="60" y="64" text-anchor="middle" font-size="10" fill="#6b7280">×2</text>
+                        <!-- 箭头1 -->
+                        <line x1="105" y1="44" x2="150" y2="44" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow2)"/>
+                        <text x="128" y="34" font-size="10" text-anchor="middle" fill="#6b7280">加成</text>
+                        <!-- β-羟基醛 -->
+                        <rect x="150" y="30" width="110" height="28" rx="6" fill="#ecfeff" stroke="#06b6d4"/>
+                        <text x="205" y="48" text-anchor="middle" font-size="10" fill="#0f172a">CH₃CH(OH)CH₂CHO</text>
+                        <!-- 箭头2 -->
+                        <line x1="265" y1="44" x2="310" y2="44" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow2)"/>
+                        <text x="288" y="34" font-size="10" text-anchor="middle" fill="#6b7280">脱水</text>
+                        <!-- 巴豆醛 -->
+                        <rect x="260" y="70" width="70" height="28" rx="6" fill="#fee2e2" stroke="#f97373"/>
+                        <text x="295" y="88" text-anchor="middle" font-size="10" fill="#991b1b">CH₃CH=CHCHO</text>
+
+                        <defs>
+                            <marker id="arrow2" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#6b7280" />
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 乙醛的化学性质 (四)：银镜反应（原第10页） -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-rose-500 rounded"></span>
+                    乙醛化学性质 (四)：银镜反应 (重点)
+                 </h2>
+                <p class="mt-8 text-xl text-slate-700">
+                    醛基 (<code>-CHO</code>) 具有还原性，能被<strong class="text-gray-500">弱氧化剂</strong>氧化。
+                </p>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">1. 配制银氨溶液 (Tollen's)：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">
+                        向 <code>AgNO₃</code> 溶液中滴加稀氨水，至沉淀<strong class="text-red-600">恰好完全溶解</strong>。
+                    </p>
+                    <p class="mono mt-2 text-sm">Ag⁺ + NH₃·H₂O → AgOH↓ + NH₄⁺</p>
+                    <p class="mono mt-2 text-sm">AgOH + 2NH₃·H₂O → [Ag(NH₃)₂]OH + 2H₂O</p>
+                    <p class="mt-2 text-lg text-slate-700">（必须<strong class="text-red-600">现用现配</strong>，试管必须<strong class="text-red-600">洁净</strong>）</p>
+                </div>
+
+                <!-- 图保留 -->
+                <div class="chem-figure flex justify-center mt-8">
+                    <svg viewBox="0 0 320 150" class="w-full max-w-lg">
+                        <rect x="5" y="5" width="310" height="140" rx="12" fill="#fef2f2" stroke="#fecaca"/>
+                        <!-- 试管 -->
+                        <g transform="translate(60,30)">
+                            <rect x="0" y="0" width="40" height="90" rx="10" fill="#f9fafb" stroke="#9ca3af" stroke-width="2"/>
+                            <rect x="4" y="35" width="32" height="40" rx="6" fill="#dbeafe" stroke="#60a5fa"/>
+                            <text x="20" y="25" text-anchor="middle" font-size="11" fill="#111827">银氨</text>
+                            <text x="20" y="40" text-anchor="middle" font-size="10" fill="#1e3a8a">[Ag(NH₃)₂]OH</text>
+                            <!-- 银镜区域 -->
+                            <rect x="4" y="35" width="4" height="40" fill="#d1d5db"/>
+                        </g>
+                        <!-- 水浴 -->
+                        <g transform="translate(35,105)">
+                            <rect x="0" y="0" width="90" height="20" rx="6" fill="#bfdbfe" stroke="#60a5fa"/>
+                            <text x="45" y="14" text-anchor="middle" font-size="10" fill="#1e3a8a">温水浴加热</text>
+                        </g>
+                        <!-- 乙醛滴入 -->
+                        <g transform="translate(165,40)">
+                            <circle cx="0" cy="0" r="14" fill="#fee2e2" stroke="#f97373"/>
+                            <text x="0" y="4" text-anchor="middle" font-size="10" fill="#b91c1c">CH₃CHO</text>
+                            <line x1="-10" y1="18" x2="-35" y2="55" stroke="#f97373" stroke-width="1.5" marker-end="url(#droparrow)"/>
+                        </g>
+                        <defs>
+                            <marker id="droparrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#f97373" />
+                            </marker>
+                        </defs>
+                        <!-- 文本说明 -->
+                        <text x="210" y="95" text-anchor="middle" font-size="11" fill="#4b5563">试管内壁生成</text>
+                        <text x="210" y="110" text-anchor="middle" font-size="11" fill="#b91c1c">明亮银镜</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 银镜反应 (方程式)（原第11页） -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-rose-500 rounded"></span>
+                    银镜反应 (方程式)
+                 </h2>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">2. 反应 (水浴加热)：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">
+                        乙醛被氧化为乙酸（在氨水环境中生成乙酸铵），银离子被还原为银单质。
+                    </p>
+                    <p class="mono mt-4 text-center text-base/loose">
+                        CH₃CHO + 2[Ag(NH₃)₂]OH <span class="text-red-600">--(水浴△)→</span>
+                        CH₃COONH₄ + 2Ag↓ + 3NH₃ + H₂O
+                    </p>
+                </div>
+                 <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg text-center font-semibold">
+                    <p class="text-2xl">配平口诀：水银氨 123</p>
+                    <p class="mt-2 text-xl">(<strong class="text-red-900">1</strong> H₂O, <strong class="text-red-900">2</strong> Ag, <strong class="text-red-900">3</strong> NH₃) + 1 羧酸铵</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 乙醛的化学性质 (五)：新制Cu(OH)₂（原第12页） -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-rose-500 rounded"></span>
+                    乙醛化学性质 (五)：新制Cu(OH)₂
+                 </h2>
+                <div class="mt-8 bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-blue-800 text-xl">1. 配制新制氢氧化铜悬浊液：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">
+                        向 <code>CuSO₄</code> 溶液中滴加<strong class="text-red-600">过量</strong> <code>NaOH</code> 溶液。（必须<strong class="text-red-600">现用现配</strong>）
+                    </p>
+                    <p class="mono mt-2 text-sm">CuSO₄ + 2NaOH → Cu(OH)₂↓ (蓝色) + Na₂SO₄</p>
+                </div>
+                <div class="mt-8 bg-red-50 border border-red-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-red-800 text-xl">2. 反应 (加热至沸腾)：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">
+                        乙醛被氧化为乙酸（在NaOH环境中生成乙酸钠），<code>Cu²⁺</code> 被还原为 <code>Cu⁺</code>。
+                    </p>
+                    <p class="mono mt-4 text-center text-sm/loose">
+                        CH₃CHO + 2Cu(OH)₂ + NaOH <span class="text-red-600">--(△)→</span>
+                        CH₃COONa + Cu₂O↓ + 3H₂O
+                    </p>
+                    <p class="mt-2 text-lg text-center text-slate-700">
+                        现象：生成<strong class="text-red-700">砖红色沉淀</strong> (氧化亚铜, <code>Cu₂O</code>)
+                    </p>
+                </div>
+
+                <!-- 图保留 -->
+                <div class="chem-figure flex justify-center mt-8">
+                    <svg viewBox="0 0 320 120" class="w-full max-w-lg">
+                        <rect x="5" y="5" width="310" height="110" rx="12" fill="#eff6ff" stroke="#bfdbfe"/>
+                        <!-- 左：蓝色悬浊液 -->
+                        <g transform="translate(60,25)">
+                            <rect x="-20" y="0" width="40" height="70" rx="8" fill="#e5f3ff" stroke="#60a5fa"/>
+                            <rect x="-16" y="35" width="32" height="30" rx="6" fill="#3b82f6" opacity="0.8"/>
+                            <text x="0" y="20" text-anchor="middle" font-size="10" fill="#1e40af">Cu(OH)₂</text>
+                            <text x="0" y="85" text-anchor="middle" font-size="10" fill="#1e40af">蓝色</text>
+                        </g>
+                        <!-- 箭头 -->
+                        <line x1="115" y1="60" x2="205" y2="60" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrowcu)"/>
+                        <text x="160" y="50" text-anchor="middle" font-size="10" fill="#4b5563">加热 &amp; 乙醛还原</text>
+                        <defs>
+                            <marker id="arrowcu" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#6b7280" />
+                            </marker>
+                        </defs>
+                        <!-- 右：砖红色沉淀 -->
+                        <g transform="translate(250,25)">
+                            <rect x="-20" y="0" width="40" height="70" rx="8" fill="#fef2f2" stroke="#f87171"/>
+                            <rect x="-16" y="40" width="32" height="25" rx="6" fill="#f97316" opacity="0.9"/>
+                            <text x="0" y="20" text-anchor="middle" font-size="10" fill="#b91c1c">Cu₂O</text>
+                            <text x="0" y="85" text-anchor="middle" font-size="10" fill="#b91c1c">砖红色</text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 乙醛的化学性质 (六)：其他氧化（原第13页） -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-rose-500 rounded"></span>
+                    乙醛化学性质 (六)：其他氧化
+                 </h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-purple-50 border border-purple-200 p-4 rounded-lg">
+                        <strong class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full">KMnO₄</strong>
+                        <p class="mt-2 text-lg">
+                            能使<strong class="text-purple-600">酸性高锰酸钾</strong>溶液褪色（氧化为 CH₃COOH）。
+                        </p>
+                    </div>
+                    <div class="bg-orange-50 border border-orange-200 p-4 rounded-lg">
+                        <strong class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full">Br₂/H₂O</strong>
+                        <p class="mt-2 text-lg">
+                            能使<strong class="text-orange-600">溴水</strong>褪色（被 HBrO 氧化）。
+                        </p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                        <strong class="bg-red-100 text-red-700 px-3 py-1 rounded-full">Br₂/CCl₄</strong>
+                        <p class="mt-2 text-lg">
+                            <strong class="text-red-600">不能</strong>使溴的四氯化碳褪色（不能加成）。
+                        </p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 重点物质：甲醛 (Formaldehyde)（原第14页：图已删） -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-700 rounded"></span>
+                    重点物质：甲醛 (HCHO)
+                 </h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full">俗名/状态</strong>
+                        <p class="mt-2 text-lg">
+                            蚁醛。无色、强烈刺激性<strong class="text-red-600">气体</strong>。易溶于水。
+                        </p>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full">福尔马林</strong>
+                        <p class="mt-2 text-lg">
+                            35%-40% 的甲醛水溶液。有毒，<strong class="text-red-600">一级致癌物</strong>。用于杀菌、浸泡标本。
+                        </p>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full">结构</strong>
+                        <p class="mt-2 text-lg">
+                            sp² 杂化，<strong class="text-blue-600">平面三角形</strong>，4原子共面。
+                        </p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                        <strong class="bg-red-100 text-red-700 px-3 py-1 rounded-full">特殊性</strong>
+                        <p class="mt-2 text-lg">
+                            可看作含有<strong class="text-red-600">两个</strong>“醛基” (<code>H-C=O</code> 和 <code>H-C=O</code>)。
+                        </p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 甲醛的特殊反应（原第15页） -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-700 rounded"></span>
+                    甲醛的特殊反应
+                 </h2>
+                <p class="mt-8 text-xl text-slate-700">由于 HCHO 可看作有 2 个“醛基”，反应计量数加倍：</p>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                        <strong class="font-bold text-gray-800 text-xl">氧化：</strong>
+                        <p class="mt-2 text-lg text-slate-700">
+                            被氧化为 <code>H₂CO₃</code> (碳酸)，在碱性条件下生成 <code>CO₃²⁻</code>。
+                        </p>
+                        <p class="mt-2 text-lg text-slate-700">
+                            1 mol HCHO 反应消耗 <strong class="text-red-600">4 mol</strong> [Ag(NH₃)₂]OH (生成 4 mol Ag)。
+                        </p>
+                        <p class="mt-2 text-lg text-slate-700">
+                            1 mol HCHO 反应消耗 <strong class="text-red-600">4 mol</strong> Cu(OH)₂ (生成 2 mol Cu₂O)。
+                        </p>
+                    </div>
+                    <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                         <strong class="font-bold text-gray-800 text-xl">还原 (加氢)：</strong>
+                        <p class="mono mt-2 text-center text-xl">HCHO + H₂ --(Ni/△)→ CH₃OH (甲醇)</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 酮 (Ketones) - 定义与结构（原第16页） -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>
+                    酮 (Ketones) - 定义与结构
+                 </h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-purple-50 border border-purple-200 p-4 rounded-lg">
+                        <strong class="font-bold text-purple-800 text-xl">官能团：酮羰基</strong>
+                        <p class="mt-2 text-lg text-slate-700">结构式：<code class="text-xl">-C(=O)-</code></p>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="font-bold text-gray-700 text-xl">定义：</strong>
+                        <p class="mt-2 text-lg text-slate-700">
+                            羰基碳原子与<strong class="text-red-600">两个烃基</strong>相连的化合物。
+                        </p>
+                        <p class="mono text-center text-xl mt-2">R-CO-R' (R, R' 必须是烃基)</p>
+                    </div>
+                     <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="font-bold text-gray-700 text-xl">通式 (饱和一元酮)：</strong>
+                        <p class="mono text-center text-2xl font-bold text-purple-700 mt-2">CₙH₂ₙO (n ≥ 3)</p>
+                        <p class="mt-2 text-sm text-center text-slate-500">(最简单的酮是丙酮 CH₃COCH₃，n=3)</p>
+                    </div>
+                 </div>
+
+                 <!-- 图保留 -->
+                 <div class="chem-figure flex justify-center mt-8">
+                    <svg viewBox="0 0 320 110" class="w-full max-w-lg">
+                        <rect x="5" y="5" width="310" height="100" rx="12" fill="#faf5ff" stroke="#e9d5ff"/>
+                        <!-- 链端醛 vs 链中酮 -->
+                        <text x="80" y="24" text-anchor="middle" font-size="11" fill="#1f2937">醛：链端</text>
+                        <line x1="25" y1="35" x2="135" y2="35" stroke="#6b7280" stroke-width="2"/>
+                        <circle cx="30" cy="35" r="10" fill="#e5f3ff" stroke="#60a5fa"/>
+                        <text x="30" y="39" text-anchor="middle" font-size="9" fill="#1e3a8a">R</text>
+                        <circle cx="135" cy="35" r="12" fill="#fee2e2" stroke="#f97373"/>
+                        <text x="135" y="39" text-anchor="middle" font-size="10" fill="#b91c1c">CHO</text>
+
+                        <text x="240" y="24" text-anchor="middle" font-size="11" fill="#1f2937">酮：链中</text>
+                        <circle cx="190" cy="60" r="10" fill="#e5f3ff" stroke="#60a5fa"/>
+                        <text x="190" y="64" text-anchor="middle" font-size="9" fill="#1e3a8a">R</text>
+                        <circle cx="230" cy="60" r="12" fill="#e5e7eb" stroke="#6b7280"/>
+                        <text x="230" y="64" text-anchor="middle" font-size="10" fill="#111827">C=O</text>
+                        <circle cx="270" cy="60" r="10" fill="#e5f3ff" stroke="#60a5fa"/>
+                        <text x="270" y="64" text-anchor="middle" font-size="9" fill="#1e3a8a">R'</text>
+                    </svg>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 酮的化学性质 (丙酮)（原第17页） -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>
+                    酮的化学性质 (丙酮)
+                 </h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                        <strong class="font-bold text-red-700 text-xl">1. 氧化反应 (×)：</strong>
+                        <p class="mt-2 text-lg text-slate-700">
+                            <strong class="text-red-600">不能</strong>被弱氧化剂（银氨溶液、新制Cu(OH)₂）氧化。
+                        </p>
+                        <p class="mt-1 text-sm text-slate-500">（这是鉴别醛和酮的关键！）</p>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                        <strong class="font-bold text-blue-700 text-xl">2. 还原反应 (√)：</strong>
+                        <p class="mt-2 text-lg text-slate-700">
+                            <strong class="text-blue-600">能</strong>与 H₂ 发生加成（还原）反应。
+                        </p>
+                        <p class="mono mt-2 text-center text-lg">
+                            CH₃COCH₃ + H₂ --(催化/△)→ CH₃CH(OH)CH₃
+                        </p>
+                        <p class="mt-1 text-lg text-center text-slate-700">
+                            (丙酮 → 2-丙醇，生成<strong class="text-blue-600">仲醇</strong>)
+                        </p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 醛 vs 酮 (总结)（原第18页） -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>
+                    醛 vs 酮 (总结)
+                 </h2>
+                <div class="mt-8 overflow-x-auto">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>特征</th>
+                                <th class="text-blue-600">醛 (Aldehyde)</th>
+                                <th class="text-purple-600">酮 (Ketone)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold">官能团</td>
+                                <td class="mono">-CHO</td>
+                                <td class="mono">>C=O</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">位置</td>
+                                <td>链端</td>
+                                <td>链中</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">最小 C 数</td>
+                                <td>C1 (甲醛)</td>
+                                <td>C3 (丙酮)</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">与弱氧化剂<br/>(银氨/新制Cu(OH)₂)</td>
+                                <td class="text-green-600 font-bold text-xl">√ 能反应</td>
+                                <td class="text-red-600 font-bold text-xl">× 不能反应</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">与 H₂ 加成 (还原)</td>
+                                <td class="text-green-600 font-bold">√ → 伯醇</td>
+                                <td class="text-green-600 font-bold">√ → 仲醇</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 图保留 -->
+                <div class="chem-figure flex flex-col md:flex-row justify-center gap-6 mt-8">
+                    <div class="flex-1 border rounded-lg p-4 bg-sky-50">
+                        <p class="text-sm font-semibold text-sky-800 mb-2 text-center">醛类一眼看特征</p>
+                        <ul class="text-sm text-slate-700 space-y-1 list-disc list-inside">
+                            <li>结构：链端 —CHO</li>
+                            <li>反应：银镜、新制 Cu(OH)₂ 都能反应</li>
+                            <li>还原：生成伯醇（—CH₂OH）</li>
+                        </ul>
+                    </div>
+                    <div class="flex-1 border rounded-lg p-4 bg-purple-50">
+                        <p class="text-sm font-semibold text-purple-800 mb-2 text-center">酮类一眼看特征</p>
+                        <ul class="text-sm text-slate-700 space-y-1 list-disc list-inside">
+                            <li>结构：链中 >C=O</li>
+                            <li>反应：对银镜、新制 Cu(OH)₂ 一般“没反应”</li>
+                            <li>还原：生成仲醇（—CHOH—）</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 随堂练习 1（原第19页） -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>
+                    随堂练习（一）
+                </h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">醛类化合物的官能团名称是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(A)</strong> -OH (羟基)</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(B)</strong> -CHO (醛基)</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(C)</strong> -COOH (羧基)</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(D)</strong> -O- (醚键)</p>
+                    </div>
+                </div>
+
+                <!-- 图保留 -->
+                <div class="chem-figure flex justify-center mt-6">
+                    <svg viewBox="0 0 120 80" class="w-28 h-20">
+                        <rect x="5" y="5" width="110" height="70" rx="12" fill="#eef2ff" stroke="#c7d2fe"/>
+                        <text x="60" y="35" text-anchor="middle" font-size="28" fill="#4f46e5">?</text>
+                        <text x="60" y="55" text-anchor="middle" font-size="10" fill="#4b5563">考点：官能团</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 解析（原第20页） -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>
+                    练习题（一）：解析
+                </h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>
+                        醛类的官能团是醛基，其结构简式为 <code>-CHO</code>。<code>-OH</code> 是醇或酚的官能团，
+                        <code>-COOH</code> 是羧酸的官能团。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 2（原第21页） -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>
+                    随堂练习（二）
+                </h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">下列试剂中，常用于鉴别乙醛和乙醇的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 金属钠</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 新制的氢氧化铜悬浊液</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 氢气</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 水</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 解析（原第22页） -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>
+                    练习题（二）：解析
+                </h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>
+                        乙醛 (醛) 能与新制氢氧化铜悬浊液在加热时反应，生成<strong class="text-red-600">砖红色沉淀</strong>。
+                    </p>
+                    <p>乙醇 (醇) 不与新制氢氧化铜反应（但能被强氧化剂KMnO₄氧化）。</p>
+                    <p>(A) 乙醇与Na反应，乙醛不反应；(C) 乙醛与H₂反应，乙醇不反应；(D) 两者均溶于水。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 3（原第23页） -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>
+                    随堂练习（三）
+                </h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">
+                        分子式为 <code>C₃H₆O</code> 的有机物，其同分异构体中属于饱和一元醛的是？
+                    </p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(A)</strong> 丙酮 (CH₃COCH₃)</p>
+                        <p class="p-3 rounded-md bg白 border mono"><strong>(B)</strong> 丙醛 (CH₃CH₂CHO)</p>
+                        <p class="p-3 rounded-md bg白 border mono"><strong>(C)</strong> 丙烯醇 (CH₂=CHCH₂OH)</p>
+                        <p class="p-3 rounded-md bg白 border mono"><strong>(D)</strong> 甲醛 (HCHO)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 解析（原第24页） -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>
+                    练习题（三）：解析
+                </h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p><code>C₃H₆O</code> 符合通式 <code>CₙH₂ₙO</code> (n=3)。</p>
+                    <p>
+                        (A) 丙酮是酮类。(B) 丙醛是醛类。(C) 丙烯醇是不饱和醇（注意它与丙醛也是同分异构体）。
+                        (D) 甲醛是 C₁。
+                    </p>
+                    <p>丙醛和丙酮是 <code>C₃H₆O</code> 的一对官能团异构体。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 4（原第25页） -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>
+                    随堂练习（四）
+                </h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">
+                        1 摩尔乙醛 (CH₃CHO) 发生银镜反应，最多能生成多少摩尔银 (Ag)？
+                    </p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg白 border mono"><strong>(A)</strong> 1 mol</p>
+                        <p class="p-3 rounded-md bg白 border mono"><strong>(B)</strong> 2 mol</p>
+                        <p class="p-3 rounded-md bg白 border mono"><strong>(C)</strong> 3 mol</p>
+                        <p class="p-3 rounded-md bg白 border mono"><strong>(D)</strong> 4 mol</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 解析（原第26页） -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>
+                    练习题（四）：解析
+                </h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>一个醛基 (<code>-CHO</code>) 被氧化时升 2 价，一个银离子 (<code>Ag⁺</code>) 被还原时降 1 价。</p>
+                    <p>根据电子得失守恒，1 mol 醛基反应需要 2 mol 银离子，因此生成 <strong class="text-red-600">2 mol</strong> 银单质。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 5（原第27页） -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>
+                    随堂练习（五）
+                </h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">
+                        1 摩尔甲醛 (HCHO) 发生银镜反应，最多能生成多少摩尔银 (Ag)？
+                    </p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg白 border mono"><strong>(A)</strong> 1 mol</p>
+                        <p class="p-3 rounded-md bg白 border mono"><strong>(B)</strong> 2 mol</p>
+                        <p class="p-3 rounded-md bg白 border mono"><strong>(C)</strong> 3 mol</p>
+                        <p class="p-3 rounded-md bg白 border mono"><strong>(D)</strong> 4 mol</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 5 解析（原第28页） -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>
+                    练习题（五）：解析
+                </h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>甲醛 (HCHO) 是一个<strong class="text-red-600">特例</strong>，它可以被看作含有<strong class="text-red-600">两个</strong>“醛基” (H-C=O 和 H-C=O)。</p>
+                    <p>它被氧化为碳酸 (H₂CO₃)，总共升 4 价。因此，1 mol 甲醛能还原 4 mol 银离子，生成 <strong class="text-red-600">4 mol</strong> 银单质。</p>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 结束页（原第29页） -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                 </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看！请大家继续关注后续的课程！</p>
+                <p class="mt-4 text-2xl text-slate-600">下节课再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- 导航控件 -->
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <!-- JS 逻辑 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // 初始显示第一页
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

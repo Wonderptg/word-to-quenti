@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>对数函数：入门到“排坑”指南 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 400px; /* 保证内容较少时也有足够高度 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .cartoon-canvas {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            width: 100px;
+            height: 100px;
+        }
+
+        .graph-canvas {
+            border-radius: 0.5rem;
+            width: 300px;
+            height: 250px;
+        }
+        
+        .summary-graph-canvas {
+            border-radius: 0.5rem;
+            width: 200px;
+            height: 180px;
+        }
+
+        .option-graph-canvas {
+            width: 100%;
+            height: 150px;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+
+            .section:last-child {
+                page-break-after: auto;
+            }
+            .cartoon-canvas {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- Section 1: Title -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">对数函数核心概念与解题指南</h1>
+                <p class="text-xl text-slate-600 mt-8">Hello，大家好！今天，我们要攻略一个函数界的新BOSS——对-数-函-数。</p>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 2: Intro -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">(一) 对数函数的引入与定义</h2>
+                <div class="mt-8 text-xl text-slate-700 leading-relaxed space-y-6">
+                    <p>对数运算是指数运算的<strong>逆运算</strong>。它回答的问题是：“底数 a 的多少次方等于 x？”</p>
+                    <div class="bg-slate-50 p-4 rounded-lg text-center text-2xl font-serif">
+                        如果  <code class="text-red-600">2<sup>3</sup> = 8</code>, 那么 <code class="text-blue-600">log<sub>2</sub>8 = 3</code>
+                    </div>
+                    <p class="mt-4">因此，我们把函数 <code class="text-2xl">y = log<sub>a</sub>x</code> 称为<strong>对数函数</strong>，其中 a 是底数，x 是真数。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 3: Rules -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">(二) 对数函数的成立条件</h2>
+                <div class="mt-8 text-xl text-slate-700 leading-relaxed space-y-4">
+                     <p>为了使对数函数 y=log<sub>a</sub>x 有意义，必须满足以下两条规定，缺一不可：</p>
+                    <div class="bg-amber-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-xl text-amber-800">1. 关于底数 a 的规定： a > 0 且 a ≠ 1</h3>
+                        <p class="text-base mt-2 pl-4 text-slate-600">原因：如果 a≤0 或 a=1，函数将失去连续性或唯一性，无法定义一个有广泛意义的函数。</p>
+                    </div>
+                    <div class="bg-red-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-xl text-red-800">2. 关于真数 x 的规定： x > 0</h3>
+                        <p class="text-base mt-2 pl-4 text-slate-600">原因：因为底数 a 是正数，一个正数的任何实数次方（无论是正、负还是零）的结果都必然是正数。</p>
+                    </div>
+                    <p class="mt-4 bg-slate-100 border-l-4 border-slate-500 text-slate-800 p-4 rounded-r-lg font-medium">
+                        <strong>核心重点：</strong>在处理任何与对数相关的问题时，“底数 a > 0 且 a ≠ 1” 和 “真数 x > 0” 是必须最先检查的先决条件。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Graph (a > 1) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">(三) 图像与核心性质 (a > 1)</h2>
+                <div class="mt-6 flex justify-center">
+                     <div class="text-center p-4 rounded-lg bg-green-50">
+                        <canvas id="graph-intro-increase" class="graph-canvas"></canvas>
+                        <p class="mt-2 text-lg text-green-700 font-bold">y = log₃x</p>
+                    </div>
+                </div>
+            </div>
+             <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 5: Graph (0 < a < 1) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">(三) 图像与核心性质 (0 < a < 1)</h2>
+                <div class="mt-6 flex justify-center">
+                    <div class="text-center p-4 rounded-lg bg-red-50">
+                        <canvas id="graph-intro-decrease" class="graph-canvas"></canvas>
+                        <p class="mt-2 text-lg text-red-700 font-bold">y = log₁/₃x</p>
+                    </div>
+                </div>
+            </div>
+             <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 6: Properties by Analogy -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">(三) 图像与核心性质 (看图总结)</h2>
+                <ul class="mt-4 text-lg space-y-3">
+                    <li><strong>1. 定义域：</strong>(0, +∞)</li>
+                    <li><strong>2. 值域：</strong>R</li>
+                    <li><strong>3. 单调性：</strong>a > 1 时增，0 < a < 1 时减。</li>
+                    <li><strong>4. 定点：</strong>(1, 0)</li>
+                    <li><strong>5. 渐近线：</strong>y轴 (x=0)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 7: Trap 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">排坑环节 ①：定义域优先</h2>
+                 <div class="mt-6 bg-slate-100 p-4 rounded-lg">
+                     <p class="text-xl font-semibold">【问题】求函数 f(x) = log₂(x-1) / (x-4) 的定义域。</p>
+                 </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 8: Trap 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">排坑环节 ②：底数决定方向</h2>
+                <div class="mt-6 bg-slate-100 p-4 rounded-lg">
+                    <p class="text-xl font-semibold">【问题】解不等式 log₀.₂(4x) < log₀.₂(x+6)。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 9: Trap 3 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">排坑环节 ③：复合函数的默契</h2>
+                <div class="mt-6 bg-slate-100 p-4 rounded-lg">
+                    <p class="text-xl font-semibold">【问题】求函数 f(x) = log₀.₅(4x-x²) 的单调递减区间。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 10: Problem 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">实战演练 - 概念辨析</h2>
+                <div class="mt-6 text-lg">
+                    <div class="bg-slate-50 p-4 rounded-lg">
+                        <p><strong>【问题】</strong>给出下列函数：</p>
+                        <p class="text-base text-gray-500 mt-2">① y = log₂/₃(x²) &nbsp;&nbsp; ② y = log₃(x-1) &nbsp;&nbsp; ③ y = log₍ₓ₊₁₎x &nbsp;&nbsp; ④ y = logₑx</p>
+                        <p class="mt-2">其中是对数函数的有 ( )</p>
+                        <p class="text-base text-gray-500 mt-2">A. 1个 &nbsp;&nbsp; B. 2个 &nbsp;&nbsp; C. 3个 &nbsp;&nbsp; D. 4个</p>
+                    </div>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 11: Problem 2 -->
+        <div class="section" id="problem-2-section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">实战演练 - 图像识别</h2>
+                <div class="mt-6 text-lg">
+                    <div class="bg-slate-50 p-4 rounded-lg">
+                        <p><strong>【问题】</strong>函数 y = lg|x+1| 的图像的大致形状是？</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mt-4">
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold">A.</span>
+                            <canvas id="option-graph-a" class="option-graph-canvas"></canvas>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold">B.</span>
+                            <canvas id="option-graph-b" class="option-graph-canvas"></canvas>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold">C.</span>
+                            <canvas id="option-graph-c" class="option-graph-canvas"></canvas>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold">D.</span>
+                            <canvas id="option-graph-d" class="option-graph-canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 12: Problem 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">实战演练 - 定义域求解</h2>
+                <div class="mt-6 text-lg">
+                    <div class="bg-slate-50 p-4 rounded-lg">
+                        <p><strong>【问题】</strong>函数 y = log₂(3x-2) 的定义域是 ( )</p>
+                        <p class="text-base text-gray-500 mt-4">
+                            A. (-∞, 2/3) &nbsp;&nbsp;&nbsp;&nbsp;
+                            B. (2/3, +∞) &nbsp;&nbsp;&nbsp;&nbsp;
+                            C. (0, +∞) &nbsp;&nbsp;&nbsp;&nbsp;
+                            D. R
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 13: Problem 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">实战演练 - 值域求解</h2>
+                <div class="mt-6 text-lg">
+                    <div class="bg-slate-50 p-4 rounded-lg">
+                        <p><strong>【问题】</strong>函数 y = ln(x-2)+1 的值域为 ( )</p>
+                        <p class="text-base text-gray-500 mt-4">
+                            A. R &nbsp;&nbsp;&nbsp;&nbsp;
+                            B. (1, +∞) &nbsp;&nbsp;&nbsp;&nbsp;
+                            C. [1, +∞) &nbsp;&nbsp;&nbsp;&nbsp;
+                            D. (2, +∞)
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 14: Answers -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">实战演练 - 答案解析</h2>
+                <div class="mt-6 text-lg space-y-4">
+                    <div class="bg-slate-50 p-3 rounded-lg">
+                        <p><strong>1.【概念辨析】答案：A (1个)</strong></p>
+                        <p class="text-base text-slate-600 mt-1 pl-4">
+                            ① 真数不为 x，非标准形式；② 是复合函数；③ 底数是变量；只有 ④ y=logₑx (即 y=lnx) 是严格的对数函数。
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-lg">
+                        <p><strong>2.【图像识别】答案：A</strong></p>
+                         <p class="text-base text-slate-600 mt-1 pl-4">
+                            令 y=0, 则 |x+1|=1, 解得 x=0 或 x=-2。图像过 (0,0) 和 (-2,0) 两点，排除 BCD。
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-lg">
+                        <p><strong>3.【定义域求解】答案：B</strong></p>
+                         <p class="text-base text-slate-600 mt-1 pl-4">
+                            由真数 3x-2 > 0，解得 x > 2/3。所以定义域为 (2/3, +∞)。
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-lg">
+                        <p><strong>4.【值域求解】答案：A</strong></p>
+                         <p class="text-base text-slate-600 mt-1 pl-4">
+                            函数 y=lnx 的值域为 R。将其平移得到的函数 y=ln(x-2)+1，其值域仍然为 R (全体实数)。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 15: Summary -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">课堂总结</h2>
+                <div class="mt-8 text-xl space-y-6">
+                    <div class="bg-blue-50 p-4 rounded-lg ring-2 ring-blue-100">
+                        <h3 class="font-bold text-blue-800">➤ 核心定义</h3>
+                        <p class="text-lg text-slate-700 mt-1 pl-4">对数 logₐx 就是指数运算的“逆运算”，回答“a的几次方等于x”。</p>
+                    </div>
+                    <div class="bg-red-50 p-4 rounded-lg ring-2 ring-red-100">
+                        <h3 class="font-bold text-red-800">➤ 生命线法则</h3>
+                        <p class="text-lg text-slate-700 mt-1 pl-4"><strong>真数大于零 (x > 0)</strong> 是所有对数问题的第一道关卡！</p>
+                    </div>
+                     <div class="bg-green-50 p-4 rounded-lg ring-2 ring-green-100">
+                        <h3 class="font-bold text-green-800">➤ 两大图像特征</h3>
+                        <ul class="list-disc list-inside mt-1 pl-4 text-lg text-slate-700">
+                            <li><strong>a > 1：</strong>函数单调递增，图像从左下到右上。</li>
+                            <li><strong>0 < a < 1：</strong>函数单调递减，图像从左上到右下。</li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="text-center text-slate-500 mt-12 text-2xl font-serif">~ 恭喜通关 ~</p>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Draw cartoon for all small canvases
+            const canvases = document.querySelectorAll('.cartoon-canvas');
+            canvases.forEach((canvas, index) => {
+                const ctx = canvas.getContext('2d');
+                drawCartoon(ctx, index, canvas.width, canvas.height); 
+            });
+            
+            const graphIntroInc = document.getElementById('graph-intro-increase');
+            if(graphIntroInc) drawAnnotatedLogGraph(graphIntroInc.getContext('2d'), 3);
+            
+            const graphIntroDec = document.getElementById('graph-intro-decrease');
+            if(graphIntroDec) drawAnnotatedLogGraph(graphIntroDec.getContext('2d'), 1/3);
+
+            drawOptionGraphs();
+        });
+
+        function drawAnnotatedLogGraph(ctx, base) {
+            const w = ctx.canvas.width;
+            const h = ctx.canvas.height;
+            const xMin = -1, xMax = 10;
+            const yMin = -3, yMax = 3;
+
+            const toCanvasX = (x) => (x - xMin) / (xMax - xMin) * w;
+            const toCanvasY = (y) => h - (y - yMin) / (yMax - yMin) * h;
+            
+            ctx.clearRect(0, 0, w, h);
+            ctx.fillStyle = base > 1 ? '#f0fdf4' : '#fff1f2';
+            ctx.fillRect(0,0,w,h);
+
+            // Draw axes
+            ctx.strokeStyle = '#a8a29e';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(0, toCanvasY(0));
+            ctx.lineTo(w, toCanvasY(0));
+            ctx.moveTo(toCanvasX(0), 0);
+            ctx.lineTo(toCanvasX(0), h);
+            ctx.stroke();
+
+            // Draw function curve
+            ctx.strokeStyle = base > 1 ? '#22c55e' : '#ef4444';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            for(let x = 0.01; x <= xMax; x += 0.05) {
+                let y = Math.log(x) / Math.log(base);
+                let cx = toCanvasX(x);
+                let cy = toCanvasY(y);
+                if (x === 0.01) {
+                    ctx.moveTo(cx, cy);
+                } else {
+                    ctx.lineTo(cx, cy);
+                }
+            }
+            ctx.stroke();
+
+            // Annotate points
+            const points = [
+                { x: 9, label: "9" },
+                { x: 3, label: "3" },
+                { x: 1, label: "1" },
+                { x: 1/3, label: "1/3" },
+                { x: 1/9, label: "1/9" }
+            ];
+
+            ctx.fillStyle = 'black';
+            ctx.font = '11px Arial';
+            
+            points.forEach(p => {
+                const x = p.x;
+                const y = Math.round(Math.log(x) / Math.log(base));
+                const cx = toCanvasX(x);
+                const cy = toCanvasY(y);
+
+                ctx.beginPath();
+                ctx.arc(cx, cy, 4, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                let textX = cx + 8;
+                let textY = cy - 8;
+                ctx.textAlign = 'left';
+
+                if (x === 1) { 
+                     textX = cx - 10;
+                     textY = cy + 15;
+                } else if (base > 1) { // Specific logic for the increasing graph
+                    if (x === 9) {
+                        textX = cx - 8; // Move (9,2) label to the left
+                        ctx.textAlign = 'right';
+                    }
+                    if (x < 1) {
+                        textY = cy + 15; // Move labels for 1/3 and 1/9 down
+                    }
+                } else { // Specific logic for the decreasing graph (base < 1)
+                    if (x > 1) { 
+                        textX = cx - 8;
+                        ctx.textAlign = 'right';
+                         if (x === 3) {
+                             textY = cy + 15;
+                         }
+                    }
+                }
+                ctx.fillText(`(${p.label}, ${y})`, textX, textY);
+            });
+        }
+
+        function drawOptionGraphs() {
+            const base = 10;
+            const funcs = {
+                'a': (x) => Math.log(Math.abs(x + 1)) / Math.log(base),
+                'b': (x) => Math.log(x + 1) / Math.log(base),
+                'c': (x) => Math.abs(x) / Math.sqrt(x + 1),
+                'd': (x) => Math.log(Math.abs(x - 1)) / Math.log(base),
+            };
+
+            for (const option in funcs) {
+                const canvas = document.getElementById(`option-graph-${option}`);
+                if (canvas) {
+                    drawSingleOptionGraph(canvas.getContext('2d'), funcs[option], option);
+                }
+            }
+        }
+
+        function drawSingleOptionGraph(ctx, func, option) {
+            const w = ctx.canvas.width;
+            const h = ctx.canvas.height;
+            const xMin = -4, xMax = 4;
+            const yMin = -3, yMax = 3;
+
+            const toCanvasX = (x) => (x - xMin) / (xMax - xMin) * w;
+            const toCanvasY = (y) => h - (y - yMin) / (yMax - yMin) * h;
+
+            ctx.clearRect(0, 0, w, h);
+
+            // Set font for labels
+            ctx.font = '12px Arial';
+            ctx.fillStyle = '#334155';
+
+            // Draw axes
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 1.5;
+            
+            // Y-axis
+            ctx.beginPath();
+            ctx.moveTo(toCanvasX(0), h);
+            ctx.lineTo(toCanvasX(0), 0);
+            ctx.stroke();
+
+            // X-axis
+            ctx.beginPath();
+            ctx.moveTo(0, toCanvasY(0));
+            ctx.lineTo(w, toCanvasY(0));
+            ctx.stroke();
+
+            // Draw arrowheads
+            const arrowSize = 6;
+            // Y-axis arrow
+            ctx.beginPath();
+            ctx.moveTo(toCanvasX(0), 0);
+            ctx.lineTo(toCanvasX(0) - arrowSize, arrowSize);
+            ctx.moveTo(toCanvasX(0), 0);
+            ctx.lineTo(toCanvasX(0) + arrowSize, arrowSize);
+            ctx.stroke();
+
+            // X-axis arrow
+            ctx.beginPath();
+            ctx.moveTo(w, toCanvasY(0));
+            ctx.lineTo(w - arrowSize, toCanvasY(0) - arrowSize);
+            ctx.moveTo(w, toCanvasY(0));
+            ctx.lineTo(w - arrowSize, toCanvasY(0) + arrowSize);
+            ctx.stroke();
+
+            // Draw axis labels
+            ctx.fillText('y', toCanvasX(0) + 10, 10);
+            ctx.fillText('x', w - 15, toCanvasY(0) - 10);
+            ctx.fillText('O', toCanvasX(0) - 15, toCanvasY(0) + 15);
+
+            // Draw asymptote
+            const asymptoteX = (option === 'd') ? 1 : -1;
+            ctx.strokeStyle = '#64748b';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath();
+            ctx.moveTo(toCanvasX(asymptoteX), 0);
+            ctx.lineTo(toCanvasX(asymptoteX), h);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Label asymptote x-intercept
+            ctx.textAlign = 'center';
+            ctx.fillText(String(asymptoteX), toCanvasX(asymptoteX), toCanvasY(0) + 15);
+
+            // Label x-intercepts for option A
+            if (option === 'a') {
+                 ctx.fillText('-2', toCanvasX(-2), toCanvasY(0) + 15);
+            }
+
+            // Draw function curve
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            let firstPoint = true;
+            for (let x = xMin; x <= xMax; x += 0.05) {
+                if (Math.abs(x - asymptoteX) < 0.05 && (option !== 'b' && option !== 'c')) {
+                    firstPoint = true;
+                    continue;
+                }
+                 if (x <= -1 && (option === 'b' || option !== 'c')) {
+                     firstPoint = true;
+                     continue;
+                 }
+                const y = func(x);
+                if (isFinite(y)) {
+                    if (firstPoint) {
+                        ctx.moveTo(toCanvasX(x), toCanvasY(y));
+                        firstPoint = false;
+                    } else {
+                        ctx.lineTo(toCanvasX(x), toCanvasY(y));
+                    }
+                } else {
+                    firstPoint = true;
+                }
+            }
+            ctx.stroke();
+            ctx.textAlign = 'start'; // Reset alignment
+        }
+
+
+        function drawCartoon(ctx, index, w, h) {
+            ctx.clearRect(0, 0, w, h);
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 2;
+            
+            const originalIndexMap = [0, 1, 3, 3, 4, 5, 6, 7, 8, -1, 8, 8, 6, 9, 6];
+            let effectiveIndex = Array.from(document.querySelectorAll('.section')).findIndex(sec => sec.contains(ctx.canvas));
+
+            let cartoonSwitchIndex = originalIndexMap[effectiveIndex] || 0;
+
+            switch (cartoonSwitchIndex % 10) {
+                case 0: // Robot
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.fillRect(w*0.2, h*0.2, w*0.6, h*0.6);
+                    ctx.fillRect(w*0.4, h*0.1, w*0.2, h*0.1);
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.5, h*0.1);
+                    ctx.lineTo(w*0.5, h*0.05);
+                    ctx.arc(w*0.5, h*0.05, 5, 0, Math.PI*2);
+                    ctx.stroke();
+                    break;
+                case 1: // Factory
+                    ctx.fillStyle = '#d1d5db';
+                    ctx.fillRect(w*0.1, h*0.4, w*0.8, h*0.5);
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.1, h*0.4);
+                    ctx.lineTo(w*0.3, h*0.2);
+                    ctx.lineTo(w*0.5, h*0.4);
+                    ctx.stroke();
+                    break;
+               case 2: // Gears
+                    ctx.fillStyle = '#a1a1aa';
+                    // big gear
+                    for(let i=0; i<8; i++) {
+                        let angle = i * Math.PI / 4;
+                        ctx.fillRect(w/2 + Math.cos(angle)*w*0.3 - 5, h/2 + Math.sin(angle)*h*0.3-5, 10, 10);
+                    }
+                    ctx.beginPath();
+                    ctx.arc(w/2, h/2, w*0.2, 0, Math.PI*2);
+                    ctx.fill();
+                    break;
+               case 3: 
+                    break;
+               case 4: // Magnifying glass with graph
+                    ctx.strokeStyle = '#64748b';
+                    ctx.lineWidth = 5;
+                    ctx.beginPath();
+                    ctx.arc(w*0.45, h*0.45, w*0.3, 0, Math.PI * 2);
+                    ctx.moveTo(w*0.7, h*0.7);
+                    ctx.lineTo(w*0.9, h*0.9);
+                    ctx.stroke();
+                    break;
+              case 5: // Onion
+                    ctx.fillStyle = '#fef3c7';
+                    ctx.beginPath();
+                    ctx.arc(w/2, h/2, w*0.4, 0, Math.PI*2);
+                    ctx.fill();
+                    ctx.strokeStyle = '#fde68a';
+                    ctx.beginPath();
+                    ctx.arc(w/2, h/2, w*0.3, 0, Math.PI*2);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.arc(w/2, h/2, w*0.2, 0, Math.PI*2);
+                    ctx.stroke();
+                    break;
+                case 6: // Checklist
+                    ctx.strokeStyle = '#16a34a';
+                    ctx.lineWidth = 4;
+                    ctx.strokeRect(w*0.2, h*0.2, w*0.6, h*0.6);
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.3, h*0.4); ctx.lineTo(w*0.4, h*0.5); ctx.lineTo(w*0.7, h*0.3);
+                    ctx.moveTo(w*0.3, h*0.6); ctx.lineTo(w*0.4, h*0.7); ctx.lineTo(w*0.7, h*0.5);
+                    ctx.stroke();
+                    break;
+               case 7: 
+               case 8: 
+                    ctx.fillStyle = 'white';
+                    ctx.strokeStyle = 'black';
+                    ctx.fillRect(w*0.1, h*0.1, w*0.8, h*0.8);
+                    ctx.strokeRect(w*0.1, h*0.1, w*0.8, h*0.8);
+                     for(let i=0.3; i<0.8; i+=0.15){
+                         ctx.beginPath();
+                         ctx.moveTo(w*0.2, h*i);
+                         ctx.lineTo(w*0.8, h*i);
+                         ctx.stroke();
+                     }
+                    break;
+                case 9: // Trophy
+                    ctx.fillStyle = '#f59e0b';
+                    ctx.beginPath();
+                    ctx.moveTo(w * 0.3, h * 0.9);
+                    ctx.lineTo(w * 0.7, h * 0.9);
+                    ctx.lineTo(w * 0.65, h * 0.7);
+                    ctx.lineTo(w * 0.35, h * 0.7);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.fillRect(w * 0.45, h * 0.6, w * 0.1, h * 0.1);
+                    ctx.beginPath();
+                    ctx.moveTo(w * 0.4, h * 0.2);
+                    ctx.quadraticCurveTo(w * 0.5, h * 0.05, w * 0.6, h * 0.2);
+                    ctx.lineTo(w * 0.8, h * 0.1);
+                    ctx.quadraticCurveTo(w * 0.7, h * 0.4, w * 0.6, h * 0.6);
+                    ctx.lineTo(w * 0.4, h * 0.6);
+                    ctx.quadraticCurveTo(w * 0.3, h * 0.4, w * 0.2, h * 0.1);
+                    ctx.closePath();
+                    ctx.fill();
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
+

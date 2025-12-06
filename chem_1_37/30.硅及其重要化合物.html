@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>硅及其重要化合物</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        
+        /* 反应示意图容器样式 */
+        .reaction-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 --><div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <!-- Removed SVG --><h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">硅及其重要化合物</h1>
+                <p class="text-2xl text-slate-600 mt-2">—— 现代科技的基石</p>
+            </div>
+        </div>
+
+        <!-- 晶体硅结构与性质 --><div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>单晶硅 (Si) 的结构与性质</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-gray-800 text-xl">结构</h3>
+                        <p class="mt-3 text-slate-600">结构与<strong class="text-red-600">金刚石</strong>类似，每个Si原子与4个Si原子形成<strong class="text-red-600">正四面体立体网状结构</strong>。</p>
+                        <!-- SVG: 硅的晶体结构示意图 --><div class="reaction-diagram mt-4 mb-2">
+                             <svg class="w-full max-w-xs h-32" viewBox="0 0 200 150">
+                                <!-- 四面体轮廓 --><path d="M100 20 L40 130 L160 130 Z" fill="#e5e7eb" stroke="#4b5563" stroke-width="1"/>
+                                <path d="M100 20 L160 130 M100 20 L40 130" stroke="#4b5563" stroke-width="1"/>
+                                <line x1="40" y1="130" x2="160" y2="130" stroke="#4b5563" stroke-width="1"/>
+                                <!-- 硅原子 (Si) - 中心与顶点 --><circle cx="100" cy="20" r="8" fill="#1f2937" stroke="#374151" stroke-width="2"/>
+                                <circle cx="40" cy="130" r="8" fill="#1f2937" stroke="#374151" stroke-width="2"/>
+                                <circle cx="160" cy="130" r="8" fill="#1f2937" stroke="#374151" stroke-width="2"/>
+                                <circle cx="100" cy="80" r="8" fill="#1f2937" stroke="#374151" stroke-width="2"/>
+                                <!-- 中心原子 --><circle cx="100" cy="70" r="8" fill="#374151" stroke="#374151" stroke-width="2"/>
+                                <!-- 连线到中心 --><line x1="100" y1="20" x2="100" y2="70" stroke="#4b5563" stroke-width="1.5"/>
+                                <line x1="40" y1="130" x2="100" y2="70" stroke="#4b5563" stroke-width="1.5"/>
+                                <line x1="160" y1="130" x2="100" y2="70" stroke="#4b5563" stroke-width="1.5"/>
+                                <line x1="100" y1="80" x2="100" y2="70" stroke="#4b5563" stroke-width="1.5"/>
+                                <text x="100" y="74" font-size="10" text-anchor="middle" fill="white">Si</text>
+                            </svg>
+                        </div>
+                        <p class="mt-2 text-slate-600">1 mol Si 含有 <code class="text-lg">2N<sub class="text-sm">A</sub></code> 个 Si-Si 键。</p>
+                    </div>
+                    <div class="bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-gray-800 text-xl">物理性质</h3>
+                         <ul class="list-disc list-inside mt-3 text-slate-600 space-y-2">
+                            <li>带有金属光泽的<strong class="text-gray-700">灰黑色</strong>固体</li>
+                            <li>熔点高、硬度大、脆性</li>
+                            <li>导电性介于导体和绝缘体之间，是<strong class="text-red-600">半导体</strong></li>
+                         </ul>
+                         <p class="mt-4 text-slate-600">常温下化学性质<strong class="text-red-600">不活泼</strong>。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 硅的化学性质 --><div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-blue-500 rounded"></span>硅单质的化学性质 (了解)</h2>
+                 <p class="mt-8 text-xl text-slate-700">常温下稳定，高温或特定条件下可反应。</p>
+                 <div class="mt-6 space-y-4 text-lg">
+                     <p class="bg-blue-50 border border-blue-200 p-3 rounded-lg mono">Si + 2F₂ → SiF₄</p>
+                     <p class="bg-blue-50 border border-blue-200 p-3 rounded-lg mono">Si + 2Cl₂ <span class="text-slate-500">(Δ)</span> → SiCl₄</p>
+                     <p class="bg-blue-50 border border-blue-200 p-3 rounded-lg mono">Si + 4HF → SiF₄↑ + 2H₂↑</p>
+                     <p class="bg-red-50 border border-red-200 p-3 rounded-lg mono text-red-800">Si + 2NaOH + H₂O → Na₂SiO₃ + 2H₂↑ <span class="text-sm text-red-600 font-sans">(重要！类比Al)</span></p>
+                     <p class="bg-blue-50 border border-blue-200 p-3 rounded-lg mono">Si + O₂ <span class="text-slate-500">(Δ)</span> → SiO₂</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 二氧化硅结构与性质 --><div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>二氧化硅 (SiO₂) 的结构与性质</h2>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-teal-50 border border-teal-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-teal-800 text-xl">结构</h3>
+                        <p class="mt-3 text-slate-600">与单晶硅类似，也是<strong class="text-red-600">正四面体立体网状结构</strong>，但原子间是Si-O键。</p>
+                        <!-- SVG: 二氧化硅的晶体结构示意图 --><div class="reaction-diagram mt-4 mb-2">
+                             <svg class="w-full max-w-xs h-32" viewBox="0 0 200 150">
+                                <!-- 四面体轮廓 --><path d="M100 20 L40 130 L160 130 Z" fill="#e0f2f1" stroke="#4b5563" stroke-width="1"/>
+                                <path d="M100 20 L160 130 M100 20 L40 130" stroke="#4b5563" stroke-width="1"/>
+                                <line x1="40" y1="130" x2="160" y2="130" stroke="#4b5563" stroke-width="1"/>
+                                <!-- 氧原子 (O) - 顶点 --><circle cx="100" cy="20" r="8" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+                                <circle cx="40" cy="130" r="8" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+                                <circle cx="160" cy="130" r="8" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+                                <circle cx="100" cy="80" r="8" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+                                <!-- 硅原子 (Si) - 中心 --><circle cx="100" cy="70" r="6" fill="#1f2937" stroke="#374151" stroke-width="1.5"/>
+                                <circle cx="90" cy="75" r="6" fill="#1f2937" stroke="#374151" stroke-width="1.5"/> <!-- Second Si atom --><circle cx="110" cy="65" r="6" fill="#1f2937" stroke="#374151" stroke-width="1.5"/> <!-- Third Si atom --><!-- 连线到中心 --><line x1="100" y1="20" x2="100" y2="70" stroke="#4b5563" stroke-width="1.5"/>
+                                <line x1="40" y1="130" x2="100" y2="70" stroke="#4b5563" stroke-width="1.5"/>
+                                <line x1="160" y1="130" x2="100" y2="70" stroke="#4b5563" stroke-width="1.5"/>
+                                <line x1="100" y1="80" x2="100" y2="70" stroke="#4b5563" stroke-width="1.5"/>
+                                <text x="100" y="74" font-size="8" text-anchor="middle" fill="white">Si</text>
+                                <text x="90" y="79" font-size="8" text-anchor="middle" fill="white">Si</text>
+                                <text x="110" y="69" font-size="8" text-anchor="middle" fill="white">Si</text>
+                                <text x="100" y="24" font-size="8" text-anchor="middle" fill="white">O</text>
+                            </svg>
+                        </div>
+                         <p class="mt-2 text-slate-600">1 mol SiO₂ 含有 <code class="text-lg">4N<sub class="text-sm">A</sub></code> 个 Si-O 键。</p>
+                    </div>
+                    <div class="bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-gray-800 text-xl">物理性质</h3>
+                         <ul class="list-disc list-inside mt-3 text-slate-600 space-y-2">
+                            <li>存在形态：石英、水晶、玛瑙、沙子等</li>
+                            <li><strong class="text-red-600">硬度大、熔沸点高</strong></li>
+                            <li>常温下为固体</li>
+                            <li>难溶于水</li>
+                            <li>不导电 (绝缘体)</li>
+                         </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 二氧化硅化学性质 --><div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>二氧化硅的化学性质 (酸性氧化物)</h2>
+                 <p class="mt-8 text-xl text-slate-700">SiO₂是<strong class="text-cyan-600">酸性氧化物</strong>，具有酸性氧化物的通性，但与水不反应。</p>
+                 <div class="mt-6 space-y-4">
+                     <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                         <h3 class="font-bold text-red-800 text-lg">与氢氟酸(HF)反应 (特殊性！)</h3>
+                         <div class="reaction-diagram mt-2 justify-center">
+                            <svg class="w-10 h-10 text-red-600 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a10 10 0 0010-10H2a10 10 0 0010 10z"/><path d="M12 2a10 10 0 0110 10M12 2a10 10 0 00-10 10"/></svg>
+                            <p class="mono text-center text-sm md:text-base">SiO₂ + 4HF → SiF₄↑ + 2H₂O</p>
+                        </div>
+                         <p class="text-slate-600 text-sm mt-1">这是SiO₂<strong class="text-red-600">唯一能反应</strong>的酸。用于<strong class="text-red-600">刻蚀玻璃</strong>。</p>
+                     </div>
+                    <div class="bg-cyan-50 border border-cyan-200 p-4 rounded-lg">
+                         <h3 class="font-bold text-cyan-800 text-lg">与强碱反应</h3>
+                         <div class="reaction-diagram mt-2 justify-center">
+                             <svg class="w-10 h-10 text-cyan-600 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                             <p class="mono text-center text-sm md:text-base">SiO₂ + 2NaOH → Na₂SiO₃ + H₂O</p>
+                        </div>
+                         <p class="text-slate-600 text-sm mt-1">不能用带<strong class="text-red-600">磨口玻璃塞</strong>的试剂瓶盛放碱液。</p>
+                     </div>
+                      <div class="bg-cyan-50 border border-cyan-200 p-4 rounded-lg">
+                         <h3 class="font-bold text-cyan-800 text-lg">与碱性氧化物/某些盐反应 (高温)</h3>
+                         <p class="mono text-center mt-2 text-sm md:text-base">SiO₂ + CaO <span class="text-slate-500">(高温)</span> → CaSiO₃</p>
+                         <p class="mono text-center mt-2 text-sm md:text-base">SiO₂ + Na₂CO₃ <span class="text-slate-500">(高温)</span> → Na₂SiO₃ + CO₂↑ (制玻璃)</p>
+                     </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 硅酸 --><div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-lime-500 rounded"></span>硅酸 (H₂SiO₃)</h2>
+                <div class="mt-8 bg-lime-50 border border-lime-200 p-8 rounded-lg text-lg text-slate-700 space-y-4">
+                     <p>性质1：<strong class="text-red-600">弱酸</strong>，酸性比碳酸(H₂CO₃)还<strong class="text-red-600">弱</strong>。</p>
+                     <p>性质2：<strong class="text-red-600">难溶于水</strong> (高中唯一难溶于水的常见酸)。</p>
+                     <p>性质3：<strong class="text-red-600">不稳定</strong>，受热易分解。</p>
+                     <p class="mono text-sm ml-4">H₂SiO₃ <span class="text-slate-500">(Δ)</span> → SiO₂ + H₂O</p>
+                     <p>性质4：浓度大时易形成<strong class="text-lime-700">凝胶</strong>。</p>
+                     <p class="mt-2 text-lime-700 font-semibold">硅胶：硅酸凝胶干燥脱水后形成的多孔固体，<strong class="text-red-600">吸附性强</strong>，常用作<strong class="text-red-600">干燥剂</strong>、催化剂载体。</p>
+                      <!-- SVG: 硅胶干燥示意图 --><div class="reaction-diagram mt-4">
+                         <svg class="w-full max-w-xs h-20" viewBox="0 0 200 80">
+                            <rect x="50" y="20" width="100" height="40" rx="5" fill="#fef9c3" stroke="#facc15" stroke-width="2"/>
+                            <path d="M70 40 L130 40" stroke="#facc15" stroke-width="1.5" stroke-dasharray="3,3"/>
+                             <circle cx="80" cy="35" r="4" fill="#3b82f6"/>
+                            <circle cx="120" cy="45" r="4" fill="#3b82f6"/>
+                            <text x="100" y="50" font-size="10" text-anchor="middle" fill="#713f12">硅胶</text>
+                            <text x="170" y="40" font-size="12" fill="#3b82f6">吸附 H₂O</text>
+                            <path d="M155 40 L165 40" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead-blue)"/>
+                            <defs>
+                                <marker id="arrowhead-blue" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0, 6 2, 0 4" fill="#3b82f6"/></marker>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 硅酸制备与酸性比较 --><div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-lime-500 rounded"></span>硅酸的制备与酸性比较</h2>
+                 <p class="mt-8 text-xl text-slate-700">利用<strong class="text-lime-600">强酸制弱酸</strong>的原理。</p>
+                 <div class="mt-6 space-y-4">
+                     <div class="bg-lime-50 border border-lime-200 p-4 rounded-lg">
+                         <h3 class="font-bold text-lime-800 text-lg">制备方法</h3>
+                         <p class="mono text-center mt-2 text-sm md:text-base">Na₂SiO₃ + 2HCl → H₂SiO₃↓ + 2NaCl</p>
+                         <p class="mono text-center mt-2 text-sm md:text-base">Na₂SiO₃ + CO₂ + H₂O → H₂SiO₃↓ + Na₂CO₃</p>
+                         <p class="text-slate-600 text-sm mt-1">现象：产生<strong class="text-red-600">白色胶状沉淀</strong>或凝胶。</p>
+                     </div>
+                    <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
+                         <h3 class="font-bold text-yellow-800 text-lg">实验验证酸性：HCl > H₂CO₃ > H₂SiO₃</h3>
+                          <!-- SVG: 酸性比较流程图 --><div class="reaction-diagram mt-4">
+                            <svg class="w-full max-w-sm h-32" viewBox="0 0 300 120">
+                                <rect x="10" y="10" width="80" height="30" rx="5" fill="#fef08a"/>
+                                <rect x="210" y="10" width="80" height="30" rx="5" fill="#fef08a"/>
+                                <rect x="110" y="70" width="80" height="30" rx="5" fill="#fef08a"/>
+                                <text x="50" y="28" font-size="12" text-anchor="middle">Na₂SiO₃</text>
+                                <text x="250" y="28" font-size="12" text-anchor="middle">CaCO₃</text>
+                                <text x="150" y="88" font-size="12" text-anchor="middle">H₂SiO₃</text>
+                                <!-- 箭头 --><path d="M90 25 L110 25" stroke="#facc15" stroke-width="2" marker-end="url(#arrowhead-amber)"/>
+                                <path d="M190 25 L210 25" stroke="#facc15" stroke-width="2" marker-end="url(#arrowhead-amber)"/>
+                                <path d="M150 40 L150 70" stroke="#facc15" stroke-width="2" marker-end="url(#arrowhead-amber)"/>
+                                <!-- 试剂 --><text x="100" y="55" font-size="10" fill="#a16207" text-anchor="middle">HCl</text>
+                                <text x="200" y="55" font-size="10" fill="#a16207" text-anchor="middle">CO₂ + H₂O</text>
+                                <text x="150" y="110" font-size="10" fill="#a16207" text-anchor="middle">HCl > H₂CO₃ > H₂SiO₃</text>
+                                <defs>
+                                    <marker id="arrowhead-amber" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0, 6 2, 0 4" fill="#facc15"/></marker>
+                                </defs>
+                            </svg>
+                        </div>
+                         <p class="text-slate-600 text-sm mt-1">关键：需用<strong class="text-red-600">饱和NaHCO₃溶液</strong>除去CO₂中的HCl气体。</p>
+                     </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 硅酸钠 --><div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>硅酸钠 (Na₂SiO₃)</h2>
+                <div class="mt-8 bg-indigo-50 border border-indigo-200 p-8 rounded-lg text-lg text-slate-700 space-y-4">
+                     <p>性质：白色固体，<strong class="text-indigo-700">可溶</strong>于水，水溶液俗称<strong class="text-red-600">水玻璃</strong>或<strong class="text-red-600">泡花碱</strong>。</p>
+                     <p>水溶液显<strong class="text-red-600">碱性</strong> (硅酸根水解)。</p>
+                     <p>是一种<strong class="text-indigo-700">矿物胶</strong>，具有<strong class="text-red-600">粘合性</strong>。</p>
+                     <p>用途：</p>
+                     <ul class="list-disc list-inside ml-4">
+                         <li>制备硅胶和硅酸</li>
+                         <li>木材、纺织品的<strong class="text-red-600">防腐剂、防火剂</strong></li>
+                         <li>粘合剂</li>
+                     </ul>
+                      <!-- SVG: 防腐防火图标 --><div class="reaction-diagram mt-4 space-x-8">
+                        <svg class="w-24 h-24 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M12 21l-9-9 9-9 9 9-9 9z"/>
+                           <path d="M12 12m-2 0a2 2 0 104 0 2 2 0 10-4 0"/>
+                         </svg>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 例题 1 --><div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (一)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列关于单晶硅的说法，错误的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 结构与金刚石类似</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 熔点高、硬度大</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 是良好的导体</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 可用作半导体材料</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 1 --><div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (一)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>单晶硅的导电性介于导体和绝缘体之间，是典型的<strong class="text-green-700">半导体</strong>材料，而不是良导体。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 2 --><div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (二)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列物质中，能与SiO₂反应的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 盐酸 (HCl)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 氢氟酸 (HF)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 硫酸 (H₂SO₄)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 水 (H₂O)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 2 --><div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (二)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>二氧化硅(SiO₂)不与水反应，也不与除氢氟酸以外的常见酸反应。它能与<strong class="text-green-700">氢氟酸(HF)</strong>发生特殊反应：<code>SiO₂ + 4HF → SiF₄↑ + 2H₂O</code>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 3 --><div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (三)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列关于硅酸的说法，正确的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 易溶于水</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 酸性比盐酸强</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 受热易分解</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 可以用SiO₂与水反应制备</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 3 --><div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (三)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>硅酸(H₂SiO₃)是<strong class="text-green-700">难溶于水</strong>的<strong class="text-green-700">弱酸</strong>，酸性比碳酸还弱，远弱于盐酸。它<strong class="text-green-700">不稳定，受热易分解</strong>生成SiO₂和H₂O。SiO₂不与水反应，不能用于制备硅酸。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 4 --><div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (四)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>实验室盛放NaOH溶液的试剂瓶，不能选用带磨口玻璃塞的原因是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> NaOH会腐蚀玻璃瓶身</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> NaOH会与玻璃塞中的SiO₂反应生成硅酸钠，使瓶塞粘结</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> NaOH会吸收空气中的CO₂生成Na₂CO₃，使瓶塞粘结</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 玻璃塞不够密封</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 4 --><div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1-4 h-1 bg-green-500 rounded"></span>练习 (四)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>氢氧化钠(NaOH)溶液能与玻璃中的二氧化硅(SiO₂)缓慢反应生成硅酸钠(Na₂SiO₃)。磨口增大了接触面积，加速了反应。生成的硅酸钠具有<strong class="text-green-700">粘合性</strong>（矿物胶），会将玻璃塞与瓶口<strong class="text-green-700">粘结</strong>在一起，导致难以打开。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 5 --><div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (五)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列哪个俗名指的是硅酸钠的水溶液？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 水玻璃</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 石英</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 硅胶</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 金刚砂</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 5 --><div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (五)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(A)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>硅酸钠(Na₂SiO₃)的水溶液俗称<strong class="text-green-700">水玻璃</strong>或泡花碱。石英是SiO₂的一种晶型。硅胶是硅酸干凝胶。金刚砂是碳化硅(SiC)。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 结束页 --><div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>平面向量基础概念 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- 引入MathJax来渲染数学公式 -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0.25rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.25rem;
+            line-height: 1.8;
+            overflow-x: auto;
+        }
+        
+        .graph-canvas {
+            border-radius: 0.5rem;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .exercise-box {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            border-radius: 0.5rem;
+        }
+
+        .toggle-answer-btn {
+            cursor: pointer;
+            background-color: #e2e8f0;
+            color: #475569;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        .toggle-answer-btn:hover {
+            background-color: #cbd5e1;
+        }
+        
+        .judgement-exercise ol {
+            list-style-type: decimal;
+            padding-left: 1.5rem;
+            font-size: 1.125rem;
+            line-height: 2.5;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+            
+            .exercise-box, .toggle-answer-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">平面向量基础概念</h1>
+                <p class="text-2xl text-slate-600 mt-4">抓住两个关键词：大小和方向</p>
+                <p class="mt-8 text-xl text-cyan-600 font-semibold">"既有大小，又有方向的量"</p>
+            </div>
+        </div>
+
+        <!-- 向量表示法 -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-4">向量的表示方法</h2>
+            <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8">
+                <div class="md:w-1/2">
+                    <ul class="list-disc list-inside text-lg space-y-3">
+                        <li><strong>几何表示：</strong>带箭头的线段，长度表示大小，箭头表示方向。</li>
+                        <li><strong>代数表示 (起点终点)：</strong>\(\vec{AB}\)。<strong class="text-red-500">起点在前，终点在后</strong>，与 \(\vec{BA}\) 方向相反。</li>
+                        <li><strong>代数表示 (小写字母)：</strong>\(\vec{a}\), 读作“向量a”。</li>
+                    </ul>
+                     <div class="mt-4 text-base bg-amber-100 p-3 rounded-lg text-amber-800">
+                        <strong>书写规范：</strong>手写时，字母上必须加箭头；印刷体中的粗体字母 (<strong>a</strong>) 也表示向量，但我们自己书写时<strong class="text-red-500">不能</strong>用粗体代替箭头。
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center items-center">
+                    <canvas id="representation-canvas" class="graph-canvas" width="300" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 相等向量与自由平移 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2 mb-4">核心辨析(一): 相等向量</h2>
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <div class="mt-4 text-xl bg-emerald-50 p-4 rounded-lg font-bold text-emerald-800">
+                    大小相等 & 方向相同 (缺一不可)
+                </div>
+                <p class="mt-4 text-lg"><strong>重要性质：</strong>向量可以<strong class="text-red-500">自由平移</strong>。只要不改变长度和方向，它就还是同一个向量。起点和终点的具体位置不重要。</p>
+                <div class="mt-4 flex justify-center items-center">
+                     <canvas id="equality-canvas" class="graph-canvas" width="400" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 相等向量课堂练习 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2 mb-4">课堂练习</h2>
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <p class="text-lg text-left mb-4">给大家看一个正方形ABCD，中心是点O。现在问你：哪些向量和 \(\vec{OA}\) 相等？</p>
+                <canvas id="square-exercise-canvas" class="graph-canvas mx-auto" width="400" height="300"></canvas>
+            </div>
+        </div>
+
+
+        <!-- 向量、有向线段、线段的区别 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-rose-500 pb-2 mb-4">核心辨析(二): 三个概念的区别</h2>
+            <div class="w-full max-w-4xl mx-auto space-y-4">
+                <div class="bg-rose-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-xl text-rose-800">向量 (Vector)</h3>
+                    <p class="mt-2 text-base">有大小，有方向，<strong class="text-red-500">可以自由平移</strong>。</p>
+                    <p class="text-sm text-slate-600">例：从A到B的位移，与从C到D的位移，只要大小方向相同，就是同一个向量。</p>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-xl text-slate-800">有向线段 (Directed Line Segment)</h3>
+                    <p class="mt-2 text-base">有大小，有方向，但<strong class="text-red-500">位置固定，不能平移</strong>。</p>
+                    <p class="text-sm text-slate-600">"平面向量就是有向线段" 这个说法是<strong class="text-red-500">错误</strong>的，因为向量可以平移。</p>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-xl text-slate-800">线段 (Line Segment)</h3>
+                    <p class="mt-2 text-base"><strong class="text-red-500">只有大小（长度），没有方向</strong>。线段AB和线段BA是同一个线段。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 模长与特殊向量 -->
+         <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-2">向量的模长 & 特殊向量</h2>
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-sky-50 p-4 rounded-lg">
+                         <h3 class="font-bold text-xl text-sky-800">模长 \(|\vec{a}|\)</h3>
+                         <p class="mt-2 text-base">即向量的长度。若A(x₁,y₁), B(x₂,y₂), 则 \(|\vec{AB}| = \sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}\)。</p>
+                    </div>
+                    <div class="bg-sky-50 p-4 rounded-lg">
+                         <h3 class="font-bold text-xl text-sky-800">单位向量 \(\vec{e}\)</h3>
+                         <p class="mt-2 text-base">模长等于1的向量。方向任意，有无数个。</p>
+                    </div>
+                     <div class="bg-sky-50 p-4 rounded-lg col-span-1 md:col-span-2">
+                         <h3 class="font-bold text-xl text-sky-800">零向量 \(\vec{0}\)</h3>
+                         <p class="mt-2 text-base">模长等于0的向量。<strong>方向是任意的</strong> (不等于"没有方向"!)。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 模长课堂练习 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-2 mb-4">课堂练习</h2>
+            <div class="w-full max-w-4xl mx-auto text-left space-y-4 text-lg">
+                <p><strong>举个例子：</strong></p>
+                <p>在平面直角坐标系里，点A的坐标是(1, 2)，点B的坐标是(4, 6)。问 \(|\vec{AB}|\) 等于多少？</p>
+            </div>
+        </div>
+
+        <!-- 平行关系 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2">方向关系：平行 (共线)</h2>
+                <div class="mt-4 text-xl text-center bg-violet-50 p-4 rounded-lg font-bold text-violet-800">
+                    在向量中，平行 = 共线
+                </div>
+                <ul class="list-disc list-inside mt-4 text-lg space-y-2">
+                    <li>平行向量方向可以<strong>相同</strong>，也可以<strong>相反</strong>。</li>
+                    <li>共线向量不一定在同一条直线上，但可通过平移使之共线。</li>
+                    <li class="text-red-500 font-bold">特殊规定：零向量与任意向量都平行。</li>
+                </ul>
+                <div class="mt-4 flex justify-center items-center">
+                    <canvas id="parallel-canvas" class="graph-canvas" width="400" height="150"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 平行关系课堂练习 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2 mb-4">课堂练习</h2>
+            <div class="w-full max-w-4xl mx-auto text-left">
+                <p class="text-lg mb-4">我画个三角形ABC。向量 \(\vec{AB}\) 和 \(\vec{BC}\)，你用眼睛看，它们在一条直线上吗？</p>
+                <canvas id="triangle-exercise-canvas" class="graph-canvas mx-auto" width="400" height="300"></canvas>
+            </div>
+        </div>
+
+        <!-- 概念辨析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-orange-500 pb-2 mb-6">核心辨析(三): 常见概念陷阱</h2>
+                <div class="space-y-4 text-lg">
+                    <div class="bg-orange-50 p-3 rounded-lg"><strong>问：</strong>单位向量都相等吗？<br/><strong>答：</strong><span class="text-red-500 font-bold">错。</span>模长都是1，但方向可以不同。</div>
+                    <div class="bg-orange-50 p-3 rounded-lg"><strong>问：</strong>零向量没有确定的方向，所以它没有方向吗？<br/><strong>答：</strong><span class="text-red-500 font-bold">错。</span>零向量的方向是“任意的”，而不是“没有”。</div>
+                    <div class="bg-orange-50 p-3 rounded-lg"><strong>问：</strong>坐标轴是向量吗？<br/><strong>答：</strong><span class="text-red-500 font-bold">错。</span>坐标轴是无限长的，没有确定的大小（模长）。</div>
+                    <div class="bg-orange-50 p-3 rounded-lg"><strong>问：</strong>若 \(\vec{a} \parallel \vec{b}\), \(\vec{b} \parallel \vec{c}\), 则 \(\vec{a} \parallel \vec{c}\) 吗？<br/><strong>答：</strong><span class="text-red-500 font-bold">不一定。</span>当 \(\vec{b}\) 是零向量时，\(\vec{a}\) 和 \(\vec{c}\) 的方向可以任意，不一定平行。</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 综合判断练习 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-amber-500 pb-2 mb-6">六、综合判断练习</h2>
+                <div class="mt-6 bg-amber-50 p-6 rounded-lg judgement-exercise">
+                    <h3 class="text-xl font-bold text-amber-800 mb-4">题目：以下四个说法，正确的有几个？</h3>
+                    <ol>
+                        <li>单位向量都相等</li>
+                        <li>零向量与任意向量平行，因此零向量没有确定的方向</li>
+                        <li>坐标轴是向量</li>
+                        <li>若 \(\vec{a} \parallel \vec{b}\), \(\vec{b} \parallel \vec{c}\), 则 \(\vec{a} \parallel \vec{c}\)</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- 综合测验 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">综合测验 (一)</h2>
+                <div class="text-base md:text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <strong class="text-xl">1.</strong> 
+                        <span class="ml-2">下列说法正确的是？</span>
+                        <div class="mt-4 pl-8 space-y-2">
+                            <p>(A) 若 \(|\vec{a}|=|\vec{b}|\),则 \(\vec{a}=\vec{b}\)</p>
+                            <p>(B) 若 \(\vec{a}=\vec{b}\),则 \(|\vec{a}|=|\vec{b}|\)</p>
+                            <p>(C) 单位向量都相等</p>
+                            <p>(D) 零向量没有方向</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 综合测验 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">综合测验 (二)</h2>
+                <div class="text-base md:text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <strong class="text-xl">2.</strong> 
+                        <span class="ml-2">在矩形ABCD中，与向量 \(\vec{AB}\) 相等的是？</span>
+                        <div class="mt-4 pl-8 space-y-2">
+                            <p>(A) \(\vec{CD}\)</p>
+                            <p>(B) \(\vec{BA}\)</p>
+                            <p>(C) \(\vec{DC}\)</p>
+                            <p>(D) \(\vec{AD}\)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 综合测验 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">综合测验 (三)</h2>
+                <div class="text-base md:text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <strong class="text-xl">3.</strong> 
+                        <span class="ml-2">下列关于向量的说法中，错误的是？</span>
+                        <div class="mt-4 pl-8 space-y-2">
+                            <p>(A) 向量可以自由平移</p>
+                            <p>(B) 向量 \(\vec{AB}\) 与 \(\vec{BA}\) 不同</p>
+                            <p>(C) 平行向量是共线向量</p>
+                            <p>(D) 共线向量必在同一直线上</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 综合测验 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">综合测验 (四)</h2>
+                <div class="text-base md:text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <strong class="text-xl">4.</strong> 
+                        <span class="ml-2">\(\vec{a}\),\(\vec{b}\) 为非零向量,说法正确的个数是？</span>
+                        <div class="mt-4 pl-8 space-y-3">
+                            <p>① 若 \(\vec{a} \parallel \vec{b}\),则 \(\vec{a}\),\(\vec{b}\) 方向相同</p>
+                            <p>② 若 \(|\vec{a}|=|\vec{b}|\),则 \(\vec{a}=\vec{b}\) 或 \(\vec{a}=-\vec{b}\)</p>
+                            <p>③ 若 \(\vec{a}=\vec{b}\),则 \(\vec{a} \parallel \vec{b}\)</p>
+                            <p>④ 若 \(\vec{a} \parallel \vec{b}\),\(\vec{b} \parallel \vec{c}\),则 \(\vec{a} \parallel \vec{c}\)</p>
+                        </div>
+                        <div class="mt-6 pl-8 font-semibold">
+                            <p>(A) 1个&nbsp;&nbsp;&nbsp;&nbsp;(B) 2个&nbsp;&nbsp;&nbsp;&nbsp;(C) 3个&nbsp;&nbsp;&nbsp;&nbsp;(D) 4个</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 综合测验解析 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">综合测验解析</h2>
+                <div class="space-y-3 text-base">
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>1. 答案：B</strong></p>
+                        <p><strong>解析：</strong>A.模长相等不代表方向相同。B.向量相等则大小方向都同，模长必相等。C.单位向量方向可不同。D.零向量方向是任意的，不是没有方向。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>2. 答案：C</strong></p>
+                        <p><strong>解析：</strong>向量 \(\vec{DC}\) 与向量 \(\vec{AB}\) 长度相等且方向相同。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>3. 答案：D</strong></p>
+                        <p><strong>解析：</strong>共线向量(平行向量)因可自由平移，本身不一定在同一直线上。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>4. 答案：B (2个)</strong></p>
+                        <p><strong>解析：</strong>①错(可相反)；②错(方向可任意)；③对(相等必平行)；④对(题干排除了零向量)。正确的有③④共2个。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 课堂小结 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">课堂小结</h2>
+                <div class="mt-6 bg-green-50 p-6 rounded-lg text-lg">
+                    <ol class="list-decimal list-inside space-y-3">
+                        <li><strong>向量的本质：</strong>既有大小又有方向的量。</li>
+                        <li><strong>向量的表示：</strong>几何表示(箭头)、代数表示(\(\vec{AB}\)或\(\vec{a}\))。</li>
+                        <li><strong>相等向量：</strong>大小相等且方向相同，可以自由平移。</li>
+                        <li><strong>模长：</strong>向量的大小(长度)，记作\(|\vec{a}|\)。</li>
+                        <li><strong>特殊向量：</strong>单位向量(模长为1)、零向量(模长为0，方向任意)。</li>
+                        <li><strong>平行关系：</strong>平行即共线，零向量与任意向量平行。</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function drawArrow(ctx, fromX, fromY, toX, toY, color, text, textOffset = {}) {
+                const headlen = 10;
+                const dx = toX - fromX;
+                const dy = toY - fromY;
+                const angle = Math.atan2(dy, dx);
+                ctx.save();
+                ctx.strokeStyle = color;
+                ctx.fillStyle = color;
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(fromX, fromY);
+                ctx.lineTo(toX, toY);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(toX, toY);
+                ctx.lineTo(toX - headlen * Math.cos(angle - Math.PI / 6), toY - headlen * Math.sin(angle - Math.PI / 6));
+                ctx.lineTo(toX - headlen * Math.cos(angle + Math.PI / 6), toY - headlen * Math.sin(angle + Math.PI / 6));
+                ctx.closePath();
+                ctx.fill();
+                if (text) {
+                    ctx.font = 'bold 14px Arial';
+                    const defaultOffsetX = text.length > 1 ? -15 : -5;
+                    const defaultOffsetY = -8;
+                    ctx.fillText(text, (fromX + toX)/2 + (textOffset.x || defaultOffsetX), (fromY + toY)/2 + (textOffset.y || defaultOffsetY));
+                }
+                ctx.restore();
+            }
+
+            const repCanvas = document.getElementById('representation-canvas');
+            if (repCanvas) {
+                const ctx = repCanvas.getContext('2d');
+                drawArrow(ctx, 30, 100, 270, 50, '#3b82f6', 'AB');
+                ctx.fillText('A', 20, 115);
+                ctx.fillText('B', 275, 45);
+            }
+
+            const eqCanvas = document.getElementById('equality-canvas');
+            if(eqCanvas) {
+                const ctx = eqCanvas.getContext('2d');
+                // Equal vectors
+                drawArrow(ctx, 50, 60, 180, 20, '#10b981', 'a');
+                drawArrow(ctx, 220, 200, 350, 160, '#10b981', 'b');
+                
+                // Dashed line for translation
+                ctx.save();
+                ctx.setLineDash([5, 5]);
+                ctx.strokeStyle = '#a1a1aa';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(50, 60);
+                ctx.lineTo(220, 200);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(180, 20);
+                ctx.lineTo(350, 160);
+                ctx.stroke();
+                ctx.restore();
+
+                ctx.font = 'bold 18px Arial';
+                ctx.fillStyle = '#334155';
+                ctx.fillText('若 a = b, 则 a 可平移至 b', 90, 120);
+            }
+
+            const parallelCanvas = document.getElementById('parallel-canvas');
+            if (parallelCanvas) {
+                const ctx = parallelCanvas.getContext('2d');
+                 // Same direction
+                drawArrow(ctx, 30, 40, 150, 40, '#8b5cf6', 'a');
+                drawArrow(ctx, 200, 40, 280, 40, '#8b5cf6', 'b');
+                
+                // Opposite direction
+                drawArrow(ctx, 30, 100, 150, 100, '#f97316', 'c');
+                drawArrow(ctx, 280, 100, 200, 100, '#f97316', 'd');
+            }
+
+            const squareCanvas = document.getElementById('square-exercise-canvas');
+            if (squareCanvas) {
+                const ctx = squareCanvas.getContext('2d');
+                const centerX = 200;
+                const centerY = 150;
+                const halfSide = 80;
+
+                const points = {
+                    A: { x: centerX - halfSide, y: centerY - halfSide },
+                    B: { x: centerX + halfSide, y: centerY - halfSide },
+                    C: { x: centerX + halfSide, y: centerY + halfSide },
+                    D: { x: centerX - halfSide, y: centerY + halfSide },
+                    O: { x: centerX, y: centerY }
+                };
+
+                // Draw square
+                ctx.beginPath();
+                ctx.moveTo(points.A.x, points.A.y);
+                ctx.lineTo(points.B.x, points.B.y);
+                ctx.lineTo(points.C.x, points.C.y);
+                ctx.lineTo(points.D.x, points.D.y);
+                ctx.closePath();
+                ctx.strokeStyle = '#94a3b8';
+                ctx.stroke();
+
+                // Draw diagonals
+                ctx.beginPath();
+                ctx.moveTo(points.A.x, points.A.y);
+                ctx.lineTo(points.C.x, points.C.y);
+                ctx.moveTo(points.B.x, points.B.y);
+                ctx.lineTo(points.D.x, points.D.y);
+                ctx.strokeStyle = '#e2e8f0';
+                ctx.stroke();
+
+                // Draw labels
+                ctx.font = 'bold 16px Arial';
+                ctx.fillStyle = '#334155';
+                ctx.fillText('A', points.A.x - 20, points.A.y - 5);
+                ctx.fillText('B', points.B.x + 10, points.B.y - 5);
+                ctx.fillText('C', points.C.x + 10, points.C.y + 20);
+                ctx.fillText('D', points.D.x - 20, points.D.y + 20);
+                ctx.fillText('O', points.O.x - 5, points.O.y + 20);
+
+                // Draw vector OA
+                drawArrow(ctx, points.O.x, points.O.y, points.A.x, points.A.y, '#ef4444', '');
+            }
+
+            const triangleCanvas = document.getElementById('triangle-exercise-canvas');
+            if (triangleCanvas) {
+                const ctx = triangleCanvas.getContext('2d');
+                const A = { x: 80, y: 250 };
+                const B = { x: 320, y: 250 };
+                const C = { x: 200, y: 80 };
+
+                // Draw labels first to be underneath arrows if needed
+                ctx.font = 'bold 16px Arial';
+                ctx.fillStyle = '#334155';
+                ctx.fillText('A', A.x - 20, A.y + 5);
+                ctx.fillText('B', B.x + 5, B.y + 5);
+                ctx.fillText('C', C.x - 5, C.y - 10);
+
+                // Draw vectors
+                drawArrow(ctx, A.x, A.y, B.x, B.y, '#3b82f6', '');
+                drawArrow(ctx, B.x, B.y, C.x, C.y, '#ef4444', '');
+
+                // Draw the third side of the triangle without an arrow
+                ctx.beginPath();
+                ctx.moveTo(C.x, C.y);
+                ctx.lineTo(A.x, A.y);
+                ctx.strokeStyle = '#64748b';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+
+
+            // --- Interactivity for exercises ---
+            const answerButtons = document.querySelectorAll('.toggle-answer-btn');
+            answerButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    let answerContent = button.parentElement.nextElementSibling;
+                     if (!answerContent) { // For the new structure
+                        answerContent = button.closest('.exercise-box, .text-left').querySelector('.answer-content');
+                     }
+                    if (answerContent && answerContent.classList.contains('answer-content')) {
+                        answerContent.classList.toggle('hidden');
+                        if (answerContent.classList.contains('hidden')) {
+                             button.textContent = button.textContent.replace('隐藏','显示');
+                             if(button.textContent.indexOf('显示') === -1) button.textContent = '显示分析';
+                        } else {
+                            button.textContent = button.textContent.replace('显示','隐藏');
+                             if(button.textContent.indexOf('隐藏') === -1) button.textContent = '隐藏分析';
+
+                        }
+                    }
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>
+

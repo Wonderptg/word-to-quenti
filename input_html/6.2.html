@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>向量的线性运算 (打印修复版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 550px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .graph-canvas {
+            border-radius: 0.5rem;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .vec-arrow::after {
+            content: '\2192';
+            position: absolute;
+            top: -1em;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 0.8em;
+            font-weight: normal;
+        }
+        .vec {
+            position: relative;
+            display: inline-block;
+        }
+
+
+        /* 打印样式 */
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+
+            /* --- 打印布局修复 --- */
+            .print-flex-row {
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+                align-items: center;
+                gap: 2rem;
+            }
+
+            .print-flex-row > div {
+                width: 50%;
+            }
+            /* --- 修复结束 --- */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">向量的线性运算</h1>
+                <p class="text-2xl text-slate-600 mt-4">看得见的数学力量</p>
+                <div class="mt-8 text-xl bg-cyan-50 text-cyan-800 p-4 rounded-lg">
+                    <p class="font-semibold">思考：</p>
+                    <p>"你操作无人机向正北飞，但一阵持续的东风吹来... 最终无人机会飞向哪里？"</p>
+                    <p class="mt-2 text-2xl">这就是向量的<strong class="text-cyan-600">“合并”</strong>！</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 生活中的向量 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center mb-8">生活中的向量无处不在</h2>
+            <div class="w-full max-w-4xl mx-auto grid md:grid-cols-3 gap-6 text-center">
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <div class="text-4xl mb-2">✈️</div>
+                    <h3 class="text-xl font-bold mb-1">力的合成</h3>
+                    <p class="text-slate-600">无人机的速度 + 风速 = 实际航线</p>
+                </div>
+                <div class="bg-green-50 p-4 rounded-lg">
+                    <div class="text-4xl mb-2">📦</div>
+                    <h3 class="text-xl font-bold mb-1">位移的叠加</h3>
+                    <p class="text-slate-600">从仓库到A点，再从A点到B点 = 从仓库直达B点</p>
+                </div>
+                <div class="bg-red-50 p-4 rounded-lg">
+                    <div class="text-4xl mb-2">🌍</div>
+                    <h3 class="text-xl font-bold mb-1">相对位置</h3>
+                    <p class="text-slate-600">我在A飞机看B飞机，B飞机在我什么方位？</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 向量加法：平行四边形法则 -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-2 mb-4">向量加法 (1/2): 平行四边形法则</h2>
+            <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 print-flex-row">
+                <div class="md:w-1/2">
+                    <div class="bg-sky-50 p-4 rounded-lg text-lg">
+                        <p class="font-bold">场景：共起点</p>
+                        <p class="mt-2">当两个向量从同一点出发时（如无人机和风），使用此法则。</p>
+                        <p class="mt-4 font-bold text-sky-700">口诀：“共起点，画平行，连对角”</p>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center items-center">
+                    <canvas id="addition-parallelogram-canvas" class="graph-canvas" width="300" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 向量加法：三角形法则 -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2 mb-4">向量加法 (2/2): 三角形法则</h2>
+            <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 print-flex-row">
+                <div class="md:w-1/2">
+                    <div class="bg-emerald-50 p-4 rounded-lg text-lg">
+                        <p class="font-bold">场景：首尾相接</p>
+                        <p class="mt-2">当一个向量的终点是另一个向量的起点时（如送快递的连续位移），使用此法则。</p>
+                        <p class="mt-4 font-bold text-emerald-700">口诀：“首尾接，连两端”</p>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center items-center">
+                    <canvas id="addition-triangle-canvas" class="graph-canvas" width="300" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 向量减法 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-red-500 pb-2 mb-4">向量减法：相对位置的奥秘</h2>
+            <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 print-flex-row">
+                <div class="md:w-1/2">
+                    <p class="text-lg">向量减法 <code class="font-mono bg-gray-100 p-1 rounded">a - b</code> 可以看作是加上b的<strong>相反向量</strong>：<code class="font-mono bg-gray-100 p-1 rounded">a + (-b)</code>。</p>
+                     <div class="bg-red-50 p-3 rounded-lg text-lg mt-4">
+                        <p class="font-bold">几何捷径 (机场飞机问题)</p>
+                        <p><strong>口诀：“共起点，连终点，指向前”</strong>。两架飞机(<span class="vec vec-arrow">OA</span>, <span class="vec vec-arrow">OB</span>)从同机场O起飞，A看B的相对位置就是<span class="vec vec-arrow">BA</span>，即<span class="vec vec-arrow">OA</span> - <span class="vec vec-arrow">OB</span>。</p>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center items-center">
+                     <canvas id="subtraction-canvas" class="graph-canvas" width="300" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 向量数乘 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2 mb-4">向量数乘：向量的伸缩魔法</h2>
+            <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 print-flex-row">
+                <div class="md:w-1/2">
+                    <p class="text-lg">一个数 λ 乘以向量 <span class="vec vec-arrow">a</span>，就是对向量施展伸缩和转向的魔法：</p>
+                    <ul class="list-disc list-inside mt-4 text-lg space-y-2">
+                        <li><strong>λ > 1 (如 2<span class="vec vec-arrow">a</span>)：</strong>同向<strong class="text-violet-600">拉伸</strong>。</li>
+                        <li><strong>0 < λ < 1 (如 0.5<span class="vec vec-arrow">a</span>)：</strong>同向<strong class="text-violet-600">压缩</strong>。</li>
+                        <li><strong>λ < 0 (如 -1.5<span class="vec vec-arrow">a</span>)：</strong>方向<strong class="text-red-500">反转</strong>，再伸缩。</li>
+                        <li><strong>λ = 0 (如 0<span class="vec vec-arrow">a</span>)：</strong>变为<strong>零向量</strong> (一个点)。</li>
+                    </ul>
+                </div>
+                <div class="md:w-1/2 flex justify-center items-center">
+                    <canvas id="scalar-canvas" class="graph-canvas" width="300" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 -->
+        <div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (1/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                    <p class="font-semibold mb-2">1. 化简 <span class="vec vec-arrow">AB</span> + <span class="vec vec-arrow">BC</span> + <span class="vec vec-arrow">CA</span> 的结果是？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) <span class="vec vec-arrow">AC</span></p>
+                        <p>(B) <span class="vec vec-arrow">0</span> (零向量)</p>
+                        <p>(C) 2<span class="vec vec-arrow">AC</span></p>
+                        <p>(D) <span class="vec vec-arrow">CB</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 -->
+        <div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (2/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                    <p class="font-semibold mb-2">2. 在 △ABC 中，<span class="vec vec-arrow">AB</span> - <span class="vec vec-arrow">AC</span> 等于？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) <span class="vec vec-arrow">BC</span></p>
+                        <p>(B) <span class="vec vec-arrow">CB</span></p>
+                        <p>(C) <span class="vec vec-arrow">0</span></p>
+                        <p>(D) <span class="vec vec-arrow">CA</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 -->
+        <div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (3/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                     <p class="font-semibold mb-2">3. 已知非零向量 <span class="vec vec-arrow">a</span>，那么 -2<span class="vec vec-arrow">a</span> 与 <span class="vec vec-arrow">a</span> 的关系是？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) 方向相同，长度是 <span class="vec vec-arrow">a</span> 的2倍</p>
+                        <p>(B) 方向相反，长度是 <span class="vec vec-arrow">a</span> 的2倍</p>
+                        <p>(C) 方向相反，长度是 <span class="vec vec-arrow">a</span> 的一半</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 -->
+        <div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (4/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                    <p class="font-semibold mb-2">4. 在边长为1的正方形 ABCD 中，|<span class="vec vec-arrow">AB</span> + <span class="vec vec-arrow">AD</span>| 的值是多少？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) 1</p>
+                        <p>(B) 2</p>
+                        <p>(C) √2</p>
+                        <p>(D) √3</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题解析 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析</h2>
+                <div class="space-y-3 text-base">
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>1. 答案：B</strong> | <strong>解析：</strong><span class="vec vec-arrow">AB</span> + <span class="vec vec-arrow">BC</span> = <span class="vec vec-arrow">AC</span>。原式变为 <span class="vec vec-arrow">AC</span> + <span class="vec vec-arrow">CA</span>。起点终点互换，是相反向量，和为零向量。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>2. 答案：B</strong> | <strong>解析：</strong>共起点减法，连终点(C到B)，指向被减向量(<span class="vec vec-arrow">AB</span>)的终点B，所以结果是<span class="vec vec-arrow">CB</span>。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>3. 答案：B</strong> | <strong>解析：</strong>负号表示方向相反，系数的绝对值2表示长度变为2倍。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>4. 答案：C</strong> | <strong>解析：</strong>根据平行四边形法则，<span class="vec vec-arrow">AB</span> + <span class="vec vec-arrow">AD</span> = <span class="vec vec-arrow">AC</span>。即求正方形对角线长度，由勾股定理得 |<span class="vec vec-arrow">AC</span>| = √(1²+1²) = √2。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+         <!-- 总结 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8">总结：解决向量问题的万能钥匙</h2>
+                <div class="text-lg bg-amber-100 p-6 rounded-lg">
+                    <p>“如果向量既不共起点，也不首尾相接，怎么办？”</p>
+                    <p class="text-5xl my-4 font-bold text-amber-700">平 移 !</p>
+                    <p>“记住，向量是‘自由’的，只要大小和方向不变，你可以把它移动到任何地方，来创造‘共起点’或‘首尾相接’的条件，从而解决问题！”</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function drawArrow(ctx, fromX, fromY, toX, toY, color, text) {
+                const headlen = 8;
+                const dx = toX - fromX; 
+                const dy = toY - fromY;
+                const angle = Math.atan2(dy, dx);
+                ctx.save();
+                ctx.strokeStyle = color;
+                ctx.fillStyle = color;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(fromX, fromY);
+                ctx.lineTo(toX, toY);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(toX, toY);
+                ctx.lineTo(toX - headlen * Math.cos(angle - Math.PI / 6), toY - headlen * Math.sin(angle - Math.PI / 6));
+                ctx.lineTo(toX - headlen * Math.cos(angle + Math.PI / 6), toY - headlen * Math.sin(angle + Math.PI / 6));
+                ctx.closePath();
+                ctx.fill();
+                if (text) {
+                    ctx.font = 'bold 14px Arial';
+                    const textX = fromX + (toX - fromX) / 2 - 15;
+                    const textY = fromY + (toY - fromY) / 2 - 8;
+                    ctx.fillText(text, textX, textY);
+                }
+                ctx.restore();
+            }
+
+            const addParallelogramCanvas = document.getElementById('addition-parallelogram-canvas');
+            if (addParallelogramCanvas) {
+                const ctx = addParallelogramCanvas.getContext('2d');
+                const origin = {x: 50, y: 180};
+                const a = {x: 150, y: 0};
+                const b = {x: 50, y: -100};
+                drawArrow(ctx, origin.x, origin.y, origin.x + a.x, origin.y + a.y, '#3b82f6', 'a');
+                drawArrow(ctx, origin.x, origin.y, origin.x + b.x, origin.y + b.y, '#10b981', 'b');
+                ctx.save();
+                ctx.setLineDash([2,3]);
+                ctx.strokeStyle = '#a1a1aa';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(origin.x + a.x, origin.y + a.y);
+                ctx.lineTo(origin.x + a.x + b.x, origin.y + a.y + b.y);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(origin.x + b.x, origin.y + b.y);
+                ctx.lineTo(origin.x + a.x + b.x, origin.y + a.y + b.y);
+                ctx.stroke();
+                ctx.restore();
+                drawArrow(ctx, origin.x, origin.y, origin.x + a.x + b.x, origin.y + a.y + b.y, '#ef4444', 'a+b');
+            }
+
+            const addTriangleCanvas = document.getElementById('addition-triangle-canvas');
+            if (addTriangleCanvas) {
+                const ctx = addTriangleCanvas.getContext('2d');
+                const origin = {x: 50, y: 180};
+                const a = {x: 120, y: -20};
+                const b = {x: 80, y: -90};
+                drawArrow(ctx, origin.x, origin.y, origin.x + a.x, origin.y + a.y, '#3b82f6', 'a');
+                const b_origin_x = origin.x + a.x;
+                const b_origin_y = origin.y + a.y;
+                drawArrow(ctx, b_origin_x, b_origin_y, b_origin_x + b.x, b_origin_y + b.y, '#10b981', 'b');
+                drawArrow(ctx, origin.x, origin.y, b_origin_x + b.x, b_origin_y + b.y, '#ef4444', 'a+b');
+            }
+
+            const subCanvas = document.getElementById('subtraction-canvas');
+            if(subCanvas) {
+                const ctx = subCanvas.getContext('2d');
+                const origin = {x: 80, y: 180};
+                const a = {x: 150, y: -30};
+                const b = {x: 80, y: -100};
+                drawArrow(ctx, origin.x, origin.y, origin.x + a.x, origin.y + a.y, '#3b82f6', 'a (OA)');
+                drawArrow(ctx, origin.x, origin.y, origin.x + b.x, origin.y + b.y, '#10b981', 'b (OB)');
+                drawArrow(ctx, origin.x + b.x, origin.y + b.y, origin.x + a.x, origin.y + a.y, '#ef4444', 'a-b (BA)');
+            }
+            
+            const scalarCanvas = document.getElementById('scalar-canvas');
+            if (scalarCanvas) {
+                const ctx = scalarCanvas.getContext('2d');
+                drawArrow(ctx, 30, 50, 130, 50, '#9ca3af', 'a');
+                drawArrow(ctx, 30, 100, 230, 100, '#3b82f6', '2a');
+                drawArrow(ctx, 30, 150, 80, 150, '#10b981', '0.5a');
+                drawArrow(ctx, 270, 200, 120, 200, '#ef4444', '-1.5a');
+            }
+        });
+    </script>
+</body>
+</html>
+

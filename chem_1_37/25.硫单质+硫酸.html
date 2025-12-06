@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>硫及其重要化合物</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                   <path stroke-linecap="round" stroke-linejoin="round" d="M12.963 2.286a.75.75 0 00-1.071-.136 9.742 9.742 0 00-3.539 6.177A7.547 7.547 0 016.648 6.61a.75.75 0 00-1.152-.082A9 9 0 1015.68 4.534a7.46 7.46 0 01-2.717-2.248zM15.75 14.25a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                 </svg>
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">硫及其重要化合物</h1>
+                <p class="text-2xl text-slate-600 mt-2">—— 硫单质与硫酸</p>
+            </div>
+        </div>
+
+        <!-- 硫单质物理性质 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-yellow-400 rounded"></span>硫单质 (S)：物理性质</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-yellow-50 border border-yellow-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-yellow-800 text-xl">外观与状态</h3>
+                        <ul class="list-disc list-inside mt-3 text-slate-600 space-y-2">
+                            <li>俗称：硫磺</li>
+                            <li>颜色：<strong class="text-yellow-700">黄色</strong>晶体</li>
+                            <li>质地：脆，易研成粉末</li>
+                            <li>存在：自然界存在<strong class="text-red-600">游离态</strong>（如火山口）</li>
+                        </ul>
+                         <svg class="w-full h-auto mt-4" viewBox="0 0 150 100">
+                             <path d="M10 90 Q 75 20 140 90 Z" fill="#fef08a" stroke="#facc15" stroke-width="2"/>
+                             <circle cx="75" cy="50" r="15" fill="#fde047" stroke="#eab308" stroke-width="2"/>
+                             <path d="M65 50 L70 45 L75 50 L80 45 L85 50" fill="none" stroke="#ca8a04" stroke-width="1.5" stroke-linecap="round"/>
+                             <text x="75" y="80" text-anchor="middle" font-size="10px" fill="#713f12">[黄色晶体]</text>
+                         </svg>
+                    </div>
+                    <div class="bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-gray-800 text-xl">溶解性</h3>
+                         <ul class="list-disc list-inside mt-3 text-slate-600 space-y-2">
+                            <li><strong class="text-red-600">难溶</strong>于水</li>
+                            <li>微溶于酒精</li>
+                            <li><strong class="text-red-600">易溶</strong>于二硫化碳 (CS₂)</li>
+                        </ul>
+                         <svg class="w-full h-auto mt-4" viewBox="0 0 150 100">
+                              <path d="M20 90 L20 40 Q20 20 40 20 L110 20 Q130 20 130 40 L130 90 Z" fill="#e0f2fe" stroke="#9ca3af" stroke-width="2"/>
+                              <rect x="70" y="50" width="10" height="20" fill="#fde047" transform="rotate(20 75 60)"/>
+                              <rect x="50" y="60" width="15" height="15" fill="#fde047"/>
+                              <rect x="90" y="70" width="12" height="12" fill="#fde047" transform="rotate(-15 96 76)"/>
+                               <text x="75" y="85" text-anchor="middle" font-size="10px" fill="#4b5563">[难溶于水]</text>
+                         </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 硫单质化学性质 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>硫单质 (S)：化学性质</h2>
+                 <p class="mt-8 text-xl text-slate-700">硫原子处于0价（中间价态），既有<strong class="text-orange-600">氧化性</strong>，也有<strong class="text-orange-600">还原性</strong>。</p>
+                 <div class="mt-8 flex justify-center bg-orange-50 border border-orange-200 p-8 rounded-lg">
+                     <svg width="400" height="120" viewBox="0 0 400 120">
+                        <defs>
+                            <marker id="arrowhead-orange-simple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                                <polygon points="0 0, 8 3, 0 6" fill="#c2410c"/>
+                            </marker>
+                        </defs>
+                        <!-- Center: S(0) -->
+                        <g transform="translate(200, 60)">
+                           <rect x="-30" y="-25" width="60" height="50" rx="8" fill="#fff7ed" stroke="#fb923c" stroke-width="2"/>
+                           <text x="0" y="0" font-size="20" text-anchor="middle" font-weight="bold">S</text>
+                           <text x="0" y="20" font-size="14" text-anchor="middle" fill="#7c2d12">0 价</text>
+                        </g>
+                        <!-- Left: S(-2) -->
+                        <path d="M170 60 L70 60" fill="none" stroke="#ea580c" stroke-width="2" marker-end="url(#arrowhead-orange-simple)"/>
+                        <text x="120" y="50" font-size="14px" fill="#c2410c" text-anchor="middle">得电子 (氧化性)</text>
+                        <g transform="translate(40, 60)">
+                            <text x="0" y="5" font-size="18" text-anchor="middle" font-weight="bold">S⁻²</text>
+                        </g>
+                         <!-- Right: S(+4/+6) -->
+                        <path d="M230 60 L330 60" fill="none" stroke="#ea580c" stroke-width="2" marker-end="url(#arrowhead-orange-simple)"/>
+                         <text x="280" y="50" font-size="14px" fill="#c2410c" text-anchor="middle">失电子 (还原性)</text>
+                         <g transform="translate(360, 60)">
+                            <text x="0" y="5" font-size="18" text-anchor="middle" font-weight="bold">S⁺⁴, S⁺⁶</text>
+                        </g>
+                     </svg>
+                 </div>
+                 <div class="mt-6 text-xl text-slate-600 space-y-2">
+                    <p><strong>作氧化剂 (得电子，价降低)：</strong>与 H₂, 活泼金属反应。</p>
+                    <p><strong>作还原剂 (失电子，价升高)：</strong>与 O₂ 反应。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 硫与氢气/氧气反应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>硫与非金属的反应</h2>
+                 <div class="mt-8 space-y-6">
+                     <div class="bg-cyan-50 border border-cyan-200 p-6 rounded-lg">
+                         <div class="flex items-center">
+                            <!-- Icon smaller -->
+                            <svg class="w-10 h-10 text-cyan-600 mr-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 14s1.5-2 4-2 4 2 4 2"/><path d="M9 9h.01"/><path d="M15 9h.01"/></svg>
+                            <div class="flex-grow">
+                                <h3 class="font-bold text-cyan-800 text-xl">与氢气反应 (体现氧化性)</h3>
+                                <!-- Equation larger -->
+                                <p class="mt-1 mono text-center bg-cyan-100 p-2 rounded text-base">H₂ + S <span class="text-slate-500">(加热)</span> → H₂S↑</p>
+                            </div>
+                         </div>
+                         <p class="mt-2 text-slate-600">H₂S：<strong class="text-red-600">臭鸡蛋</strong>气味的有毒气体。</p>
+                     </div>
+                      <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                         <div class="flex items-center">
+                            <!-- Icon smaller -->
+                            <svg class="w-10 h-10 text-blue-600 mr-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4.5L16 6l-1.5 1.5L16 9l-1.5 1.5L16 12l-1.5 1.5L16 15l-1.5 1.5L16 18l-1.5 1.5L12 18l-1.5 1.5L9 18l-1.5 1.5L6 18l-1.5 1.5L3 18"/><path d="M8.5 4.5L7 6l1.5 1.5L7 9l1.5 1.5L7 12l1.5 1.5L7 15l1.5 1.5L7 18l1.5 1.5L11 18l1.5 1.5L14 18l1.5 1.5L17 18"/></svg>
+                            <div class="flex-grow">
+                                <h3 class="font-bold text-blue-800 text-xl">与氧气反应 (体现还原性)</h3>
+                                <!-- Equation larger -->
+                                <p class="mt-1 mono text-center bg-blue-100 p-2 rounded text-base">S + O₂ <span class="text-slate-500">(点燃)</span> → SO₂</p>
+                            </div>
+                         </div>
+                         <p class="mt-2 text-slate-600">现象：明亮的<strong class="text-blue-700">蓝紫色</strong>火焰。</p>
+                         <p class="mt-2 text-red-600 font-semibold">注意：无论O₂是否过量，产物<strong class="text-red-600">只有SO₂</strong>，没有SO₃。</p>
+                     </div>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 硫与金属反应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-rose-500 rounded"></span>硫与金属的反应 (体现氧化性)</h2>
+                 <p class="mt-8 text-xl text-slate-700">硫的氧化性<strong class="text-red-600">较弱</strong>，通常只能将变价金属氧化到<strong class="text-red-600">较低</strong>价态。</p>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                    <div class="bg-rose-50 border border-rose-200 p-6 rounded-lg">
+                         <div class="flex items-center">
+                            <svg class="w-12 h-12 text-rose-600 mr-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                             <div>
+                                <h3 class="font-bold text-rose-800 text-xl">与铁反应</h3>
+                                <p class="mt-1 mono text-center bg-rose-100 p-2 rounded text-sm">Fe + S <span class="text-slate-500">(加热)</span> → FeS</p>
+                            </div>
+                         </div>
+                         <p class="mt-2 text-slate-600">生成<strong class="text-red-600">硫化亚铁 (Fe²⁺)</strong>。</p>
+                    </div>
+                    <div class="bg-rose-50 border border-rose-200 p-6 rounded-lg">
+                         <div class="flex items-center">
+                            <svg class="w-12 h-12 text-rose-600 mr-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v12"/><path d="M16 10l-4 4-4-4"/></svg>
+                             <div>
+                                <h3 class="font-bold text-rose-800 text-xl">与铜反应</h3>
+                                <p class="mt-1 mono text-center bg-rose-100 p-2 rounded text-sm">2Cu + S <span class="text-slate-500">(加热)</span> → Cu₂S</p>
+                            </div>
+                         </div>
+                         <p class="mt-2 text-slate-600">生成<strong class="text-red-600">硫化亚铜 (Cu⁺)</strong>。</p>
+                    </div>
+                </div>
+                <p class="mt-4 text-slate-600 text-lg"><strong>特例：</strong>硫在常温下即可与<strong class="text-red-600">汞(Hg)</strong>反应，用于处理洒落的水银。</p>
+            </div>
+        </div>
+
+        <!-- 硫酸物理性质 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>硫酸 (H₂SO₄)：物理性质</h2>
+                <div class="mt-8 bg-indigo-50 border border-indigo-200 p-8 rounded-lg text-lg text-slate-700 space-y-4">
+                    <div class="flex items-center mb-4">
+                        <svg class="w-10 h-10 text-indigo-500 mr-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        <span>纯硫酸是<strong class="text-indigo-700">无色、粘稠、油状</strong>液体。</span>
+                    </div>
+                     <p>沸点高 (<strong class="text-indigo-700">~338°C</strong>)，<strong class="text-red-600">难挥发</strong>。</p>
+                     <p>常用浓硫酸：质量分数<strong class="text-indigo-700">98%</strong>，密度<strong class="text-indigo-700">1.84 g/cm³</strong>，物质的量浓度约为<strong class="text-indigo-700">18.4 mol/L</strong>。</p>
+                     <p>与水以<strong class="text-red-600">任意比例</strong>互溶，溶解时放出<strong class="text-red-600">大量热</strong>。</p>
+                     <p class="text-red-600 font-semibold">稀释浓硫酸：<strong class="text-red-600">酸入水，沿器壁，慢搅拌</strong>。</p>
+                     <!-- SVG Smaller -->
+                     <svg class="w-full max-w-xs mx-auto h-auto mt-4" viewBox="0 0 200 150">
+                        <path d="M50 130 L50 40 Q50 20 70 20 L130 20 Q150 20 150 40 L150 130 Z" fill="#e0f2fe" stroke="#9ca3af" stroke-width="2"/>
+                        <path d="M20 30 L60 50" stroke="#7c3aed" stroke-width="3"/>
+                        <path d="M55 45 L60 50 L55 55" fill="none" stroke="#7c3aed" stroke-width="3"/>
+                        <path d="M100 100 L110 110 M110 100 L100 110" stroke="#f87171" stroke-width="2"/>
+                        <text x="25" y="25" font-size="10px" fill="#6d28d9">浓H₂SO₄</text>
+                        <text x="105" y="125" font-size="10px" fill="#dc2626">放热</text>
+                     </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 硫酸化学性质 - 难挥发性 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>浓硫酸的特性：难挥发性</h2>
+                <p class="mt-8 text-xl text-slate-700">利用浓硫酸的高沸点、难挥发的性质，可以制备一些<strong class="text-cyan-600">易挥发</strong>的酸。</p>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                     <div class="bg-cyan-50 border border-cyan-200 p-6 rounded-lg">
+                         <h3 class="font-bold text-cyan-800 text-xl">制备 HCl</h3>
+                         <p class="mt-3 mono text-center bg-cyan-100 p-3 rounded text-sm md:text-base">NaCl + H₂SO₄(浓) <span class="text-slate-500">(微热)</span> → NaHSO₄ + HCl↑</p>
+                     </div>
+                      <div class="bg-cyan-50 border border-cyan-200 p-6 rounded-lg">
+                         <h3 class="font-bold text-cyan-800 text-xl">制备 HNO₃</h3>
+                         <p class="mt-3 mono text-center bg-cyan-100 p-3 rounded text-sm md:text-base">NaNO₃ + H₂SO₄(浓) <span class="text-slate-500">(微热)</span> → NaHSO₄ + HNO₃↑</p>
+                     </div>
+                 </div>
+                 <p class="mt-4 text-slate-600 text-lg">原理：<strong class="text-red-600">难挥发性酸制易挥发性酸</strong>。</p>
+            </div>
+        </div>
+
+        <!-- 硫酸化学性质 - 酸性 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-blue-500 rounded"></span>硫酸的通性：强酸性</h2>
+                <p class="mt-8 text-xl text-slate-700">稀硫酸和浓硫酸都具有酸的通性。</p>
+                <div class="mt-8 bg-blue-50 border border-blue-200 p-6 rounded-lg text-lg">
+                   <ul class="list-disc list-inside space-y-3">
+                       <li>使指示剂变色 (石蕊变红)。</li>
+                       <li>与活泼金属反应放出H₂ (仅限<strong class="text-red-600">稀硫酸</strong>)。</li>
+                       <li>与碱性氧化物反应 (如 CuO + H₂SO₄ → CuSO₄ + H₂O)。</li>
+                       <li>与碱反应 (中和反应)。</li>
+                       <li>与某些盐反应 (如 BaCl₂ + H₂SO₄ → BaSO₄↓ + 2HCl)。</li>
+                   </ul>
+                   <p class="mt-4 text-slate-500">注意：浓硫酸的<strong class="text-red-600">强氧化性</strong>往往会掩盖其酸性。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 硫酸化学性质 - 吸水性 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-emerald-500 rounded"></span>浓硫酸的特性：吸水性</h2>
+                <p class="mt-8 text-xl text-slate-700">浓硫酸能吸收<strong class="text-emerald-600">游离的水分子</strong>（包括结晶水），常作<strong class="text-red-600">干燥剂</strong>。</p>
+                 <div class="mt-8 bg-emerald-50 border border-emerald-200 p-6 rounded-lg text-lg space-y-3">
+                     <!-- SVG Smaller -->
+                     <svg class="w-full max-w-sm mx-auto h-auto mb-4" viewBox="0 0 200 100">
+                        <path d="M10 90 L190 90 L190 70 L10 70 Z" fill="#a7f3d0" stroke="#10b981" stroke-width="2"/>
+                        <circle cx="50" cy="50" r="8" fill="#3b82f6"/> <text x="50" y="54" font-size="6px" fill="white" text-anchor="middle">H₂O</text>
+                        <circle cx="80" cy="40" r="8" fill="#3b82f6"/> <text x="80" y="44" font-size="6px" fill="white" text-anchor="middle">H₂O</text>
+                        <circle cx="110" cy="55" r="8" fill="#3b82f6"/> <text x="110" y="59" font-size="6px" fill="white" text-anchor="middle">H₂O</text>
+                        <circle cx="140" cy="45" r="8" fill="#3b82f6"/> <text x="140" y="49" font-size="6px" fill="white" text-anchor="middle">H₂O</text>
+                        <path d="M55 55 L70 75" stroke="#059669" stroke-width="1.5" marker-end="url(#arrowhead-green-small)"/>
+                        <path d="M85 45 L90 75" stroke="#059669" stroke-width="1.5" marker-end="url(#arrowhead-green-small)"/>
+                         <path d="M115 60 L110 75" stroke="#059669" stroke-width="1.5" marker-end="url(#arrowhead-green-small)"/>
+                         <path d="M145 50 L130 75" stroke="#059669" stroke-width="1.5" marker-end="url(#arrowhead-green-small)"/>
+                         <text x="100" y="85" font-size="9px" fill="#047857" text-anchor="middle">浓 H₂SO₄</text>
+                         <defs><marker id="arrowhead-green-small" markerWidth="5" markerHeight="3.5" refX="4" refY="1.75" orient="auto"><polygon points="0 0, 5 1.75, 0 3.5" fill="#059669"/></marker></defs>
+                     </svg>
+                    <p><strong>可干燥：</strong>中性气体 (H₂, O₂, N₂, CO, CH₄等)，酸性气体 (HCl, SO₂, CO₂等)。</p>
+                    <p><strong>不可干燥：</strong><strong class="text-red-600">碱性气体</strong> (NH₃)，<strong class="text-red-600">还原性气体</strong> (H₂S, HBr, HI)。</p>
+                    <p><strong>示例：</strong>可使蓝色硫酸铜晶体 (CuSO₄·5H₂O) 失去结晶水变为<strong class="text-emerald-700">白色</strong>粉末 (CuSO₄)。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 硫酸化学性质 - 脱水性 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-rose-500 rounded"></span>浓硫酸的特性：脱水性</h2>
+                 <p class="mt-8 text-xl text-slate-700">浓硫酸能按<strong class="text-rose-600">水的组成比 (H:O=2:1)</strong> 脱去有机物中的氢、氧元素，生成<strong class="text-black">碳</strong>。</p>
+                 <div class="mt-8 bg-rose-50 border border-rose-200 p-6 rounded-lg">
+                     <!-- SVG Smaller -->
+                     <svg class="w-full max-w-sm mx-auto h-auto mb-4" viewBox="0 0 200 120">
+                         <path d="M50 100 L50 30 Q50 10 70 10 L130 10 Q150 10 150 30 L150 100 Z" fill="#fef2f2" stroke="#e11d48" stroke-width="2"/>
+                         <rect x="70" y="70" width="60" height="20" fill="white" stroke="#9ca3af"/> <text x="100" y="85" font-size="10px" text-anchor="middle">蔗糖</text>
+                         <path d="M100 70 L100 40" stroke="#7c3aed" stroke-width="2"/>
+                         <path d="M95 45 L100 40 L105 45" fill="none" stroke="#7c3aed" stroke-width="2"/>
+                         <text x="100" y="30" font-size="10px" fill="#6d28d9" text-anchor="middle">滴加浓H₂SO₄</text>
+                         <rect x="70" y="70" width="60" height="20" fill="black" opacity="0" >
+                             <animate attributeName="opacity" from="0" to="1" dur="1s" begin="1s" fill="freeze" />
+                             <animate attributeName="height" from="20" to="40" dur="1s" begin="2s" fill="freeze" />
+                              <animate attributeName="y" from="70" to="50" dur="1s" begin="2s" fill="freeze" />
+                         </rect>
+                         <text x="100" y="65" font-size="10px" fill="white" opacity="0" text-anchor="middle">
+                              <animate attributeName="opacity" from="0" to="1" dur="1s" begin="2s" fill="freeze" />
+                             碳
+                         </text>
+                     </svg>
+                    <h3 class="font-bold text-rose-800 text-xl">示例：蔗糖的碳化 (“黑面包”实验)</h3>
+                    <p class="mt-3 mono text-center bg-rose-100 p-3 rounded">C₁₂H₂₂O₁₁ <span class="text-slate-500">(浓H₂SO₄)</span> → 12C + 11H₂O</p>
+                    <p class="mt-4 text-slate-600"><strong>现象：</strong>白色蔗糖变<strong class="text-black">黑</strong>，体积<strong class="text-black">膨胀</strong> (后续C与浓硫酸反应产生气体)。</p>
+                    <p class="mt-2 text-slate-600"><strong>石蕊试纸：</strong>先变红 (酸性)，后变黑 (脱水性)。</p>
+                 </div>
+                 <p class="mt-4 text-slate-600 text-lg"><strong>区分：</strong><strong class="text-red-600">吸水性</strong>吸收<strong class="text-red-600">原有水</strong>；<strong class="text-red-600">脱水性</strong>按比例脱<strong class="text-red-600">氢氧原子</strong>生成水。</p>
+            </div>
+        </div>
+
+        <!-- 硫酸化学性质 - 强氧化性 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-red-600 rounded"></span>浓硫酸的特性：强氧化性</h2>
+                 <p class="mt-8 text-xl text-slate-700">浓硫酸中的+6价硫具有强氧化性，能与<strong class="text-red-600">多数金属</strong>（除Au, Pt）和<strong class="text-red-600">某些非金属</strong>反应，自身通常被还原为<strong class="text-red-600">SO₂</strong>。</p>
+                 <div class="mt-6 space-y-4">
+                     <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                         <div class="flex items-center">
+                            <svg class="w-12 h-12 text-red-600 mr-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+                             <div>
+                                <h3 class="font-bold text-red-800 text-lg">与铜反应</h3>
+                                <p class="mono text-center text-sm md:text-base mt-1">Cu + 2H₂SO₄(浓) <span class="text-slate-500">(加热)</span> → CuSO₄ + SO₂↑ + 2H₂O</p>
+                            </div>
+                         </div>
+                     </div>
+                    <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                         <div class="flex items-center">
+                            <svg class="w-12 h-12 text-red-600 mr-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12L18 12"/><path d="M12 18L12 6"/></svg>
+                             <div>
+                                <h3 class="font-bold text-red-800 text-lg">与碳反应</h3>
+                                <p class="mono text-center text-sm md:text-base mt-1">C + 2H₂SO₄(浓) <span class="text-slate-500">(加热)</span> → CO₂↑ + 2SO₂↑ + 2H₂O</p>
+                            </div>
+                         </div>
+                     </div>
+                 </div>
+                 <p class="mt-4 text-slate-600 text-lg"><strong>钝化：</strong>常温下，浓硫酸能使<strong class="text-red-600">Fe, Al</strong>表面钝化，可用铁或铝制容器盛放冷的浓硫酸。</p>
+            </div>
+        </div>
+
+        <!-- 例题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (一)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列关于硫单质的说法，错误的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 黄色固体，难溶于水</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 易溶于二硫化碳</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 与铁反应生成Fe₂S₃</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 在氧气中燃烧产生蓝紫色火焰</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (一)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>硫的氧化性较弱，与变价金属铁反应时，只能将其氧化至+2价，生成<strong class="text-green-700">硫化亚铁 (FeS)</strong>，而不是硫化铁 (Fe₂S₃)。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (二)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>浓硫酸不具有下列哪种性质？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 吸水性</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 脱水性</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 强氧化性</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 挥发性</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (二)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>浓硫酸具有吸水性、脱水性和强氧化性。但它沸点很高，是<strong class="text-green-700">难挥发性</strong>酸，所以不具有挥发性。常见易挥发的酸有盐酸、硝酸、醋酸等。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (三)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列气体中，不能用浓硫酸干燥的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> H₂</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> SO₂</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> NH₃</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> CO₂</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (三)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>浓硫酸是酸性干燥剂，不能干燥碱性气体。氨气(NH₃)溶于水呈碱性，会与浓硫酸发生中和反应而被吸收，因此不能用浓硫酸干燥。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (四)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>将蔗糖滴加浓硫酸后变黑，体现了浓硫酸的什么性质？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 酸性</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 吸水性</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 脱水性</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 强氧化性</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1-4 h-1 bg-green-500 rounded"></span>练习 (四)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>蔗糖(C₁₂H₂₂O₁₁)是碳水化合物，浓硫酸能按氢氧原子2:1的比例将其中的氢、氧元素脱去生成水，剩下黑色的碳单质。这体现了浓硫酸的<strong class="text-green-700">脱水性</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (五)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>常温下，可以用铁制或铝制容器盛放的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 稀硫酸</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 浓硫酸</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 稀硝酸</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 浓硝酸</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (五)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B) 和 (D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>常温下，<strong class="text-green-700">浓硫酸</strong>和<strong class="text-green-700">浓硝酸</strong>会使铁(Fe)和铝(Al)的表面发生<strong class="text-green-700">钝化</strong>，生成一层致密的氧化膜，阻止反应继续进行。因此可以用铁或铝制容器盛放冷的浓硫酸和浓硝酸。稀硫酸和稀硝酸会与铁、铝反应。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看，下节课聚焦二氧化硫！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>
+

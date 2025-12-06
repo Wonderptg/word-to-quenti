@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>向量的“代数”之旅 (优化版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                macros: {
+                    vec: ['\\overrightarrow{#1}', 1]
+                }
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <!-- MathJax Library -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0.25rem;
+            font-size: 1.25rem;
+            line-height: 1.8;
+            overflow-x: auto;
+        }
+        
+        .graph-canvas {
+            border-radius: 0.5rem;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        .example-box {
+            border: 1px dashed #ccc;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border-radius: 5px;
+            background-color: #fafafa;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">向量的“代数”之旅</h1>
+                <p class="text-2xl text-slate-600 mt-4">坐标表示与运算</p>
+                <p class="mt-8 text-xl text-cyan-600 font-semibold">"给向量一个精确的‘身份证’"</p>
+            </div>
+        </div>
+
+        <!-- 向量坐标 -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-4">第一步：给向量一个“身份证”</h2>
+            <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8">
+                <div class="md:w-1/2">
+                    <p class="text-lg">以前我们说向量，感觉它有方向、有大小，还能到处平移。今天，我们就把它“钉”在坐标系里，让它变得实实在在。</p>
+                    <p class="text-lg mt-2">如果一个向量的起点是 $A(x_1, y_1)$，终点是 $B(x_2, y_2)$，那么这个向量的坐标完全由这两个点的位置确定。</p>
+                    <div class="formula-box text-center text-xl">
+                        $\vec{AB} = (x_2 - x_1, y_2 - y_1)$
+                    </div>
+                     <div class="mt-4 text-xl bg-amber-100 p-3 rounded-lg text-center font-bold text-amber-800">
+                        核心口诀：终点坐标 - 起点坐标
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center items-center">
+                    <canvas id="coord-canvas" class="graph-canvas" width="300" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 模长 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-rose-500 pb-2 mb-4">第二步(上)：向量的“身高” - 模长</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <p class="text-lg text-center mt-2">坐标 $(x, y)$ 告诉我们，它在水平和竖直方向的长度分别是 $|x|$ 和 $|y|$。这不就是一个直角三角形的两条直角边吗？斜边长用什么定理来着？</p>
+                <div class="formula-box text-center text-xl mt-6">
+                    $|\vec{a}| = \sqrt{x^2 + y^2}$
+                </div>
+                <div class="example-box">
+                    <p><strong>练习:</strong> 向量 $\vec{v}=(4, -2)$ 的模长是多少？<br/>
+                    $|\vec{v}| = \sqrt{4^2 + (-2)^2} = \sqrt{16+4} = \sqrt{20} = 2\sqrt{5}$。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 坐标运算 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2 mb-4">第二步(下)：向量的“变形” - 运算</h2>
+            <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8">
+                <div class="md:w-1/2">
+                     <p class="text-lg">向量之间如何运算，也就是怎么“变形”？这部分超级简单，记住一句话：<strong>各算各的，互不干扰</strong>。</p>
+                     <p class="text-lg mt-2">设 $\vec{a}=(x_1, y_1)$, $\vec{b}=(x_2, y_2)$</p>
+                    <div class="mt-4 space-y-4">
+                         <div class="bg-emerald-50 p-4 rounded-lg">
+                            <h3 class="font-bold text-lg">加减法 (合并同类项):</h3>
+                            <p>$\vec{a} \pm \vec{b} = (x_1 \pm x_2, y_1 \pm y_2)$</p>
+                        </div>
+                         <div class="bg-emerald-50 p-4 rounded-lg">
+                            <h3 class="font-bold text-lg">数乘 (等比放大):</h3>
+                            <p>$\lambda\vec{a} = (\lambda x_1, \lambda y_1)$</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center items-center">
+                    <canvas id="op-canvas" class="graph-canvas" width="300" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 判断关系 (理论) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2">第三步：判断向量关系 (理论)</h2>
+                 <p class="mt-4 text-center text-lg">除了加减数乘，数量积（点积）可以帮我们判断向量的关系——平行还是垂直。<br/>设 $\vec{a}=(x_1, y_1)$, $\vec{b}=(x_2, y_2)$，则 $\vec{a} \cdot \vec{b} = x_1x_2 + y_1y_2$</p>
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-violet-50 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-2xl text-violet-800">垂直 $\perp$</h3>
+                        <p class="mt-2 text-lg">$\vec{a} \perp \vec{b} \iff \vec{a} \cdot \vec{b} = 0$</p>
+                        <p class="mt-1 text-lg">$x_1x_2 + y_1y_2 = 0$</p>
+                    </div>
+                    <div class="bg-violet-50 p-6 rounded-lg text-center">
+                         <h3 class="font-bold text-2xl text-violet-800">平行 $\parallel$</h3>
+                         <p class="mt-2 text-lg">$\vec{a} \parallel \vec{b} \iff$ <strong>坐标成比例</strong></p>
+                         <p class="mt-1 text-lg">$x_1y_2 - x_2y_1 = 0$</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 判断关系 (实战) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-cyan-500 pb-2">第四步：实战演练</h2>
+                <div class="example-box">
+                    <p class="text-xl"><strong>题目：</strong>若向量 $\vec{c}=(6, k)$ 与 $\vec{d}=(1, -2)$ ...</p>
+                    <div class="mt-6 text-lg space-y-4">
+                        <p><strong>1. 若 $\vec{c} \perp \vec{d}$，则 k = ?</strong></p>
+                        <p><strong>2. 若 $\vec{c} \parallel \vec{d}$，则 k = ?</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1/4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">第五步：随堂练习 (1/4)</h2>
+                <div class="text-base md:text-lg bg-gray-50 p-6 rounded-lg shadow-inner">
+                    <p class="font-bold text-xl mb-4">1. 已知 $A(2,5), B(-1,4)$，则向量 $\vec{AB}$ 的坐标是？</p>
+                    <div class="mt-4 text-lg space-y-2">
+                        <p>(A) $(3,1)$</p>
+                        <p>(B) $(-3,-1)$</p>
+                        <p>(C) $(1,9)$</p>
+                        <p>(D) $(1, -1)$</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2/4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">第六步：随堂练习 (2/4)</h2>
+                <div class="text-base md:text-lg bg-gray-50 p-6 rounded-lg shadow-inner">
+                    <p class="font-bold text-xl mb-4">2. 已知向量 $\vec{a}=(-6,8)$，其模长 $|\vec{a}|$ 是多少？</p>
+                    <div class="mt-4 text-lg space-y-2">
+                        <p>(A) $100$</p>
+                        <p>(B) $14$</p>
+                        <p>(C) $10$</p>
+                        <p>(D) $2$</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3/4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">第七步：随堂练习 (3/4)</h2>
+                <div class="text-base md:text-lg bg-gray-50 p-6 rounded-lg shadow-inner">
+                    <p class="font-bold text-xl mb-4">3. 设 $\vec{m}=(1,5), \vec{n}=(2,-1)$，则 $2\vec{m} - \vec{n}$ 的坐标为？</p>
+                    <div class="mt-4 text-lg space-y-2">
+                        <p>(A) $(0,11)$</p>
+                        <p>(B) $(-1,6)$</p>
+                        <p>(C) $(0,9)$</p>
+                        <p>(D) $(4, 9)$</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4/4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">第八步：随堂练习 (4/4)</h2>
+                <div class="text-base md:text-lg bg-gray-50 p-6 rounded-lg shadow-inner">
+                    <p class="font-bold text-xl mb-4">4. 若 $\vec{p}=(x,1)$ 与 $\vec{q}=(4,-2)$ 互相垂直, 则 $x$ 的值是？</p>
+                    <div class="mt-4 text-lg space-y-2">
+                        <p>(A) $-2$</p>
+                        <p>(B) $2$</p>
+                        <p>(C) $0.5$</p>
+                        <p>(D) $-0.5$</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题解析 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">第九步：练习题解析</h2>
+                <div class="space-y-3 text-base">
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>1. 答案：B</strong></p>
+                        <p><strong>解析：</strong>终点减起点：$(-1-2, 4-5) = (-3, -1)$。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>2. 答案：C</strong></p>
+                        <p><strong>解析：</strong>模长 $|\vec{a}| = \sqrt{(-6)^2 + 8^2} = \sqrt{36+64} = \sqrt{100} = 10$。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>3. 答案：A</strong></p>
+                        <p><strong>解析：</strong>$2\vec{m} - \vec{n} = (2 \times 1, 2 \times 5) - (2, -1) = (2-2, 10-(-1)) = (0, 11)$。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>4. 答案：C</strong></p>
+                        <p><strong>解析：</strong>垂直则数量积为0。$\vec{p} \cdot \vec{q} = x \times 4 + 1 \times (-2) = 0 \rightarrow 4x-2=0 \rightarrow x=0.5$。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 总结与升华 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">第十步：总结与升华</h2>
+                <div class="text-lg space-y-4">
+                    <p>今天，我们把复杂的几何问题，彻彻底底地转化成了一目了然的<strong>代数运算</strong>。这是数学中一个极其重要的思想——<strong>坐标法</strong>，也是数形结合的精髓。</p>
+                    <ul class="list-disc list-inside bg-sky-50 p-4 rounded-lg space-y-2">
+                        <li><strong>核心是坐标化：</strong>终点减起点。</li>
+                        <li><strong>基础是公式：</strong>模长用勾股，加减是分量相加减，数乘是乘进去，点积是x乘x加y乘y。</li>
+                        <li><strong>应用是判断：</strong>点积为0就垂直，坐标成比例就平行。</li>
+                    </ul>
+                    <p class="text-center font-semibold text-xl mt-6 text-sky-700">“当几何变得棘手时，给它一个坐标系！”</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+        // Helper function to draw an arrow
+        function drawArrow(ctx, fromX, fromY, toX, toY, color) {
+            const headlen = 10;
+            const dx = toX - fromX;
+            const dy = toY - fromY;
+            const angle = Math.atan2(dy, dx);
+            ctx.save();
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(fromX, fromY);
+            ctx.lineTo(toX, toY);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(toX, toY);
+            ctx.lineTo(toX - headlen * Math.cos(angle - Math.PI / 6), toY - headlen * Math.sin(angle - Math.PI / 6));
+            ctx.lineTo(toX - headlen * Math.cos(angle + Math.PI / 6), toY - headlen * Math.sin(angle + Math.PI / 6));
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        }
+
+        // Canvas 1: Vector Coordinates
+        function setupCoordCanvas() {
+            const canvas = document.getElementById('coord-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+            const origin = {x: 50, y: h - 50};
+            
+            ctx.clearRect(0,0,w,h);
+            
+            // Draw Axes
+            ctx.strokeStyle = '#9ca3af';
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(0, origin.y); ctx.lineTo(w, origin.y); ctx.stroke(); // X-Axis
+            ctx.beginPath(); ctx.moveTo(origin.x, 0); ctx.lineTo(origin.x, h); ctx.stroke(); // Y-Axis
+            ctx.fillStyle = '#6b7280';
+            ctx.font = '12px Arial';
+            ctx.fillText('O', origin.x-15, origin.y+15);
+            ctx.fillText('y', origin.x-15, 15);
+            ctx.fillText('x', w - 15, origin.y+15);
+            
+            // Points & Vector
+            const A = {x: origin.x + 40, y: origin.y - 30};
+            const B = {x: origin.x + 180, y: origin.y - 100};
+            ctx.fillStyle = '#1d4ed8';
+            ctx.beginPath(); ctx.arc(A.x, A.y, 4, 0, 2*Math.PI); ctx.fill();
+            ctx.fillText('A(x₁, y₁)', A.x-20, A.y+20);
+            ctx.beginPath(); ctx.arc(B.x, B.y, 4, 0, 2*Math.PI); ctx.fill();
+            ctx.fillText('B(x₂, y₂)', B.x+5, B.y);
+            
+            drawArrow(ctx, A.x, A.y, B.x, B.y, '#ef4444');
+            
+            // Dashed lines for components
+            ctx.strokeStyle = '#a1a1aa';
+            ctx.setLineDash([2,2]);
+            ctx.beginPath(); ctx.moveTo(A.x, A.y); ctx.lineTo(B.x, A.y); ctx.lineTo(B.x, B.y); ctx.stroke();
+            ctx.setLineDash([]);
+            
+            ctx.font = '14px Arial';
+            ctx.fillStyle = 'black';
+            ctx.fillText('x₂-x₁', A.x + (B.x-A.x)/2 - 10, A.y+15);
+            ctx.fillText('y₂-y₁', B.x + 5, A.y + (B.y-A.y)/2);
+        }
+
+        // Canvas 2: Vector Operations (Addition)
+        function setupOpCanvas() {
+            const canvas = document.getElementById('op-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+            const origin = { x: 60, y: h - 60 };
+
+            const vecA = { x: 100, y: -50 }; // Vector a
+            const vecB = { x: 40, y: -120 }; // Vector b
+            const vecC = { x: vecA.x + vecB.x, y: vecA.y + vecB.y }; // Vector c = a + b
+
+            ctx.clearRect(0, 0, w, h);
+
+            // Draw Axes
+            ctx.strokeStyle = '#9ca3af';
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(0, origin.y); ctx.lineTo(w, origin.y); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(origin.x, 0); ctx.lineTo(origin.x, h); ctx.stroke();
+            ctx.fillStyle = '#6b7280';
+            ctx.font = '12px Arial';
+            ctx.fillText('O', origin.x - 15, origin.y + 15);
+
+            // Draw vectors
+            drawArrow(ctx, origin.x, origin.y, origin.x + vecA.x, origin.y + vecA.y, '#3b82f6'); // Vector a
+            ctx.fillText('a', origin.x + vecA.x + 5, origin.y + vecA.y);
+            
+            drawArrow(ctx, origin.x, origin.y, origin.x + vecB.x, origin.y + vecB.y, '#16a34a'); // Vector b
+            ctx.fillText('b', origin.x + vecB.x - 15, origin.y + vecB.y);
+
+            drawArrow(ctx, origin.x, origin.y, origin.x + vecC.x, origin.y + vecC.y, '#ef4444'); // Vector a+b
+            ctx.fillText('a+b', origin.x + vecC.x - 40, origin.y + vecC.y);
+            
+            // Parallelogram rule
+            ctx.strokeStyle = '#a1a1aa';
+            ctx.setLineDash([2, 2]);
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(origin.x + vecA.x, origin.y + vecA.y);
+            ctx.lineTo(origin.x + vecC.x, origin.y + vecC.y);
+            ctx.lineTo(origin.x + vecB.x, origin.y + vecB.y);
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            setupCoordCanvas();
+            setupOpCanvas();
+        });
+    </script>
+</body>
+</html>
+
+

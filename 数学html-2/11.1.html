@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>复数基础 (演示版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <!-- MathJax Library -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 64rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 4rem;
+            position: relative; 
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            page-break-after: always;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 6px solid #3b82f6;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border-radius: 0.25rem;
+            font-size: 1.25rem;
+            line-height: 1.8;
+            overflow-x: auto;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .highlight-box {
+            background-color: #fffbe6;
+            border: 2px dashed #f59e0b;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-size: 1.1rem;
+            margin-top: 1.5rem;
+        }
+
+        .image-placeholder {
+            background-color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 1.2rem;
+            border-radius: 0.5rem;
+            margin: 1.5rem auto;
+            overflow: hidden;
+        }
+
+        .quiz-option {
+            padding: 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quiz-option:hover {
+            background-color: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0mm;
+            }
+
+            body, html {
+                width: 100%;
+                height: 100%;
+                background-color: white;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            #presentation-container {
+                margin: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+                width: 100% !important;
+                max-width: none !important;
+            }
+            
+            .section {
+                height: 100vh !important;
+                width: 100vw !important;
+                max-width: none !important;
+                min-height: 0 !important;
+                page-break-after: always !important;
+                break-after: page !important;
+                page-break-inside: avoid !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                align-items: center !important;
+                padding: 1cm !important;
+                border-bottom: none !important;
+            }
+
+            .section > div {
+                width: 90% !important;
+                max-width: 100% !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-6xl font-bold text-slate-800 mb-6">复数：数学世界的扩容</h1>
+                <p class="text-3xl text-slate-600 mt-4">当实数轴“不够用”的时候...</p>
+                <div class="mt-12 p-6 bg-blue-50 rounded-xl inline-block">
+                    <p class="text-2xl text-blue-800 font-semibold">"撞墙了？那就造个梯子！"</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第一部分：引入虚数 -->
+        <div class="section">
+             <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-4 mb-8">一、为何需要“虚数”？</h2>
+            <div class="w-full max-w-5xl mx-auto grid grid-cols-2 gap-8 items-center">
+                <div>
+                    <p class="text-xl mb-4"><strong>解方程：</strong> $x^2 - 2x + 5 = 0$</p>
+                    <div class="bg-slate-50 p-4 rounded mb-4 border-l-4 border-slate-400">
+                        <p>判别式 $\Delta = (-2)^2 - 4 \times 5 = -16$</p>
+                        <p class="text-red-600 font-bold mt-2">初中结论：无实根！</p>
+                    </div>
+                    <p class="text-lg mb-2"><strong>数学家的脑洞：</strong></p>
+                    <p class="text-lg">定义新单位 $i$ (Imaginary Unit)</p>
+                    <div class="formula-box mt-4 bg-blue-50 border-blue-500">
+                        $$i^2 = -1$$
+                    </div>
+                    <p class="mt-4">解得：$x = 1 \pm 2i$</p>
+                </div>
+                <div class="image-placeholder h-80 bg-slate-50 border border-slate-200 rounded-xl overflow-hidden">
+                    <!-- SVG: Parabola with no real roots -->
+                    <svg viewBox="0 0 400 300" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Grid -->
+                        <defs>
+                            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+                            </pattern>
+                        </defs>
+                        <rect width="100%" height="100%" fill="url(#grid)" />
+                        
+                        <!-- Axes -->
+                        <line x1="200" y1="20" x2="200" y2="280" stroke="#64748b" stroke-width="2" />
+                        <line x1="20" y1="250" x2="380" y2="250" stroke="#64748b" stroke-width="2" />
+                        
+                        <!-- Parabola y = x^2 - 2x + 5 -->
+                        <!-- Vertex at (1, 4). Map x=1 -> 240, y=4 -> 90 (scaled) -->
+                        <path d="M 80,90 Q 240,410 400,90" fill="none" stroke="#ef4444" stroke-width="3" transform="translate(-40, -80)" />
+                        
+                        <text x="210" y="270" font-size="14" fill="#64748b">x=1</text>
+                        <circle cx="240" cy="130" r="4" fill="#ef4444" />
+                        <text x="250" y="130" font-size="14" fill="#ef4444">顶点 (1,4)</text>
+                        <text x="250" y="200" font-size="16" font-weight="bold" fill="#ef4444">无交点 = 无实根</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 第二部分：复数的定义 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-4 mb-8">二、复数的身份认证</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <div class="formula-box text-2xl font-bold bg-white border-l-8 border-sky-600 shadow-lg">
+                    $$z = a + bi \quad (a, b \in R)$$
+                </div>
+                
+                <div class="grid grid-cols-2 gap-8 mt-8">
+                    <div class="bg-blue-50 p-6 rounded-xl border border-blue-100 text-center">
+                        <p class="text-2xl font-bold text-blue-800 mb-2">$a$</p>
+                        <p class="text-xl text-slate-700">实部 (Real Part)</p>
+                    </div>
+                    <div class="bg-rose-50 p-6 rounded-xl border border-rose-100 text-center relative">
+                        <p class="text-2xl font-bold text-rose-800 mb-2">$b$</p>
+                        <p class="text-xl text-slate-700">虚部 (Imaginary Part)</p>
+                        <div class="absolute -top-3 -right-3 bg-rose-500 text-white text-sm px-3 py-1 rounded-full shadow">注意！不带 i</div>
+                    </div>
+                </div>
+
+                <div class="mt-8 bg-gray-50 p-6 rounded-lg">
+                    <h3 class="text-xl font-bold text-slate-700 mb-4">家族分类：</h3>
+                    <ul class="space-y-3 text-lg ml-6 list-disc text-slate-600">
+                        <li><span class="font-bold text-slate-900">实数</span>：$b=0$ (如 $z=3$)</li>
+                        <li><span class="font-bold text-slate-900">虚数</span>：$b \neq 0$ (如 $z=3+2i$)</li>
+                        <li><span class="font-bold text-slate-900">纯虚数</span>：$a=0$ 且 $b \neq 0$ (如 $z=2i$)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第三部分：复数的几何意义 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-indigo-500 pb-4 mb-8">三、复平面：从一维到二维</h2>
+            <div class="w-full max-w-5xl mx-auto grid grid-cols-2 gap-8 items-center">
+                <div>
+                    <p class="text-xl mb-4 font-bold text-indigo-900">复平面 (Complex Plane)</p>
+                    <ul class="space-y-3 text-lg text-slate-700 mb-6">
+                        <li>横轴 $\to$ 实轴 ($x$)</li>
+                        <li>纵轴 $\to$ 虚轴 ($y$)</li>
+                        <li>点 $Z(a,b)$ 对应复数 $z=a+bi$</li>
+                    </ul>
+                    
+                    <div class="bg-indigo-50 p-4 rounded border-l-4 border-indigo-500">
+                        <p class="font-bold text-indigo-800 mb-2">模长 (距离公式)：</p>
+                        $$|z| = \sqrt{a^2 + b^2}$$
+                        <p class="text-sm text-indigo-600 mt-2">例：$|3+4i| = \sqrt{3^2+4^2} = 5$</p>
+                    </div>
+                </div>
+                
+                <div class="image-placeholder h-80 bg-slate-50 border border-slate-200 rounded-xl overflow-hidden">
+                    <!-- SVG: Complex Plane -->
+                    <svg viewBox="0 0 400 400" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Grid -->
+                        <defs>
+                            <pattern id="smallGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#f1f5f9" stroke-width="1"/>
+                            </pattern>
+                        </defs>
+                        <rect width="100%" height="100%" fill="url(#smallGrid)" />
+
+                        <!-- Axes -->
+                        <line x1="200" y1="20" x2="200" y2="380" stroke="#334155" stroke-width="2" />
+                        <line x1="20" y1="200" x2="380" y2="200" stroke="#334155" stroke-width="2" />
+                        <text x="360" y="190" font-size="14" fill="#334155">实轴</text>
+                        <text x="210" y="40" font-size="14" fill="#334155">虚轴</text>
+                        
+                        <!-- Vector Z(3, 4) -->
+                        <!-- Scale: 20px per unit. 3 units = 60px, 4 units = 80px -->
+                        <!-- Origin at (200, 200). Point at (260, 120) -->
+                        <line x1="200" y1="200" x2="260" y2="120" stroke="#4f46e5" stroke-width="3" marker-end="url(#arrow-blue)" />
+                        
+                        <!-- Projections -->
+                        <line x1="260" y1="120" x2="260" y2="200" stroke="#94a3b8" stroke-dasharray="4,4" />
+                        <line x1="260" y1="120" x2="200" y2="120" stroke="#94a3b8" stroke-dasharray="4,4" />
+                        
+                        <!-- Labels -->
+                        <circle cx="260" cy="120" r="4" fill="#4f46e5" />
+                        <text x="270" y="115" font-size="16" font-weight="bold" fill="#4f46e5">z = 3 + 4i</text>
+                        <text x="260" y="220" font-size="14" fill="#64748b">3</text>
+                        <text x="180" y="125" font-size="14" fill="#64748b">4i</text>
+                        
+                        <!-- Modulus -->
+                        <text x="220" y="150" font-size="14" fill="#4f46e5" font-style="italic">|z|=5</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第四部分：复数运算 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-4 mb-8">四、复数运算：消灭分母</h2>
+            <div class="w-full max-w-4xl mx-auto space-y-8">
+                
+                <div class="bg-emerald-50 p-6 rounded-lg border border-emerald-100">
+                    <h3 class="text-2xl font-bold text-emerald-800 mb-4">1. 乘法 (普通代数运算)</h3>
+                    <p class="text-lg mb-2">像多项式一样乘，把 $i^2$ 换成 $-1$。</p>
+                    <div class="formula-box bg-white text-lg py-3">
+                        $$(1+i)^2 = 1 + 2i + i^2 = 1 + 2i - 1 = 2i$$
+                    </div>
+                </div>
+
+                <div class="bg-amber-50 p-6 rounded-lg border border-amber-100">
+                    <h3 class="text-2xl font-bold text-amber-800 mb-4">2. 除法 (神器：共轭复数)</h3>
+                    <p class="text-lg mb-2">上下同乘分母的共轭 ($\bar{z} = a - bi$)。</p>
+                    <div class="grid grid-cols-2 gap-4 mt-4">
+                        <div class="text-center">
+                            <p class="font-bold text-amber-900 mb-2">共轭性质</p>
+                            <div class="formula-box bg-white py-2 text-base">
+                                $(a+bi)(a-bi) = a^2 + b^2$
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <p class="font-bold text-amber-900 mb-2">示例</p>
+                            <div class="formula-box bg-white py-2 text-base">
+                                $\frac{10}{3+4i} = \frac{10(3-4i)}{25} = \frac{6-8i}{5}$
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 练习题 1 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <div class="bg-blue-600 text-white px-4 py-1 rounded-t-lg inline-block font-bold">课后小测 1/4</div>
+                <div class="bg-white border-2 border-gray-200 p-8 rounded-b-lg rounded-tr-lg shadow-lg">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-6">题目 1</h3>
+                    <p class="text-xl mb-8">复数 $z = 2 - 3i$ 的虚部是：</p>
+                    <div class="space-y-2 text-lg">
+                        <div class="quiz-option">(A) $2$</div>
+                        <div class="quiz-option">(B) $-3$</div>
+                        <div class="quiz-option">(C) $3$</div>
+                        <div class="quiz-option">(D) $-3i$</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 解析 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-400 mb-4">题目 1 解析</h3>
+                <div class="bg-green-50 border-l-8 border-green-500 p-8 rounded shadow-sm">
+                    <p class="text-3xl font-bold text-green-800 mb-6">✅ 正确答案：(B)</p>
+                    <div class="text-xl leading-relaxed text-slate-700">
+                        <p><strong>解析：</strong></p>
+                        <p class="mt-4">复数 $z = a + bi$ 的虚部定义为实数 $b$。</p>
+                        <p class="mt-2">在本题中，$z = 2 + (-3)i$。</p>
+                        <p class="mt-4 text-red-600 font-bold">注意：虚部不包含 $i$！</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <div class="bg-blue-600 text-white px-4 py-1 rounded-t-lg inline-block font-bold">课后小测 2/4</div>
+                <div class="bg-white border-2 border-gray-200 p-8 rounded-b-lg rounded-tr-lg shadow-lg">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-6">题目 2</h3>
+                    <p class="text-xl mb-8">复数 $z = (1+2i)(1-i)$ 在复平面内对应的点位于：</p>
+                    <div class="space-y-2 text-lg">
+                        <div class="quiz-option">(A) 第一象限</div>
+                        <div class="quiz-option">(B) 第二象限</div>
+                        <div class="quiz-option">(C) 第三象限</div>
+                        <div class="quiz-option">(D) 第四象限</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 解析 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-400 mb-4">题目 2 解析</h3>
+                <div class="bg-green-50 border-l-8 border-green-500 p-8 rounded shadow-sm">
+                    <p class="text-3xl font-bold text-green-800 mb-6">✅ 正确答案：(A)</p>
+                    <div class="text-xl leading-relaxed text-slate-700">
+                        <p><strong>解析：</strong></p>
+                        <p class="mt-2">展开计算：</p>
+                        <div class="bg-white p-3 rounded border border-green-200 my-3 text-base">
+                            $$z = 1 - i + 2i - 2i^2$$
+                            $$= 1 + i - 2(-1)$$
+                            $$= 3 + i$$
+                        </div>
+                        <p>对应点坐标为 $(3, 1)$。</p>
+                        <p>横坐标 $>0$，纵坐标 $>0$，位于<strong>第一象限</strong>。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <div class="bg-blue-600 text-white px-4 py-1 rounded-t-lg inline-block font-bold">课后小测 3/4</div>
+                <div class="bg-white border-2 border-gray-200 p-8 rounded-b-lg rounded-tr-lg shadow-lg">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-6">题目 3</h3>
+                    <p class="text-xl mb-8">已知 $i$ 为虚数单位，则 $\frac{2}{1+i} =$</p>
+                    <div class="space-y-2 text-lg">
+                        <div class="quiz-option">(A) $1+i$</div>
+                        <div class="quiz-option">(B) $1-i$</div>
+                        <div class="quiz-option">(C) $-1+i$</div>
+                        <div class="quiz-option">(D) $-1-i$</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 解析 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-400 mb-4">题目 3 解析</h3>
+                <div class="bg-green-50 border-l-8 border-green-500 p-8 rounded shadow-sm">
+                    <p class="text-3xl font-bold text-green-800 mb-6">✅ 正确答案：(B)</p>
+                    <div class="text-xl leading-relaxed text-slate-700">
+                        <p><strong>解析：</strong> 分母实数化。</p>
+                        <p>上下同时乘以 $(1-i)$：</p>
+                        <div class="bg-white p-3 rounded border border-green-200 my-3 text-base">
+                            $$\frac{2(1-i)}{(1+i)(1-i)} = \frac{2(1-i)}{1^2 - i^2}$$
+                            $$= \frac{2(1-i)}{1 - (-1)} = \frac{2(1-i)}{2}$$
+                            $$= 1 - i$$
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <div class="bg-blue-600 text-white px-4 py-1 rounded-t-lg inline-block font-bold">课后小测 4/4</div>
+                <div class="bg-white border-2 border-gray-200 p-8 rounded-b-lg rounded-tr-lg shadow-lg">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-6">题目 4</h3>
+                    <p class="text-xl mb-8">若复数 $z$ 满足 $z = i^3$，则 $|z|$ 等于：</p>
+                    <div class="space-y-2 text-lg">
+                        <div class="quiz-option">(A) $1$</div>
+                        <div class="quiz-option">(B) $-1$</div>
+                        <div class="quiz-option">(C) $i$</div>
+                        <div class="quiz-option">(D) $0$</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 解析 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-400 mb-4">题目 4 解析</h3>
+                <div class="bg-green-50 border-l-8 border-green-500 p-8 rounded shadow-sm">
+                    <p class="text-3xl font-bold text-green-800 mb-6">✅ 正确答案：(A)</p>
+                    <div class="text-xl leading-relaxed text-slate-700">
+                        <p><strong>解析：</strong></p>
+                        <p class="mt-2">首先化简 $z$：</p>
+                        <p class="ml-4">$z = i^3 = i^2 \cdot i = -1 \cdot i = -i$</p>
+                        <p class="mt-2">计算模长：</p>
+                        <p class="ml-4">$z = 0 - 1i$</p>
+                        <p class="ml-4">$|z| = \sqrt{0^2 + (-1)^2} = \sqrt{1} = 1$</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 总结 -->
+         <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-5xl font-bold text-slate-800 mb-10">课后思考</h2>
+                <div class="bg-indigo-50 p-8 rounded-xl border border-indigo-100 text-left">
+                    <h3 class="text-2xl font-bold text-indigo-800 mb-4">二维数的意义</h3>
+                    <p class="text-lg leading-relaxed">
+                        复数不仅仅是解决 $\sqrt{-1}$ 的工具，它建立了一套<strong>二维数的运算系统</strong>。<br><br>
+                        想象一下，实数是一条线，而复数是一个面。在电路分析、信号处理乃至量子力学中，复数都是描述世界的基本语言。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

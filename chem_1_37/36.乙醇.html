@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>乙醇</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 (与上一份相同) */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+
+        /* 打印专用样式 (与上一份相同) */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">乙醇</h1>
+                <p class="text-2xl text-slate-600 mt-2">重要的有机化合物</p>
+            </div>
+        </div>
+        
+        <!-- 分子组成与结构 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>分子组成与结构</h2>
+                 <div class="mt-8 space-y-4 text-lg">
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg flex items-center gap-4"><strong class="bg-sky-100 text-sky-700 px-3 py-1 rounded-full">分子式</strong><p class="text-xl mono">C₂H₆O</p></div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg flex items-center gap-4"><strong class="bg-sky-100 text-sky-700 px-3 py-1 rounded-full">官能团</strong><p class="text-xl mono">-OH (羟基)</p></div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg flex items-center gap-4"><strong class="bg-sky-100 text-sky-700 px-3 py-1 rounded-full">结构简式</strong><p class="text-xl mono">CH₃CH₂OH  或 C₂H₅OH</p></div>
+                 </div>
+                 <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">结构式 (示意)</h3>
+                    <p class="mt-4 text-center mono bg-gray-100 p-3 rounded text-xl">
+                        <span class="inline-flex flex-col text-center">
+                            <span>H</span>
+                            <span>|</span>
+                            <span>H - C -</span>
+                            <span>|</span>
+                            <span>H</span>
+                        </span>
+                        <span class="inline-flex flex-col text-center">
+                            <span>H</span>
+                            <span>|</span>
+                            <span>C - O - H</span>
+                            <span>|</span>
+                            <span>H</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 乙醇的物理性质 (一) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>乙醇的物理性质 (一)</h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg flex items-center gap-4"><strong class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full">色/态/味</strong><p class="text-lg">无色、具有特殊香味的液体</p></div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg flex items-center gap-4"><strong class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full">挥发性</strong><p class="text-lg"><strong class="text-red-600">易挥发</strong> (酒香不怕巷子深)</p></div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg flex items-center gap-4"><strong class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full">密度</strong><p class="text-lg">比水小</p></div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 乙醇的物理性质 (二) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>乙醇的物理性质 (二)</h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800 text-xl">溶解性</h3>
+                        <p class="mt-3 text-slate-600 text-lg">能与水<strong class="text-red-600">任意比例互溶</strong>。</p>
+                        <p class="mt-2 text-slate-600 text-lg"><strong>原因：</strong>乙醇分子与水分子之间可以形成<strong class="text-blue-700">氢键</strong>。</p>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-green-800 text-xl">沸点</h3>
+                        <p class="mt-3 text-slate-600 text-lg">沸点 78°C (低于水的100°C)。</p>
+                        <p class="mt-2 text-slate-600 text-lg"><strong>应用：</strong>可通过<strong class="text-green-700">蒸馏</strong>法，将乙醇和水
+                        分离，提高乙醇浓度。</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 化学性质 (一)：与钠反应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>化学性质 (一)：与钠反应</h2>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <p class="mt-3 text-slate-600 text-lg">将金属钠放入<strong class="text-red-600">无水乙醇</strong>中，有气泡产生。</p>
+                    <p class="mt-2 text-slate-600 text-lg">该气体可安静燃烧，火焰呈淡蓝色，且不使澄清石灰水变浑浊，证明是<strong class="text-blue-600">氢气(H₂)</strong>。</p>
+                    <p class="mt-4 text-center mono bg-gray-100 p-3 rounded text-xl">2CH₃CH₂OH + 2Na → 2CH₃CH₂ONa + H₂↑</p>
+                    <p class="mt-4 text-center text-lg text-slate-700">(乙醇钠)</p>
+                    <p class="mt-4 text-center text-xl font-semibold text-teal-800">反应类型：置换反应</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 反应对比：水 vs 乙醇 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>反应活泼性比较：水 vs 乙醇</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800 text-xl text-center">钠与水 (H-OH)</h3>
+                        <p class="mt-3 text-slate-600 text-center"><strong class="text-red-600">反应剧烈</strong></p>
+                        <p class="mt-2 text-slate-600 text-center">浮、熔、游、响、红</p>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-green-800 text-xl text-center">钠与乙醇 (C₂H₅-OH)</h3>
+                        <p class="mt-3 text-slate-600 text-center"><strong class="text-blue-600">反应缓和</strong></p>
+                        <p class="mt-2 text-slate-600 text-center">沉在底部、不熔化、气泡缓慢</p>
+                    </div>
+                </div>
+                 <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg text-center font-semibold">
+                    结论：水(H-OH)中羟基氢的活泼性 <strong class="text-red-900">></strong> 乙醇(C₂H₅-OH)中羟基氢的活泼性。
+                </div>
+            </div>
+        </div>
+
+        <!-- 化学性质 (二)：氧化反应 (燃烧) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-rose-500 rounded"></span>化学性质 (二)：氧化反应</h2>
+                <div class="mt-8 bg-rose-50 border border-rose-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-rose-800 text-xl">1. 燃烧反应</h3>
+                    <p class="mt-3 text-slate-600 text-lg">乙醇可以燃烧，放出大量热，可作燃料（酒精灯）。</p>
+                    <p class="mt-4 text-center mono bg-rose-100 p-3 rounded text-xl flex items-center justify-center">
+                        <span>C₂H₅OH + 3O₂</span>
+                        <span class="inline-flex flex-col text-center mx-2">
+                            <span class="text-xs">点燃</span>
+                            <span>→</span>
+                        </span>
+                        <span>2CO₂ + 3H₂O</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 化学性质 (三)：催化氧化 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-rose-500 rounded"></span>化学性质 (三)：催化氧化 (重点)</h2>
+                <p class="mt-8 text-xl text-slate-700">实验：灼热的<strong class="text-red-600">铜丝</strong>插入乙醇中。</p>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                        <h3 class="font-semibold text-lg">第一步：铜丝在空气中加热</h3>
+                        <p class="mono mt-2">2Cu + O₂ --(△)→ 2CuO  (红色 → 黑色)</p>
+                    </div>
+                    <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                         <h3 class="font-semibold text-lg">第二步：灼热氧化铜遇乙醇</h3>
+                        <p class="mono mt-2">CuO + CH₃CH₂OH --(△)→ CH₃CHO + Cu + H₂O</p>
+                        <p class="mt-2 text-lg text-slate-700">(黑色 → 红色，闻到刺激性气味)</p>
+                    </div>
+                </div>
+                 <div class="mt-6 bg-green-100 text-green-800 p-4 rounded-lg text-lg text-center font-semibold">
+                    铜(Cu)在反应前后质量和性质不变，作<strong class="text-green-900">催化剂</strong>。
+                </div>
+            </div>
+        </div>
+
+        <!-- 催化氧化：总反应与本质 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-rose-500 rounded"></span>催化氧化：总反应与本质</h2>
+                <div class="mt-8 bg-rose-50 border border-rose-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-rose-800 text-xl">总反应式：</h3>
+                    <p class="mt-4 text-center mono bg-rose-100 p-3 rounded text-xl">2CH₃CH₂OH + O₂ --(Cu/△)→ 2CH₃CHO + 2H₂O</p>
+                    <p class="mt-2 text-center text-lg text-slate-700">(乙醇)  →  (乙醛)</p>
+                </div>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">反应本质：去氢氧化</h3>
+                    <p class="mt-3 text-slate-600 text-lg">断裂了羟基上的 <code>O-H</code> 键 和 连着羟基的碳上的 <code>C-H</code> 键。</p>
+                    <p class="mt-4 text-xl text-center font-semibold">
+                        <span class="text-blue-600">加氧 / 去氢</span> = <span class="text-red-600">氧化反应</span><br/>
+                        <span class="text-green-600">加氢 / 去氧</span> = <span class="text-red-600">还原反应</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 化学性质 (四)：与强氧化剂反应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-rose-500 rounded"></span>化学性质 (四)：强氧化反应</h2>
+                <p class="mt-8 text-xl text-slate-700 text-center">乙醇 →(氧化)→ 乙醛 →(氧化)→ 乙酸</p>
+                <p class="mt-4 text-xl text-slate-700">强氧化剂（如酸性KMnO₄、酸性K₂Cr₂O₇）能将乙醇<strong class="text-red-600">直接氧化</strong>为<strong class="text-red-600">乙酸 (CH₃COOH)</strong>。</p>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-purple-50 border border-purple-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-purple-800 text-xl">酸性 KMnO₄ (高锰酸钾)</h3>
+                        <p class="mt-3 text-slate-600">使 <code class="bg-purple-100 text-purple-700">紫色</code> 溶液<strong class="text-red-600">褪色</strong> (变为Mn²⁺)。</p>
+                    </div>
+                    <div class="bg-orange-50 border border-orange-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-orange-800 text-xl">酸性 K₂Cr₂O₇ (重铬酸钾)</h3>
+                        <p class="mt-3 text-slate-600">使 <code class="bg-orange-100 text-orange-700">橙色</code> 溶液变为<code class="bg-green-100 text-green-700">绿色</code> (变为Cr³⁺)。</p>
+                        <p class="mt-4 text-center text-blue-700 font-bold">→ 用于酒驾测试</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 乙醇的用途 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>乙醇的用途</h2>
+                 <div class="mt-8 space-y-4 text-lg">
+                    <div class="bg-rose-50 border border-rose-200 p-4 rounded-lg"><strong class="font-bold text-rose-800">燃料：</strong>酒精灯、乙醇汽油。</div>
+                    <div class="bg-green-50 border border-green-200 p-4 rounded-lg"><strong class="font-bold text-green-800">溶剂：</strong>重要的有机溶剂，可作萃取剂（如泡药酒）。</div>
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg"><strong class="font-bold text-blue-800">消毒剂：</strong>医疗上用于杀菌消毒。</div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 消毒剂详解 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>乙醇的用途：消毒</h2>
+                <div class="mt-8 bg-blue-50 border-l-4 border-blue-500 p-6 rounded-r-lg">
+                    <p class="text-3xl font-bold text-blue-800 text-center">体积分数 75%</p>
+                </div>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">杀菌原理：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">使细菌的<strong class="text-gray-700">蛋白质变性</strong>，失去生理活性。</p>
+                </div>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">为什么不用95%的酒精？</h3>
+                    <p>95%的酒精浓度过高，会使细菌<strong class="text-red-900">表面</strong>的蛋白质迅速凝固，形成一层<strong class="text-red-900">保护膜</strong>，阻止酒精渗入细菌内部，反而杀菌效果不佳。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 制备无水乙醇 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>无水乙醇的制备</h2>
+                <p class="mt-8 text-xl text-slate-700">工业乙醇(95%)中含有少量水，可通过加入<strong class="text-gray-700">生石灰(CaO)</strong>来除去。</p>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-lg">
+                        <h3 class="font-semibold text-lg">第一步：加 CaO 反应</h3>
+                        <p class="mono mt-2">CaO + H₂O → Ca(OH)₂</p>
+                        <p class="mt-2 text-lg text-slate-700">(将水转化为难挥发的 Ca(OH)₂ 固体)</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-lg">
+                         <h3 class="font-semibold text-lg">第二步：蒸馏</h3>
+                        <p class="mt-2 text-lg text-slate-700">加热，收集 78°C 蒸出的乙醇蒸气，即可得到无水乙醇。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（一）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">乙醇分子中的官能团是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(A)</strong> -COOH (羧基)</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(B)</strong> -OH (羟基)</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(C)</strong> -CHO (醛基)</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(D)</strong> C=C (碳碳双键)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（一）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>乙醇的化学式为 CH₃CH₂OH，其特征官能团是 -OH（羟基），它决定了乙醇的主要化学性质。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（二）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">下列哪个性质<strong class="text-red-600">不属于</strong>乙醇的物理性质？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 易挥发</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 能与水任意比例互溶</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 密度比水小</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 能与金属钠反应</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（二）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>能与金属钠反应放出氢气，是乙醇的化学性质。A、B、C 描述的都是物理性质。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（三）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">医疗上用作消毒剂的乙醇，其体积分数大约是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 100%</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 95%</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 75%</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 50%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（三）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>体积分数为 75% 的乙醇溶液杀菌消毒效果最好。浓度过高（如95%）会使细菌表面蛋白质迅速凝固形成保护膜，反而效果不佳。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（四）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">乙醇与灼热的氧化铜反应，最终生成的有机产物是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(A)</strong> CH₃COOH (乙酸)</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(B)</strong> CO₂ (二氧化碳)</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(C)</strong> CH₃CHO (乙醛)</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(D)</strong> CH₄ (甲烷)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（四）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>这是乙醇的催化氧化反应（<code>2CH₃CH₂OH + O₂ → 2CH₃CHO + 2H₂O</code>），在铜作催化剂并加热的条件下，乙醇被氧化为乙醛（CH₃CHO）。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（五）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">对比钠与水、钠与乙醇的反应，可以得出的结论是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 乙醇羟基上的氢比水羟基上的氢更活泼</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 水羟基上的氢比乙醇羟基上的氢更活泼</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 两者活泼性相同</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 乙醇不是化合物</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 5 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（五）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>钠与水的反应（剧烈）比钠与乙醇的反应（缓和）要快得多，证明水(H-OH)中羟基氢原子的活泼性强于乙醇(C₂H₅-OH)中羟基氢原子的活泼性。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                 </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看，下节课再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- 导航控件 (与上一份相同) -->
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <!-- JS 逻辑 (与上一份相同) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

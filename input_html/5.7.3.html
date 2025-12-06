@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>y = A sin(ωx + φ) + B 性质解析 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com/"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .graph-canvas {
+            border-radius: 0.5rem;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">整体换元法</h1>
+                <p class="text-2xl text-slate-600 mt-4">一招制服 y = A sin(ωx + φ) + B</p>
+                <p class="mt-8 text-xl text-cyan-600 font-semibold">"不管大魔王怎么变身，我们都能把它打回原形！"</p>
+            </div>
+        </div>
+
+        <!-- 独门秘籍 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-gray-500 pb-2 mb-4">独门秘籍：整体换元法</h2>
+                <p class="mt-6 text-xl text-slate-700">看到 <strong class="text-red-500">f(x) = 4sin(2x + π/3)</strong> 中 <strong class="text-blue-500">(2x + π/3)</strong> 这一坨就心烦？</p>
+                <div class="mt-4 text-2xl bg-gray-100 p-6 rounded-lg font-bold text-gray-800">
+                    那就把它当成一个整体！ <br/>
+                    令 t = 2x + π/3
+                </div>
+                <p class="mt-4 text-xl">原函数秒变 <strong class="text-emerald-600">y = 4sin(t)</strong>，性质一目了然！</p>
+            </div>
+        </div>
+        
+        <!-- 寻找对称轴 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-amber-500 pb-2">代数法求性质 (1): 对称轴</h2>
+                <p class="mt-6 text-xl text-center">求 f(x) = 4sin(2x + π/3) 的对称轴</p>
+            </div>
+        </div>
+
+        <!-- 寻找对称中心 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2">代数法求性质 (2): 对称中心</h2>
+                <p class="mt-6 text-xl text-center">求 f(x) = 4sin(2x + π/3) 的对称中心</p>
+            </div>
+        </div>
+
+        <!-- 寻找单调区间 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2">代数法求性质 (3): 单调区间</h2>
+                <p class="mt-6 text-xl text-center">求 f(x) = 4sin(2x + π/3) 的单调增区间</p>
+            </div>
+        </div>
+        
+        <!-- 实战应用 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-rose-500 pb-2">实战应用 (1): 文字信息题</h2>
+                 <div class="mt-6 space-y-4">
+                    <div class="bg-rose-50 p-4 rounded-lg text-lg">
+                        <p><strong>文字题：</strong>"g(x)=cos(ωx+φ)图像关于(π/2, 0)中心对称"</p>
+                        <p><strong>翻译：</strong> 这句话的意思就是，x = π/2 是对称中心的一个横坐标。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 实战应用 2: 图像解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-rose-500 pb-2">实战应用 (2): 图像解析</h2>
+                <!-- Canvas for the graph -->
+                <canvas id="cosine-graph" class="graph-canvas w-full h-64 mt-4"></canvas>
+                 <div class="mt-6 space-y-4">
+                    <div class="bg-rose-50 p-4 rounded-lg text-lg">
+                        <p><strong>翻译：</strong><br>
+                        1.从最小值到相邻的最大值，水平距离正好是半个周期！<br>
+                        2.所以 T/2 = 3π/4 - π/4 = π/2。<br>
+                        3.那么，完整的周期 T = π。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实战应用 3: 图像信息题 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-rose-500 pb-2">实战应用 (3): 图像信息题</h2>
+                 <div class="mt-6 space-y-4">
+                    <div class="bg-rose-50 p-4 rounded-lg text-lg">
+                        <p><strong>图像题：</strong>"图像在x=π/4取最小值，在x=3π/4取相邻最大值"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (1)</h2>
+                <div class="space-y-3 text-base md:text-lg">
+                    <div class="bg-gray-50 p-3 rounded-lg"><strong>1.</strong> 函数 f(x)=5cos(x)−2 的值域是什么？<br/>(A) [−7,3] (B) [−5,5] (C) [−2,5] (D) [−3,7]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (2)</h2>
+                <div class="space-y-3 text-base md:text-lg">
+                     <div class="bg-gray-50 p-3 rounded-lg"><strong>2.</strong> 函数 y=sin(3x) 的最小正周期是多少？<br/>(A) 2π/3 (B) π/3 (C) 2π (D) π</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (3)</h2>
+                <div class="space-y-3 text-base md:text-lg">
+                    <div class="bg-gray-50 p-3 rounded-lg"><strong>3.</strong> 得到 g(x)=cos(x+π/4) 的图像，需将 f(x)=cos(x) 如何平移？<br/>(A) 右移π/4 (B) 左移π/4 (C) 下移π/4 (D) 上移π/4</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (4)</h2>
+                <div class="space-y-3 text-base md:text-lg">
+                    <div class="bg-gray-50 p-3 rounded-lg"><strong>4.</strong> 函数 f(x)=2sin(½x) 在 x=π 处取得什么值？<br/>(A) 最大值 (B) 最小值 (C) 零点 (D) 非最值点</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题解析 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析</h2>
+                <div class="space-y-3 text-base">
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>1. 答案：A</strong></p>
+                        <p><strong>解析：</strong>cos(x)范围[-1,1] → 5cos(x)范围[-5,5] → 5cos(x)-2范围[-7,3]。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>2. 答案：A</strong></p>
+                        <p><strong>解析：</strong>周期 T = 2π/|ω| = 2π/3。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>3. 答案：B</strong></p>
+                        <p><strong>解析：</strong>水平平移“左加右减”，x变为x+π/4，是向左平移。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>4. 答案：A</strong></p>
+                        <p><strong>解析：</strong>f(π) = 2sin(π/2) = 2*1 = 2。函数最大值为2，所以是最大值点。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 总结 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8">课堂总结：组合拳</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-lg">
+                    <div class="bg-sky-100 p-6 rounded-lg">
+                        <h3 class="font-bold text-2xl mb-2">乾坤大挪移</h3>
+                        <p>令 ωx+φ=t，化繁为简。</p>
+                    </div>
+                    <div class="bg-amber-100 p-6 rounded-lg">
+                         <h3 class="font-bold text-2xl mb-2">照猫画虎</h3>
+                         <p>套用sin(t), cos(t)的性质公式。</p>
+                    </div>
+                    <div class="bg-emerald-100 p-6 rounded-lg">
+                         <h3 class="font-bold text-2xl mb-2">顺藤摸瓜</h3>
+                         <p>把t换回x，解方程/不等式。</p>
+                    </div>
+                </div>
+                 <p class="mt-12 text-2xl text-red-600 font-bold">警惕：当ω为负数时，内层函数单调性反转，“同增”变“异增”！</p>
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+    window.addEventListener('load', () => {
+        const canvas = document.getElementById('cosine-graph');
+        if (!canvas) return; // Exit if canvas not found
+        const ctx = canvas.getContext('2d');
+
+        // Debounce resize events to avoid performance issues
+        let resizeTimeout;
+        function drawGraph() {
+            // Set canvas resolution to match its display size for sharp rendering
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+
+            const width = canvas.width;
+            const height = canvas.height;
+            const margin = 30;
+
+            // Define the coordinate system range
+            const xMin = 0;
+            const xMax = Math.PI * 1.1;
+            const yMin = -1.2;
+            const yMax = 1.2;
+
+            // Functions to map math coordinates to canvas pixel coordinates
+            function mapX(x) {
+                return margin + (x - xMin) / (xMax - xMin) * (width - 2 * margin);
+            }
+
+            function mapY(y) {
+                return height - (margin + (y - yMin) / (yMax - yMin) * (height - 2 * margin));
+            }
+
+            // --- Drawing starts here ---
+            ctx.clearRect(0, 0, width, height); // Clear canvas for redraw
+
+            // 1. Draw Axes
+            ctx.beginPath();
+            ctx.strokeStyle = '#9ca3af'; // gray-400
+            ctx.lineWidth = 1;
+            ctx.moveTo(margin, mapY(0)); // X-axis
+            ctx.lineTo(width - margin, mapY(0));
+            ctx.moveTo(mapX(0), margin); // Y-axis
+            ctx.lineTo(mapX(0), height - margin);
+            ctx.stroke();
+
+            // 2. Draw Axis Labels
+            ctx.fillStyle = '#4b5563'; // gray-600
+            ctx.font = '14px "Noto Serif SC"';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('y', mapX(0), margin - 15);
+            ctx.fillText('x', width - margin + 10, mapY(0));
+            ctx.fillText('O', mapX(0) - 10, mapY(0) + 10);
+
+            // Y-axis labels A and -A
+            ctx.fillText('A', mapX(0) - 15, mapY(1));
+            ctx.fillText('-A', mapX(0) - 15, mapY(-1));
+
+
+            // 3. Draw Ticks and Labels on X-axis
+            const ticks = [Math.PI / 4, Math.PI / 2, (3 * Math.PI) / 4, Math.PI];
+            const labels = ['π/4', 'π/2', '3π/4', 'π'];
+            ctx.font = '12px "Noto Serif SC"';
+            ctx.beginPath();
+            ticks.forEach((tick, index) => {
+                const xPos = mapX(tick);
+                ctx.moveTo(xPos, mapY(0) - 4);
+                ctx.lineTo(xPos, mapY(0) + 4);
+                ctx.fillText(labels[index], xPos, mapY(0) + 18);
+            });
+            ctx.stroke();
+
+            // 4. Plot the function y = -sin(2x) (which is equivalent to cos(2x + pi/2))
+            ctx.beginPath();
+            ctx.strokeStyle = '#ef4444'; // red-500
+            ctx.lineWidth = 2;
+            for (let xPlot = xMin; xPlot <= xMax; xPlot += 0.01) {
+                // The function y = -sin(2x) has a min at x=pi/4 and max at x=3pi/4
+                const yPlot = -Math.sin(2 * xPlot); 
+                const canvasX = mapX(xPlot);
+                const canvasY = mapY(yPlot);
+                if (xPlot === xMin) {
+                    ctx.moveTo(canvasX, canvasY);
+                } else {
+                    ctx.lineTo(canvasX, canvasY);
+                }
+            }
+            ctx.stroke();
+
+            // 5. Mark Minimum and Maximum points
+            const minX = Math.PI / 4;
+            const minY = -1;
+            const maxX = (3 * Math.PI) / 4;
+            const maxY = 1;
+
+            ctx.font = '14px "Noto Serif SC"';
+
+            // Maximum point
+            ctx.fillStyle = '#10b981'; // emerald-500
+            ctx.beginPath();
+            ctx.arc(mapX(maxX), mapY(maxY), 5, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.textAlign = 'center';
+            ctx.fillText('A', mapX(maxX), mapY(maxY) - 20);
+
+            // Minimum point
+            ctx.fillStyle = '#3b82f6'; // blue-500
+            ctx.beginPath();
+            ctx.arc(mapX(minX), mapY(minY), 5, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.textAlign = 'center';
+            ctx.fillText('-A', mapX(minX), mapY(minY) + 20);
+        }
+
+        // Initial draw
+        drawGraph();
+
+        // Redraw on window resize
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(drawGraph, 100);
+        });
+    });
+    </script>
+</body>
+</html>
+

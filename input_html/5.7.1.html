@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>函数图像变换 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .graph-canvas {
+            border-radius: 0.5rem;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+            
+            .print-row {
+                flex-direction: row !important;
+                width: 100%;
+                align-items: center;
+                gap: 2rem;
+            }
+
+            .print-row > div {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 开场白 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">函数图像变换</h1>
+                <p class="text-2xl text-slate-600 mt-4">看穿所有“套路”</p>
+                <p class="mt-8 text-xl text-cyan-600 font-semibold">"掌握黄金法则，稳拿变换分数"</p>
+            </div>
+        </div>
+        
+        <!-- 热身运动：平移 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 print-row">
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-gray-500 pb-2">热身运动：平移</h2>
+                    <p class="mt-6 text-xl text-slate-700 leading-relaxed">
+                        记住八字口诀：
+                    </p>
+                    <div class="mt-4 text-2xl bg-gray-100 p-4 rounded-lg text-center font-bold text-gray-800">
+                        上下老实，左右叛逆
+                    </div>
+                     <p class="mt-4 text-lg">y = |x| → y = |x+2| - 7</p>
+                     <p class="mt-2 text-lg"><strong>过程：</strong>先向左平移2个单位，再向下平移7个单位。</p>
+                </div>
+                <div class="md:w-1/2 flex justify-center items-center">
+                    <canvas id="translation-canvas" class="graph-canvas" width="300" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 纵向伸缩 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 print-row">
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">纵向伸缩：上下“老实”人</h2>
+                    <p class="mt-6 text-lg text-slate-700 leading-relaxed">
+                       想把图像在垂直方向拉长或压扁，直接在整个函数前<strong class="text-amber-600">乘以一个系数</strong>就行。
+                    </p>
+                    <div class="mt-4 space-y-3">
+                       <div class="bg-gray-50 p-3 rounded-lg">
+                           <p class="text-lg">y = |x| → <span class="text-red-600 font-semibold">y = 4|x|</span></p>
+                           <p class="mt-1 text-base"><strong>过程：</strong>纵向拉伸到原来的 4 倍 (变瘦)。</p>
+                       </div>
+                       <div class="bg-gray-50 p-3 rounded-lg">
+                            <p class="text-lg">y = |x| → <span class="text-blue-600 font-semibold">y = 0.5|x|</span></p>
+                            <p class="mt-1 text-base"><strong>过程：</strong>纵向压缩到原来的 0.5 倍 (变胖)。</p>
+                       </div>
+                   </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center items-center">
+                    <canvas id="vertical-scaling-canvas" class="graph-canvas" width="300" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 横向伸缩 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 print-row">
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">横向伸缩：左右“叛逆”派</h2>
+                    <p class="mt-6 text-lg text-slate-700 leading-relaxed">
+                        这个东西和左右平移一样“叛逆”。对于 f(ax)，a 越大，图像越“瘦”（被压缩）；a 越小（分数），图像越“胖”（被拉伸）。
+                    </p>
+                     <div class="mt-4 space-y-3">
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <p class="text-lg">y = cos(x) → <span class="text-red-600 font-semibold">y = cos(3x)</span></p>
+                            <p class="mt-1 text-base"><strong>过程：</strong>横坐标压缩到原来的 1/3。</p>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                             <p class="text-lg">y = cos(x) → <span class="text-blue-600 font-semibold">y = cos(x/4)</span></p>
+                             <p class="mt-1 text-base"><strong>过程：</strong>横坐标拉伸到原来的 4 倍。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center items-center">
+                    <canvas id="scaling-canvas" class="graph-canvas" width="400" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 黄金法则 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-red-500 pb-2">核心：黄金法则</h2>
+                <div class="mt-6 text-2xl text-center bg-red-50 p-6 rounded-lg font-bold text-red-800">
+                    所有横向变换，永远只针对单独的 x！
+                </div>
+                <div class="mt-6 text-lg bg-gray-50 p-4 rounded-lg">
+                    <p class="font-bold">陷阱题：将 y=cos(3x+π/2) 向右平移 π/3 个单位。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 混合变换 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2">混合变换：路径一</h2>
+                <p class="mt-6 text-xl text-center">如何从 y=x³ 变为 y=(2x-6)³ ?</p>
+                <div class="mt-4 text-lg">
+                    <div class="bg-violet-50 p-6 rounded-lg">
+                        <p class="font-bold text-xl">先平移，再伸缩</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 混合变换 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2">混合变换：路径二</h2>
+                 <p class="mt-6 text-xl text-center">如何从 y=x³ 变为 y=(2x-6)³ ?</p>
+                <div class="mt-4 text-lg">
+                    <div class="bg-violet-50 p-6 rounded-lg">
+                        <p class="font-bold text-xl">先伸缩，再平移</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 混合变换 总结 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">混合变换：总结建议</h2>
+                 <p class="mt-8 text-xl bg-amber-100 p-8 rounded-lg leading-relaxed shadow"><strong>强烈建议：</strong><br/><br/>先提系数，整理成 <code class="bg-gray-200 px-2 py-1 rounded">f(a(x-h))</code> 形式，<br/>一目了然！</p>
+            </div>
+        </div>
+
+        <!-- 逆向思维 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-rose-500 pb-2">终极挑战：逆向思维</h2>
+                 <div class="mt-6 text-lg bg-rose-50 p-6 rounded-lg">
+                    <p>某函数 f(x) <strong>①左移3</strong>，再 <strong>②横向压缩到1/2</strong>，得到 g(x)=(x-1)²。求f(x)？</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (1/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-xl">
+                    <p><strong>1.</strong> 将 y=x² 右移3个单位，得到？</p>
+                    <div class="mt-4 space-y-2 text-lg">
+                        <p>(A) y=x²+3</p>
+                        <p>(B) y=x²-3</p>
+                        <p>(C) y=(x+3)²</p>
+                        <p>(D) y=(x-3)²</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (2/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-xl">
+                    <p><strong>2.</strong> 将 y=cos(x) 横坐标压缩到一半，得到？</p>
+                    <div class="mt-4 space-y-2 text-lg">
+                        <p>(A) y=½cos(x)</p>
+                        <p>(B) y=2cos(x)</p>
+                        <p>(C) y=cos(x/2)</p>
+                        <p>(D) y=cos(2x)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (3/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-xl">
+                    <p><strong>3.</strong> 将 y=|2x+4| 左移1个单位，得到？</p>
+                    <div class="mt-4 space-y-2 text-lg">
+                        <p>(A) y=|2x+5|</p>
+                        <p>(B) y=|2x+6|</p>
+                        <p>(C) y=|2x+3|</p>
+                        <p>(D) y=|2x+4|+1</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (4/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-xl">
+                    <p><strong>4.</strong> f(x) 右移2个单位后得到 g(x)=√(x+5)，则f(x)是？</p>
+                    <div class="mt-4 space-y-2 text-lg">
+                        <p>(A) f(x)=√(x+3)</p>
+                        <p>(B) f(x)=√(x-2)</p>
+                        <p>(C) f(x)=√(x+7)</p>
+                        <p>(D) f(x)=√x</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题解析 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析</h2>
+                <div class="space-y-3 text-base">
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>1. 答案：D</strong></p>
+                        <p><strong>解析：</strong>右移是“右减”，针对x操作，即 x 替换为 (x-3)。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>2. 答案：D</strong></p>
+                        <p><strong>解析：</strong>横向压缩是“叛逆”的，压缩到1/2，需将 x 替换为 2x。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>3. 答案：B</strong></p>
+                        <p><strong>解析：</strong>左移1，将x替换为(x+1)。y=|2(x+1)+4| = |2x+2+4| = |2x+6|。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>4. 答案：C</strong></p>
+                        <p><strong>解析：</strong>逆向思考。f(x)是g(x)左移2位得到，将g(x)的x替换为(x+2) → f(x)=√((x+2)+5) = √(x+7)。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 课堂总结 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">课堂总结</h2>
+                <div class="space-y-4 text-lg">
+                    <div class="bg-blue-50 p-4 rounded-lg"><strong>1. 基础要牢：</strong>“上下老实，左右叛逆”；“纵向老实，横向叛逆”。</div>
+                    <div class="bg-red-50 p-4 rounded-lg"><strong>2. 核心是“黄金法则”：</strong>所有横向变换，永远是**“锁定 x，精准替换”**！</div>
+                    <div class="bg-amber-50 p-4 rounded-lg"><strong>3. 习惯要好：</strong>处理混合变换，一定记得 先提系数，把函数变成 f(a(x-h)) 的标准形式。</div>
+                    <div class="bg-violet-50 p-4 rounded-lg"><strong>4. 思维要活：</strong>遇到反向求解问题，就**“倒着顺序，反着操作”**。</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function drawAxes(ctx, xMin, xMax, yMin, yMax) {
+                const w = ctx.canvas.width;
+                const h = ctx.canvas.height;
+                const toCanvasX = (x) => (x - xMin) / (xMax - xMin) * w;
+                const toCanvasY = (y) => h - (y - yMin) / (yMax - yMin) * h;
+
+                ctx.save();
+                ctx.clearRect(0, 0, w, h);
+                ctx.fillStyle = '#f8fafc';
+                ctx.fillRect(0, 0, w, h);
+
+                ctx.strokeStyle = '#9ca3af';
+                ctx.lineWidth = 1;
+                // X-Axis
+                ctx.beginPath();
+                ctx.moveTo(0, toCanvasY(0));
+                ctx.lineTo(w, toCanvasY(0));
+                ctx.stroke();
+                // Y-Axis
+                ctx.beginPath();
+                ctx.moveTo(toCanvasX(0), 0);
+                ctx.lineTo(toCanvasX(0), h);
+                ctx.stroke();
+                
+                ctx.restore();
+                return { toCanvasX, toCanvasY };
+            }
+
+            function drawFunction(ctx, func, xMin, xMax, toCanvasX, toCanvasY, color, lineWidth = 2, dash = []) {
+                ctx.save();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = lineWidth;
+                ctx.setLineDash(dash);
+                ctx.beginPath();
+                let firstPoint = true;
+                for (let x = xMin; x <= xMax; x += 0.05) { // Increased resolution
+                    const y = func(x);
+                    if (Number.isNaN(y)) {
+                        firstPoint = true;
+                        continue;
+                    }
+                    if (firstPoint) {
+                        ctx.moveTo(toCanvasX(x), toCanvasY(y));
+                        firstPoint = false;
+                    } else {
+                        ctx.lineTo(toCanvasX(x), toCanvasY(y));
+                    }
+                }
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            // Canvas 1: Translation
+            const canvas1 = document.getElementById('translation-canvas');
+            if (canvas1) {
+                const xMin = -10, xMax = 5, yMin = -10, yMax = 5;
+                const ctx = canvas1.getContext('2d');
+                const { toCanvasX, toCanvasY } = drawAxes(ctx, xMin, xMax, yMin, yMax);
+                
+                // Original y=|x|
+                drawFunction(ctx, x => Math.abs(x), xMin, xMax, toCanvasX, toCanvasY, '#a1a1aa', 2, [5, 5]);
+                // Horizontally shifted y=|x+2|
+                drawFunction(ctx, x => Math.abs(x + 2), xMin, xMax, toCanvasX, toCanvasY, '#3b82f6', 2, [5, 5]);
+                // Transformed y=|x+2|-7
+                drawFunction(ctx, x => Math.abs(x + 2) - 7, xMin, xMax, toCanvasX, toCanvasY, '#ef4444', 3);
+                
+                // Add labels
+                ctx.font = '12px "Noto Serif SC"';
+                ctx.fillStyle = '#a1a1aa';
+                ctx.fillText('y = |x|', toCanvasX(3), toCanvasY(3.5));
+                
+                ctx.fillStyle = '#3b82f6';
+                ctx.fillText('y = |x+2|', toCanvasX(1), toCanvasY(3.5));
+
+                ctx.fillStyle = '#ef4444';
+                ctx.fillText('y = |x+2|-7', toCanvasX(1), toCanvasY(-6));
+            }
+
+            // Canvas for Vertical Scaling
+            const canvasV = document.getElementById('vertical-scaling-canvas');
+            if (canvasV) {
+                const xMin = -5, xMax = 5, yMin = -2, yMax = 10;
+                const ctx = canvasV.getContext('2d');
+                const { toCanvasX, toCanvasY } = drawAxes(ctx, xMin, xMax, yMin, yMax);
+                
+                drawFunction(ctx, x => Math.abs(x), xMin, xMax, toCanvasX, toCanvasY, '#a1a1aa', 2, [5, 5]);
+                drawFunction(ctx, x => 4 * Math.abs(x), xMin, xMax, toCanvasX, toCanvasY, '#ef4444', 2);
+                drawFunction(ctx, x => 0.5 * Math.abs(x), xMin, xMax, toCanvasX, toCanvasY, '#3b82f6', 2);
+
+                ctx.font = '12px "Noto Serif SC"';
+                ctx.fillStyle = '#a1a1aa';
+                ctx.fillText('y = |x|', toCanvasX(3.5), toCanvasY(4.5));
+
+                ctx.fillStyle = '#ef4444';
+                ctx.fillText('y = 4|x|', toCanvasX(2.0), toCanvasY(7));
+
+                ctx.fillStyle = '#3b82f6';
+                ctx.fillText('y = 0.5|x|', toCanvasX(2.8), toCanvasY(0.5));
+            }
+
+            // Canvas 2: Horizontal Scaling
+            const canvas2 = document.getElementById('scaling-canvas');
+            if (canvas2) {
+                // Widen the range to show the stretched function
+                const xMin = -4 * Math.PI, xMax = 4 * Math.PI, yMin = -1.5, yMax = 1.5;
+                const ctx = canvas2.getContext('2d');
+                const { toCanvasX, toCanvasY } = drawAxes(ctx, xMin, xMax, yMin, yMax);
+                
+                // Original y=cos(x)
+                drawFunction(ctx, x => Math.cos(x), xMin, xMax, toCanvasX, toCanvasY, '#a1a1aa', 2, [5, 5]);
+                // Compressed y=cos(3x)
+                drawFunction(ctx, x => Math.cos(3 * x), xMin, xMax, toCanvasX, toCanvasY, '#ef4444', 2);
+                // Stretched y=cos(x/4)
+                drawFunction(ctx, x => Math.cos(x / 4), xMin, xMax, toCanvasX, toCanvasY, '#3b82f6', 2);
+                
+                // Add labels
+                ctx.font = '12px "Noto Serif SC"';
+                ctx.fillStyle = '#a1a1aa';
+                ctx.fillText('y = cos(x)', toCanvasX(Math.PI / 2 + 0.2), toCanvasY(-1.5));
+                
+                ctx.fillStyle = '#ef4444';
+                ctx.fillText('y = cos(3x)', toCanvasX(Math.PI / 6 + 0.2), toCanvasY(1.1));
+
+                ctx.fillStyle = '#3b82f6';
+                ctx.fillText('y = cos(x/4)', toCanvasX(2*Math.PI + 0.2), toCanvasY(1.2));
+            }
+        });
+    </script>
+</body>
+</html>
+

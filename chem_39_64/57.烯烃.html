@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>有机化学基础：烯烃</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 64rem; /* 保持宽度 */
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+            min-height: 85vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 4rem; /* 稍微增加内边距，使页面更留白 */
+            display: none;
+            flex-direction: column;
+            flex: 1;
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+            justify-content: center; /* 垂直居中内容 */
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        /* 标题下的装饰线 */
+        .title-underline {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 6rem;
+            height: 0.25rem;
+            border-radius: 0.25rem;
+        }
+
+        #navigation {
+            background: #f8fafc;
+            padding: 1rem;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            bottom: 0;
+        }
+
+        .chem-eq {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+            background-color: #fff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+            display: block;
+            text-align: center;
+            margin-top: 0.5rem;
+            color: #334155;
+            font-size: 1.1rem;
+        }
+        
+        .highlight {
+            color: #dc2626;
+            font-weight: bold;
+        }
+        
+        .highlight-blue {
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        /* SVG 样式 */
+        .molecule-svg {
+            display: block;
+            margin: 1rem auto;
+            max-width: 100%;
+            height: auto;
+        }
+        .atom-c { fill: #334155; }
+        .atom-h { fill: #94a3b8; }
+        .atom-cl { fill: #16a34a; }
+        .bond { stroke: #334155; stroke-width: 2; }
+        .bond-pi { stroke: #dc2626; stroke-width: 2; stroke-dasharray: 4; }
+        .text-label { font-family: sans-serif; font-size: 12px; text-anchor: middle; fill: #475569; }
+
+        /* 打印样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; min-height: 100vh; }
+            .section { display: block !important; opacity: 1 !important; page-break-after: always; min-height: 100vh; padding: 2rem; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- Page 1: 封面页 -->
+        <div class="section active">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <div class="mb-10">
+                    <svg class="w-40 h-40 mx-auto text-blue-600 mb-6" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="50" cy="50" r="45" class="text-blue-50 fill-current" stroke="none"/>
+                        <path d="M30 50 L70 50 M30 55 L70 55" stroke="#1e3a8a" stroke-width="4"/>
+                        <path d="M30 50 L15 25 M30 50 L15 75 M70 50 L85 25 M70 50 L85 75" stroke="#1e3a8a" stroke-width="3"/>
+                    </svg>
+                </div>
+                <h1 class="text-6xl font-bold text-slate-800 mb-8">有机化学基础：烯烃</h1>
+            </div>
+        </div>
+
+        <!-- Page 2: 结构与定义 (1) 概念 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-4 mb-8"><span class="title-underline bg-sky-500"></span>一、烯烃的结构与定义</h2>
+                
+                <div class="space-y-8">
+                    <div class="bg-blue-50 border border-blue-100 p-8 rounded-xl shadow-sm">
+                        <h3 class="font-bold text-blue-800 text-2xl mb-4">基本定义</h3>
+                        <ul class="list-disc list-inside text-xl text-slate-700 space-y-4">
+                            <li><span class="font-bold">前提：</span>必须是烃类（只含C、H元素）。</li>
+                            <li><span class="font-bold">官能团：</span><span class="highlight-blue">碳碳双键</span> (C=C)。</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-gray-50 border border-gray-200 p-8 rounded-xl shadow-sm">
+                        <h3 class="font-bold text-gray-800 text-2xl mb-4">单烯烃通式</h3>
+                        <div class="text-center py-4">
+                            <p class="text-5xl font-mono font-bold text-slate-800">CₙH₂ₙ <span class="text-xl font-normal text-slate-500 ml-2">(n ≥ 2)</span></p>
+                        </div>
+                        <p class="text-slate-600 text-lg text-center mt-2">
+                            <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded text-base font-bold mr-2">原理</span> 
+                            每增加一个π键，不饱和度增加1，氢原子数减2。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 3: 结构与定义 (2) 乙烯结构 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-4 mb-8 text-left"><span class="title-underline bg-sky-500"></span>一、烯烃的结构与定义 (续)</h2>
+                
+                <div class="bg-white border border-slate-200 p-10 rounded-xl shadow-md inline-block w-full">
+                    <h3 class="font-bold text-slate-700 text-2xl mb-6">乙烯 (C₂H₄) 结构模型</h3>
+                    
+                    <svg class="molecule-svg" width="400" height="240" viewBox="0 0 300 180">
+                        <!-- Bonds -->
+                        <line x1="110" y1="90" x2="190" y2="90" stroke="#334155" stroke-width="6" /> <!-- Sigma -->
+                        <line x1="110" y1="90" x2="190" y2="90" stroke="#dc2626" stroke-width="3" transform="translate(0, -8)" /> <!-- Pi top -->
+                        <line x1="110" y1="90" x2="190" y2="90" stroke="#dc2626" stroke-width="3" transform="translate(0, 8)" /> <!-- Pi bottom visual -->
+                        
+                        <line x1="110" y1="90" x2="70" y2="40" class="bond" />
+                        <line x1="110" y1="90" x2="70" y2="140" class="bond" />
+                        <line x1="190" y1="90" x2="230" y2="40" class="bond" />
+                        <line x1="190" y1="90" x2="230" y2="140" class="bond" />
+
+                        <!-- Atoms -->
+                        <circle cx="110" cy="90" r="20" class="atom-c" />
+                        <circle cx="190" cy="90" r="20" class="atom-c" />
+                        <circle cx="70" cy="40" r="12" class="atom-h" />
+                        <circle cx="70" cy="140" r="12" class="atom-h" />
+                        <circle cx="230" cy="40" r="12" class="atom-h" />
+                        <circle cx="230" cy="140" r="12" class="atom-h" />
+
+                        <!-- Labels -->
+                        <text x="110" y="95" fill="white" text-anchor="middle" font-weight="bold" font-size="14">C</text>
+                        <text x="190" y="95" fill="white" text-anchor="middle" font-weight="bold" font-size="14">C</text>
+                        <text x="150" y="75" fill="#dc2626" font-size="14" text-anchor="middle">π键</text>
+                        <text x="150" y="105" fill="#334155" font-size="14" text-anchor="middle">σ键</text>
+                    </svg>
+                    
+                    <div class="text-slate-600 text-lg mt-6 grid grid-cols-3 gap-4 border-t pt-6">
+                        <div class="bg-slate-50 p-3 rounded">
+                            <p class="text-sm text-slate-400 mb-1">碳原子杂化</p>
+                            <p class="font-bold text-blue-600 text-xl">sp²杂化</p>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded">
+                            <p class="text-sm text-slate-400 mb-1">空间构型</p>
+                            <p class="font-bold text-slate-700 text-xl">平面结构</p>
+                            <p class="text-xs text-slate-400">6原子共面</p>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded">
+                            <p class="text-sm text-slate-400 mb-1">键角</p>
+                            <p class="font-bold text-slate-700 text-xl">约120°</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 4: 物理性质 (1) 沸点与状态 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-4 mb-10"><span class="title-underline bg-indigo-500"></span>二、烯烃的物理性质</h2>
+                
+                <div class="bg-white border-l-8 border-indigo-500 shadow-md rounded-r-xl p-8 mb-8">
+                    <h3 class="font-bold text-2xl text-slate-800 mb-4">1. 沸点与状态变化</h3>
+                    <p class="text-xl text-slate-700 leading-relaxed">
+                        随碳原子数增加，相对分子质量增大，<span class="highlight-blue">范德华力</span>增大，<br>
+                        沸点逐渐<span class="highlight text-2xl">升高</span>。
+                    </p>
+                </div>
+
+                <div class="bg-indigo-50 p-8 rounded-xl border border-indigo-100 text-center">
+                    <h4 class="font-bold text-indigo-900 text-xl mb-6">状态分布规律</h4>
+                    <div class="flex justify-around items-center">
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-blue-500 mb-2">C₂ ~ C₄</div>
+                            <div class="text-slate-600 font-bold">气态</div>
+                        </div>
+                        <div class="text-slate-300 text-3xl">→</div>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-blue-400 mb-2">C₅ ~ C₁₈</div>
+                            <div class="text-slate-600 font-bold">液态</div>
+                        </div>
+                         <div class="text-slate-300 text-3xl">→</div>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-blue-300 mb-2">C₁₈+</div>
+                            <div class="text-slate-600 font-bold">固态</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 5: 物理性质 (2) 溶解性与密度 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-4 mb-10"><span class="title-underline bg-indigo-500"></span>二、烯烃的物理性质 (续)</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white border-t-4 border-emerald-500 shadow-md rounded-b-xl p-8 flex flex-col items-center text-center h-full">
+                        <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-6 text-2xl">💧</div>
+                        <h3 class="font-bold text-2xl text-slate-800 mb-4">溶解性</h3>
+                        <p class="text-lg text-slate-600 mb-2"><span class="font-bold text-red-500">难溶于水</span></p>
+                        <p class="text-lg text-slate-600">易溶于有机溶剂</p>
+                        <p class="text-sm text-slate-400 mt-4">（遵循“相似相容”原理）</p>
+                    </div>
+
+                    <div class="bg-white border-t-4 border-sky-500 shadow-md rounded-b-xl p-8 flex flex-col items-center text-center h-full">
+                        <div class="w-16 h-16 bg-sky-100 rounded-full flex items-center justify-center mb-6 text-2xl">⚖️</div>
+                        <h3 class="font-bold text-2xl text-slate-800 mb-4">密度</h3>
+                        <p class="text-lg text-slate-600 mb-4">密度比水<span class="highlight text-2xl">小</span></p>
+                        <div class="w-full h-4 bg-slate-100 rounded-full overflow-hidden mt-2 relative">
+                            <div class="absolute top-0 left-0 h-full bg-sky-400" style="width: 70%"></div>
+                        </div>
+                        <div class="flex justify-between w-full text-xs text-slate-400 mt-1">
+                            <span>烯烃</span>
+                            <span>水 (1.0 g/cm³)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 6: 化学性质 (1) 加成反应 - 卤素 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-4 mb-6"><span class="title-underline bg-red-500"></span>三、化学性质：加成反应</h2>
+                
+                <div class="mb-8">
+                    <p class="text-xl text-slate-700">
+                        <span class="font-bold bg-slate-100 px-2 py-1 rounded">常见试剂</span> 
+                        H₂、X₂ (卤素单质)、HX、H₂O 等。
+                    </p>
+                </div>
+
+                <div class="bg-red-50 border border-red-100 p-8 rounded-xl shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <span class="bg-red-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-3">1</span>
+                        <h3 class="font-bold text-red-900 text-2xl">丙烯与溴的四氯化碳溶液反应</h3>
+                    </div>
+                    
+                    <div class="my-8">
+                        <span class="chem-eq text-xl">CH₃-CH=CH₂ + Br₂ &rarr; CH₃-CHBr-CH₂Br</span>
+                    </div>
+                    
+                    <div class="flex justify-between items-end">
+                        <div class="text-slate-600">
+                            <span class="font-bold">现象：</span>溴的红棕色褪去
+                        </div>
+                        <div class="text-slate-500 text-sm bg-white px-3 py-1 rounded border border-red-100">
+                            产物：1,2-二溴丙烷
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 7: 化学性质 (2) 水合与卤化氢加成 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-4 mb-8"><span class="title-underline bg-red-500"></span>三、化学性质：加成反应 (续)</h2>
+                
+                <div class="space-y-8">
+                    <!-- 反应2 -->
+                    <div class="bg-blue-50 border border-blue-100 p-6 rounded-xl">
+                        <div class="flex items-center mb-3">
+                            <span class="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-3">2</span>
+                            <h3 class="font-bold text-blue-800 text-xl">乙烯制备乙醇 (工业制法)</h3>
+                        </div>
+                        <span class="chem-eq">CH₂=CH₂ + H₂O <span class="text-xs align-middle text-slate-500 mx-1">催化剂/加热加压</span> &rarr; CH₃CH₂OH</span>
+                    </div>
+
+                    <!-- 反应3 -->
+                    <div class="bg-green-50 border border-green-100 p-6 rounded-xl">
+                         <div class="flex items-center mb-3">
+                            <span class="bg-green-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-3">3</span>
+                            <h3 class="font-bold text-green-800 text-xl">乙烯制备氯乙烷</h3>
+                        </div>
+                        <span class="chem-eq">CH₂=CH₂ + HCl <span class="text-xs align-middle text-slate-500 mx-1">一定条件</span> &rarr; CH₃CH₂Cl</span>
+                        
+                        <div class="mt-4 bg-white p-4 rounded border border-green-100">
+                            <p class="text-green-700 font-bold text-lg mb-1">💡 思考：为何加成优于取代？</p>
+                            <p class="text-slate-600">加成反应无副产物，原子利用率 <span class="font-bold text-green-600">100%</span>，产物更纯净。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 8: 不对称加成实例 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-4 mb-8"><span class="title-underline bg-orange-500"></span>不对称加成反应</h2>
+                
+                <div class="bg-white p-8 rounded-xl shadow-md border border-slate-200 text-center">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-8">丙烯与 HCl 的加成产物分析</h3>
+                    
+                    <div class="chem-eq text-2xl mb-8 inline-block shadow-sm">CH₃-CH=CH₂ + H-Cl</div>
+                    
+                    <div class="flex flex-col md:flex-row justify-center items-stretch gap-6">
+                         <div class="flex-1 p-6 bg-orange-50 border-2 border-orange-300 rounded-lg relative">
+                             <div class="absolute top-0 right-0 bg-orange-500 text-white px-2 py-1 text-xs font-bold rounded-bl">主要产物</div>
+                             <div class="text-xl font-bold text-slate-800 mb-2">2-氯丙烷</div>
+                             <div class="chem-eq border-none bg-transparent text-lg">CH₃-CHCl-CH₃</div>
+                         </div>
+
+                         <div class="flex items-center justify-center text-slate-400 font-bold">VS</div>
+
+                         <div class="flex-1 p-6 bg-slate-50 border border-slate-200 rounded-lg relative opacity-75">
+                             <div class="absolute top-0 right-0 bg-slate-400 text-white px-2 py-1 text-xs font-bold rounded-bl">次要产物</div>
+                             <div class="text-xl font-bold text-slate-600 mb-2">1-氯丙烷</div>
+                             <div class="chem-eq border-none bg-transparent text-lg">CH₃-CH₂-CH₂Cl</div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 9: 马氏规则定义 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-4 mb-10"><span class="title-underline bg-orange-500"></span>马尔可夫尼可夫规则</h2>
+                
+                <div class="bg-orange-50 border-l-8 border-orange-500 p-10 rounded-r-xl shadow-sm">
+                    <h3 class="text-3xl font-bold text-orange-900 mb-6">马氏规则 (Markovnikov's Rule)</h3>
+                    <p class="text-2xl text-orange-800 leading-loose">
+                        不对称烯烃与卤化氢加成时，<br>
+                        <span class="bg-white px-3 py-1 rounded shadow-sm font-bold mx-1">氢原子</span>
+                        总是加在
+                        <span class="font-bold underline decoration-4 decoration-orange-300">含氢较多</span>
+                        的碳原子上。
+                    </p>
+                </div>
+
+                <div class="mt-10 text-center">
+                    <p class="text-xl text-slate-600 mb-4">记忆口诀</p>
+                    <p class="text-4xl font-bold text-slate-800 bg-white inline-block px-8 py-4 rounded-full shadow border border-slate-200">
+                        <span class="text-blue-600">氢</span>加<span class="text-blue-600">氢多</span>，<span class="text-red-500">卤</span>加<span class="text-red-500">氢少</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 10: 加聚反应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-4 mb-8"><span class="title-underline bg-purple-500"></span>四、加聚反应 (加成聚合)</h2>
+                
+                <div class="space-y-8">
+                    <div class="bg-slate-50 p-8 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                        <div class="flex justify-between items-center mb-4">
+                            <p class="font-bold text-slate-800 text-2xl">聚乙烯 (PE)</p>
+                            <span class="text-xs bg-slate-200 text-slate-600 px-2 py-1 rounded">塑料袋原料</span>
+                        </div>
+                        <span class="chem-eq text-xl">nCH₂=CH₂ &rarr; [—CH₂—CH₂—]ₙ</span>
+                    </div>
+
+                    <div class="bg-slate-50 p-8 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-20 h-20 bg-purple-100 rounded-bl-full -mr-10 -mt-10"></div>
+                        <div class="flex justify-between items-center mb-4 relative">
+                            <p class="font-bold text-slate-800 text-2xl">聚丙烯 (PP)</p>
+                             <span class="text-sm font-bold text-red-500 border border-red-200 px-2 py-1 rounded bg-white">⚠️ 重点：侧链写法</span>
+                        </div>
+                        <span class="chem-eq text-xl">nCH₂=CH(CH₃) &rarr; [—CH₂—CH(CH₃)—]ₙ</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 11: 氧化反应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-4 mb-8"><span class="title-underline bg-purple-500"></span>四、氧化反应</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- 酸性高锰酸钾 -->
+                    <div class="bg-red-50 p-8 rounded-xl border border-red-100 flex flex-col">
+                        <h3 class="font-bold text-red-800 text-2xl mb-4">1. 酸性高锰酸钾</h3>
+                        <div class="flex-grow flex items-center justify-center bg-white rounded-lg p-6 mb-4 border border-red-50">
+                            <div class="text-center">
+                                <div class="w-12 h-12 bg-purple-600 rounded-full mx-auto mb-2 opacity-80"></div>
+                                <span class="text-xl font-bold text-slate-400">↓</span>
+                                <div class="w-12 h-12 bg-transparent border-2 border-slate-200 rounded-full mx-auto mt-2"></div>
+                                <p class="font-bold text-red-600 mt-2">溶液褪色</p>
+                            </div>
+                        </div>
+                        <p class="text-slate-700 text-sm leading-relaxed">
+                            <span class="font-bold">应用：</span><br>
+                            1. 鉴别烯烃与烷烃<br>
+                            2. 除去烷烃中的烯烃（需碱液吸收生成的CO₂）
+                        </p>
+                    </div>
+
+                    <!-- 燃烧 -->
+                    <div class="bg-orange-50 p-8 rounded-xl border border-orange-100 flex flex-col">
+                        <h3 class="font-bold text-orange-800 text-2xl mb-4">2. 燃烧反应</h3>
+                        <div class="bg-white p-4 rounded-lg border border-orange-100 mb-6">
+                            <p class="mono text-sm font-bold text-center text-slate-700">CₙH₂ₙ + 1.5nO₂ &rarr; nCO₂ + nH₂O</p>
+                        </div>
+                        <div class="flex-grow">
+                            <p class="font-bold text-slate-800 text-lg mb-2">现象特征：</p>
+                            <ul class="list-disc list-inside text-slate-600 space-y-2">
+                                <li>火焰明亮</li>
+                                <li>伴有<span class="font-bold text-black">黑烟</span></li>
+                                <li class="text-sm text-slate-400">（原因：含碳量高于同碳数烷烃）</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 12: 共轭二烯烃定义 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-4 mb-10"><span class="title-underline bg-teal-500"></span>五、共轭二烯烃</h2>
+                
+                <div class="bg-teal-50 border-t-4 border-teal-500 p-10 rounded shadow-sm text-center">
+                    <h3 class="font-bold text-3xl text-teal-900 mb-6">定义</h3>
+                    <p class="text-2xl text-slate-700 mb-8">
+                        分子中含有两个碳碳双键，<br>
+                        且两个双键只相隔<span class="font-bold text-teal-600 scale-110 inline-block mx-2">一个</span>单键。
+                    </p>
+                    
+                    <div class="inline-block bg-white p-6 rounded-lg shadow-inner border border-teal-100">
+                        <p class="text-sm text-slate-400 mb-2">最简单的共轭二烯烃</p>
+                        <p class="text-3xl font-mono font-bold text-slate-800">1,3-丁二烯</p>
+                        <div class="chem-eq mt-3 text-xl">CH₂=CH—CH=CH₂</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 13: 共轭二烯烃加成竞争 -->
+        <div class="section">
+            <div class="w-full max-w-5xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-4 mb-8"><span class="title-underline bg-teal-500"></span>五、共轭二烯烃 (续)</h2>
+                <h3 class="text-xl font-bold text-slate-600 mb-6 text-center">1,3-丁二烯与 Cl₂ (1:1) 的加成竞争</h3>
+
+                <div class="grid grid-cols-2 gap-8">
+                    <!-- 1,2加成 -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-blue-500 relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 bg-blue-100 text-blue-800 px-3 py-1 text-sm font-bold rounded-bl-lg">低温主导</div>
+                        <h4 class="font-bold text-2xl text-blue-600 mb-3">1,2-加成</h4>
+                        <p class="text-slate-600 mb-4 h-12">氯原子加在1号和2号碳上，<br>保留3,4号双键。</p>
+                        <div class="chem-eq text-sm bg-blue-50 border-blue-100">CH₂Cl-CHCl-CH=CH₂</div>
+                    </div>
+
+                    <!-- 1,4加成 -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-red-500 relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 bg-red-100 text-red-800 px-3 py-1 text-sm font-bold rounded-bl-lg">高温主导</div>
+                        <h4 class="font-bold text-2xl text-red-600 mb-3">1,4-加成</h4>
+                        <p class="text-slate-600 mb-4 h-12">双键<span class="font-bold">转移</span>到中间（2,3位），<br>两端接氯。</p>
+                        <div class="chem-eq text-sm bg-red-50 border-red-100">CH₂Cl-CH=CH-CH₂Cl</div>
+                    </div>
+                </div>
+
+                <p class="mt-8 text-center text-slate-400 text-sm">注：若氯气足量，两个双键均被加成。</p>
+            </div>
+        </div>
+
+        <!-- Page 14: 立体异构形成条件 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-4 mb-10"><span class="title-underline bg-pink-500"></span>六、立体异构：顺反异构</h2>
+                
+                <div class="bg-pink-50 border border-pink-200 p-10 rounded-xl shadow-sm">
+                    <h3 class="font-bold text-pink-800 text-2xl mb-6 text-center">形成条件 (缺一不可)</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="bg-pink-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">1</div>
+                            <p class="text-xl text-slate-700 pt-1">分子中必须有<span class="font-bold text-pink-700">碳碳双键</span>（限制旋转）。</p>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-pink-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">2</div>
+                            <p class="text-xl text-slate-700 pt-1">
+                                组成双键的<span class="border-b-2 border-pink-400 font-bold">每个</span>碳原子必须连接两个<span class="font-bold text-red-600 text-2xl">不同</span>的原子或原子团。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-10 text-center">
+                        <p class="font-mono text-2xl bg-white inline-block px-6 py-3 rounded-lg border border-pink-100 text-slate-600 shadow-sm">
+                            即：a ≠ b 且 c ≠ d
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 15: 顺反异构图示 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-4 mb-8"><span class="title-underline bg-pink-500"></span>六、立体异构 (续)</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10 text-center">
+                    <!-- 顺式 -->
+                    <div class="bg-white border border-slate-200 p-6 rounded-xl shadow-md hover:scale-105 transition duration-300">
+                        <h4 class="font-bold text-2xl text-slate-800 mb-2">顺-2-丁烯</h4>
+                        <p class="text-sm text-slate-500 mb-6">两个甲基在双键<span class="font-bold text-pink-600">同侧</span></p>
+                        <svg class="molecule-svg" width="240" height="140" viewBox="0 0 200 120">
+                             <line x1="80" y1="70" x2="120" y2="70" stroke="#334155" stroke-width="4" />
+                             <line x1="80" y1="75" x2="120" y2="75" stroke="#334155" stroke-width="4" />
+                             
+                             <!-- Left Groups -->
+                             <line x1="80" y1="72" x2="60" y2="40" class="bond" /> 
+                             <line x1="80" y1="72" x2="60" y2="100" class="bond" /> 
+                             
+                             <!-- Right Groups -->
+                             <line x1="120" y1="72" x2="140" y2="40" class="bond" /> 
+                             <line x1="120" y1="72" x2="140" y2="100" class="bond" /> 
+                             
+                             <text x="60" y="35" class="text-label font-bold" font-size="14">CH₃</text>
+                             <text x="140" y="35" class="text-label font-bold" font-size="14">CH₃</text>
+                             <text x="60" y="115" class="text-label" font-size="14">H</text>
+                             <text x="140" y="115" class="text-label" font-size="14">H</text>
+                        </svg>
+                    </div>
+
+                    <!-- 反式 -->
+                    <div class="bg-white border border-slate-200 p-6 rounded-xl shadow-md hover:scale-105 transition duration-300">
+                        <h4 class="font-bold text-2xl text-slate-800 mb-2">反-2-丁烯</h4>
+                        <p class="text-sm text-slate-500 mb-6">两个甲基在双键<span class="font-bold text-blue-600">异侧</span></p>
+                        <svg class="molecule-svg" width="240" height="140" viewBox="0 0 200 120">
+                             <line x1="80" y1="70" x2="120" y2="70" stroke="#334155" stroke-width="4" />
+                             <line x1="80" y1="75" x2="120" y2="75" stroke="#334155" stroke-width="4" />
+                             
+                             <!-- Left Groups -->
+                             <line x1="80" y1="72" x2="60" y2="40" class="bond" /> 
+                             <line x1="80" y1="72" x2="60" y2="100" class="bond" /> 
+                             
+                             <!-- Right Groups -->
+                             <line x1="120" y1="72" x2="140" y2="40" class="bond" /> 
+                             <line x1="120" y1="72" x2="140" y2="100" class="bond" /> 
+                             
+                             <text x="60" y="35" class="text-label font-bold" font-size="14">CH₃</text>
+                             <text x="140" y="115" class="text-label font-bold" font-size="14">CH₃</text>
+                             <text x="60" y="115" class="text-label" font-size="14">H</text>
+                             <text x="140" y="35" class="text-label" font-size="14">H</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 16: 随堂练习 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-4 mb-8"><span class="title-underline bg-purple-500"></span>随堂练习</h2>
+                <div class="mt-4 bg-white p-10 rounded-xl shadow-lg border border-slate-100">
+                    <p class="text-3xl text-slate-800 font-bold mb-8 leading-snug">下列有机物中，能够形成<span class="text-pink-600">顺反异构</span>的是？</p>
+                     <div class="mt-6 space-y-4 text-xl">
+                        <div class="p-5 rounded-lg border border-slate-200 hover:bg-blue-50 hover:border-blue-300 cursor-pointer transition flex items-center">
+                            <span class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center font-bold mr-4 text-sm">A</span>
+                            1,2-二氯丙烯
+                        </div>
+                        <div class="p-5 rounded-lg border border-slate-200 hover:bg-blue-50 hover:border-blue-300 cursor-pointer transition flex items-center">
+                            <span class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center font-bold mr-4 text-sm">B</span>
+                            2-氯丙烯
+                        </div>
+                        <div class="p-5 rounded-lg border border-slate-200 hover:bg-blue-50 hover:border-blue-300 cursor-pointer transition flex items-center">
+                            <span class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center font-bold mr-4 text-sm">C</span>
+                            1,1-二氯丙烯
+                        </div>
+                        <div class="p-5 rounded-lg border border-slate-200 hover:bg-blue-50 hover:border-blue-300 cursor-pointer transition flex items-center">
+                            <span class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center font-bold mr-4 text-sm">D</span>
+                            1-丁烯
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 17: 练习题解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-4 mb-6"><span class="title-underline bg-green-500"></span>解析</h2>
+                <div class="bg-green-50 p-8 rounded-xl shadow-sm border border-green-100">
+                    <div class="flex items-baseline mb-6 border-b border-green-200 pb-4">
+                        <h3 class="font-bold text-green-800 text-4xl mr-4">答案：(A)</h3>
+                        <span class="text-green-700 text-lg">1,2-二氯丙烯</span>
+                    </div>
+                    
+                    <div class="space-y-6 text-slate-700 text-lg">
+                        <div>
+                            <p class="font-bold text-green-700 mb-2">判断依据：</p>
+                            <div class="bg-white p-3 rounded border border-green-100">
+                                双键两端的每一个碳原子，必须连接两个<strong class="text-red-600">不同</strong>的原子或原子团。
+                            </div>
+                        </div>
+
+                        <div>
+                            <p class="font-bold mb-2">✅ (A) 1,2-二氯丙烯 (CH₃CCl=CHCl)：</p>
+                            <ul class="ml-6 list-disc space-y-1 text-base">
+                                <li>左边碳：连有 -CH₃ 和 -Cl <span class="text-green-600 font-bold">(不同)</span></li>
+                                <li>右边碳：连有 -H 和 -Cl <span class="text-green-600 font-bold">(不同)</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="opacity-75 text-base bg-slate-100 p-4 rounded">
+                            <p class="mb-1">❌ <strong>(B) 2-氯丙烯：</strong> 1号碳连了两个H (相同)</p>
+                            <p class="mb-1">❌ <strong>(C) 1,1-二氯丙烯：</strong> 1号碳连了两个Cl (相同)</p>
+                            <p>❌ <strong>(D) 1-丁烯：</strong> 1号碳连了两个H (相同)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 18: 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <div class="inline-block p-6 rounded-full bg-emerald-50 mb-6">
+                     <svg class="w-20 h-20 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                     </svg>
+                 </div>
+                <h2 class="text-5xl font-bold text-slate-800 mb-6">课程结束</h2>
+                <p class="text-2xl text-slate-600 mb-4">掌握烯烃性质，为有机合成打下基础！</p>
+                <p class="text-xl text-slate-400">Thank you for watching</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- 导航控件 -->
+    <div id="navigation">
+        <button id="prevBtn" class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 font-bold py-2 px-6 rounded shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+            上一页
+        </button>
+        <div class="text-slate-600 font-semibold text-lg bg-white px-4 py-1 rounded border border-slate-200">
+            <span id="current-page" class="text-blue-600 font-bold">1</span> / <span id="total-pages">10</span>
+        </div>
+        <button id="nextBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center">
+            下一页
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const currentPageEl = document.getElementById('current-page');
+            const totalPagesEl = document.getElementById('total-pages');
+            
+            let currentPage = 0;
+            const totalPages = sections.length;
+            totalPagesEl.textContent = totalPages;
+
+            function showPage(pageIndex) {
+                // Hide all
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                    setTimeout(() => {
+                        if(!section.classList.contains('active')) section.style.display = 'none';
+                    }, 400); 
+                });
+
+                // Show current
+                const activeSection = sections[pageIndex];
+                activeSection.style.display = 'flex';
+                // 强制重绘以触发transition
+                void activeSection.offsetWidth; 
+                activeSection.classList.add('active');
+                
+                // Update controls
+                currentPageEl.textContent = pageIndex + 1;
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+                
+                // 自动滚动到顶部
+                document.getElementById('presentation-container').scrollTop = 0;
+                window.scrollTo(0, 0);
+            }
+
+            // 初始化显示第一页
+            sections.forEach((s, i) => {
+                if (i !== 0) s.style.display = 'none';
+            });
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                }
+            });
+            
+            // 键盘控制
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+                    if (currentPage < totalPages - 1) {
+                        currentPage++;
+                        showPage(currentPage);
+                    }
+                } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                    if (currentPage > 0) {
+                        currentPage--;
+                        showPage(currentPage);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>金属键与金属晶体</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 MathJax 用于显示数学公式 -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- 引入字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+        
+        #presentation-container {
+            max-width: 64rem; /* 加宽一点以容纳公式和长句 */
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+            min-height: 85vh;
+            position: relative;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 4rem; /* 增加内边距 */
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center; /* 垂直居中 */
+            height: 100%;
+            min-height: 85vh;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        /* 内容排版微调 */
+        h2 { line-height: 1.4; }
+        p { line-height: 1.8; text-align: justify; }
+        li { margin-bottom: 0.8rem; }
+
+        /* 底部留白控制 */
+        .content-wrapper {
+            margin-bottom: auto;
+        }
+
+        #navigation {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            padding: 1rem;
+            border-top: 1px solid #e2e8f0;
+            z-index: 50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* 打印专用样式 - 核心修改 */
+        @media print {
+            @page { 
+                size: landscape; 
+                margin: 0; 
+            }
+            body { 
+                background-color: white; 
+                -webkit-print-color-adjust: exact; 
+                print-color-adjust: exact; 
+            }
+            #presentation-container { 
+                margin: 0; 
+                padding: 0; 
+                box-shadow: none; 
+                width: 100%; 
+                max-width: 100%; 
+                min-height: auto;
+            }
+            .section { 
+                display: flex !important; /* 强制显示所有部分 */
+                opacity: 1 !important;
+                height: 100vh; /* 每页占满全屏 */
+                page-break-after: always; /* 强制分页 */
+                padding: 4rem;
+                border-bottom: none;
+            }
+            .section:last-child { 
+                page-break-after: auto; 
+            }
+            #navigation { 
+                display: none !important; 
+            }
+            /* 隐藏不必要的滚动条 */
+            body { overflow: visible; }
+        }
+
+        /* 公式容器 */
+        .math-block {
+            font-size: 1.1em;
+            padding: 1rem;
+            background-color: #f8fafc;
+            border-radius: 0.5rem;
+            text-align: center;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 1. 封面 -->
+        <div class="section active">
+            <div class="w-full max-w-4xl mx-auto text-center flex flex-col items-center justify-center h-full">
+                <!-- 金属晶体示意图标 -->
+                <svg class="w-40 h-40 text-blue-600 mb-8" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="30" cy="30" r="10" fill="#dbeafe" stroke="#2563eb"/>
+                    <circle cx="70" cy="30" r="10" fill="#dbeafe" stroke="#2563eb"/>
+                    <circle cx="30" cy="70" r="10" fill="#dbeafe" stroke="#2563eb"/>
+                    <circle cx="70" cy="70" r="10" fill="#dbeafe" stroke="#2563eb"/>
+                    <circle cx="50" cy="50" r="10" fill="#dbeafe" stroke="#2563eb"/>
+                    <path d="M30 30 L70 30 L70 70 L30 70 Z M30 30 L50 50 M70 30 L50 50 M70 70 L50 50 M30 70 L50 50" stroke="#93c5fd" stroke-width="1"/>
+                </svg>
+                <h1 class="text-6xl font-bold text-slate-800 mb-6 tracking-wider">金属键与金属晶体</h1>
+                <div class="w-24 h-1 bg-blue-500 rounded mt-4"></div>
+            </div>
+        </div>
+        
+        <!-- 2. 金属键的基本概念 -->
+        <div class="section">
+            <div class="w-full h-full flex flex-col justify-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8 border-l-8 border-blue-500 pl-4">一、金属键的基本概念</h2>
+                <div class="text-xl text-slate-700 space-y-8">
+                    <p>大多数金属单质（除汞等少数外）具有较高的熔点，这说明金属晶体内部存在着强烈的相互作用力。</p>
+                    <div class="bg-blue-50 p-8 rounded-xl border border-blue-100">
+                        <h3 class="text-2xl font-bold text-blue-800 mb-4">定义：</h3>
+                        <p>金属键是指金属阳离子与自由电子之间强烈的相互作用。</p>
+                        <ul class="list-disc list-inside mt-4 ml-4 space-y-2 text-slate-700">
+                            <li><span class="font-bold">成键微粒：</span>金属阳离子、自由电子</li>
+                            <li><span class="font-bold">存在范围：</span>金属单质、合金</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. 金属键的形成条件 -->
+        <div class="section">
+            <div class="w-full h-full flex flex-col justify-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8 border-l-8 border-indigo-500 pl-4">二、为什么能形成金属键？</h2>
+                <div class="grid grid-cols-2 gap-12 items-center">
+                    <div class="text-xl text-slate-700 space-y-6">
+                        <div>
+                            <h3 class="text-2xl font-bold text-indigo-700 mb-2">1. 低电离能</h3>
+                            <p>金属原子的价电子容易脱落，形成自由电子。这使得电子“跑掉”并不费劲。</p>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-indigo-700 mb-2">2. 拥有多个空轨道</h3>
+                            <p>金属原子通常具有多个空轨道，为电子的自由流动提供了空间。</p>
+                        </div>
+                    </div>
+                    <!-- 对比示意图 -->
+                    <div class="bg-white p-6 rounded-lg shadow-lg border border-slate-100 text-center">
+                        <div class="mb-4">
+                            <p class="font-bold text-lg mb-2">Na (钠原子)</p>
+                            <div class="flex justify-center gap-2 mb-1">
+                                <div class="w-12 h-12 rounded-full border-2 border-green-500 flex items-center justify-center bg-green-50 relative">
+                                    3s¹
+                                    <span class="absolute -top-2 -right-2 text-xs text-red-500 font-bold">易失</span>
+                                </div>
+                                <div class="w-12 h-12 rounded-full border-2 border-gray-300 border-dashed flex items-center justify-center text-gray-400">3p⁰</div>
+                                <div class="w-12 h-12 rounded-full border-2 border-gray-300 border-dashed flex items-center justify-center text-gray-400">3p⁰</div>
+                            </div>
+                            <p class="text-sm text-gray-500">空轨道多，电子活动空间大</p>
+                        </div>
+                        <hr class="my-4 border-slate-200">
+                        <div>
+                            <p class="font-bold text-lg mb-2">Cl (氯原子)</p>
+                            <div class="flex justify-center gap-2">
+                                <div class="w-12 h-12 rounded-full border-2 border-slate-600 bg-slate-200 flex items-center justify-center text-sm">3s²</div>
+                                <div class="w-12 h-12 rounded-full border-2 border-slate-600 bg-slate-200 flex items-center justify-center text-sm">3p⁵</div>
+                            </div>
+                            <p class="text-sm text-gray-500">价电子拥挤，无多余空轨道</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. 电子气理论（电子海） -->
+        <div class="section">
+            <div class="w-full h-full flex flex-col justify-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-6 border-l-8 border-cyan-500 pl-4">三、电子气理论 (电子海)</h2>
+                
+                <div class="flex flex-col items-center mb-8">
+                    <!-- 电子气模型 SVG -->
+                    <svg width="500" height="200" viewBox="0 0 500 200" class="bg-cyan-50 rounded-xl border border-cyan-200">
+                        <defs>
+                            <pattern id="electron-pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <circle cx="2" cy="2" r="1.5" fill="#0ea5e9" opacity="0.5"/>
+                            </pattern>
+                        </defs>
+                        <rect width="500" height="200" fill="url(#electron-pattern)" />
+                        
+                        <!-- 金属阳离子 -->
+                        <g id="cations">
+                            <circle cx="60" cy="50" r="25" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+                            <text x="60" y="55" text-anchor="middle" font-size="16" fill="#0284c7" font-family="serif">M+</text>
+                            
+                            <circle cx="140" cy="50" r="25" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+                            <text x="140" y="55" text-anchor="middle" font-size="16" fill="#0284c7" font-family="serif">M+</text>
+
+                            <circle cx="220" cy="50" r="25" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+                            <text x="220" y="55" text-anchor="middle" font-size="16" fill="#0284c7" font-family="serif">M+</text>
+
+                            <circle cx="60" cy="130" r="25" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+                            <text x="60" y="135" text-anchor="middle" font-size="16" fill="#0284c7" font-family="serif">M+</text>
+                            
+                            <circle cx="140" cy="130" r="25" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+                            <text x="140" y="135" text-anchor="middle" font-size="16" fill="#0284c7" font-family="serif">M+</text>
+
+                            <circle cx="220" cy="130" r="25" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+                            <text x="220" y="135" text-anchor="middle" font-size="16" fill="#0284c7" font-family="serif">M+</text>
+                        </g>
+                        
+                        <!-- 自由电子 -->
+                        <circle cx="90" cy="80" r="3" fill="#ef4444"><animate attributeName="cx" values="90;110;90" dur="2s" repeatCount="indefinite"/></circle>
+                        <circle cx="180" cy="100" r="3" fill="#ef4444"><animate attributeName="cy" values="100;90;100" dur="1.5s" repeatCount="indefinite"/></circle>
+                        <circle cx="250" cy="60" r="3" fill="#ef4444"/>
+                        
+                        <text x="350" y="80" font-size="18" fill="#0c4a6e" font-weight="bold">金属阳离子</text>
+                        <line x1="250" y1="50" x2="340" y2="75" stroke="#0c4a6e" stroke-dasharray="4"/>
+                        
+                        <text x="350" y="140" font-size="18" fill="#ef4444" font-weight="bold">自由电子(电子气)</text>
+                        <line x1="180" y1="100" x2="340" y2="135" stroke="#ef4444" stroke-dasharray="4"/>
+                    </svg>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 text-xl text-slate-700">
+                    <p class="mb-4"><strong>核心观点：</strong>金属原子脱落的价电子形成遍布整块晶体的“电子气”（或称电子海），被所有金属阳离子共用。</p>
+                    <p class="mb-2"><span class="text-cyan-600 font-bold">特征：</span></p>
+                    <ul class="list-disc ml-6">
+                        <li><strong>无方向性：</strong>电子不专属于特定原子。</li>
+                        <li><strong>无饱和性：</strong>所有原子共用。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. 金属的物理性质：延展性 -->
+        <div class="section">
+             <div class="w-full h-full flex flex-col justify-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8 border-l-8 border-orange-500 pl-4">四、物理性质解释：延展性</h2>
+                <div class="flex gap-10 items-center">
+                    <div class="w-1/2">
+                        <svg width="100%" height="250" viewBox="0 0 400 250" class="bg-orange-50 rounded-xl">
+                            <!-- 未受力 -->
+                            <g transform="translate(20,20)">
+                                <text x="0" y="-10" font-size="14" fill="#9a3412">受力前</text>
+                                <rect x="0" y="0" width="120" height="40" fill="#fdba74" stroke="#c2410c" rx="5"/>
+                                <rect x="0" y="45" width="120" height="40" fill="#fdba74" stroke="#c2410c" rx="5"/>
+                                <rect x="0" y="90" width="120" height="40" fill="#fdba74" stroke="#c2410c" rx="5"/>
+                            </g>
+                            <!-- 箭头 -->
+                            <path d="M 160 80 L 200 80" stroke="#ea580c" stroke-width="4" marker-end="url(#arrow)"/>
+                            <!-- 受力后 (错位) -->
+                            <g transform="translate(220,20)">
+                                <text x="0" y="-10" font-size="14" fill="#9a3412">受力错位，键不断裂</text>
+                                <rect x="20" y="0" width="120" height="40" fill="#fdba74" stroke="#c2410c" rx="5"/>
+                                <rect x="0" y="45" width="120" height="40" fill="#fdba74" stroke="#c2410c" rx="5"/>
+                                <rect x="30" y="90" width="120" height="40" fill="#fdba74" stroke="#c2410c" rx="5"/>
+                                <!-- 电子气填充 -->
+                                <circle cx="10" cy="42" r="2" fill="red"/>
+                                <circle cx="80" cy="87" r="2" fill="red"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="w-1/2 text-xl text-slate-700">
+                        <h3 class="text-2xl font-bold text-orange-700 mb-4">原理：</h3>
+                        <p class="mb-4">当金属受到外力作用时，晶体中的原子层发生<span class="font-bold text-orange-600">相对滑动</span>。</p>
+                        <p>由于电子气起到“润滑剂”的作用，金属键<span class="font-bold text-orange-600">并没有断裂</span>，因此金属具有良好的延性（拉丝）和展性（压片）。</p>
+                        <div class="mt-6 bg-slate-100 p-4 rounded text-base text-slate-600">
+                            <p><strong>对比：</strong>离子晶体（如CaCO₃）受力错位时，同性电荷相遇产生排斥，导致断裂破碎。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. 金属的物理性质：导电性 -->
+        <div class="section">
+             <div class="w-full h-full flex flex-col justify-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8 border-l-8 border-yellow-500 pl-4">五、物理性质解释：导电性</h2>
+                
+                <div class="grid grid-cols-2 gap-8 text-xl">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                        <h3 class="font-bold text-slate-800 mb-4 flex items-center">
+                            <span class="bg-gray-200 px-2 py-1 rounded mr-2 text-sm">无电场</span>
+                            自由移动
+                        </h3>
+                        <p class="text-slate-600 mb-4">自由电子无序运动，不产生电流。</p>
+                        <svg width="100%" height="100" viewBox="0 0 200 100" class="bg-slate-50 rounded">
+                            <path d="M20 50 Q 50 20 80 50 T 140 50" stroke="#94a3b8" fill="none" stroke-dasharray="4"/>
+                            <circle cx="20" cy="50" r="3" fill="#eab308"/>
+                        </svg>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                        <h3 class="font-bold text-slate-800 mb-4 flex items-center">
+                            <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded mr-2 text-sm">有电场</span>
+                            定向移动
+                        </h3>
+                        <p class="text-slate-600 mb-4">自由电子在电场作用下发生<span class="font-bold text-yellow-600">定向移动</span>，形成电流。</p>
+                        <svg width="100%" height="100" viewBox="0 0 200 100" class="bg-yellow-50 rounded">
+                            <defs>
+                                <marker id="arrow-e" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                                  <polygon points="0 0, 10 3.5, 0 7" fill="#ca8a04" />
+                                </marker>
+                            </defs>
+                            <line x1="10" y1="50" x2="180" y2="50" stroke="#ca8a04" stroke-width="2" marker-end="url(#arrow-e)"/>
+                            <circle cx="50" cy="50" r="4" fill="#eab308"/>
+                            <circle cx="100" cy="50" r="4" fill="#eab308"/>
+                            <circle cx="150" cy="50" r="4" fill="#eab308"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="mt-8 bg-red-50 p-6 rounded-lg border border-red-100">
+                    <p class="text-lg text-red-800 font-bold">思考：为什么温度升高，金属导电性反而下降？</p>
+                    <p class="mt-2 text-slate-700">温度升高 → 阳离子震动加剧 → 对电子定向移动产生阻碍作用 → 导电能力下降。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. 导热性与光泽 -->
+        <div class="section">
+            <div class="w-full h-full flex flex-col justify-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8 border-l-8 border-pink-500 pl-4">六、导热性与金属光泽</h2>
+                
+                <div class="space-y-8">
+                    <div class="bg-pink-50 p-6 rounded-xl border border-pink-100">
+                        <h3 class="text-2xl font-bold text-pink-800 mb-2">1. 导热性</h3>
+                        <p class="text-xl text-slate-700 leading-relaxed">
+                            自由电子与金属阳离子频繁碰撞，进行能量交换。受热区域电子能量增加，运动加快，通过碰撞将能量传递到低温区域。
+                        </p>
+                    </div>
+
+                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">2. 金属光泽</h3>
+                        <p class="text-xl text-slate-700 leading-relaxed mb-4">
+                            自由电子可以吸收<span class="font-bold">所有频率</span>的可见光，并迅速释放出来，使金属表面反射光线，呈现光泽。
+                        </p>
+                        <div class="flex items-center gap-4 text-base text-gray-600 bg-white p-4 rounded border border-gray-200">
+                            <div class="w-8 h-8 bg-black rounded-full"></div>
+                            <p><strong>注意：</strong>金属粉末（如铁粉）通常呈黑色，因为晶格排列不规则，光线被吸收而无法发生规则反射。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8. 熔点与硬度规律 -->
+        <div class="section">
+            <div class="w-full h-full flex flex-col justify-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8 border-l-8 border-purple-500 pl-4">七、熔沸点及硬度比较</h2>
+                
+                <div class="text-xl text-slate-700 mb-6">
+                    <p class="mb-4">金属的熔沸点和硬度取决于<strong>金属键的强弱</strong>。</p>
+                    <div class="math-block text-purple-800 bg-purple-50">
+                        \[ \text{金属键强弱} \propto \frac{\text{阳离子电荷数}(q) \times \text{价电子数}}{\text{离子半径}(r)} \]
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-8">
+                    <div class="bg-white p-6 border border-purple-200 rounded-lg shadow-sm">
+                        <h3 class="font-bold text-purple-700 text-xl mb-4">规律总结：</h3>
+                        <ul class="list-disc ml-5 space-y-2 text-lg">
+                            <li><span class="font-bold">半径(r)越小</span>，金属键越强。</li>
+                            <li><span class="font-bold">电荷(q)越高</span>，金属键越强。</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-6 border border-purple-200 rounded-lg shadow-sm">
+                        <h3 class="font-bold text-purple-700 text-xl mb-4">实例：</h3>
+                        <p class="mb-2">\( \text{Na} < \text{Mg} < \text{Al} \)</p>
+                        <p class="text-sm text-gray-500">原因：半径减小，电荷增加 (+1 < +2 < +3)</p>
+                        <hr class="my-3">
+                        <p class="mb-2">\( \text{Li} > \text{Na} > \text{K} > \text{Rb} > \text{Cs} \)</p>
+                        <p class="text-sm text-gray-500">原因：电荷相同，半径依次增大</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 9. 随堂练习 1 -->
+        <div class="section">
+            <div class="w-full h-full flex flex-col justify-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8 border-l-8 border-teal-500 pl-4">随堂练习 (一)</h2>
+                <div class="text-2xl text-slate-800 bg-white p-10 shadow-lg rounded-xl border border-slate-100">
+                    <p class="mb-8 leading-relaxed">下列关于金属键的叙述中，不正确的是：</p>
+                    <div class="space-y-4">
+                        <p class="p-4 border rounded hover:bg-teal-50 cursor-pointer transition">A. 金属键是金属阳离子和自由电子这两种带异性电荷的微粒间的强烈相互作用</p>
+                        <p class="p-4 border rounded hover:bg-teal-50 cursor-pointer transition">B. 金属键没有方向性和饱和性</p>
+                        <p class="p-4 border rounded hover:bg-teal-50 cursor-pointer transition">C. 金属键的强弱与金属阳离子的半径和电荷数有关</p>
+                        <p class="p-4 border rounded hover:bg-teal-50 cursor-pointer transition">D. 全部金属单质中都存在金属键</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 10. 随堂练习 1 解析 -->
+        <div class="section">
+            <div class="w-full h-full flex flex-col justify-center">
+                <h2 class="text-3xl font-bold text-teal-700 mb-6">练习 (一) 解析</h2>
+                <div class="bg-teal-50 p-8 rounded-xl border border-teal-200 text-xl space-y-6 h-3/4 flex flex-col justify-center">
+                    <p class="text-3xl font-bold text-teal-900">答案：D</p>
+                    <div class="space-y-4 text-slate-700">
+                        <p><strong>解析：</strong></p>
+                        <p>A、B、C 选项均正确描述了金属键的定义、特征和强弱因素。</p>
+                        <p>D 选项错误。虽然绝大多数金属单质中存在金属键，但<strong>汞 (Hg)</strong> 在常温下是液体，其内部虽然也存在金属键，但通常我们讨论晶体结构时，需注意并非所有状态下都以典型晶体形式存在。更严谨的说法是：<strong>并不是所有的金属单质在任何条件下都以金属晶体形式存在（如气态金属原子间不存在金属键）</strong>。</p>
+                        <p class="text-sm text-gray-500">*注：在高中化学语境中，通常认为固态和液态金属单质均存在金属键，但题干若强调“全部”且未限定状态，需考虑气态单质分子（如 \(Na_2\)）主要靠共价键或范德华力，或者考虑汞的特殊性。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 11. 随堂练习 2 -->
+        <div class="section">
+            <div class="w-full h-full flex flex-col justify-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8 border-l-8 border-teal-500 pl-4">随堂练习 (二)</h2>
+                <div class="text-2xl text-slate-800 bg-white p-10 shadow-lg rounded-xl border border-slate-100">
+                    <p class="mb-8 leading-relaxed">能用电子气理论解释的金属物理性质是：</p>
+                    <div class="space-y-4">
+                        <p class="p-4 border rounded hover:bg-teal-50 cursor-pointer transition">① 延展性 &nbsp;&nbsp; ② 导电性 &nbsp;&nbsp; ③ 导热性 &nbsp;&nbsp; ④ 金属光泽</p>
+                        <div class="grid grid-cols-2 gap-4 mt-4">
+                            <p class="p-4 border rounded hover:bg-teal-50 cursor-pointer transition">A. ①②</p>
+                            <p class="p-4 border rounded hover:bg-teal-50 cursor-pointer transition">B. ②③</p>
+                            <p class="p-4 border rounded hover:bg-teal-50 cursor-pointer transition">C. ①②③</p>
+                            <p class="p-4 border rounded hover:bg-teal-50 cursor-pointer transition">D. ①②③④</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 12. 随堂练习 2 解析 -->
+        <div class="section">
+            <div class="w-full h-full flex flex-col justify-center">
+                <h2 class="text-3xl font-bold text-teal-700 mb-6">练习 (二) 解析</h2>
+                <div class="bg-teal-50 p-8 rounded-xl border border-teal-200 text-xl space-y-6 h-3/4 flex flex-col justify-center">
+                    <p class="text-3xl font-bold text-teal-900">答案：D</p>
+                    <div class="space-y-4 text-slate-700">
+                        <p><strong>解析：</strong></p>
+                        <ul class="list-decimal list-inside space-y-2">
+                            <li><strong>延展性：</strong>电子气起润滑作用，层间滑动不断键。</li>
+                            <li><strong>导电性：</strong>自由电子在电场下定向移动。</li>
+                            <li><strong>导热性：</strong>自由电子与阳离子碰撞传递能量。</li>
+                            <li><strong>金属光泽：</strong>自由电子吸收并释放可见光。</li>
+                        </ul>
+                        <p class="mt-4 font-bold">结论：金属的这四大物理通性均可用电子气理论解释。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 13. 随堂练习 3 -->
+        <div class="section">
+            <div class="w-full h-full flex flex-col justify-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8 border-l-8 border-teal-500 pl-4">随堂练习 (三)</h2>
+                <div class="text-2xl text-slate-800 bg-white p-10 shadow-lg rounded-xl border border-slate-100">
+                    <p class="mb-8 leading-relaxed">下列各组金属的熔点，按由低到高的顺序排列正确的是：</p>
+                    <div class="space-y-4">
+                        <p class="p-4 border rounded hover:bg-teal-50 cursor-pointer transition">A. \( \text{Na} < \text{Mg} < \text{Al} \)</p>
+                        <p class="p-4 border rounded hover:bg-teal-50 cursor-pointer transition">B. \( \text{Li} < \text{Na} < \text{K} \)</p>
+                        <p class="p-4 border rounded hover:bg-teal-50 cursor-pointer transition">C. \( \text{Mg} < \text{Na} < \text{K} \)</p>
+                        <p class="p-4 border rounded hover:bg-teal-50 cursor-pointer transition">D. \( \text{Al} < \text{Mg} < \text{Na} \)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 14. 随堂练习 3 解析 -->
+        <div class="section">
+            <div class="w-full h-full flex flex-col justify-center">
+                <h2 class="text-3xl font-bold text-teal-700 mb-6">练习 (三) 解析</h2>
+                <div class="bg-teal-50 p-8 rounded-xl border border-teal-200 text-xl space-y-6 h-3/4 flex flex-col justify-center">
+                    <p class="text-3xl font-bold text-teal-900">答案：A</p>
+                    <div class="space-y-4 text-slate-700">
+                        <p><strong>解析：</strong></p>
+                        <p>判断依据：金属阳离子半径越小、电荷数越高，金属键越强，熔点越高。</p>
+                        <ul class="list-disc list-inside">
+                            <li><strong>A 选项：</strong>Na(+1), Mg(+2), Al(+3)，半径依次减小，电荷依次增加，故熔点升高。正确。</li>
+                            <li><strong>B 选项：</strong>Li, Na, K 为同主族，从上到下半径增大，金属键减弱，熔点应降低（\( \text{Li} > \text{Na} > \text{K} \)）。</li>
+                            <li><strong>C、D 选项：</strong>均不符合上述规律。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 15. 基础巩固题 1 -->
+        <div class="section">
+            <div class="w-full h-full flex flex-col justify-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8 border-l-8 border-green-500 pl-4">基础巩固 (一)</h2>
+                <div class="text-2xl text-slate-800 bg-white p-10 shadow-lg rounded-xl border border-slate-100">
+                    <p class="mb-8 leading-relaxed">构成金属晶体的基本微粒是：</p>
+                    <div class="space-y-4">
+                        <p class="p-4 border rounded hover:bg-green-50 cursor-pointer transition">A. 金属原子</p>
+                        <p class="p-4 border rounded hover:bg-green-50 cursor-pointer transition">B. 金属阳离子和自由电子</p>
+                        <p class="p-4 border rounded hover:bg-green-50 cursor-pointer transition">C. 阴离子和阳离子</p>
+                        <p class="p-4 border rounded hover:bg-green-50 cursor-pointer transition">D. 金属原子和电子</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 16. 基础巩固题 1 解析 -->
+        <div class="section">
+            <div class="w-full h-full flex flex-col justify-center">
+                <h2 class="text-3xl font-bold text-green-700 mb-6">基础巩固 (一) 解析</h2>
+                <div class="bg-green-50 p-8 rounded-xl border border-green-200 text-xl space-y-6 h-3/4 flex flex-col justify-center">
+                    <p class="text-3xl font-bold text-green-900">答案：B</p>
+                    <p class="text-slate-700"><strong>解析：</strong>金属键的定义明确指出，金属晶体由金属阳离子和自由电子构成。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 17. 基础巩固题 2 -->
+        <div class="section">
+            <div class="w-full h-full flex flex-col justify-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8 border-l-8 border-green-500 pl-4">基础巩固 (二)</h2>
+                <div class="text-2xl text-slate-800 bg-white p-10 shadow-lg rounded-xl border border-slate-100">
+                    <p class="mb-8 leading-relaxed">金属键具有方向性和饱和性吗？</p>
+                    <div class="space-y-4">
+                        <p class="p-4 border rounded hover:bg-green-50 cursor-pointer transition">A. 有方向性，有饱和性</p>
+                        <p class="p-4 border rounded hover:bg-green-50 cursor-pointer transition">B. 有方向性，无饱和性</p>
+                        <p class="p-4 border rounded hover:bg-green-50 cursor-pointer transition">C. 无方向性，有饱和性</p>
+                        <p class="p-4 border rounded hover:bg-green-50 cursor-pointer transition">D. 无方向性，无饱和性</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 18. 基础巩固题 2 解析 -->
+        <div class="section">
+            <div class="w-full h-full flex flex-col justify-center">
+                <h2 class="text-3xl font-bold text-green-700 mb-6">基础巩固 (二) 解析</h2>
+                <div class="bg-green-50 p-8 rounded-xl border border-green-200 text-xl space-y-6 h-3/4 flex flex-col justify-center">
+                    <p class="text-3xl font-bold text-green-900">答案：D</p>
+                    <p class="text-slate-700"><strong>解析：</strong>自由电子遍布整个晶体，不专属于某些特定原子（无饱和性），且向各个方向的作用力相同（无方向性）。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 19. 基础巩固题 3 -->
+        <div class="section">
+            <div class="w-full h-full flex flex-col justify-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8 border-l-8 border-green-500 pl-4">基础巩固 (三)</h2>
+                <div class="text-2xl text-slate-800 bg-white p-10 shadow-lg rounded-xl border border-slate-100">
+                    <p class="mb-8 leading-relaxed">温度升高时，金属的导电能力通常会：</p>
+                    <div class="space-y-4">
+                        <p class="p-4 border rounded hover:bg-green-50 cursor-pointer transition">A. 增强</p>
+                        <p class="p-4 border rounded hover:bg-green-50 cursor-pointer transition">B. 减弱</p>
+                        <p class="p-4 border rounded hover:bg-green-50 cursor-pointer transition">C. 不变</p>
+                        <p class="p-4 border rounded hover:bg-green-50 cursor-pointer transition">D. 先增强后减弱</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 20. 基础巩固题 3 解析 -->
+        <div class="section">
+            <div class="w-full h-full flex flex-col justify-center">
+                <h2 class="text-3xl font-bold text-green-700 mb-6">基础巩固 (三) 解析</h2>
+                <div class="bg-green-50 p-8 rounded-xl border border-green-200 text-xl space-y-6 h-3/4 flex flex-col justify-center">
+                    <p class="text-3xl font-bold text-green-900">答案：B</p>
+                    <p class="text-slate-700"><strong>解析：</strong>温度升高导致金属阳离子在平衡位置的振动加剧，阻碍了自由电子的定向移动，因此导电能力减弱。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 21. 基础巩固题 4 -->
+        <div class="section">
+            <div class="w-full h-full flex flex-col justify-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8 border-l-8 border-green-500 pl-4">基础巩固 (四)</h2>
+                <div class="text-2xl text-slate-800 bg-white p-10 shadow-lg rounded-xl border border-slate-100">
+                    <p class="mb-8 leading-relaxed">下列物质中，不属于金属晶体的是：</p>
+                    <div class="space-y-4">
+                        <p class="p-4 border rounded hover:bg-green-50 cursor-pointer transition">A. 铜 (Cu)</p>
+                        <p class="p-4 border rounded hover:bg-green-50 cursor-pointer transition">B. 铁 (Fe)</p>
+                        <p class="p-4 border rounded hover:bg-green-50 cursor-pointer transition">C. 氯化钠 (NaCl)</p>
+                        <p class="p-4 border rounded hover:bg-green-50 cursor-pointer transition">D. 铝 (Al)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+         <!-- 22. 基础巩固题 4 解析 -->
+         <div class="section">
+            <div class="w-full h-full flex flex-col justify-center">
+                <h2 class="text-3xl font-bold text-green-700 mb-6">基础巩固 (四) 解析</h2>
+                <div class="bg-green-50 p-8 rounded-xl border border-green-200 text-xl space-y-6 h-3/4 flex flex-col justify-center">
+                    <p class="text-3xl font-bold text-green-900">答案：C</p>
+                    <p class="text-slate-700"><strong>解析：</strong>铜、铁、铝均为金属单质，属于金属晶体。氯化钠 (NaCl) 由阴阳离子通过离子键结合，属于<strong>离子晶体</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 23. 基础巩固题 5 -->
+        <div class="section">
+            <div class="w-full h-full flex flex-col justify-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8 border-l-8 border-green-500 pl-4">基础巩固 (五)</h2>
+                <div class="text-2xl text-slate-800 bg-white p-10 shadow-lg rounded-xl border border-slate-100">
+                    <p class="mb-8 leading-relaxed">金属具有良好的延展性，主要是因为：</p>
+                    <div class="space-y-4">
+                        <p class="p-4 border rounded hover:bg-green-50 cursor-pointer transition">A. 金属离子带正电</p>
+                        <p class="p-4 border rounded hover:bg-green-50 cursor-pointer transition">B. 金属原子层发生相对滑动时，金属键未被破坏</p>
+                        <p class="p-4 border rounded hover:bg-green-50 cursor-pointer transition">C. 电子带负电</p>
+                        <p class="p-4 border rounded hover:bg-green-50 cursor-pointer transition">D. 金属硬度大</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+         <!-- 24. 基础巩固题 5 解析 -->
+         <div class="section">
+            <div class="w-full h-full flex flex-col justify-center">
+                <h2 class="text-3xl font-bold text-green-700 mb-6">基础巩固 (五) 解析</h2>
+                <div class="bg-green-50 p-8 rounded-xl border border-green-200 text-xl space-y-6 h-3/4 flex flex-col justify-center">
+                    <p class="text-3xl font-bold text-green-900">答案：B</p>
+                    <p class="text-slate-700"><strong>解析：</strong>金属受外力作用时，原子层之间发生相对滑动，但自由电子（电子气）依旧维系着金属阳离子的结合，金属键未断裂，故表现出延展性。</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="navigation">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-6 rounded mr-4 transition-opacity">上一页</button>
+        <span id="page-indicator" class="text-slate-700 font-semibold text-lg mx-4"></span>
+        <button id="nextBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded ml-4 transition-opacity">下一页</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.style.opacity = pageIndex === 0 ? '0.5' : '1';
+                prevBtn.style.cursor = pageIndex === 0 ? 'not-allowed' : 'pointer';
+                nextBtn.style.opacity = pageIndex === totalPages - 1 ? '0.5' : '1';
+                nextBtn.style.cursor = pageIndex === totalPages - 1 ? 'not-allowed' : 'pointer';
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // 初始化显示第一页
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

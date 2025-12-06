@@ -1,0 +1,473 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>条件概率与贝叶斯公式 PPT</title>
+ <script src="https://cdn.tailwindcss.com"></script>
+ 
+ <!-- MathJax Configuration -->
+ <script>
+ window.MathJax = {
+ tex: {
+ inlineMath: [['$', '$'], ['\\(', '\\)']],
+ displayMath: [['$$', '$$'], ['\\[', '\\]']],
+ processEscapes: true
+ },
+ svg: { fontCache: 'global' }
+ };
+ </script>
+ <script id="MathJax-script" async src="https://cdn.bootcdn.net/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+ <style>
+ html, body {
+ margin: 0;
+ padding: 0;
+ font-family: 'Noto Serif SC', serif;
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
+ background-color: #f1f5f9;
+ }
+ 
+ #presentation-container {
+ max-width: 56rem;
+ margin: 2rem auto;
+ background-color: white;
+ border-radius: 0.5rem;
+ box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+ }
+
+ .section {
+ width: 100%;
+ box-sizing: border-box;
+ padding: 3rem 4rem;
+ position: relative; 
+ min-height: 520px;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+ text-align: center;
+ }
+ 
+ .section:not(:last-child) {
+ border-bottom: 1px solid #e5e7eb;
+ }
+ 
+ /* Clean formula style without dashed borders */
+ .formula-box {
+ background-color: #f8fafc; /* bg-slate-50 */
+ padding: 1.5rem 2rem;
+ margin: 1.5rem 0;
+ border-radius: 0.5rem;
+ font-size: 1.25rem;
+ color: #1e293b;
+ box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+ }
+
+ h1 {
+ color: #1e3a8a; /* slate-900 like */
+ font-weight: 700;
+ }
+
+ h2 {
+ color: #334155;
+ font-weight: 600;
+ margin-bottom: 1.5rem;
+ }
+
+ p, li {
+ color: #475569;
+ font-size: 1.125rem; /* text-lg */
+ line-height: 1.75;
+ }
+
+ .highlight-text {
+ color: #2563eb;
+ font-weight: 600;
+ }
+
+ @media print {
+ @page {
+ size: landscape;
+ margin: 0;
+ }
+
+ body, html {
+ background-color: white;
+ -webkit-print-color-adjust: exact;
+ print-color-adjust: exact;
+ }
+
+ #presentation-container {
+ margin: 0;
+ padding: 0;
+ border: none;
+ box-shadow: none;
+ width: 100%;
+ max-width: 100%;
+ }
+ 
+ .section {
+ height: 100vh;
+ width: 100vw;
+ page-break-after: always;
+ border-bottom: none;
+ }
+ 
+ .section:last-child {
+ page-break-after: auto;
+ }
+ }
+ </style>
+</head>
+<body>
+
+ <div id="presentation-container">
+ 
+ <!-- Slide 1: Title -->
+ <div class="section">
+ <h1 class="text-4xl mb-4">攻克条件概率与贝叶斯公式</h1>
+ <p class="text-xl text-slate-500"></p>
+ </div>
+
+ <!-- Slide 2: Intro Principle -->
+ <div class="section">
+ <h2 class="text-2xl">核心原则</h2>
+ <div class="max-w-2xl text-left">
+ <p class="mb-6">所有的公式都不需要死记硬背！</p>
+ <p class="mb-6">它们都源自<strong>条件概率的定义</strong>。</p>
+ <p>只要你会<strong>“画饼”（画韦恩图）</strong>，这些公式自然就懂了。</p>
+ </div>
+ </div>
+
+ <!-- Slide 3: Two Children Problem - Part 1 -->
+ <div class="section">
+ <h2 class="text-2xl">问题一：独立性的直觉</h2>
+ <div class="bg-blue-50 p-6 rounded-lg mb-6 w-full max-w-2xl">
+ <p class="font-bold text-slate-800">已知某个家庭有两个孩子。</p>
+ <p class="mt-4">当<strong>较大的孩子</strong>是女孩时，求另一个孩子（较小的孩子）是男孩的概率。</p>
+ </div>
+ <p class="text-slate-500 italic">思考一下：这两个孩子的性别有关系吗？</p>
+ </div>
+
+ <!-- Slide 4: Answer 1 -->
+ <div class="section">
+ <h2 class="text-2xl">问题一：解析</h2>
+ <div class="formula-box">
+ $$ P = \frac{1}{2} $$
+ </div>
+ <div class="text-left max-w-2xl">
+ <p class="mb-4"><strong>解析：</strong></p>
+ <ul class="list-disc pl-6 space-y-2">
+ <li>较大的孩子和较小的孩子，性别是<strong>独立</strong>的。</li>
+ <li>大孩子是女孩，完全不影响小孩子是男是女的概率。</li>
+ <li>样本空间分析：{女女, 女男}。其中另一个是男孩的只有{女男}。</li>
+ </ul>
+ </div>
+ </div>
+
+ <!-- Slide 5: Two Children Problem - Part 2 -->
+ <div class="section">
+ <h2 class="text-2xl">问题二：条件改变样本空间</h2>
+ <div class="bg-blue-50 p-6 rounded-lg mb-6 w-full max-w-2xl">
+ <p class="font-bold text-slate-800">已知某个家庭有两个孩子。</p>
+ <p class="mt-4">当<strong>有一个孩子</strong>是女孩时，求这两个孩子中有男孩的概率。</p>
+ </div>
+ <p class="text-slate-500 italic">注意：这里没指定是大的还是小的。</p>
+ </div>
+
+ <!-- Slide 6: Visualization (SVG) -->
+ <div class="section">
+ <h2 class="text-2xl mb-6">图解：样本空间的缩水</h2>
+ <!-- SVG 1 from source -->
+ <svg width="400" height="240" viewBox="0 0 400 240">
+ <!-- Background -->
+ <rect x="10" y="10" width="380" height="220" rx="10" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+ <text x="25" y="35" font-family="sans-serif" font-size="14" fill="#666" font-weight="bold">样本空间 Ω (4个点)</text>
+ 
+ <!-- Points Layout: 2x2 Logic but visually clear -->
+ <!-- Top Left: BB (Excluded) -->
+ <g transform="translate(100, 80)">
+ <circle cx="0" cy="0" r="25" fill="#e0e0e0" stroke="#999" stroke-dasharray="4"/>
+ <text x="0" y="5" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#777">男男</text>
+ <text x="0" y="45" text-anchor="middle" font-size="12" fill="#999">被排除</text>
+ </g>
+ 
+ <!-- Highlight Group Path -->
+ <path d="M 160,40 L 260,40 Q 290,40 290,70 L 290,170 Q 290,200 260,200 L 100,200 Q 70,200 70,170 L 70,140 Q 70,110 100,110 L 130,110 L 130,70 Q 130,40 160,40 Z" 
+ fill="#ffebee" stroke="#c51162" stroke-width="2" stroke-dasharray="5,5" opacity="0.8"/>
+ <text x="300" y="120" fill="#c51162" font-size="14" font-weight="bold">新样本空间</text>
+ <text x="300" y="140" fill="#c51162" font-size="12">条件 A: 有女孩</text>
+ 
+ <!-- Points Included -->
+ <!-- Top Right: GG -->
+ <g transform="translate(240, 80)">
+ <circle cx="0" cy="0" r="25" fill="#c5cae9" stroke="#3f51b5" stroke-width="2"/>
+ <text x="0" y="5" text-anchor="middle" font-family="sans-serif" font-size="14">女女</text>
+ </g>
+ 
+ <!-- Bottom Left: GB -->
+ <g transform="translate(120, 160)">
+ <circle cx="0" cy="0" r="25" fill="#bbdefb" stroke="#1976d2" stroke-width="2"/>
+ <text x="0" y="5" text-anchor="middle" font-family="sans-serif" font-size="14">女男</text>
+ <text x="0" y="40" text-anchor="middle" font-size="10" fill="#1565c0" font-weight="bold">含男孩 ✓</text>
+ </g>
+ 
+ <!-- Bottom Right: BG -->
+ <g transform="translate(240, 160)">
+ <circle cx="0" cy="0" r="25" fill="#bbdefb" stroke="#1976d2" stroke-width="2"/>
+ <text x="0" y="5" text-anchor="middle" font-family="sans-serif" font-size="14">男女</text>
+ <text x="0" y="40" text-anchor="middle" font-size="10" fill="#1565c0" font-weight="bold">含男孩 ✓</text>
+ </g>
+ </svg>
+ </div>
+
+ <!-- Slide 7: Answer 2 -->
+ <div class="section">
+ <h2 class="text-2xl">问题二：解析</h2>
+ <div class="formula-box">
+ $$ P = \frac{2}{3} $$
+ </div>
+ <div class="text-left max-w-2xl">
+ <p class="mb-4"><strong>解析：</strong></p>
+ <ul class="list-disc pl-6 space-y-2">
+ <li>条件“有一个孩子是女孩”排除了“男男”的情况。</li>
+ <li><strong>新样本空间</strong>只剩三个点：{女女, 男女, 女男}。</li>
+ <li>其中有男孩的情况是：{男女, 女男}，共两种。</li>
+ </ul>
+ </div>
+ </div>
+
+ <!-- Slide 8: Definition & Multiplication -->
+ <div class="section">
+ <h2 class="text-2xl">条件概率定义与乘法公式</h2>
+ <p>条件概率的本质：概率的比值</p>
+ <div class="formula-box">
+ $$ P(B|A) = \frac{P(AB)}{P(A)} $$
+ </div>
+ <p class="mt-8">变形可得<strong>乘法公式</strong>（三选二推一）：</p>
+ <div class="formula-box">
+ $$ P(AB) = P(A) \cdot P(B|A) $$
+ </div>
+ </div>
+
+ <!-- Slide 9: Total Probability Concept -->
+ <div class="section">
+ <h2 class="text-2xl">全概率公式：“切大饼”</h2>
+ <div class="text-left max-w-2xl">
+ <p class="mb-4"><strong>故事模型：</strong> 统计全年级关注人数。</p>
+ <ol class="list-decimal pl-6 space-y-3">
+ <li>
+ 去<strong>一班</strong> (A)：<br>
+ $\rightarrow$ <em>一班人数 $\times$ 一班关注率</em>
+ </li>
+ <li>
+ 去<strong>二班</strong> ($\bar{A}$)：<br>
+ $\rightarrow$ <em>二班人数 $\times$ 二班关注率</em>
+ </li>
+ </ol>
+ <p class="mt-6 text-center highlight-text">把两部分加起来 = 全年级关注总数</p>
+ </div>
+ </div>
+
+ <!-- Slide 10: Total Probability Visual & Formula -->
+ <div class="section">
+ <h2 class="text-2xl mb-4">全概率公式图解</h2>
+ <!-- SVG 2 from source -->
+ <svg width="400" height="220" viewBox="0 0 400 220">
+ <defs>
+ <pattern id="diagonalHatch" width="10" height="10" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+ <line x1="0" y1="0" x2="0" y2="10" style="stroke:#ffcc80; stroke-width:2" />
+ </pattern>
+ </defs>
+ <rect x="10" y="10" width="380" height="200" fill="white" stroke="#333" stroke-width="2"/>
+ <line x1="200" y1="10" x2="200" y2="210" stroke="#333" stroke-width="2" stroke-dasharray="6,4"/>
+ <text x="100" y="40" font-size="20" fill="#1a237e" font-weight="bold" text-anchor="middle">A (一班)</text>
+ <text x="300" y="40" font-size="20" fill="#1a237e" font-weight="bold" text-anchor="middle">Ā (二班)</text>
+ <path d="M 200,60 A 90,60 0 0 0 200,180 Z" fill="#fff9c4" stroke="#f57f17" stroke-width="2"/>
+ <path d="M 200,60 A 90,60 0 0 1 200,180 Z" fill="#ffe0b2" stroke="#e65100" stroke-width="2"/>
+ <text x="200" y="125" text-anchor="middle" font-size="28" fill="#bf360c" font-weight="bold">B</text>
+ <text x="130" y="140" font-size="12" fill="#bf360c" text-anchor="middle">A ∩ B</text>
+ <text x="270" y="140" font-size="12" fill="#bf360c" text-anchor="middle">Ā ∩ B</text>
+ <path d="M 130,160 Q 200,200 270,160" fill="none" stroke="#999" stroke-width="1" stroke-dasharray="4"/>
+ <text x="200" y="200" font-size="12" fill="#666" text-anchor="middle" background="white">两部分之和 = P(B)</text>
+ </svg>
+ <div class="formula-box mt-4">
+ $$ P(B) = P(A)P(B|A) + P(\bar{A})P(B|\bar{A}) $$
+ </div>
+ </div>
+
+ <!-- Slide 11: Bayes Formula -->
+ <div class="section">
+ <h2 class="text-2xl">贝叶斯公式 (Bayes' Theorem)</h2>
+ <p><strong>反向推导：</strong> “已知结果，反推原因”</p>
+ <p class="mt-4 mb-2">撞到一个关注者(B)，求他来自一班(A)的概率？</p>
+ 
+ <div class="formula-box">
+ $$ P(A|B) = \frac{P(AB)}{P(B)} = \frac{P(A)P(B|A)}{P(A)P(B|A) + P(\bar{A})P(B|\bar{A})} $$
+ </div>
+ </div>
+
+ <!-- Slide 12: Example Problem -->
+ <div class="section">
+ <h2 class="text-2xl">实战演练：工厂质检</h2>
+ <div class="bg-gray-100 p-8 rounded-lg text-left max-w-2xl w-full">
+ <p class="mb-2"><strong>已知数据：</strong></p>
+ <ul class="list-disc pl-6 space-y-2 mb-6">
+ <li>优品率 (A)：$90\%$ ($0.9$)</li>
+ <li>优品中包装达标率 (B|A)：$95\%$ ($0.95$)</li>
+ <li>非优品 ($\bar{A}$) 中包装达标率 (B|$\bar{A}$)：$80\%$ ($0.80$)</li>
+ </ul>
+ <p class="font-bold text-blue-800">问题：发现一件产品包装达标 (B)，求它确实是优品 (A) 的概率？</p>
+ </div>
+ </div>
+
+ <!-- Slide 13: Example Solution -->
+ <div class="section">
+ <h2 class="text-2xl">实战演练：解答</h2>
+ <div class="w-full max-w-2xl text-left space-y-6">
+ <div>
+ <p class="font-bold text-slate-700">1. 算分子 $P(AB)$ (优品且达标)：</p>
+ <p>$$ 0.9 \times 0.95 = 0.855 $$</p>
+ </div>
+ <div>
+ <p class="font-bold text-slate-700">2. 算分母 $P(B)$ (所有达标，全概率)：</p>
+ <p>$$ 0.9 \times 0.95 + 0.1 \times 0.8 = 0.855 + 0.08 = 0.935 $$</p>
+ </div>
+ <div class="bg-blue-50 p-4 rounded">
+ <p class="font-bold text-slate-700">3. 算结果 $P(A|B)$：</p>
+ <p>$$ \frac{0.855}{0.935} \approx 0.914 $$</p>
+ <p class="text-right text-sm text-slate-500">约为 91.4%</p>
+ </div>
+ </div>
+ </div>
+
+ <!-- Slide 14: Independence Summary -->
+ <div class="section">
+ <h2 class="text-2xl">独立性的本质</h2>
+ <p class="mb-6">如果 A 和 B 独立，意味着<strong>“众生平等”</strong>。</p>
+ <div class="formula-box">
+ $$ P(A|B) = P(A) $$
+ </div>
+ <p>B 的发生与否，不影响 A 发生的概率。</p>
+ </div>
+
+ <!-- Slide 15: Quiz 1 -->
+ <div class="section">
+ <h2 class="text-2xl mb-6">🧠 课后小测验 1</h2>
+ <p class="text-xl mb-8">已知 $P(A)=0.5, P(B)=0.6, P(AB)=0.3$。<br>请问 $P(B|A)$ 是多少？</p>
+ <div class="grid grid-cols-2 gap-4 w-full max-w-lg">
+ <div class="bg-white border border-gray-200 p-4 rounded text-lg">A. 0.3</div>
+ <div class="bg-white border border-gray-200 p-4 rounded text-lg">B. 0.5</div>
+ <div class="bg-white border border-gray-200 p-4 rounded text-lg">C. 0.6</div>
+ <div class="bg-white border border-gray-200 p-4 rounded text-lg">D. 1.0</div>
+ </div>
+ </div>
+
+ <!-- Slide 16: Answer 1 -->
+ <div class="section">
+ <h2 class="text-2xl mb-4">答案解析</h2>
+ <div class="text-3xl font-bold text-green-600 mb-6">C. 0.6</div>
+ <div class="formula-box">
+ $$ P(B|A) = \frac{P(AB)}{P(A)} = \frac{0.3}{0.5} = 0.6 $$
+ </div>
+ <p>注：这里的结果恰好等于 $P(B)$，说明 A 和 B 是<strong>独立</strong>的。</p>
+ </div>
+
+ <!-- Slide 17: Quiz 2 -->
+ <div class="section">
+ <h2 class="text-2xl mb-6">🧠 课后小测验 2</h2>
+ <p class="text-xl mb-8">两个孩子，已知“有一个是女孩”，<br>求“两个都是女孩”的概率？</p>
+ <div class="grid grid-cols-2 gap-4 w-full max-w-lg">
+ <div class="bg-white border border-gray-200 p-4 rounded text-lg">A. 1/2</div>
+ <div class="bg-white border border-gray-200 p-4 rounded text-lg">B. 1/3</div>
+ <div class="bg-white border border-gray-200 p-4 rounded text-lg">C. 1/4</div>
+ <div class="bg-white border border-gray-200 p-4 rounded text-lg">D. 2/3</div>
+ </div>
+ </div>
+
+ <!-- Slide 18: Answer 2 -->
+ <div class="section">
+ <h2 class="text-2xl mb-4">答案解析</h2>
+ <div class="text-3xl font-bold text-green-600 mb-6">B. 1/3</div>
+ <div class="text-left max-w-xl">
+ <p>样本空间减为：{女女, 女男, 男女}。</p>
+ <p>符合“两个都是女孩”的只有 {女女} 这一种情况。</p>
+ <p class="mt-4 text-center text-xl">$$ P = \frac{1}{3} $$</p>
+ </div>
+ </div>
+
+ <!-- Slide 19: Quiz 3 -->
+ <div class="section">
+ <h2 class="text-2xl mb-6">🧠 课后小测验 3</h2>
+ <p class="text-xl mb-8">全概率公式的思想类似于以下哪种行为？</p>
+ <div class="flex flex-col gap-4 w-full max-w-2xl text-left">
+ <div class="bg-white border border-gray-200 p-4 rounded text-lg">A. 只要看局部就能知道整体</div>
+ <div class="bg-white border border-gray-200 p-4 rounded text-lg">B. 把整体切成几块，分别计算再求和</div>
+ <div class="bg-white border border-gray-200 p-4 rounded text-lg">C. 排除掉不想要的情况</div>
+ <div class="bg-white border border-gray-200 p-4 rounded text-lg">D. 两个事件互不影响</div>
+ </div>
+ </div>
+
+ <!-- Slide 20: Answer 3 -->
+ <div class="section">
+ <h2 class="text-2xl mb-4">答案解析</h2>
+ <div class="text-3xl font-bold text-green-600 mb-6">B</div>
+ <p class="max-w-xl">全概率公式的核心就是<strong>“切大饼”</strong>：<br>将复杂事件分解为几个互不重叠的部分，分别计算概率后相加。</p>
+ </div>
+
+ <!-- Slide 21: Quiz 4 -->
+ <div class="section">
+ <h2 class="text-2xl mb-6">🧠 课后小测验 4</h2>
+ <p class="text-xl mb-8">如果事件A和事件B独立，下列哪个等式成立？</p>
+ <div class="flex flex-col gap-4 w-full max-w-xl text-left pl-10">
+ <div class="bg-white border border-gray-200 p-4 rounded text-lg">A. $P(A|B) = P(B)$</div>
+ <div class="bg-white border border-gray-200 p-4 rounded text-lg">B. $P(A|B) = P(A)$</div>
+ <div class="bg-white border border-gray-200 p-4 rounded text-lg">C. $P(AB) = 0$</div>
+ <div class="bg-white border border-gray-200 p-4 rounded text-lg">D. $P(A) + P(B) = 1$</div>
+ </div>
+ </div>
+
+ <!-- Slide 22: Answer 4 -->
+ <div class="section">
+ <h2 class="text-2xl mb-4">答案解析</h2>
+ <div class="text-3xl font-bold text-green-600 mb-6">B</div>
+ <div class="formula-box">
+ $$ P(A|B) = P(A) $$
+ </div>
+ <p>独立意味着条件 B 的发生不改变 A 发生的概率。</p>
+ </div>
+
+ <!-- Slide 23: Quiz 5 -->
+ <div class="section">
+ <h2 class="text-2xl mb-6">🧠 课后小测验 5</h2>
+ <p class="text-xl mb-8">贝叶斯公式通常用于解决哪类问题？</p>
+ <div class="flex flex-col gap-4 w-full max-w-2xl text-left">
+ <div class="bg-white border border-gray-200 p-4 rounded text-lg">A. 已知原因推结果</div>
+ <div class="bg-white border border-gray-200 p-4 rounded text-lg">B. 已知结果反推原因（溯源）</div>
+ <div class="bg-white border border-gray-200 p-4 rounded text-lg">C. 计算两个独立事件同时发生的概率</div>
+ <div class="bg-white border border-gray-200 p-4 rounded text-lg">D. 计算互斥事件的概率和</div>
+ </div>
+ </div>
+
+ <!-- Slide 24: Answer 5 -->
+ <div class="section">
+ <h2 class="text-2xl mb-4">答案解析</h2>
+ <div class="text-3xl font-bold text-green-600 mb-6">B</div>
+ <p>贝叶斯公式是<strong>逆向概率</strong>的经典工具。<br>例如：已知检测阳性（结果），推断是否真得病（原因）。</p>
+ </div>
+
+ <!-- Slide 25: Closing -->
+ <div class="section">
+ <h1 class="text-4xl mb-6">下课！</h1>
+ <p class="text-xl text-slate-600">记住：学会画饼，学会讲分班级数人数的故事。</p>
+ </div>
+
+ </div>
+
+</body>
+</html>

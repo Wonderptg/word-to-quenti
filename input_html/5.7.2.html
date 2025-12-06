@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>y = A sin(ωx + φ) + B 图像解析 (可交互版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans SC', 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+            scroll-behavior: smooth;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 550px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .graph-canvas {
+            border-radius: 0.5rem;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            width: 100%;
+            height: auto;
+        }
+        
+        .math-var {
+            font-family: 'Noto Serif SC', serif;
+            font-weight: 700;
+            font-style: italic;
+            color: #1e40af;
+        }
+
+        /* 打印样式 */
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+            
+            .no-print {
+                display: none;
+            }
+
+            .section.has-graph {
+                align-items: stretch; /* 让子元素可以撑满宽度 */
+            }
+            
+            /* 提高选择器特异性以强制覆盖 Tailwind 样式 */
+            .section.has-graph .graph-page-container {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                flex-grow: 1;
+                gap: 2rem;
+                width: 100%;
+            }
+            .section.has-graph .graph-page-container > div {
+                flex-basis: 50%;
+                max-width: 50%;
+                box-sizing: border-box;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-100">
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 -->
+        <div class="section text-center">
+            <div class="w-full max-w-4xl mx-auto">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">y = <span class="math-var">A</span> sin( <span class="math-var">ω</span>x + <span class="math-var">φ</span> ) + <span class="math-var">B</span></h1>
+                <p class="text-2xl text-slate-600 mt-4">函数图像变换全解析</p>
+                <p class="mt-8 text-xl text-cyan-700 font-semibold">"四个参数，四种变换，一次搞定"</p>
+            </div>
+        </div>
+
+        <!-- 参数 B (静态图) -->
+        <div class="section has-graph">
+            <h2 class="text-3xl font-bold text-slate-800 text-center mb-8">第一步：参数 <span class="math-var">B</span> (垂直平移)</h2>
+            <div class="w-full max-w-4xl mx-auto flex flex-col-reverse md:flex-row items-center gap-8 graph-page-container">
+                <div class="md:w-1/2 space-y-4">
+                    <div class="bg-sky-50 border-l-4 border-sky-400 p-4 rounded-r-lg">
+                        <p class="font-bold text-lg text-sky-800">参数 <span class="math-var">B</span>: 垂直平移</p>
+                        <p class="text-slate-700">决定图像的<strong>中心线</strong>位置。<span class="math-var">B</span> > 0 上移，<span class="math-var">B</span> &lt; 0 下移。</p>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex flex-col justify-center items-center">
+                    <canvas id="b-static-canvas" class="graph-canvas" width="400" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 参数 A (静态图) -->
+        <div class="section has-graph">
+            <h2 class="text-3xl font-bold text-slate-800 text-center mb-8">第二步：参数 <span class="math-var">A</span> (垂直伸缩)</h2>
+            <div class="w-full max-w-4xl mx-auto flex flex-col-reverse md:flex-row items-center gap-8 graph-page-container">
+                <div class="md:w-1/2 space-y-4">
+                     <div class="bg-red-50 border-l-4 border-red-400 p-4 rounded-r-lg">
+                         <p class="font-bold text-lg text-red-800">参数 <span class="math-var">A</span>: 垂直伸缩 (振幅)</p>
+                         <p class="text-slate-700">sin(<span class="math-var">ω</span>x + <span class="math-var">φ</span>) 的值域是 [-1, 1]。当它乘以 <span class="math-var">A</span> 之后，值域就变成了 [-|<span class="math-var">A</span>|, |<span class="math-var">A</span>|]。<br><br>|<span class="math-var">A</span>| 决定图像的<strong>振幅</strong> (波峰或波谷到中心线的最大距离)。<br>
+                         • |<span class="math-var">A</span>| > 1, 图像被<strong>拉伸</strong>。<br>
+                         • |<span class="math-var">A</span>| &lt; 1, 图像被<strong>压缩</strong>。
+                         </p>
+                     </div>
+                </div>
+                <div class="md:w-1/2 flex flex-col justify-center items-center">
+                    <canvas id="a-static-canvas" class="graph-canvas" width="400" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 参数 A & B 结合 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center mb-8">第二步 (补充): 参数 <span class="math-var">A</span> & <span class="math-var">B</span> 结合分析</h2>
+            <div class="w-full max-w-2xl mx-auto">
+                 <div class="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-r-lg text-slate-700 text-lg">
+                     <p class="font-bold text-yellow-800 text-xl mb-4">例子：分析 y = 3sin(x) + 2</p>
+                     <ol class="list-decimal list-inside ml-2 space-y-2">
+                         <li><strong>中心线 (由 B 决定)</strong>: 因为 <span class="math-var">B</span> = +2，所以中心线上移至 y=2。</li>
+                         <li><strong>振幅 (由 A 决定)</strong>: 因为 <span class="math-var">A</span> = 3，图像会从中心线 y=2 分别向上、下波动3个单位。</li>
+                         <li><strong>值域</strong>: 函数的最大值为 2+3=5，最小值为 2-3=-1。所以值域为 <strong>[-1, 5]</strong>。</li>
+                     </ol>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 参数 ω (静态图) -->
+        <div class="section has-graph">
+            <h2 class="text-3xl font-bold text-slate-800 text-center mb-8">第三步：参数 <span class="math-var">ω</span> (水平伸缩)</h2>
+            <div class="w-full max-w-4xl mx-auto flex flex-col-reverse md:flex-row items-center gap-8 graph-page-container">
+                <div class="md:w-1/2 space-y-4">
+                    <div class="bg-emerald-50 border-l-4 border-emerald-400 p-4 rounded-r-lg">
+                        <p class="font-bold text-lg text-emerald-800">参数 <span class="math-var">ω</span>: 水平伸缩 (周期)</p>
+                        <p class="text-slate-700">决定图像的<strong>周期 T = 2π/|<span class="math-var">ω</span>|</strong>。<br>
+                        • |<span class="math-var">ω</span>|>1, 周期变短, 图像<strong>压缩</strong>。<br>
+                        • |<span class="math-var">ω</span>|&lt;1, 周期变长, 图像<strong>拉伸</strong>。
+                        </p>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex flex-col justify-center items-center">
+                    <canvas id="w-static-canvas" class="graph-canvas" width="400" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 参数 φ (静态图) -->
+        <div class="section has-graph">
+            <h2 class="text-3xl font-bold text-slate-800 text-center mb-8">第四步：参数 <span class="math-var">φ</span> (水平平移)</h2>
+            <div class="w-full max-w-4xl mx-auto flex flex-col-reverse md:flex-row items-center gap-8 graph-page-container">
+                <div class="md:w-1/2 space-y-4">
+                     <div class="bg-violet-50 border-l-4 border-violet-400 p-4 rounded-r-lg">
+                         <p class="font-bold text-lg text-violet-800">参数 <span class="math-var">φ</span>: 水平平移 (相位)</p>
+                         <p class="text-slate-700">
+                             <span class="math-var">φ</span> 叫作<strong>初相位</strong>，决定 x=0 时图像的初始位置。
+                         </p>
+                         <ul class="list-disc list-inside text-slate-700 space-y-2 mt-2 pl-2">
+                             <li><strong>误区纠正:</strong> 平移距离不是 <span class="math-var">φ</span>, 而是 |<span class="math-var">φ</span>/<span class="math-var">ω</span>|。需要将函数整理为 <span class="font-mono">y = A sin(ω(x + φ/ω)) + B</span> 的形式来判断。</li>
+                             <li><strong>画图技巧:</strong> 直接令 x=0, 计算初相位 <span class="math-var">φ</span> 对应的y值，即 <span class="font-mono">y = sin(φ)</span>，就可以找到与y轴的交点，确定图像的起点。</li>
+                         </ul>
+                     </div>
+                </div>
+                <div class="md:w-1/2 flex flex-col justify-center items-center">
+                    <canvas id="p-static-canvas" class="graph-canvas" width="400" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 综合应用 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-rose-500 pb-2 inline-block">综合应用</h2>
+                <p class="mt-8 text-2xl md:text-3xl text-center font-semibold font-mono">y = 2sin(πx/2 - π) - 1</p>
+            </div>
+        </div>
+
+        <!-- 练习题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (1/4)</h2>
+                <div class="space-y-4 text-base md:text-lg">
+                    <div class="bg-gray-100 p-4 rounded-lg border border-gray-200"><strong>1.</strong> 函数 f(x) = 3sin(2x) − 1 的值域是？<br/>(A) [−1, 1] &nbsp;&nbsp; (B) [−3, 3] &nbsp;&nbsp; (C) [−4, 2] &nbsp;&nbsp; (D) [−2, 4]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (2/4)</h2>
+                <div class="space-y-4 text-base md:text-lg">
+                    <div class="bg-gray-100 p-4 rounded-lg border border-gray-200"><strong>2.</strong> 函数 f(x) = sin(4x + π/3) 的最小正周期是？<br/>(A) 4π &nbsp;&nbsp; (B) 2π &nbsp;&nbsp; (C) π &nbsp;&nbsp; (D) π/2</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (3/4)</h2>
+                <div class="space-y-4 text-base md:text-lg">
+                    <div class="bg-gray-100 p-4 rounded-lg border border-gray-200"><strong>3.</strong> 要得到 y = sin(2x + π/6) 的图像，需将 y = sin(2x) 如何平移？<br/>(A) 左移 π/6 &nbsp;&nbsp; (B) 右移 π/6 &nbsp;&nbsp; (C) 左移 π/12 &nbsp;&nbsp; (D) 右移 π/12</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (4/4)</h2>
+                <div class="space-y-4 text-base md:text-lg">
+                    <div class="bg-gray-100 p-4 rounded-lg border border-gray-200"><strong>4.</strong> 哪个函数在 x=0 时取得最大值？<br/>(A) y = 2sin(x - π/2) &nbsp;&nbsp; (B) y = 2sin(x + π/2) &nbsp;&nbsp; (C) y = 2sin(x + π) &nbsp;&nbsp; (D) y = 2sin(x)</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析</h2>
+                <div class="space-y-4 text-base">
+                    <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
+                        <p class="font-bold text-emerald-800">1. 答案：C</p>
+                        <p class="text-slate-700"><strong>解析：</strong>sin(2x) 范围 [-1,1]。乘以 A=3 得 [-3,3]。因为 B=-1，整体向下平移1个单位，得 [-4,2]。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
+                        <p class="font-bold text-emerald-800">2. 答案：D</p>
+                        <p class="text-slate-700"><strong>解析：</strong>周期 T = 2π/|ω| = 2π/4 = π/2。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
+                        <p class="font-bold text-emerald-800">3. 答案：C</p>
+                        <p class="text-slate-700"><strong>解析：</strong>y = sin(2(x + π/12))。根据“左加右减”，是向左平移 π/12。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
+                        <p class="font-bold text-emerald-800">4. 答案：B</p>
+                        <p class="text-slate-700"><strong>解析：</strong>x=0 时取得最大值，即 sin(初相位) 需为1。sin(π/2) = 1。选项B在 x=0 时，括号内为 π/2。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- 绘图核心函数 ---
+            function drawAxes(ctx, xMin, xMax, yMin, yMax) {
+                const w = ctx.canvas.width;
+                const h = ctx.canvas.height;
+                const toCanvasX = (x) => (x - xMin) / (xMax - xMin) * w;
+                const toCanvasY = (y) => h - (y - yMin) / (yMax - yMin) * h;
+                
+                ctx.save();
+                ctx.clearRect(0, 0, w, h);
+                ctx.fillStyle = '#f8fafc';
+                ctx.fillRect(0, 0, w, h);
+
+                // 绘制网格
+                ctx.strokeStyle = '#e2e8f0';
+                ctx.lineWidth = 1;
+                for (let i = Math.ceil(xMin / Math.PI) * Math.PI; i <= xMax; i += Math.PI / 2) {
+                    if (Math.abs(i) < 0.01 && xMin < 0 && xMax > 0) continue;
+                    ctx.beginPath();
+                    ctx.moveTo(toCanvasX(i), 0);
+                    ctx.lineTo(toCanvasX(i), h);
+                    ctx.stroke();
+                }
+                 for (let i = Math.ceil(yMin); i <= Math.floor(yMax); i++) {
+                    if (i === 0 && yMin < 0 && yMax > 0) continue;
+                    ctx.beginPath();
+                    ctx.moveTo(0, toCanvasY(i));
+                    ctx.lineTo(w, toCanvasY(i));
+                    ctx.stroke();
+                }
+
+                // 绘制坐标轴
+                ctx.strokeStyle = '#9ca3af';
+                ctx.lineWidth = 2;
+                if (yMin < 0 && yMax > 0) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, toCanvasY(0));
+                    ctx.lineTo(w, toCanvasY(0));
+                    ctx.stroke();
+                }
+                if (xMin < 0 && xMax > 0) {
+                    ctx.beginPath();
+                    ctx.moveTo(toCanvasX(0), 0);
+                    ctx.lineTo(toCanvasX(0), h);
+                    ctx.stroke();
+                }
+                
+                ctx.restore();
+                return { toCanvasX, toCanvasY };
+            }
+
+            function drawSine(ctx, toCanvasX, toCanvasY, xMin, xMax, A, B, W, P, color, lineWidth = 2) {
+                ctx.save();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = lineWidth;
+                ctx.beginPath();
+                let first = true;
+                for (let x = xMin; x <= xMax; x += 0.02) { // 增加采样点使曲线更平滑
+                    const y = A * Math.sin(W * x + P) + B;
+                    if (first) {
+                        ctx.moveTo(toCanvasX(x), toCanvasY(y));
+                        first = false;
+                    } else {
+                        ctx.lineTo(toCanvasX(x), toCanvasY(y));
+                    }
+                }
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            function drawIntersectionPoint(ctx, toCanvasX, toCanvasY, x, y, color) {
+                ctx.save();
+                ctx.fillStyle = color;
+                ctx.strokeStyle = 'white';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(toCanvasX(x), toCanvasY(y), 6, 0, 2 * Math.PI); // 绘制一个半径为6的圆点
+                ctx.fill();
+                ctx.stroke();
+                ctx.restore();
+            }
+            
+            function drawPointLabel(ctx, toCanvasX, toCanvasY, x, y, label, color) {
+                 ctx.save();
+                ctx.fillStyle = color;
+                ctx.font = 'bold 14px "Noto Sans SC"';
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'bottom'; 
+                ctx.fillText(label, toCanvasX(x) + 10, toCanvasY(y) - 5);
+                ctx.restore();
+            }
+
+            function drawLegend(ctx, items) {
+                const w = ctx.canvas.width;
+                ctx.save();
+                ctx.font = '12px "Noto Sans SC"';
+                ctx.textAlign = 'right';
+                ctx.textBaseline = 'top';
+                const lineHeight = 18;
+                items.forEach((item, index) => {
+                    const itemY = 15 + index * lineHeight;
+                    ctx.fillStyle = item.color; 
+                    ctx.fillText(item.text, w - 15, itemY);
+                });
+                ctx.restore();
+            }
+            
+            // --- B 的静态图 ---
+            const bStaticCanvas = document.getElementById('b-static-canvas');
+            function drawBStatic() {
+                const xMin = -2 * Math.PI, xMax = 2 * Math.PI, yMin = -5, yMax = 5;
+                const ctx = bStaticCanvas.getContext('2d');
+                const { toCanvasX, toCanvasY } = drawAxes(ctx, xMin, xMax, yMin, yMax);
+                drawSine(ctx, toCanvasX, toCanvasY, xMin, xMax, 1, 0, 1, 0, '#94a3b8', 2);
+                drawSine(ctx, toCanvasX, toCanvasY, xMin, xMax, 1, 2, 1, 0, '#3b82f6', 2.5);
+                ctx.save();
+                ctx.strokeStyle = '#3b82f6';
+                ctx.lineWidth = 1.5;
+                ctx.setLineDash([4, 4]);
+                ctx.beginPath();
+                ctx.moveTo(toCanvasX(xMin), toCanvasY(2));
+                ctx.lineTo(toCanvasX(xMax), toCanvasY(2));
+                ctx.stroke();
+                ctx.restore();
+                drawSine(ctx, toCanvasX, toCanvasY, xMin, xMax, 1, -3, 1, 0, '#8b5cf6', 2.5);
+                ctx.save();
+                ctx.strokeStyle = '#8b5cf6';
+                ctx.lineWidth = 1.5;
+                ctx.setLineDash([4, 4]);
+                ctx.beginPath();
+                ctx.moveTo(toCanvasX(xMin), toCanvasY(-3));
+                ctx.lineTo(toCanvasX(xMax), toCanvasY(-3));
+                ctx.stroke();
+                ctx.restore();
+
+                drawIntersectionPoint(ctx, toCanvasX, toCanvasY, 0, 0, '#94a3b8');
+                drawIntersectionPoint(ctx, toCanvasX, toCanvasY, 0, 2, '#3b82f6');
+                drawIntersectionPoint(ctx, toCanvasX, toCanvasY, 0, -3, '#8b5cf6');
+
+                const legendItems = [
+                    { text: 'y = sin(x)', color: '#94a3b8' },
+                    { text: 'y = sin(x) + 2', color: '#3b82f6' },
+                    { text: 'y = sin(x) - 3', color: '#8b5cf6' }
+                ];
+                drawLegend(ctx, legendItems);
+            }
+
+            if (bStaticCanvas) {
+                drawBStatic();
+            }
+
+            // --- A 的静态图 ---
+            const aStaticCanvas = document.getElementById('a-static-canvas');
+            function drawAStatic() {
+                const xMin = -2 * Math.PI, xMax = 2 * Math.PI, yMin = -4, yMax = 4;
+                const ctx = aStaticCanvas.getContext('2d');
+                const { toCanvasX, toCanvasY } = drawAxes(ctx, xMin, xMax, yMin, yMax);
+                drawSine(ctx, toCanvasX, toCanvasY, xMin, xMax, 1, 0, 1, 0, '#94a3b8', 2);
+                drawSine(ctx, toCanvasX, toCanvasY, xMin, xMax, 3, 0, 1, 0, '#ef4444', 2.5);
+                drawSine(ctx, toCanvasX, toCanvasY, xMin, xMax, 0.5, 0, 1, 0, '#4f46e5', 2.5);
+                drawIntersectionPoint(ctx, toCanvasX, toCanvasY, 0, 0, '#111827');
+                const legendItems = [
+                    { text: 'y = sin(x)', color: '#94a3b8' },
+                    { text: 'y = 3sin(x)', color: '#ef4444' },
+                    { text: 'y = 0.5sin(x)', color: '#4f46e5' }
+                ];
+                drawLegend(ctx, legendItems);
+            }
+
+            if (aStaticCanvas) {
+                drawAStatic();
+            }
+
+            // --- W 的静态图 ---
+            const wStaticCanvas = document.getElementById('w-static-canvas');
+            function drawWStatic() {
+                const xMin = -2 * Math.PI, xMax = 2 * Math.PI, yMin = -2, yMax = 2;
+                const ctx = wStaticCanvas.getContext('2d');
+                const { toCanvasX, toCanvasY } = drawAxes(ctx, xMin, xMax, yMin, yMax);
+                drawSine(ctx, toCanvasX, toCanvasY, xMin, xMax, 1, 0, 1, 0, '#94a3b8', 2);
+                drawSine(ctx, toCanvasX, toCanvasY, xMin, xMax, 1, 0, 2, 0, '#10b981', 2.5);
+                drawSine(ctx, toCanvasX, toCanvasY, xMin, xMax, 1, 0, 0.5, 0, '#f97316', 2.5);
+                drawIntersectionPoint(ctx, toCanvasX, toCanvasY, 0, 0, '#111827');
+                const legendItems = [
+                    { text: 'y = sin(x)', color: '#94a3b8' },
+                    { text: 'y = sin(2x)', color: '#10b981' },
+                    { text: 'y = sin(x/2)', color: '#f97316' }
+                ];
+                drawLegend(ctx, legendItems);
+            }
+
+            if (wStaticCanvas) {
+                drawWStatic();
+            }
+
+            // --- P 的静态图 ---
+            const pStaticCanvas = document.getElementById('p-static-canvas');
+            function drawPStatic() {
+                const xMin = -2 * Math.PI, xMax = 2 * Math.PI, yMin = -2, yMax = 2;
+                const ctx = pStaticCanvas.getContext('2d');
+                const { toCanvasX, toCanvasY } = drawAxes(ctx, xMin, xMax, yMin, yMax);
+
+                drawSine(ctx, toCanvasX, toCanvasY, xMin, xMax, 1, 0, 1, 0, '#94a3b8', 2);
+                const phi = Math.PI / 3;
+                drawSine(ctx, toCanvasX, toCanvasY, xMin, xMax, 1, 0, 1, phi, '#8b5cf6', 2.5);
+
+                const yIntercept = Math.sin(phi);
+                drawIntersectionPoint(ctx, toCanvasX, toCanvasY, 0, yIntercept, '#8b5cf6');
+                drawPointLabel(ctx, toCanvasX, toCanvasY, 0, yIntercept, '(0, √3/2)', '#8b5cf6');
+                
+                const legendItems = [
+                    { text: 'y = sin(x)', color: '#94a3b8' },
+                    { text: 'y = sin(x + π/3)', color: '#8b5cf6' }
+                ];
+                drawLegend(ctx, legendItems);
+            }
+            
+            if(pStaticCanvas) {
+                drawPStatic();
+            }
+
+        });
+    </script>
+</body>
+</html>
+

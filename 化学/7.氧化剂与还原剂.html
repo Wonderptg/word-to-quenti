@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>氧化剂与还原剂</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-sky-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+                    <path d="M21 3v5h-5"/>
+                    <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+                    <path d="M3 21v-5h5"/>
+                </svg>
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">氧化剂与还原剂</h1>
+                <p class="text-2xl text-slate-700 mt-2">—— 揭开反应背后“操盘手”的神秘面纱</p>
+            </div>
+        </div>
+        
+        <!-- 情景导入 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-cyan-500 pb-2">情景导入：酒驾测试的化学魔法</h2>
+                <div class="mt-8 flex flex-col md:flex-row items-center gap-8">
+                    <div class="flex-1 text-xl text-slate-700 space-y-4">
+                        <p>交警让司机对着一个仪器吹气，如果仪器变了颜色，就说明司机喝酒了。</p>
+                        <p>这正是一个经典的氧化还原反应。司机呼出的<strong class="text-cyan-600">酒精（乙醇）</strong>，被仪器里的<strong class="text-orange-500">橙色物质（重铬酸钾）</strong>氧化了。</p>
+                        <p>橙色物质被还原成了<strong class="text-green-600">绿色物质</strong>。颜色的变化，就暴露了酒精的存在。</p>
+                    </div>
+                    <div class="flex-shrink-0">
+                         <svg width="200" height="150" viewBox="0 0 200 150">
+                            <path d="M50,130 L150,130 L150,50 Q125,10 100,50 Q75,10 50,50 Z" fill="none" stroke="#6b7280" stroke-width="2"/>
+                            <rect x="70" y="70" width="60" height="40" fill="#fdba74" rx="5">
+                                <animate attributeName="fill" values="#fdba74; #86efac; #fdba74" dur="3s" repeatCount="indefinite" />
+                            </rect>
+                            <text x="100" y="95" text-anchor="middle" font-size="12">检测仪</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 核心定义 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-indigo-500 pb-2">核心定义：化学反应的“操盘手”</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-red-50 p-6 rounded-lg text-center">
+                        <svg class="w-16 h-16 mx-auto text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <line x1="12" y1="5" x2="12" y2="19"></line>
+                          <polyline points="19 12 12 19 5 12"></polyline>
+                        </svg>
+                        <h3 class="font-bold text-red-800 text-2xl mt-4">氧化剂</h3>
+                        <p class="mt-2 text-slate-600">在反应中<strong class="text-red-600">得</strong>电子，化合价<strong class="text-red-600">降低</strong>的<strong class="text-red-600">反应物</strong>。</p>
+                        <p class="mt-1 text-sm text-slate-500">（特征：化合价降低）</p>
+                    </div>
+                    <div class="bg-green-50 p-6 rounded-lg text-center">
+                        <svg class="w-16 h-16 mx-auto text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <line x1="12" y1="19" x2="12" y2="5"></line>
+                          <polyline points="5 12 12 5 19 12"></polyline>
+                        </svg>
+                        <h3 class="font-bold text-green-800 text-2xl mt-4">还原剂</h3>
+                        <p class="mt-2 text-slate-600">在反应中<strong class="text-green-600">失</strong>电子，化合价<strong class="text-green-600">升高</strong>的<strong class="text-green-600">反应物</strong>。</p>
+                        <p class="mt-1 text-sm text-slate-500">（特征：化合价升高）</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 常见氧化剂 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-red-500 pb-2">常见的氧化剂（抢匪）</h2>
+                <div class="mt-8 space-y-6">
+                    <div class="bg-slate-50 p-6 rounded-lg">
+                        <h3 class="font-semibold text-xl text-slate-800">第一类：消毒液类</h3>
+                        <p class="mt-2 text-lg text-slate-600">84消毒液的有效成分是<code>NaClO</code>。里面的<code>Cl</code>是+1价，非常不安分，总想着抢电子变回-1价。</p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg">
+                        <h3 class="font-semibold text-xl text-slate-800">第二类：金属离子中的“贵族”</h3>
+                        <p class="mt-2 text-lg text-slate-600">比如银离子<code>Ag⁺</code>、铜离子<code>Cu²⁺</code>。在反应 <code class="text-lg">Zn + Cu²⁺ → Zn²⁺ + Cu</code> 中，就是<code>Cu²⁺</code>这个“抢匪”把锌的电子抢走了。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 常见还原剂 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">常见的还原剂（富翁）</h2>
+                <div class="mt-8 space-y-6">
+                    <div class="bg-slate-50 p-6 rounded-lg">
+                        <h3 class="font-semibold text-xl text-slate-800">第一类：低价态的非金属</h3>
+                        <p class="mt-2 text-lg text-slate-600">有臭鸡蛋气味的<code>H₂S</code>。这里的<code>S</code>是-2价，已经是最低价，只能想办法“赚钱”（失电子）升高价态。</p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg">
+                        <h3 class="font-semibold text-xl text-slate-800">第二类：活泼金属</h3>
+                        <p class="mt-2 text-lg text-slate-600">比如镁条<code>Mg</code>。在反应 <code class="text-lg">2Mg + O₂ → 2MgO</code> 中，镁把电子给了氧气，自己从0价变成了+2价。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 特殊物质 (修改后) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">特殊物质：既是“抢匪”也是“富翁”</h2>
+                <p class="mt-8 text-2xl text-center text-slate-700">双氧水 <code>H₂O₂</code> 里的氧是-1价，不高不低，处于中间。</p>
+                
+                <div class="mt-6 flex justify-center items-center text-center">
+                    <svg width="450" height="250" viewBox="0 0 450 250">
+                        <defs>
+                            <marker id="arrowhead-red" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                                <polygon points="0 0, 8 3, 0 6" fill="#f43f5e" />
+                            </marker>
+                             <marker id="arrowhead-green" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                                <polygon points="0 0, 8 3, 0 6" fill="#10b981" />
+                            </marker>
+                        </defs>
+
+                        <!-- Center Element: H2O2 -->
+                        <text x="225" y="125" font-size="30" font-weight="bold" text-anchor="middle">H₂O₂</text>
+                        <text x="225" y="150" font-size="14" text-anchor="middle" fill="#64748b">(O为-1价)</text>
+
+                        <!-- Path 1: Acting as a Reducing Agent (loses electrons) -->
+                        <text x="70" y="50" font-size="16" text-anchor="middle">vs. 强氧化剂</text>
+                        <text x="70" y="70" font-size="14" text-anchor="middle" fill="#c026d3">(当“富翁”)</text>
+                        <path d="M 200 110 Q 130 70 80 80" fill="none" stroke="#f43f5e" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead-red)"/>
+                        <text x="140" y="60" fill="#f43f5e" font-size="14">失去e⁻, 被氧化 (O: -1 → 0)</text>
+
+                        <!-- Path 2: Acting as an Oxidizing Agent (gains electrons) -->
+                        <text x="360" y="165" font-size="16" text-anchor="middle">vs. 还原剂</text>
+                        <text x="360" y="185" font-size="14" text-anchor="middle" fill="#059669">(当“抢匪”)</text>
+                        <path d="M 250 140 Q 300 155 350 155" fill="none" stroke="#10b981" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead-green)"/>
+                        <text x="285" y="200" fill="#059669" font-size="14">得到e⁻, 被还原 (O: -1 → -2)</text>
+                    </svg>
+                </div>
+
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 text-center text-lg">
+                    <div class="bg-red-50 p-4 rounded-lg">
+                        <p class="text-red-800 font-semibold">遇到更强的“抢匪” (如KMnO₄)</p>
+                        <p class="mt-1 text-slate-600">H₂O₂被迫当“富翁”，失去电子被氧化，生成O₂。</p>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-lg">
+                        <p class="text-green-800 font-semibold">遇到“富翁” (如H₂S)</p>
+                        <p class="mt-1 text-slate-600">H₂O₂扮演“抢匪”，得到电子被还原，生成H₂O。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 产物概念 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-violet-500 pb-2">产物概念对接：名字反着来</h2>
+                <div class="mt-12 space-y-8 text-2xl text-slate-800">
+                    <div class="flex items-center justify-center gap-4">
+                        <div class="w-48 text-center p-4 rounded-lg bg-green-100 text-green-800">还原剂</div>
+                        <div class="text-slate-500 text-lg text-center">被氧化<br/>(失电子)</div>
+                        <svg class="w-12 h-12 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        <div class="w-48 text-center p-4 rounded-lg bg-red-100 text-red-800">氧化产物</div>
+                    </div>
+                    <div class="flex items-center justify-center gap-4">
+                        <div class="w-48 text-center p-4 rounded-lg bg-red-100 text-red-800">氧化剂</div>
+                        <div class="text-slate-500 text-lg text-center">被还原<br/>(得电子)</div>
+                        <svg class="w-12 h-12 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        <div class="w-48 text-center p-4 rounded-lg bg-green-100 text-green-800">还原产物</div>
+                    </div>
+                </div>
+                 <p class="mt-12 text-2xl font-semibold text-center text-violet-700 bg-violet-100 p-4 rounded-lg">千万别搞混了：“剂”在反应前，“产物”在反应后！</p>
+            </div>
+        </div>
+        
+        <!-- 核心口诀 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800">核心口诀：万能的“武功秘籍”</h2>
+                <div class="mt-10 text-4xl md:text-5xl font-bold text-slate-800 tracking-widest leading-loose text-center">
+                    <div class="inline-block p-4">升、失、氧、<span class="text-green-600">还原剂</span>、<span class="text-green-600">还原性</span></div><br>
+                    <div class="inline-block p-4">降、得、还、<span class="text-red-600">氧化剂</span>、<span class="text-red-600">氧化性</span></div>
+                </div>
+                <div class="mt-8 text-xl text-slate-600 text-center space-y-4">
+                    <p><strong>升</strong>高价 → <strong>失</strong>电子 → <strong>氧</strong>化反应 → 是<strong class="text-green-600">还原剂</strong> → 有<strong class="text-green-600">还原性</strong></p>
+                    <p><strong>降</strong>低价 → <strong>得</strong>电子 → <strong>还</strong>原反应 → 是<strong class="text-red-600">氧化剂</strong> → 有<strong class="text-red-600">氧化性</strong></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 典例分析1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-sky-500 pb-2">典例分析 (1)：小试牛刀</h2>
+                <p class="mt-8 text-xl text-slate-700">分析反应：<code>Cl₂ + H₂S → 2HCl + S</code></p>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg text-lg space-y-4">
+                    <p><strong class="text-sky-700">第一步 (标价):</strong> Cl从<code class="text-red-500">0</code>价变为<code class="text-green-500">-1</code>价；S从<code class="text-green-500">-2</code>价变为<code class="text-red-500">0</code>价。</p>
+                    <p><strong class="text-sky-700">第二步 (看升降):</strong> Cl化合价<strong class="text-green-500">降低</strong>，S化合价<strong class="text-red-500">升高</strong>。</p>
+                    <p><strong class="text-sky-700">第三步 (用口诀):</strong></p>
+                    <ul class="list-disc list-inside ml-4">
+                        <li>“降、得、还、氧化剂” → <code>Cl₂</code> 是<strong class="text-red-500">氧化剂</strong>，<code>HCl</code> 是<strong class="text-green-500">还原产物</strong>。</li>
+                        <li>“升、失、氧、还原剂” → <code>H₂S</code> 是<strong class="text-green-500">还原剂</strong>，<code>S</code> 是<strong class="text-red-500">氧化产物</strong>。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 典例分析2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-sky-500 pb-2">典例分析 (2)：内部的转移</h2>
+                 <p class="mt-8 text-xl text-slate-700">分析反应：<code>2KClO₃ → 2KCl + 3O₂↑</code> (加热)</p>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg text-lg space-y-4">
+                    <p><strong class="text-sky-700">标价发现：</strong></p>
+                    <ul class="list-disc list-inside ml-4">
+                        <li><code>Cl</code>元素：化合价从<strong class="text-green-500">+5</strong>价 <strong class="text-green-500">降低</strong> 到<strong class="text-green-500">-1</strong>价。</li>
+                        <li><code>O</code>元素：化合价从<strong class="text-red-500">-2</strong>价 <strong class="text-red-500">升高</strong> 到<strong class="text-red-500">0</strong>价。</li>
+                    </ul>
+                    <p class="mt-4 p-4 bg-sky-100 text-sky-800 rounded-lg">
+                        <strong>结论：</strong>电子在<code>KClO₃</code>这种物质<strong class="text-sky-700">内部</strong>发生了转移！它自己把自己“氧化还原”了，所以，<code>KClO₃</code>既是<strong class="text-red-500">氧化剂</strong>，又是<strong class="text-green-500">还原剂</strong>。
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 典例分析3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-sky-500 pb-2">典例分析 (3)：期末的“大BOSS”</h2>
+                <p class="mt-8 text-xl text-slate-700 mono">3Cu + 8<span class="text-blue-500">HNO₃</span>(稀) → 3Cu(NO₃)₂ + 2<span class="text-red-500">NO</span>↑ + 4H₂O</p>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg text-lg space-y-4">
+                    <p>• <code>Cu</code>: 0价 → +2价，<strong class="text-red-500">升高</strong>，是<strong class="text-green-500">还原剂</strong>。</p>
+                    <p>• <code>HNO₃</code>中的<code>N</code>: +5价 → +2价 (在<code>NO</code>中)，<strong class="text-green-500">降低</strong>，所以<code>HNO₃</code>是<strong class="text-red-500">氧化剂</strong>。</p>
+                    <div class="p-4 bg-yellow-100 text-yellow-800 rounded-lg">
+                        <strong>但是！</strong> 生成物<code>Cu(NO₃)₂</code>中还有一部分<code>N</code>元素，依然是+5价，化合价<strong class="text-yellow-700">没变</strong>！
+                    </div>
+                    <p><strong>结论：</strong>参加反应的8份硝酸中，只有<strong class="text-red-500">2份</strong>被还原（体现氧化性），剩下的<strong class="text-blue-500">6份</strong>没变价，只是提供了酸根（体现酸性）。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 课堂小结 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-gray-500 pb-2">课堂小结</h2>
+                <ul class="mt-8 text-2xl space-y-6">
+                    <li>我们认识了化学反应中的“抢匪”和“富翁”：<strong class="text-gray-700">氧化剂和还原剂</strong>。</li>
+                    <li>我们掌握了识别它们的强大口诀：<strong class="text-gray-700">“升、失、氧、还原剂”</strong>和<strong class="text-gray-700">“降、得、还、氧化剂”</strong>。</li>
+                    <li>解决所有氧化还原问题的核心钥匙是：<strong class="text-red-600">紧紧抓住化合价的升降变化！</strong></li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- 作业与预习 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-gray-500 pb-2">作业与预习</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800 text-xl">课后作业</h3>
+                        <p class="mt-2 text-slate-600">完成讲义上的练习题，特别是要尝试分析那些像硝酸一样身兼数职的物质。</p>
+                    </div>
+                    <div class="bg-purple-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-purple-800 text-xl">下节预习</h3>
+                        <p class="mt-2 text-slate-600">既然我们知道了谁升谁降，那一个复杂的化学方程式，我们该如何快速地把它配平呢？</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 新增练习题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">随堂练习 (一)</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700 mono">在反应 <code>Fe + CuSO₄ → FeSO₄ + Cu</code> 中，哪种物质是氧化剂？</p>
+                     <div class="mt-6 space-y-3 text-lg mono">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> Fe</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> CuSO₄</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> FeSO₄</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> Cu</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新增解析 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">练习题 (一)：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>首先标出变价元素的化合价：<code>Fe</code>从0价升高到+2价，<code>CuSO₄</code>中的<code>Cu</code>从+2价<strong class="text-green-700">降低</strong>到0价。</p>
+                    <p>根据口诀“降、得、还、氧化剂”，化合价降低的元素（Cu）所在的<strong class="text-green-700">反应物</strong>是氧化剂。所以，<code>CuSO₄</code>是氧化剂。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新增练习题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">随堂练习 (二)</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700 mono">在反应 <code>H₂ + CuO → Cu + H₂O</code> 中，哪种物质是还原剂？</p>
+                     <div class="mt-6 space-y-3 text-lg mono">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> H₂</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> CuO</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> Cu</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> H₂O</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新增解析 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">练习题 (二)：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(A)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>首先标出变价元素的化合价：<code>H₂</code>中的<code>H</code>从0价<strong class="text-green-700">升高</strong>到+1价，<code>CuO</code>中的<code>Cu</code>从+2价降低到0价。</p>
+                    <p>根据口诀“升、失、氧、还原剂”，化合价升高的元素（H）所在的<strong class="text-green-700">反应物</strong>是还原剂。所以，<code>H₂</code>是还原剂。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新增练习题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">随堂练习 (三)</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">下列关于氧化还原反应的说法中，正确的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 物质失去电子，被还原</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 物质得到电子，被氧化</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 还原剂发生还原反应</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 氧化剂发生还原反应</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新增解析 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">练习题 (三)：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>氧化剂在反应中得到电子，化合价降低，发生的是<strong class="text-green-700">还原反应</strong>。选项(D)正确。</p>
+                     <ul class="list-disc list-inside">
+                        <li>(A) 物质失去电子，被氧化。</li>
+                        <li>(B) 物质得到电子，被还原。</li>
+                        <li>(C) 还原剂失去电子，发生氧化反应。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新增练习题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">随堂练习 (四)</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700 mono">在反应 <code>2Na + Cl₂ → 2NaCl</code> 中，被氧化的元素是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 钠 (Na)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 氯 (Cl)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 两者都被氧化</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 两者都被还原</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新增解析 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">练习题 (四)：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(A)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>首先标出化合价：<code>Na</code>从0价<strong class="text-green-700">升高</strong>到+1价，<code>Cl</code>从0价降低到-1价。</p>
+                    <p>化合价<strong class="text-green-700">升高</strong>的元素被氧化。因此，钠(Na)元素被氧化。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 新增练习题 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">随堂练习 (五)</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">某元素在反应中，化合价从+3价变为+1价，则该元素？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 被氧化</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 被还原</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 既被氧化又被还原</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 没有变化</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新增解析 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">练习题 (五)：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>元素的化合价从+3<strong class="text-green-700">降低</strong>到+1。</p>
+                    <p>化合价降低，意味着该元素在反应中得到了电子，发生了<strong class="text-green-700">还原反应</strong>，因此该元素被还原。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-5xl font-bold text-slate-800">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-700">下课！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                sections.forEach((section, index) => {
+                    section.style.display = index === pageIndex ? 'flex' : 'none';
+                });
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>
+

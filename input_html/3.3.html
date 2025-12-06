@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>函数的单调性 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 400px; /* 保证内容较少时也有足够高度 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .graph-canvas {
+            border-radius: 0.5rem;
+            width: 320px; /* Slightly wider for labels */
+            height: 260px; /* Slightly taller for labels */
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+
+            .section:last-child {
+                page-break-after: auto;
+            }
+
+            .print-force-row {
+                flex-direction: row !important;
+                width: 100%;
+                gap: 2rem;
+                align-items: center;
+            }
+            .print-force-row > div {
+                flex: 1; /* Make both children take equal space */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- Section 1: Title -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">函数的心跳</h1>
+                <p class="text-2xl text-slate-600 mt-4">单调性</p>
+            </div>
+        </div>
+
+        <!-- Section 2: Intro -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">【概念引入】—— 说人话！</h2>
+                <p class="mt-8 text-xl text-slate-700 leading-relaxed">
+                    想象两个同学小明(x₁)和小红(x₂)在跑道上，小红跑在前面 (x₁ < x₂)。
+                </p>
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                    <div class="bg-green-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-green-700 text-xl">单调递增</h3>
+                        <p>跑在前面的小红，分数f(x₂)也更高。<br><strong>“强者恒强”</strong>，图像是上坡！</p>
+                    </div>
+                    <div class="bg-red-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-red-700 text-xl">单调递减</h3>
+                        <p>跑在前面的小红，分数f(x₂)反而更低。<br><strong>“后来居上”</strong>，图像是下坡！</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Core Method -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">【核心方法】—— 画图</h2>
+                <p class="mt-6 text-2xl font-semibold text-center text-red-600">图像是函数的“心电图”，单调性一眼看穿！</p>
+                <div class="flex flex-col md:flex-row items-center gap-4 mt-4 print-force-row">
+                    <div class="md:w-1/2 bg-amber-50 p-4 rounded-lg text-lg">
+                         <p class="font-bold text-amber-800">例1：y = |x-3|</p>
+                         <p>这是一个在 x=3 处触底的“V”字形。</p>
+                         <p class="mt-2"><strong>单调减区间：</strong>(-∞, 3)</p>
+                         <p><strong>单调增区间：</strong>(3, +∞)</p>
+                         <p class="text-sm mt-2 text-slate-500">建议用开区间，永远不会错！</p>
+                    </div>
+                    <div class="md:w-1/2 flex justify-center">
+                        <canvas id="abs-graph" class="graph-canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 4: Tan Function -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">【核心方法】—— 画图</h2>
+                 <div class="flex flex-col md:flex-row items-center gap-4 mt-4 print-force-row">
+                    <div class="md:w-1/2 bg-cyan-50 p-4 rounded-lg text-lg">
+                          <p class="font-bold text-cyan-800">例2：y = tan(x)</p>
+                          <p>图像是一条条向上‘窜’的曲线。</p>
+                          <p class="mt-2"><strong>单调增区间：</strong>(-π/2 + kπ, π/2 + kπ), k∈Z</p>
+                          <p class="text-red-600 font-bold mt-2">灵魂拷问：能用并集符号吗？<br>绝对不行！多个区间用“和”或“，”隔开。</p>
+                    </div>
+                    <div class="md:w-1/2 flex justify-center">
+                        <canvas id="tan-graph" class="graph-canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 5: Review Example 1 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">【知识回顾】—— 单调性判断</h2>
+                <div class="mt-6 bg-green-50 p-6 rounded-lg text-lg">
+                    <p class="mb-4">1. 函数 \(y = x^2 - 6x + 10\) 在区间\((2, 4)\)上 ( &nbsp; &nbsp; )</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-base">
+                        <p>A. 单调递增</p>
+                        <p>B. 单调递减</p>
+                        <p>C. 先减后增</p>
+                        <p>D. 先增后减</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 6: Review Example 2 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">【知识回顾】—— 单调性判断</h2>
+                <div class="mt-6 bg-green-50 p-6 rounded-lg text-lg">
+                    <p class="mb-4">2. 下列函数中，在区间\((0, +\infty)\)上单调递减的是 ( &nbsp; &nbsp; )</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 text-base">
+                        <p>A. \(f(x) = x + 1\)</p>
+                        <p>B. \(f(x) = (\frac{1}{2})^x\)</p>
+                        <p>C. \(f(x) = x^2\)</p>
+                        <p>D. \(f(x) = \cos x\)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 7: Review Analysis -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">【知识回顾】—— 解析</h2>
+                <div class="mt-6 space-y-6">
+                    <div class="bg-slate-50 p-4 rounded-lg">
+                        <p class="font-bold text-slate-800 text-xl">第1题解析：</p>
+                        <p class="mt-2">这是一个开口向上的二次函数。判断其在某个区间上的单调性，关键是看<strong class=text-red-600>对称轴</strong>的位置。</p>
+                        <p class="mt-2">对称轴公式为 \(x = -\frac{b}{2a}\)。对于 \(y = x^2 - 6x + 10\)，对称轴是 \(x = -\frac{-6}{2 \cdot 1} = 3\)。</p>
+                        <p class="mt-2">题目给定的区间是 \((2, 4)\)，对称轴 \(x=3\) 恰好在这个区间内部。因此，函数在对称轴左侧是递减的，在对称轴右侧是递增的。</p>
+                         <p class="mt-2">具体来说，函数在区间 \((2, 3]\)上单调递减，在区间 \([3, 4)\)上单调递增。</p>
+                        <p class="font-bold text-red-600 mt-2 text-center">所以，在整个区间 \((2, 4)\) 上是“先减后增”。正确答案：C</p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg">
+                        <p class="font-bold text-slate-800 text-xl">第2题解析：</p>
+                        <p class="mt-2">需要判断各个基本函数在区间 \((0, +\infty)\) 上的单调性。</p>
+                        <ul class="list-disc list-inside ml-4 mt-2 space-y-1">
+                            <li>A: \(f(x) = x + 1\) 是一次函数，斜率k=1>0，在R上单调递增。</li>
+                            <li>B: \(f(x) = (\frac{1}{2})^x\) 是指数函数，底数 \(0 < \frac{1}{2} < 1\)，在R上单调递减。</li>
+                            <li>C: \(f(x) = x^2\) 是二次函数，在 \((0, +\infty)\) 区间上单调递增。</li>
+                            <li>D: \(f(x) = \cos x\) 是三角函数，周期性变化，在 \((0, +\infty)\) 上不是单调函数。</li>
+                        </ul>
+                        <p class="font-bold text-red-600 mt-2 text-center">因此，唯一在指定区间单调递减的是B。正确答案：B</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 8: Parameterized Functions (Part 1) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">【问题进阶】—— 含参函数的单调性</h2>
+                 <p class="mt-4 text-xl">已知 f(x) = ax² - 2x + 1 在 (1, +∞) 上单调递增，求 a 的范围。</p>
+                 <div class="mt-6 bg-purple-50 p-4 rounded-lg text-lg">
+                    <p class="text-center text-2xl mb-4"><strong>解题思路：分类讨论！</strong></p>
+                    <p class="mt-2 text-xl"><strong>Case 1 (a = 0):</strong></p>
+                    <div class="min-h-24"></div>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- Section 9: Parameterized Functions (Part 2) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">【问题进阶】—— 含参函数的单调性 (续)</h2>
+                 <div class="mt-4 bg-purple-50 p-4 rounded-lg text-lg">
+                    <p class="text-xl"><strong>Case 2 (a > 0):</strong></p>
+                    <div class="min-h-48"></div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- Section 10: Parameterized Functions (Part 3) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">【问题进阶】—— 含参函数的单调性 (完)</h2>
+                 <div class="mt-4 bg-purple-50 p-4 rounded-lg text-lg">
+                    <p class="text-xl"><strong>Case 3 (a < 0):</strong></p>
+                    <div class="min-h-24"></div>
+                    <hr class="my-4 border-purple-200">
+                    <p class="font-bold text-2xl text-center">最终结论：</p>
+                    <p class="text-center">综合以上三种情况，a 的取值范围是 <strong class="text-red-600 text-3xl">a ≥ 1</strong>。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- Section 11: Supplementary Example -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-red-500 pb-2">【补充例题】—— 一个“无解”问题</h2>
+                <div class="mt-4 bg-red-50 p-6 rounded-lg text-lg">
+                     <div class="flex items-center justify-center gap-4 text-lg">
+                        <span>设函数</span>
+                        <div class="flex items-center justify-center text-2xl">
+                            <span class="mr-2">f(x) =</span>
+                            <span class="text-6xl font-light mr-2">{</span>
+                            <div class="grid grid-cols-[auto_auto] gap-x-4 text-left items-center">
+                                <span>x²+4x,</span>
+                                <span class="text-lg text-slate-600">x ≤ 0</span>
+                                <span>a-x,</span>
+                                <span class="text-lg text-slate-600">x > 0</span>
+                            </div>
+                        </div>
+                        <span>在 R 上是单调递减的，求 a 的范围。</span>
+                    </div>
+                    <hr class="my-4 border-red-200">
+                    <p class="mt-4">“分段函数想在‘全国’实现单调，必须满足两点：<strong class="text-red-700">内部和谐，外部统一</strong>。”</p>
+                    <p class="font-bold text-xl mt-4">内部和谐 (段内单调)</p>
+                    <div class="min-h-24"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 12: Piecewise Functions (Part 1) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2">【问题进阶】—— 分段函数的单调性</h2>
+                <p class="mt-6 text-xl text-center">要在定义域上单调，必须满足：“<strong class="text-red-600">内部和谐，外部统一</strong>”</p>
+                <div class="mt-4 bg-teal-50 p-6 rounded-lg text-lg">
+                     <div class="flex items-center justify-center gap-4 text-lg mb-4">
+                        <span>设函数</span>
+                        <div class="flex items-center justify-center text-2xl">
+                            <span class="mr-2">f(x) =</span>
+                            <span class="text-6xl font-light mr-2">{</span>
+                            <div class="grid grid-cols-[auto_auto] gap-x-4 text-left items-center">
+                                <span>-2x + 3,</span>
+                                <span class="text-lg text-slate-600">x ≤ 1</span>
+                                <span>(a-3)x,</span>
+                                <span class="text-lg text-slate-600">x > 1</span>
+                            </div>
+                        </div>
+                        <span>在 R 上单调递减，求a。</span>
+                    </div>
+                     <p class="font-bold mt-4 text-xl text-center">Step 1: 内部和谐 <span class="font-normal text-lg">(即，函数在每一段区间内都必须是单调递减的。)</span></p>
+                     <ul class="list-disc list-inside mt-2 space-y-1 text-left ml-4">
+                        <li>当 x≤1 时，f(x) = -2x+3，斜率为-2，是递减的，满足要求。</li>
+                        <li>当 x>1 时，f(x) = (a-3)x，要使其递减，斜率 a-3 必须小于 0。</li>
+                     </ul>
+                     <p class="text-center font-bold text-2xl mt-2 text-red-600">a - 3 < 0  ⟹  a < 3</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 13: Piecewise Functions (Part 2) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2">【问题进阶】—— 分段函数的单调性 (续)</h2>
+                <div class="mt-4 bg-teal-50 p-6 rounded-lg text-lg">
+                     <p class="font-bold text-xl">Step 2: 外部统一</p>
+                     <p class="mt-1">即，在分段点 (x=1) 处，函数图像不能“向上跳”，否则就会出现一个增区间。</p>
+                     <p class="mt-2">具体来说，左侧区间在分段点的值必须 <strong class="text-red-600">大于等于</strong> 右侧区间在分段点的值。</p>
+                     <p class="mt-2">左侧值：f(1) = -2(1) + 3 = 1</p>
+                     <p>右侧值（在x=1处的极限）：(a-3)(1) = a-3</p>
+                     <p class="text-center font-bold text-2xl mt-2 text-red-600">1 ≥ a - 3  ⟹  a ≤ 4</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 14: Piecewise Functions (Part 3) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2">【问题进阶】—— 分段函数的单调性 (完)</h2>
+                <div class="mt-4 bg-teal-50 p-6 rounded-lg text-lg">
+                     <p class="font-bold text-xl">Step 3: 取交集</p>
+                     <p class="mt-2">两个条件必须同时满足：</p>
+                     <ul class="list-disc list-inside mt-2 text-xl space-y-2">
+                        <li>由“内部和谐”得到： a < 3</li>
+                        <li>由“外部统一”得到： a ≤ 4</li>
+                     </ul>
+                     <p class="mt-4">将两个不等式取交集，得到最终的答案。</p>
+                     <p class="font-bold text-3xl text-red-600 text-center mt-4">最终答案: a < 3</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 15: Inequality Solving -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">【理论应用】—— 解抽象不等式</h2>
+                <p class="mt-6 text-xl">已知f(x)是R上的奇函数，在(0,+∞)上递增。解不等式 f(x-1) + f(x) > 0。</p>
+                <div class="mt-4 bg-blue-50 p-4 rounded-lg text-lg">
+                    <p><strong>目标：</strong>构造 f(A) > f(B) 的形式。</p>
+                    <div class="min-h-32"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 16: Summary -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">总结与升华</h2>
+                <p class="mt-6 text-xl text-slate-700">今天我们把函数的‘脾气’——单调性，摸了个透。</p>
+                <ul class="mt-4 list-disc list-inside space-y-3 text-lg">
+                    <li><strong>核心思想：</strong>数形结合！画图是王道！</li>
+                    <li><strong>书写规范：</strong>区间用小括号，多个区间用逗号。</li>
+                    <li><strong>三大难点：</strong>含参问题、分段问题、抽象问题。</li>
+                    <li><strong>一个大坑：</strong>永远不要忘记定义域！</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const absCanvas = document.getElementById('abs-graph');
+            if(absCanvas) drawAbsGraph(absCanvas.getContext('2d'));
+
+            const tanCanvas = document.getElementById('tan-graph');
+            if(tanCanvas) drawTanGraph(tanCanvas.getContext('2d'));
+        });
+
+        function drawAbsGraph(ctx) {
+            // High-DPI scaling for clearer rendering
+            const dpr = window.devicePixelRatio || 1;
+            const rect = ctx.canvas.getBoundingClientRect();
+            ctx.canvas.width = rect.width * dpr;
+            ctx.canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+            const w = rect.width; // Use CSS width for calculations
+            const h = rect.height; // Use CSS height for calculations
+
+            const xMin = -2, xMax = 8;
+            const yMin = -1, yMax = 5;
+
+            const toCanvasX = (x) => (x - xMin) / (xMax - xMin) * w;
+            const toCanvasY = (y) => h - (y - yMin) / (yMax - yMin) * h;
+            
+            ctx.clearRect(0, 0, w, h);
+            ctx.fillStyle = '#fffbeb';
+            ctx.fillRect(0,0,w,h);
+
+            // Draw axes
+            ctx.strokeStyle = '#475569';
+            ctx.fillStyle = '#475569';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            // Y-axis
+            ctx.moveTo(toCanvasX(0), h);
+            ctx.lineTo(toCanvasX(0), 0);
+             // X-axis
+            ctx.moveTo(0, toCanvasY(0));
+            ctx.lineTo(w, toCanvasY(0));
+            ctx.stroke();
+            
+            // Arrowheads
+            // Y-axis arrow
+            ctx.beginPath();
+            ctx.moveTo(toCanvasX(0), 0);
+            ctx.lineTo(toCanvasX(0) - 4, 10);
+            ctx.lineTo(toCanvasX(0) + 4, 10);
+            ctx.closePath();
+            ctx.fill();
+            // X-axis arrow
+            ctx.beginPath();
+            ctx.moveTo(w, toCanvasY(0));
+            ctx.lineTo(w - 10, toCanvasY(0) - 4);
+            ctx.lineTo(w - 10, toCanvasY(0) + 4);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Draw axis labels
+            ctx.font = '14px "Noto Serif SC"';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('y', toCanvasX(0) + 8, 12);
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            ctx.fillText('x', w - 12, toCanvasY(0) + 8);
+
+            // Draw y = |x-3|
+            ctx.strokeStyle = '#d97706';
+            ctx.lineWidth = 2.5; // Slightly thicker for clarity
+            ctx.beginPath();
+            ctx.moveTo(toCanvasX(xMin), toCanvasY(Math.abs(xMin - 3)));
+            ctx.lineTo(toCanvasX(3), toCanvasY(0));
+            ctx.lineTo(toCanvasX(xMax), toCanvasY(Math.abs(xMax - 3)));
+            ctx.stroke();
+
+            // Mark and label intercepts
+            const yIntercept = {x: 0, y: 3};
+            const xIntercept = {x: 3, y: 0};
+            
+            ctx.fillStyle = '#dc2626'; // red-600
+            // Y-intercept point
+            ctx.beginPath();
+            ctx.arc(toCanvasX(yIntercept.x), toCanvasY(yIntercept.y), 4, 0, Math.PI * 2);
+            ctx.fill();
+            // Y-intercept label
+            ctx.font = '12px "Noto Serif SC"';
+            ctx.textAlign = 'left';
+            ctx.fillText('(0, 3)', toCanvasX(yIntercept.x) + 8, toCanvasY(yIntercept.y) - 8);
+
+            // X-intercept point
+            ctx.beginPath();
+            ctx.arc(toCanvasX(xIntercept.x), toCanvasY(xIntercept.y), 4, 0, Math.PI * 2);
+            ctx.fill();
+            // X-intercept label
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            ctx.fillText('(3, 0)', toCanvasX(xIntercept.x), toCanvasY(xIntercept.y) + 8);
+        }
+
+        function drawTanGraph(ctx) {
+            // High-DPI scaling for clearer rendering
+            const dpr = window.devicePixelRatio || 1;
+            const rect = ctx.canvas.getBoundingClientRect();
+            ctx.canvas.width = rect.width * dpr;
+            ctx.canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+            const w = rect.width; // Use CSS width for calculations
+            const h = rect.height; // Use CSS height for calculations
+
+            const xMin = -Math.PI, xMax = Math.PI;
+            const yMin = -4, yMax = 4;
+
+            const toCanvasX = (x) => (x - xMin) / (xMax - xMin) * w;
+            const toCanvasY = (y) => h - (y - yMin) / (yMax - yMin) * h;
+            
+            ctx.clearRect(0, 0, w, h);
+            ctx.fillStyle = '#ecfeff';
+            ctx.fillRect(0,0,w,h);
+
+            // Draw axes
+            ctx.strokeStyle = '#475569';
+            ctx.fillStyle = '#475569';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            // Y-axis
+            ctx.moveTo(toCanvasX(0), h);
+            ctx.lineTo(toCanvasX(0), 0);
+            // X-axis
+            ctx.moveTo(0, toCanvasY(0));
+            ctx.lineTo(w, toCanvasY(0));
+            ctx.stroke();
+
+            // Arrowheads
+            // Y-axis arrow
+            ctx.beginPath();
+            ctx.moveTo(toCanvasX(0), 0);
+            ctx.lineTo(toCanvasX(0) - 4, 10);
+            ctx.lineTo(toCanvasX(0) + 4, 10);
+            ctx.closePath();
+            ctx.fill();
+            // X-axis arrow
+            ctx.beginPath();
+            ctx.moveTo(w, toCanvasY(0));
+            ctx.lineTo(w - 10, toCanvasY(0) - 4);
+            ctx.lineTo(w - 10, toCanvasY(0) + 4);
+            ctx.closePath();
+            ctx.fill();
+
+            // Draw axis labels
+            ctx.font = '14px "Noto Serif SC"';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('y', toCanvasX(0) + 8, 12);
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            ctx.fillText('x', w - 12, toCanvasY(0) + 8);
+            
+            // Draw asymptotes
+            ctx.strokeStyle = '#67e8f9';
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath();
+            ctx.moveTo(toCanvasX(-Math.PI/2), 0);
+            ctx.lineTo(toCanvasX(-Math.PI/2), h);
+            ctx.moveTo(toCanvasX(Math.PI/2), 0);
+            ctx.lineTo(toCanvasX(Math.PI/2), h);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Label asymptotes on x-axis
+            ctx.font = '12px "Noto Serif SC"';
+            ctx.fillText('-π/2', toCanvasX(-Math.PI/2), toCanvasY(0) + 8);
+            ctx.fillText('π/2', toCanvasX(Math.PI/2), toCanvasY(0) + 8);
+
+
+            // Draw tan(x)
+            ctx.strokeStyle = '#0891b2';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            let firstPoint = true;
+            for(let x = xMin; x <= xMax; x += 0.02) {
+                let y = Math.tan(x);
+                // Check if point is within y-range and not near asymptote
+                 if (Math.abs(y) < yMax && Math.abs(Math.cos(x)) > 0.01) {
+                    if(firstPoint) {
+                        ctx.moveTo(toCanvasX(x), toCanvasY(y));
+                        firstPoint = false;
+                    } else {
+                        ctx.lineTo(toCanvasX(x), toCanvasY(y));
+                    }
+                 } else {
+                    // Lift the pen when crossing asymptote
+                    firstPoint = true;
+                 }
+            }
+            ctx.stroke();
+
+            // Mark and label intercept
+            const origin = {x: 0, y: 0};
+            ctx.fillStyle = '#dc2626'; // red-600
+            ctx.beginPath();
+            ctx.arc(toCanvasX(origin.x), toCanvasY(origin.y), 4, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'bottom';
+            ctx.fillText('(0, 0)', toCanvasX(origin.x) + 8, toCanvasY(origin.y) - 8);
+        }
+    </script>
+</body>
+</html>
+

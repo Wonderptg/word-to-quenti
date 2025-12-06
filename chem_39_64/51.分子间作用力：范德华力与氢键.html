@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>分子间作用力：范德华力与氢键</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- MathJax 配置：支持 $...$ 和 $$...$$ 语法 -->
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$','$$'], ['\\[','\\]']]
+        }
+      };
+    </script>
+    <!-- ES6 兼容补丁 -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <!-- 引入 MathJax 主脚本 -->
+    <script id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 3rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        /* 排版风格 */
+        h1 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 3rem; /* 48px */
+            font-weight: 700;
+            color: #111827; /* gray-900 */
+            text-align: center;
+        }
+        h2 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 2.25rem; /* 36px */
+            font-weight: 700;
+            color: #111827;
+            border-bottom: 3px solid #3b82f6; /* blue-500 */
+            padding-bottom: 0.75rem;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+        h3 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.5rem; /* 24px */
+            font-weight: 700;
+            color: #1e3a8a; /* blue-800 */
+            margin-bottom: 0.75rem;
+        }
+        p, li {
+            font-size: 1.125rem; /* 18px */
+            line-height: 1.75;
+            color: #374151; /* gray-700 */
+        }
+        
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+            font-size: 1rem; /* 16px */
+            background-color: #eef2ff; /* indigo-100 */
+            color: #3730a3; /* indigo-800 */
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem; /* 6px */
+        }
+
+        /* 强调卡片 */
+        .info-card {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-top: 1.5rem;
+        }
+        .highlight-box {
+            background-color: #fef2f2; /* red-50 */
+            border-left: 4px solid #ef4444; /* red-500 */
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            border-radius: 0.5rem;
+        }
+        .highlight-box p {
+            color: #b91c1c; /* red-700 */
+            font-weight: 600;
+        }
+        .highlight-box strong {
+            color: #7f1d1d;
+            font-weight: 700;
+        }
+
+        /* 表格样式 */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            font-size: 1rem;
+        }
+        .styled-table th, .styled-table td {
+            border: 1px solid #cbd5e1;
+            padding: 0.75rem 1rem;
+            text-align: center;
+        }
+        .styled-table thead {
+            background-color: #f1f5f9;
+        }
+        .styled-table th {
+            font-weight: 700;
+            color: #334155;
+        }
+
+        /* 导航 */
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #ffffff;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e5e7eb;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        #navigation button {
+            background-color: #3b82f6; /* blue-500 */
+            color: white;
+            font-family: 'Noto Sans SC', sans-serif;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem; /* 8px */
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s, opacity 0.2s;
+        }
+        #navigation button:hover {
+            background-color: #2563eb;
+        }
+        #navigation button:disabled {
+            background-color: #9ca3af;
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        #page-indicator {
+            font-family: 'Noto Sans SC', sans-serif;
+            color: #4b5563; /* gray-600 */
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        /* 打印专用 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            html, body { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">分子间作用力</h1>
+                <p class="text-2xl text-slate-600 mt-2">范德华力与氢键</p>
+            </div>
+        </div>
+        
+        <!-- 什么是分子间作用力 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">什么是分子间作用力？</h2>
+                 <div class="info-card border-l-4 border-blue-500">
+                    <h3 class="text-blue-800 text-xl">定义：</h3>
+                    <p class="mt-2 text-lg text-slate-700">将<strong class="text-red-600">分子与分子</strong>聚集在一起的作用力。</p>
+                 </div>
+                 <div class="info-card mt-6">
+                    <h3 class="text-gray-700 text-xl">本质：</h3>
+                    <p class="mt-2 text-lg text-slate-700">是一种<strong class="text-blue-600">弱静电作用</strong>（瞬时电荷分布不均）。</p>
+                    <p class="mt-2 text-lg text-slate-700"><strong class="text-red-600">强度极弱</strong>，远小于化学键（离子键、共价键、金属键）。</p>
+                 </div>
+                 <div class="highlight-box mt-6">
+                    <p>分子间作用力决定了物质的<strong class="text-red-600">熔沸点、溶解性、粘度</strong>等<strong class="text-red-600">物理性质</strong>。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 分子间作用力 vs 化学键 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">分子间作用力 vs 化学键</h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                        <strong class="font-bold text-blue-700 text-xl">化学键 (原子间)</strong>
+                        <p class="mt-2 text-lg text-slate-700">将<strong class="text-blue-600">原子</strong>结合成<strong class="text-blue-600">分子</strong>（或晶体）的力量。</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                        <strong class="font-bold text-red-700 text-xl">分子间作用力 (分子间)</strong>
+                        <p class="mt-2 text-lg text-slate-700">将<strong class="text-red-600">分子</strong>聚集形成<strong class="text-red-600">液体</strong>或<strong class="text-red-600">固体</strong>的力量。</p>
+                    </div>
+                 </div>
+                 <div class="highlight-box mt-6">
+                    <p>范德华力和氢键<strong class="text-red-600">不属于</strong>化学键！</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- (一) 范德华力 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">(一) 范德华力 (Van der Waals Force)</h2>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">特点：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">1. 强度<strong class="text-red-600">极弱</strong>（“逊呐”）。</p>
+                    <p class="mt-2 text-slate-600 text-lg">2. <strong class="text-blue-600">无方向性</strong>：分子靠近即可。</p>
+                    <p class="mt-2 text-slate-600 text-lg">3. <strong class="text-blue-600">无饱和性</strong>：来者不拒，多多益善。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 范德华力的影响因素 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">范德华力的影响因素</h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                        <strong class="font-bold text-blue-700 text-xl">1. 相对分子质量 (主要因素)：</strong>
+                        <p class="mt-2 text-lg text-slate-700">M(r) ↑ → 电子数 ↑ → 瞬间静电作用 ↑ → 范德华力 <strong class="text-blue-600">↑</strong></p>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 p-4 rounded-lg">
+                        <strong class="font-bold text-green-700 text-xl">2. 分子极性：</strong>
+                        <p class="mt-2 text-lg text-slate-700">极性分子 (如 $\mathrm{CO}$) 比 非极性分子 ($\mathrm{N_2}$) 范德华力<strong class="text-green-600">大</strong>（M(r)相同也要比较）。</p>
+                    </div>
+                 </div>
+                 <div class="info-card mt-6 bg-red-50 border-red-200">
+                    <h3 class="text-red-700 text-xl">熔沸点规律：</h3>
+                    <p class="mt-2 text-lg text-slate-700">组成和结构相似的分子，范德华力越大 $\to$ 熔沸点<strong class="text-red-600">越高</strong>。</p>
+                    <p class="mt-2 text-lg text-slate-700">（例：$\mathrm{I_2} > \mathrm{Br_2} > \mathrm{Cl_2} > \mathrm{F_2}$）</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- (二) 氢键 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">(二) 氢键 (Hydrogen Bond)</h2>
+                <div class="mt-8 bg-cyan-50 border border-cyan-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-cyan-800 text-xl">定义：</h3>
+                    <p class="mt-2 text-lg text-slate-700">已与<strong class="text-red-600">F, O, N</strong>（电负性极强）形成共价键的 H 原子，与另一分子中的<strong class="text-red-600">F, O, N</strong> 原子之间的特殊静电作用。</p>
+                    <p class="mono mt-2 text-xl text-center font-bold text-cyan-700">A—H ··· B</p>
+                    <p class="mt-1 text-sm text-center text-slate-500">(A, B 为 F, O, N)</p>
+                </div>
+                <div class="info-card mt-6">
+                    <h3 class="text-gray-700 text-xl">形成原因 (H原子的特殊性)：</h3>
+                    <p class="mt-2 text-lg text-slate-700">H 原子只有 1 个电子，被 F/O/N 抢走后，<strong class="text-red-600">原子核几乎“裸露”</strong>，正电性极强，因此能形成强烈的静电吸引。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 氢键的特点 (一)：强度与方向性 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">氢键的特点 (一)：强度与方向性</h2>
+                <div class="mt-8 bg-gray-100 p-6 rounded-lg text-center">
+                    <p class="text-2xl mono font-bold text-gray-800">化学键 >> 氢键 (约 10 倍) > 范德华力</p>
+                    <p class="mt-2 text-xl font-bold text-red-600">核心：氢键<strong class="text-red-600">不是</strong>化学键！</p>
+                </div>
+                 <div class="info-card mt-6 border-l-4 border-blue-500">
+                    <h3 class="text-blue-800 text-xl">方向性：</h3>
+                    <p class="mt-2 text-lg text-slate-700">氢键<strong class="text-blue-600">具有方向性</strong>，原子倾向于在<strong class="text-red-600">同一直线</strong>上形成氢键，以使体系最稳定。</p>
+                    <p class="mt-2 text-lg text-slate-700"><strong>例：</strong>水结成冰时，由于氢键的方向性，形成<strong class="text-red-600">空隙大</strong>的结构 $\to$ <strong class="text-blue-600">冰的密度小于水</strong>。</p>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 氢键的特点 (二)：饱和性与数目 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">氢键的特点 (二)：饱和性与数目</h2>
+                <div class="info-card mt-8 border-l-4 border-green-500">
+                    <h3 class="text-green-700 text-xl">饱和性：</h3>
+                    <p class="mt-2 text-lg text-slate-700">氢键<strong class="text-red-600">具有饱和性</strong>。一个分子能形成的氢键数目受其 H 原子 (供体) 和孤电子对 (受体) 数目限制。</p>
+                </div>
+                <div class="mt-8 overflow-x-auto">
+                    <table class="styled-table text-lg">
+                        <thead>
+                            <tr>
+                                <th>分子</th>
+                                <th>H供体数</th>
+                                <th>F/O/N受体数</th>
+                                <th>平均每个分子含氢键数</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold">HF</td>
+                                <td>1</td>
+                                <td>3</td>
+                                <td class="text-red-600 font-bold">1</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">NH₃</td>
+                                <td>3</td>
+                                <td>1</td>
+                                <td class="text-red-600 font-bold">1</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">H₂O</td>
+                                <td>2</td>
+                                <td>2</td>
+                                <td class="text-blue-600 font-bold">2</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 氢键对性质的影响 (熔沸点) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">氢键对性质的影响 (熔沸点)</h2>
+                <div class="info-card mt-8 bg-red-50 border-red-200">
+                    <h3 class="text-red-700 text-xl">异常升高 (开挂现象)：</h3>
+                    <p class="mt-2 text-lg text-slate-700">含有<strong class="text-red-600">分子间氢键</strong>的物质，熔沸点会<strong class="text-red-600">异常升高</strong>，远高于同族其他氢化物。</p>
+                    <p class="mt-2 text-lg text-slate-700">例：$\mathrm{H_2O}$ ($100^\circ\text{C}$) 远高于 $\mathrm{H_2S}$ ($-60^\circ\text{C}$)。</p>
+                </div>
+                <div class="info-card mt-6 bg-blue-50 border-blue-200">
+                    <h3 class="text-blue-800 text-xl">分子内氢键 (内耗)：</h3>
+                    <p class="mt-2 text-lg text-slate-700">若形成<strong class="text-blue-600">分子内氢键</strong>（如邻羟基苯甲醛），则减少了分子间氢键数目。</p>
+                    <p class="mt-2 text-lg text-slate-700">→ 分子间作用力减弱 $\to$ 熔沸点<strong class="text-blue-600">降低</strong>。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 氢键对性质的影响 (其他) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">氢键对性质的影响 (其他)</h2>
+                 <div class="mt-8 space-y-4 text-lg">
+                    <div class="info-card"><strong class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full">黏度</strong><p class="mt-2 text-lg">分子间氢键越多，<strong class="text-red-600">黏度越大</strong>。 (如 甘油/丙三醇很粘稠)</p></div>
+                    <div class="info-card"><strong class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full">溶解性</strong><p class="mt-2 text-lg">能与水形成氢键的物质，在水中<strong class="text-red-600">溶解度增大</strong>。 (如 乙醇、甘油、乙酸均与水互溶)</p></div>
+                    <div class="info-card"><strong class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full">缔合</strong><p class="mt-2 text-lg">H₂O, HF 等分子会通过氢键“缔合”成多聚分子，导致测得的<strong class="text-red-600">相对分子质量偏大</strong>。</p></div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 生物大分子中的氢键 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="relative pb-3">生物大分子中的氢键</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="info-card border-l-4 border-blue-500">
+                        <h3 class="text-blue-800 text-2xl">蛋白质</h3>
+                        <p class="mt-3 text-slate-600">氢键是维持蛋白质<strong class="text-blue-700">高级结构</strong>和<strong class="text-blue-700">生物活性</strong>的重要因素。加热时氢键断裂，导致蛋白质变性失活。</p>
+                    </div>
+                    <div class="info-card border-l-4 border-purple-500">
+                        <h3 class="text-purple-800 text-2xl">DNA</h3>
+                        <p class="mt-3 text-slate-600">DNA <strong class="text-purple-700">双螺旋结构</strong>的两条链就是通过碱基对之间的<strong class="text-purple-700">氢键</strong>连接在一起的。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="relative pb-3">随堂练习（一）</h2>
+                <div class="info-card bg-slate-50">
+                    <p class="text-xl text-slate-700">下列哪种力<strong class="text-red-600">不属于</strong>化学键？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 离子键</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 共价键</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 氢键</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 金属键</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="relative pb-3">练习题（一）：解析</h2>
+                <div class="info-card bg-green-50 border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p class="text-xl mt-4"><strong>解析：</strong></p>
+                    <p>氢键是一种<strong class="text-red-600">分子间作用力</strong>，不是化学键。化学键（原子间强相互作用）主要包括离子键、共价键和金属键。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="relative pb-3">随堂练习（二）</h2>
+                <div class="info-card bg-slate-50">
+                    <p class="text-xl text-slate-700">对于组成和结构相似的分子（如 F₂, Cl₂, Br₂, I₂），影响其熔沸点高低的主要因素是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 氢键</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 范德华力</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 离子键</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 共价键</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="relative pb-3">练习题（二）：解析</h2>
+                <div class="info-card bg-green-50 border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p class="text-xl mt-4"><strong>解析：</strong></p>
+                    <p>卤素单质都是非极性分子，不存在氢键。它们是分子晶体，熔化、汽化时克服的是<strong class="text-red-600">范德华力</strong>。相对分子质量越大，范德华力越强，熔沸点越高。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="relative pb-3">随堂练习（三）</h2>
+                <div class="info-card bg-slate-50">
+                    <p class="text-xl text-slate-700">下列物质中，哪种物质的沸点<strong class="text-red-600">异常高</strong>，主要是因为存在氢键？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(A)</strong> H₂O (水)</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(B)</strong> H₂S (硫化氢)</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(C)</strong> HCl (氯化氢)</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(D)</strong> CH₄ (甲烷)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="relative pb-3">练习题 (三)：解析</h2>
+                <div class="info-card bg-green-50 border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(A)</p>
+                    <p class="text-xl mt-4"><strong>解析：</strong></p>
+                    <p>氢键的形成条件是 H 原子与 <strong class="text-red-600">F, O, N</strong> 相连。H₂O 中 H 与 O 相连，存在强大的分子间氢键，导致其沸点（100°C）远高于同族的 H₂S（-60°C）。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="relative pb-3">随堂练习 (四)</h2>
+                <div class="info-card bg-slate-50">
+                    <p class="text-xl text-slate-700">下列哪组原子之间<strong class="text-red-600">不能</strong>形成氢键？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(A)</strong> O—H ··· O</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(B)</strong> N—H ··· O</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(C)</strong> F—H ··· N</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(D)</strong> C—H ··· O</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="relative pb-3">练习题 (四)：解析</h2>
+                <div class="info-card bg-green-50 border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>形成氢键的 H 原子（供体）必须与电负性极强的 <strong class="text-red-600">F, O, N</strong> 相连。C-H 键中，C 和 H 电负性相近，极性很弱，H 原子不“裸露”，无法形成氢键。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="relative pb-3">随堂练习 (五)</h2>
+                <div class="info-card bg-slate-50">
+                    <p class="text-xl text-slate-700">冰的密度小于水，是因为？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 冰的范德华力更强</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 氢键的<strong class="text-red-600">方向性</strong>导致冰的结构有很大空隙</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 冰的温度低，分子更小</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 水结冰时共价键断裂了</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 5 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="relative pb-3">练习题 (五)：解析</h2>
+                <div class="info-card bg-green-50 border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>水分子间的氢键具有<strong class="text-red-600">方向性</strong>和<strong class="text-red-600">饱和性</strong>，这使得冰晶体形成一个<strong class="text-blue-600">空隙很大的</strong>开放式结构，体积增大，密度减小。</p>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                 </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看！希望大家对范德华力和氢键有了清晰的认识！</p>
+                <p class="mt-4 text-2xl text-slate-600">下节课再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- 导航控件 -->
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <!-- JS 逻辑 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // 初始显示第 1 页
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

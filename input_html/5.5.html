@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三角函数诱导公式 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .graph-canvas {
+            border-radius: 0.5rem;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+
+            .print-row {
+                flex-direction: row !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">三角函数诱导公式</h1>
+                <p class="text-2xl text-slate-600 mt-4">化繁为简的终极秘籍</p>
+                <p class="mt-8 text-xl text-cyan-600 font-semibold">"告别死记硬背，像玩游戏一样搞定化简！"</p>
+            </div>
+        </div>
+
+        <!-- 温故知新：三角函数定义 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-8">温故知新：三角函数的定义</h2>
+                <div class="flex justify-center text-lg">
+                    <div class="bg-gray-50 p-8 rounded-lg max-w-md w-full">
+                        <h3 class="text-2xl font-bold text-slate-700 mb-4 text-center">装备1：三角函数的定义</h3>
+                        <p class="text-slate-600 leading-relaxed text-center">单位圆中，角α终边与圆交于点 <strong class="text-blue-600">P(x, y)</strong>:</p>
+                        <ul class="mt-4 space-y-2 list-disc list-inside mx-auto max-w-xs">
+                            <li><strong class="text-red-600">cos(α) = x</strong> (横坐标)</li>
+                            <li><strong class="text-sky-600">sin(α) = y</strong> (纵坐标)</li>
+                            <li><strong class="text-emerald-600">tan(α) = y/x</strong> (纵 / 横)</li>
+                        </ul>
+                         <p class="mt-4 text-slate-500 text-center text-xl">关键：<strong class="text-violet-600">三角函数就是坐标！</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 温故知新：符号看象限 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-8">温故知新：符号看象限</h2>
+                <div class="flex justify-center text-lg">
+                    <div class="bg-gray-50 p-8 rounded-lg max-w-md w-full">
+                        <h3 class="text-2xl font-bold text-slate-700 mb-4 text-center">装备2：符号看象限</h3>
+                        <p class="text-slate-600 leading-relaxed text-center">坐标有正负，三角函数值也有正负：</p>
+                         <ul class="mt-4 space-y-2 list-disc list-inside mx-auto max-w-xs">
+                            <li>第一象限 (+, +): <strong class="text-gray-800">All (+)</strong></li>
+                            <li>第二象限 (-, +): <strong class="text-sky-600">sin (+)</strong></li>
+                            <li>第三象限 (-, -): <strong class="text-emerald-600">tan (+)</strong></li>
+                            <li>第四象限 (+, -): <strong class="text-red-600">cos (+)</strong></li>
+                        </ul>
+                         <p class="mt-4 text-slate-500 text-center text-xl">口诀：<strong class="text-violet-600">一全正、二正弦、三正切、四余弦</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 探索1：负角公式 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 print-row">
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-gray-500 pb-2">第一组：负角公式 (-α)</h2>
+                    <p class="mt-6 text-lg text-slate-700 leading-relaxed">
+                        角 α 和 -α 的终边关于 <strong>x轴对称</strong>。它们的交点坐标 (x, y) 关系为：
+                    </p>
+                    <div class="mt-4 space-y-2 text-xl">
+                        <p>横坐标 x 相同 → <strong class="text-red-600">cos(-α) = cos(α)</strong> (cos把负号吃掉了！)</p>
+                        <p>纵坐标 y 相反 → <strong class="text-sky-600">sin(-α) = -sin(α)</strong> (sin把负号吐出来了！)</p>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center items-center">
+                    <canvas id="negative-angle-canvas" class="graph-canvas" width="300" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 探索2：π±α -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 print-row">
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">第二组：π ± α 公式</h2>
+                     <p class="mt-6 text-lg text-slate-700 leading-relaxed">
+                         角 α 和 π+α 的终边关于 <strong>原点对称</strong>。它们的交点坐标 (x, y) 关系为：
+                    </p>
+                    <div class="mt-4 space-y-2 text-xl">
+                        <p>横坐标 x 相反 → <strong class="text-red-600">cos(π+α) = -cos(α)</strong></p>
+                        <p>纵坐标 y 相反 → <strong class="text-sky-600">sin(π+α) = -sin(α)</strong></p>
+                    </div>
+                     <p class="mt-4 text-gray-500">注意：函数名(sin, cos)没有发生改变！</p>
+                </div>
+                <div class="md:w-1/2 flex justify-center items-center">
+                    <canvas id="pi-plus-alpha-canvas" class="graph-canvas" width="300" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 探索3：π/2±α -->
+         <div class="section">
+            <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 print-row">
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-emerald-500 pb-2">第三组：π/2 ± α 公式</h2>
+                     <p class="mt-6 text-lg text-slate-700 leading-relaxed">
+                         角 α 和 π/2-α 的终边交点所构成的三角形全等，但<strong>坐标交换了位置</strong>！
+                    </p>
+                    <div class="mt-4 space-y-2 text-xl">
+                        <p>x → y' → <strong class="text-red-600">cos(α) = sin(π/2-α)</strong></p>
+                        <p>y → x' → <strong class="text-sky-600">sin(α) = cos(π/2-α)</strong></p>
+                    </div>
+                     <p class="mt-4 text-red-600 font-bold">高能预警：函数名变了！sin↔cos</p>
+                </div>
+                <div class="md:w-1/2 flex justify-center items-center">
+                    <canvas id="piovertwo-minus-alpha-canvas" class="graph-canvas" width="300" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 归纳总结 1: 口诀与详解 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-sky-500 pb-2 text-center mb-6">归纳总结：终极破解口诀</h2>
+                <div class="text-center">
+                    <p class="text-2xl text-slate-700">所有公式都可以总结为一句话：</p>
+                    <div class="mt-4 bg-sky-50 p-8 rounded-lg text-4xl font-bold text-sky-800 tracking-widest inline-block">
+                        奇变偶不变<br>符号看象限
+                    </div>
+                </div>
+                <div class="mt-8 text-left text-lg space-y-4">
+                    <p><strong>奇变偶不变：</strong>看角是 <code class="bg-gray-200 px-1 rounded">k·(π/2)±α</code> 中的k是奇数还是偶数。<strong>奇数</strong> (π/2, 3π/2...) 则函数名互变 (sin↔cos, tan↔cot)；<strong>偶数</strong> (π, 2π...) 则函数名不变。</p>
+                    <p><strong>符号看象限：</strong><strong class="text-red-600">假设α是锐角</strong>，看原角 <code class="bg-gray-200 px-1 rounded">k·(π/2)±α</code> 落在第几象限，判断<strong class="text-red-600">原函数</strong>在该象限的符号，添上即可。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 归纳总结 2: 口诀实战 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-2">口诀实战</h2>
+                <div class="mt-8 bg-gray-100 p-6 rounded-lg text-lg" style="min-height:150px">
+                    <p class="font-bold text-xl text-center mb-4">化简 cos(α - 3π/2)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实战演练 1 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2">实战演练 1</h2>
+                <div class="mt-8 text-lg">
+                    <div class="bg-violet-50 p-8 rounded-lg" style="min-height: 150px;">
+                        <p class="font-bold text-2xl">快速化简 tan(7π - α)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实战演练 2 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2">实战演练 2</h2>
+                <div class="mt-8 text-lg">
+                    <div class="bg-violet-50 p-8 rounded-lg" style="min-height: 150px;">
+                        <p class="font-bold text-2xl">求值 sin(300°)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实战演练 3 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2">实战演练 3</h2>
+                <div class="mt-8 text-lg">
+                     <div class="bg-violet-50 p-8 rounded-lg" style="min-height: 200px;">
+                        <p class="font-bold text-xl">已知sin(π-α)=-4/5, α是第三象限角, 求 -sin(α)-tan(α)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 1</h2>
+                <div class="text-lg">
+                    <div class="bg-gray-50 p-6 rounded-lg text-xl">
+                        <strong>1.</strong> 若角α终边在第二象限，哪个值一定是正数？
+                        <ul class="list-none mt-4 space-y-2 pl-4">
+                           <li>(A) cos(α)</li>
+                           <li>(B) tan(α)</li>
+                           <li>(C) sin(α)−cos(α)</li>
+                           <li>(D) sin(α)∙cos(α)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 2</h2>
+                <div class="text-lg">
+                     <div class="bg-gray-50 p-6 rounded-lg text-xl">
+                        <strong>2.</strong> 化简 cos(π−α) 的结果是？
+                        <ul class="list-none mt-4 space-y-2 pl-4">
+                           <li>(A) sin(α)</li>
+                           <li>(B) -sin(α)</li>
+                           <li>(C) cos(α)</li>
+                           <li>(D) -cos(α)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 3</h2>
+                <div class="text-lg">
+                    <div class="bg-gray-50 p-6 rounded-lg text-xl">
+                        <strong>3.</strong> 化简 sin(3π/2+α) 的结果是？
+                         <ul class="list-none mt-4 space-y-2 pl-4">
+                           <li>(A) sin(α)</li>
+                           <li>(B) -sin(α)</li>
+                           <li>(C) cos(α)</li>
+                           <li>(D) -cos(α)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 4</h2>
+                <div class="text-lg">
+                    <div class="bg-gray-50 p-6 rounded-lg text-xl">
+                        <strong>4.</strong> 计算 sin(210°) 的值是？
+                         <ul class="list-none mt-4 space-y-2 pl-4">
+                           <li>(A) 1/2</li>
+                           <li>(B) -1/2</li>
+                           <li>(C) √3/2</li>
+                           <li>(D) -√3/2</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题解析 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析</h2>
+                <div class="space-y-3 text-base">
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>1. 答案：C</strong></p>
+                        <p><strong>解析：</strong>第二象限，sin(α)>0, cos(α)<0。 (正数) - (负数) = 正数。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>2. 答案：D</strong></p>
+                        <p><strong>解析：</strong>口诀：偶不变(cos)，符号看象限(π-α在第二象限，cos为负)。所以是 -cos(α)。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>3. 答案：D</strong></p>
+                        <p><strong>解析：</strong>口诀：奇变(cos)，符号看象限(3π/2+α在第四象限，原函数sin为负)。所以是 -cos(α)。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>4. 答案：B</strong></p>
+                        <p><strong>解析：</strong>sin(210°) = sin(180°+30°)。偶不变(sin)，符号看象限(210°在第三象限，sin为负)。所以是 -sin(30°) = -1/2。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 课堂小结 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-cyan-500 pb-2">课堂小结</h2>
+                <p class="mt-8 text-2xl text-slate-700">
+                    今天我们找到了破解诱导公式的终极密码：
+                </p>
+                <div class="mt-4 bg-cyan-50 p-6 rounded-lg text-4xl font-bold text-cyan-800">
+                    奇变偶不变，符号看象限！
+                </div>
+                <p class="mt-8 text-xl text-slate-600">
+                    数学的魅力就在于，从看似杂乱无章的现象中，找到简洁优美的规律。希望大家课后多加练习，把这个强大的工具用到滚瓜烂熟！
+                </p>
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function drawAxes(ctx) {
+                const w = ctx.canvas.width;
+                const h = ctx.canvas.height;
+                const midX = w / 2;
+                const midY = h / 2;
+                ctx.save();
+                ctx.clearRect(0, 0, w, h);
+                ctx.fillStyle = '#f8fafc';
+                ctx.fillRect(0, 0, w, h);
+                ctx.strokeStyle = '#9ca3af';
+                ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(0, midY); ctx.lineTo(w, midY); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(midX, 0); ctx.lineTo(midX, h); ctx.stroke();
+                ctx.fillStyle = '#6b7280'; ctx.font = '12px Arial';
+                ctx.fillText('y', midX + 5, 12); ctx.fillText('x', w - 12, midY - 5);
+                ctx.restore();
+            }
+
+            function drawAngle(ctx, angleDeg, color, radius, label, labelOffset = {}) {
+                const midX = ctx.canvas.width / 2;
+                const midY = ctx.canvas.height / 2;
+                const rad = angleDeg * Math.PI / 180;
+                const endX = midX + radius * Math.cos(rad);
+                const endY = midY - radius * Math.sin(rad);
+                
+                ctx.save();
+                // Line
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 3;
+                ctx.beginPath(); ctx.moveTo(midX, midY); ctx.lineTo(endX, endY); ctx.stroke();
+                // Point
+                ctx.fillStyle = color;
+                ctx.beginPath(); ctx.arc(endX, endY, 5, 0, 2 * Math.PI); ctx.fill();
+                // Label
+                ctx.font = 'bold 14px Arial';
+                ctx.fillText(label, endX + (labelOffset.x || 0), endY + (labelOffset.y || 0));
+                ctx.restore();
+                return { x: endX, y: endY };
+            }
+
+            // Canvas 1: Negative Angle
+            const canvas1 = document.getElementById('negative-angle-canvas');
+            if (canvas1) {
+                const ctx = canvas1.getContext('2d');
+                drawAxes(ctx);
+                const radius = canvas1.width * 0.35;
+                const p1 = drawAngle(ctx, 45, '#ef4444', radius, 'P(x, y)', {x: 10, y: -5});
+                const p2 = drawAngle(ctx, -45, '#3b82f6', radius, 'P\'(x, -y)', {x: 10, y: 15});
+            }
+
+            // Canvas 2: Pi + Alpha
+            const canvas2 = document.getElementById('pi-plus-alpha-canvas');
+            if (canvas2) {
+                const ctx = canvas2.getContext('2d');
+                drawAxes(ctx);
+                const radius = canvas2.width * 0.35;
+                const p1 = drawAngle(ctx, 45, '#ef4444', radius, 'P(x, y)', {x: 10, y: -5});
+                const p2 = drawAngle(ctx, 225, '#3b82f6', radius, 'P\'(-x, -y)', {x: -60, y: 22});
+            }
+
+            // Canvas 3: Pi/2 - Alpha
+            const canvas3 = document.getElementById('piovertwo-minus-alpha-canvas');
+            if(canvas3) {
+                 const ctx = canvas3.getContext('2d');
+                drawAxes(ctx);
+                const radius = canvas3.width * 0.35;
+                const midX = canvas3.width/2;
+                const midY = canvas3.height/2;
+
+                const pAlpha = drawAngle(ctx, 60, '#ef4444', radius, 'P(x,y)', {x: 5, y: -10});
+                const pOther = drawAngle(ctx, 30, '#3b82f6', radius, 'P\'(x\',y\')', {x: 5, y: 5});
+                
+                ctx.save();
+                ctx.strokeStyle = '#a1a1aa';
+                ctx.setLineDash([2,2]);
+                ctx.beginPath();
+                ctx.moveTo(pAlpha.x, pAlpha.y); ctx.lineTo(pAlpha.x, midY); ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(pOther.x, pOther.y); ctx.lineTo(pOther.x, midY); ctx.stroke();
+                
+                ctx.font = '14px Noto Serif SC';
+                ctx.fillStyle = '#ef4444';
+                ctx.fillText('y', pAlpha.x + 5, pAlpha.y + (midY-pAlpha.y)/2);
+                ctx.fillStyle = '#3b82f6';
+                ctx.fillText('x\'', pOther.x + 5, pOther.y + (midY-pOther.y)/2);
+                ctx.restore();
+            }
+
+        });
+    </script>
+</body>
+</html>
+
+

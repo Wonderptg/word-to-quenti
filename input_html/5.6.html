@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三角函数图像与性质 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .graph-canvas {
+            border-radius: 0.5rem;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">三角函数图像与性质</h1>
+                <p class="text-2xl text-slate-600 mt-4">如何给函数“画像”</p>
+                <p class="mt-8 text-xl text-cyan-600 font-semibold">"图像是解决几乎所有函数问题的核心方法"</p>
+            </div>
+        </div>
+
+        <!-- y=sin(x) 图像绘制 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-sky-500 pb-2 mb-4 text-center">y = sin(x) 图像绘制</h2>
+                <p class="text-center text-lg"><strong>核心原理：</strong>sin(x) 的值 = 单位圆上终边交点的<strong>纵坐标</strong>。</p>
+                <div class="flex justify-center items-center mt-4">
+                     <canvas id="sine-wave-generator" width="700" height="350" class="graph-canvas"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- y=sin(x) 周期图像 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-2 mb-4">y = sin(x) 在 (-4π, 4π) 的图像</h2>
+                <div class="flex justify-center items-center mt-4">
+                    <canvas id="sine-wave-full" width="700" height="300" class="graph-canvas"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 周期性 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-2">周期性：无限的循环</h2>
+                <div class="mt-6 text-lg space-y-4">
+                    <p>正弦函数的图像呈现出一种循环往复的模式。我们只需画出其中一段，就可以通过平移得到完整的图像。</p>
+                    <ul class="list-disc list-inside bg-sky-50 p-4 rounded-lg space-y-2">
+                        <li><strong>周期性:</strong> 函数值会规律性地重复出现。</li>
+                        <li><strong>最小正周期 (T):</strong> 完成一次完整循环所需的最短长度。对于 sin(x)，<strong>T = 2π</strong>。</li>
+                        <li><strong>其他周期:</strong> 4π, 6π, 8π... 也是 sin(x) 的周期，但我们通常关注最小正周期。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- y=sin(x) 核心性质 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-2">sin(x) 核心性质</h2>
+                <div class="mt-6 grid grid-cols-2 md:grid-cols-3 gap-4 text-base text-center">
+                    <div class="bg-sky-50 p-3 rounded-lg"><strong>定义域:</strong> R</div>
+                    <div class="bg-sky-50 p-3 rounded-lg"><strong>值域:</strong> [-1, 1]</div>
+                    <div class="bg-sky-50 p-3 rounded-lg"><strong>周期:</strong> T = 2π</div>
+                    <div class="bg-sky-50 p-3 rounded-lg"><strong>奇偶性:</strong> 奇函数</div>
+                    <div class="bg-sky-50 p-3 rounded-lg"><strong>对称轴:</strong> x=π/2+kπ</div>
+                    <div class="bg-sky-50 p-3 rounded-lg"><strong>对称中心:</strong> (kπ, 0)</div>
+                </div>
+                <div class="mt-4 bg-gray-50 p-4 rounded-lg">
+                    <p class="font-bold text-center">单调性</p>
+                    <p><strong>增区间:</strong> [-π/2+2kπ, π/2+2kπ]</p>
+                    <p><strong>减区间:</strong> [π/2+2kπ, 3π/2+2kπ]</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- sin(x)应用题 (类型一) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2">sin(x)应用题：图像应用</h2>
+                <div class="mt-6">
+                    <div class="bg-violet-50 p-4 rounded-lg">
+                        <p class="font-bold text-lg mb-2">类型一：图像的直接应用</p>
+                        <p class="mb-2"><strong>知识点:</strong> 看图说话，理解图像的基本含义。</p>
+                        <p class="font-semibold">例题1: “请看着y=sin(x)的图像，直接回答：当 x=7π/6 时，sin(x)的值是正数还是负数？它离-1更近还是离0更近？”</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- sin(x)应用题 (类型二) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2">sin(x)应用题：周期性应用</h2>
+                <div class="mt-6">
+                    <div class="bg-violet-50 p-4 rounded-lg">
+                        <p class="font-bold text-lg mb-2">类型二：周期性的应用</p>
+                        <p class="mb-2"><strong>知识点:</strong> 利用 sin(x + 2kπ) = sin(x) 来求解。</p>
+                        <p class="font-semibold">例题2: “我们知道 sin(π/6) = 0.5，请利用周期性，直接写出 sin(13π/6) 和 sin(-11π/6) 的值。”</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- sin(x)应用题 (类型三) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2">sin(x)应用题：单调性应用</h2>
+                <div class="mt-6">
+                    <div class="bg-violet-50 p-4 rounded-lg">
+                        <p class="font-bold text-lg mb-2">类型三：单调性的应用</p>
+                        <p class="mb-2"><strong>知识点:</strong> 运用函数图像的“上坡”（递增）和“下坡”（递减）趋势来比较大小。</p>
+                        <p class="font-semibold">例题3: “不使用计算器，请利用y=sin(x)图像的单调性，判断下列大小关系，应该填写 ‘ &gt; ’ 还是 ‘ &lt; ’ ？”</p>
+                        <ol class="list-decimal list-inside ml-4 space-y-2 mt-2">
+                            <li>sin(π/4) ______ sin(5π/12)</li>
+                            <li>sin(11π/18) ______ sin(8π/9)</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- y=cos(x) 图像的由来 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-emerald-500 pb-2 text-center">y = cos(x) 图像的由来</h2>
+                 <div class="mt-6 text-center space-y-2">
+                    <p class="text-xl text-slate-700 leading-relaxed">
+                        <strong>核心关系：</strong> cos(x) = sin(x + π/2)
+                    </p>
+                    <p class="mt-2 text-xl text-slate-700 leading-relaxed">
+                        这意味着，cos(x) 的图像就是将 sin(x) 图像向<strong>左平移 π/2</strong> 个单位得到。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- y=cos(x) 周期图像 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2 mb-4">y = cos(x) 在 (-4π, 4π) 的图像</h2>
+                <div class="flex justify-center items-center mt-4">
+                    <canvas id="cosine-wave-full" width="700" height="300" class="graph-canvas"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- y=cos(x) 核心性质 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2">cos(x) 核心性质</h2>
+                <div class="mt-6 grid grid-cols-2 md:grid-cols-3 gap-4 text-base text-center">
+                    <div class="bg-emerald-50 p-3 rounded-lg"><strong>定义域:</strong> R</div>
+                    <div class="bg-emerald-50 p-3 rounded-lg"><strong>值域:</strong> [-1, 1]</div>
+                    <div class="bg-emerald-50 p-3 rounded-lg"><strong>周期:</strong> 2π</div>
+                    <div class="bg-emerald-50 p-3 rounded-lg"><strong>奇偶性:</strong> 偶函数</div>
+                    <div class="bg-emerald-50 p-3 rounded-lg"><strong>对称轴:</strong> x = kπ</div>
+                    <div class="bg-emerald-50 p-3 rounded-lg"><strong>对称中心:</strong> (π/2 + kπ, 0)</div>
+                </div>
+                 <div class="mt-4 bg-gray-50 p-4 rounded-lg">
+                    <p class="font-bold text-center">单调性</p>
+                    <p><strong>增区间:</strong> [-π+2kπ, 2kπ]</p>
+                    <p><strong>减区间:</strong> [2kπ, π+2kπ]</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- cos(x)应用题 (类型一) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2">cos(x)应用题：图像应用</h2>
+                <div class="mt-6">
+                    <div class="bg-violet-50 p-4 rounded-lg">
+                        <p class="font-bold text-lg mb-2">类型一：图像的直接应用</p>
+                        <p class="mb-2"><strong>知识点:</strong> 看图说话，理解cos(x)图像从(0,1)点出发的基本形态。</p>
+                        <p class="font-semibold">例题1: “请看着y=cos(x)的图像，直接回答：当 x = 2π/3 时，cos(x)的值是正数还是负数？它与cos(π/3)的值有什么关系？”</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- cos(x)应用题 (类型二) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2">cos(x)应用题：周期性应用</h2>
+                <div class="mt-6">
+                    <div class="bg-violet-50 p-4 rounded-lg">
+                        <p class="font-bold text-lg mb-2">类型二：周期性的应用</p>
+                        <p class="mb-2"><strong>知识点:</strong> 利用 cos(x + 2kπ) = cos(x) 来求解。</p>
+                        <p class="font-semibold">例题2: “我们知道 cos(π/3) = 0.5，请利用周期性，快速求出 cos(7π/3) 和 cos(-5π/3) の値。”</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- cos(x)应用题 (类型三) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2">cos(x)应用题：单调性应用</h2>
+                <div class="mt-6">
+                    <div class="bg-violet-50 p-4 rounded-lg">
+                        <p class="font-bold text-lg mb-2">类型三：单调性的应用</p>
+                        <p class="mb-2"><strong>知识点:</strong> 运用cos(x)图像在不同区间的“上坡”和“下坡”趋势来比较大小。</p>
+                        <p class="font-semibold">例题3: “不使用计算器，请利用y=cos(x)图像的单调性，判断下列大小关系，应该填写 ‘ &gt; ’ 还是 ‘ &lt; ’ ？”</p>
+                        <ol class="list-decimal list-inside ml-4 space-y-2 mt-2">
+                            <li>cos(π/9) ______ cos(π/4)</li>
+                            <li>cos(7π/6) ______ cos(4π/3)</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- y=tan(x) 性质 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-amber-500 pb-2">y = tan(x) 介绍</h2>
+                <p class="mt-6 text-lg text-slate-700 leading-relaxed text-center">
+                    <strong>定义：</strong> tan(x) = sin(x)/cos(x)
+                </p>
+                <p class="mt-2 text-lg text-slate-700 leading-relaxed text-center">
+                    <strong>关键特征：</strong>在 x = π/2 + kπ 处有垂直渐近线。
+                </p>
+            </div>
+        </div>
+
+        <!-- y=tan(x) 图像 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-amber-500 pb-2 mb-4">y = tan(x) 在 (-4π, 4π) 的图像</h2>
+                <div class="flex justify-center items-center mt-4">
+                    <canvas id="tangent-wave-canvas" class="graph-canvas" width="700" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- y=tan(x) 核心性质 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-amber-500 pb-2">tan(x) 核心性质</h2>
+                <div class="mt-6 bg-amber-50 p-4 rounded-lg text-base space-y-2">
+                    <p><strong>定义域:</strong> x ≠ π/2 + kπ</p>
+                    <p><strong>值域:</strong> R</p>
+                    <p><strong>周期:</strong> π</p>
+                    <p><strong>奇偶性:</strong> 奇函数</p>
+                    <p><strong>对称中心:</strong> (kπ/2, 0)</p>
+                    <p><strong>单调性:</strong> 在各开区间 (-π/2+kπ, π/2+kπ) 内单调递增</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- tan(x)应用题 (类型一) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2">tan(x)应用题：图像应用</h2>
+                <div class="mt-6">
+                    <div class="bg-violet-50 p-4 rounded-lg">
+                        <p class="font-bold text-lg mb-2">类型一：图像的直接应用</p>
+                        <p class="mb-2"><strong>知识点:</strong> 理解tan(x)图像的基本形态和渐近线的概念。</p>
+                        <p class="font-semibold">例题1: “请看着y=tan(x)的图像，直接回答：tan(π/2)的值存在吗？tan(-π/2)呢？为什么？”</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- tan(x)应用题 (类型二) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2">tan(x)应用题：周期性应用</h2>
+                <div class="mt-6">
+                    <div class="bg-violet-50 p-4 rounded-lg">
+                        <p class="font-bold text-lg mb-2">类型二：周期性的应用</p>
+                        <p class="mb-2"><strong>知识点:</strong> tan(x)的周期是π，而不是2π。利用 tan(x + kπ) = tan(x) 来求解。</p>
+                        <p class="font-semibold">例题2: “我们知道 tan(π/4) = 1，请利用周期性，快速求出 tan(5π/4) 和 tan(-3π/4) 的值。”</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- tan(x)应用题 (类型三) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2">tan(x)应用题：单调性应用</h2>
+                <div class="mt-6">
+                    <div class="bg-violet-50 p-4 rounded-lg">
+                        <p class="font-bold text-lg mb-2">类型三：单调性的应用</p>
+                        <p class="mb-2"><strong>知识点:</strong> tan(x)在每一个被渐近线隔开的区间内，都是严格单调递增的。</p>
+                        <p class="font-semibold">例题3: “不使用计算器，请利用y=tan(x)图像的单调性，判断下列大小关系，应该填写 ‘ &gt; ’ 还是 ‘ &lt; ’ ？”</p>
+                        <ol class="list-decimal list-inside ml-4 space-y-2 mt-2">
+                            <li>tan(π/6) ______ tan(π/3)</li>
+                            <li>tan(5π/9) ______ tan(13π/18)</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Helper function to draw axes and origin
+            function drawAxes(ctx, w, h, toCanvasX, toCanvasY, originX = 0, originY = 0) {
+                ctx.save();
+                ctx.strokeStyle = '#94a3b8';
+                ctx.lineWidth = 1;
+                // X-Axis
+                ctx.beginPath();
+                ctx.moveTo(0, toCanvasY(originY));
+                ctx.lineTo(w, toCanvasY(originY));
+                ctx.stroke();
+                // Y-Axis
+                ctx.beginPath();
+                ctx.moveTo(toCanvasX(originX), 0);
+                ctx.lineTo(toCanvasX(originX), h);
+                ctx.stroke();
+
+                // Labels
+                ctx.fillStyle = '#475569';
+                ctx.font = '14px Noto Serif SC';
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'top';
+                ctx.fillText('y', toCanvasX(originX) + 5, 5);
+                ctx.textAlign = 'right';
+                ctx.textBaseline = 'bottom';
+                ctx.fillText('x', w - 5, toCanvasY(originY) - 5);
+                ctx.fillText('O', toCanvasX(originX) - 5, toCanvasY(originY) + 15);
+                ctx.restore();
+            }
+            
+            // Helper function to draw a wave
+            function drawWave(canvas, func, xMin, xMax, yMin, yMax, color, keyPoints = []) {
+                const ctx = canvas.getContext('2d');
+                const w = canvas.width;
+                const h = canvas.height;
+
+                const toCanvasX = (x) => (x - xMin) / (xMax - xMin) * w;
+                const toCanvasY = (y) => h - (y - yMin) / (yMax - yMin) * h;
+                
+                ctx.clearRect(0,0,w,h);
+                drawAxes(ctx, w, h, toCanvasX, toCanvasY);
+
+                // Draw Wave
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2.5;
+                ctx.beginPath();
+                let first = true;
+                for (let x = xMin; x <= xMax; x += 0.01) {
+                    const y = func(x);
+                    if (isNaN(y) || !isFinite(y)) {
+                        ctx.stroke(); // End current path before jump
+                        first = true;
+                        continue;
+                    }
+                    if (first) {
+                        ctx.beginPath(); // Start a new path
+                        ctx.moveTo(toCanvasX(x), toCanvasY(y));
+                        first = false;
+                    } else {
+                        ctx.lineTo(toCanvasX(x), toCanvasY(y));
+                    }
+                }
+                ctx.stroke(); // Stroke the last path segment
+
+                 // Draw Key Points
+                keyPoints.forEach(p => {
+                    if(isNaN(p.y)) return;
+                    ctx.fillStyle = 'red';
+                    ctx.beginPath();
+                    ctx.arc(toCanvasX(p.x), toCanvasY(p.y), 4, 0, 2 * Math.PI);
+                    ctx.fill();
+
+                    if (p.label) {
+                        ctx.fillStyle = '#334155';
+                        ctx.font = '12px Noto Serif SC';
+                        ctx.textAlign = 'center';
+                        ctx.fillText(p.label, toCanvasX(p.x), toCanvasY(p.y) - 10);
+                    }
+                });
+            }
+
+            // Sine Wave Generator with Unit Circle
+            const sineCanvas = document.getElementById('sine-wave-generator');
+            if (sineCanvas) {
+                const ctx = sineCanvas.getContext('2d');
+                const w = sineCanvas.width;
+                const h = sineCanvas.height;
+                const midY = h / 2;
+                
+                const circleRadius = h * 0.35;
+                const circleX = w * 0.25;
+                const waveStartX = w * 0.5;
+                const waveWidth = w * 0.45;
+                
+                const toCanvasX = (x) => waveStartX + (x / (2*Math.PI)) * waveWidth;
+                const toCanvasY = (y) => midY - y * circleRadius;
+                
+                ctx.clearRect(0, 0, w, h);
+                
+                // --- Draw Axes ---
+                // Circle axes
+                drawAxes(ctx, w, h, (x) => circleX + x, (y) => midY - y);
+                // Wave axes
+                drawAxes(ctx, w, h, (x) => waveStartX + x, (y) => midY - y);
+                
+                // Draw Unit Circle
+                ctx.strokeStyle = '#cbd5e1';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(circleX, midY, circleRadius, 0, 2 * Math.PI);
+                ctx.stroke();
+
+                // Draw Sine Wave
+                ctx.strokeStyle = '#3b82f6';
+                ctx.lineWidth = 2.5;
+                ctx.beginPath();
+                for (let x = 0; x <= 2 * Math.PI; x += 0.01) {
+                    const y = Math.sin(x);
+                    ctx.lineTo(toCanvasX(x), toCanvasY(y));
+                }
+                ctx.stroke();
+
+                // Draw connecting lines and points
+                const keyAngles = [Math.PI/6, Math.PI/3, Math.PI/2, 2*Math.PI/3, 5*Math.PI/6, Math.PI, 7*Math.PI/6, 4*Math.PI/3, 3*Math.PI/2, 5*Math.PI/3, 11*Math.PI/6];
+                keyAngles.forEach(angle => {
+                    const circlePointX = circleX + circleRadius * Math.cos(angle);
+                    const circlePointY = midY - circleRadius * Math.sin(angle);
+                    const wavePointX = toCanvasX(angle);
+                    const wavePointY = toCanvasY(Math.sin(angle));
+
+                    // Points on circle and wave
+                    ctx.fillStyle = '#ef4444';
+                    ctx.beginPath();
+                    ctx.arc(circlePointX, circlePointY, 3, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.arc(wavePointX, wavePointY, 3, 0, 2 * Math.PI);
+                    ctx.fill();
+
+                    // Connecting line
+                    ctx.strokeStyle = '#f59e0b';
+                    ctx.setLineDash([2, 2]);
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(circlePointX, circlePointY);
+                    ctx.lineTo(wavePointX, circlePointY);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                });
+            }
+
+            // Full Sine Wave (-4pi to 4pi)
+            const sineFullCanvas = document.getElementById('sine-wave-full');
+            if(sineFullCanvas) {
+                const xMin = -4 * Math.PI, xMax = 4 * Math.PI;
+                const yMin = -1.5, yMax = 1.5;
+
+                const keyPoints = [];
+                for(let i = -4; i <= 4; i++) {
+                    keyPoints.push({x: i * Math.PI, y: 0}); // Zeros
+                    keyPoints.push({x: (i + 0.5) * Math.PI, y: Math.sin((i + 0.5) * Math.PI)}); // Peaks/Troughs
+                }
+
+                drawWave(sineFullCanvas, Math.sin, xMin, xMax, yMin, yMax, '#3b82f6', keyPoints);
+                
+                const ctx = sineFullCanvas.getContext('2d');
+                const w = sineFullCanvas.width;
+                const h = sineFullCanvas.height;
+                const toCanvasX = (x) => (x - xMin) / (xMax - xMin) * w;
+                const toCanvasY = (y) => h - (y - yMin) / (yMax - yMin) * h;
+                
+                ctx.fillStyle = '#475569';
+                ctx.font = '12px Noto Serif SC';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'top';
+                for(let i = -4; i<=4; i++) {
+                    if (i === 0) continue;
+                    ctx.fillText(`${i}π`, toCanvasX(i * Math.PI), toCanvasY(0) + 5);
+                }
+            }
+
+            // Full Cosine Wave (-4pi to 4pi)
+            const cosFullCanvas = document.getElementById('cosine-wave-full');
+            if(cosFullCanvas) {
+                const xMin = -4 * Math.PI, xMax = 4 * Math.PI;
+                const yMin = -1.5, yMax = 1.5;
+
+                const keyPoints = [];
+                for(let i = -4; i <= 4; i++) {
+                    keyPoints.push({x: (i + 0.5) * Math.PI, y: 0}); // Zeros
+                    keyPoints.push({x: i * Math.PI, y: Math.cos(i * Math.PI)}); // Peaks/Troughs
+                }
+
+                drawWave(cosFullCanvas, Math.cos, xMin, xMax, yMin, yMax, '#10b981', keyPoints);
+                
+                const ctx = cosFullCanvas.getContext('2d');
+                const w = cosFullCanvas.width;
+                const h = cosFullCanvas.height;
+                const toCanvasX = (x) => (x - xMin) / (xMax - xMin) * w;
+                const toCanvasY = (y) => h - (y - yMin) / (yMax - yMin) * h;
+                
+                ctx.fillStyle = '#475569';
+                ctx.font = '12px Noto Serif SC';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'top';
+                for(let i = -4; i<=4; i++) {
+                    if (i === 0) continue;
+                    ctx.fillText(`${i}π`, toCanvasX(i * Math.PI), toCanvasY(0) + 5);
+                }
+            }
+
+            // Tangent Canvas
+            const tanCanvas = document.getElementById('tangent-wave-canvas');
+            if(tanCanvas) {
+                const xMin = -4 * Math.PI, xMax = 4 * Math.PI;
+                const yMin = -4, yMax = 4;
+                
+                const keyPoints = [];
+                 for (let i = -4; i < 4; i++) {
+                    keyPoints.push({x: i * Math.PI, y: 0}); // Zeros
+                    keyPoints.push({x: (i + 0.25) * Math.PI, y: 1}); // y = 1 points
+                    keyPoints.push({x: (i + 0.5) * Math.PI, y: NaN}); // Asymptotes
+                    keyPoints.push({x: (i + 0.75) * Math.PI, y: -1}); // y = -1 points
+                }
+                keyPoints.push({x: 4 * Math.PI, y:0});
+
+                drawWave(tanCanvas, Math.tan, xMin, xMax, yMin, yMax, '#f59e0b', keyPoints);
+                
+                // Draw Asymptotes
+                const ctx = tanCanvas.getContext('2d');
+                const w = tanCanvas.width;
+                const h = tanCanvas.height;
+                const toCanvasX = (x) => (x - xMin) / (xMax - xMin) * w;
+                
+                ctx.save();
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = 1;
+                ctx.setLineDash([4,4]);
+                for (let i = -4; i < 4; i++) {
+                    const k = i + 0.5;
+                    if (k * Math.PI >= xMin && k * Math.PI <= xMax) {
+                       ctx.beginPath();
+                       ctx.moveTo(toCanvasX(k * Math.PI), 0);
+                       ctx.lineTo(toCanvasX(k * Math.PI), h);
+                       ctx.stroke();
+                    }
+                }
+                ctx.restore();
+
+                // Add X-axis labels
+                ctx.fillStyle = '#475569';
+                ctx.font = '12px Noto Serif SC';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'top';
+                const toCanvasY = (y) => h - (y - yMin) / (yMax - yMin) * h;
+                for(let i = -4; i<=4; i++) {
+                    if (i === 0) continue;
+                    ctx.fillText(`${i}π`, toCanvasX(i * Math.PI), toCanvasY(0) + 5);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+

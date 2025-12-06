@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>化学键</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+
+        /* 图片占位符样式 */
+        .placeholder-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #e5e7eb; /* 浅灰色背景 */
+            border: 1px dashed #9ca3af; /* 虚线边框 */
+            color: #6b7280; /* 文字颜色 */
+            font-size: 0.9em;
+            text-align: center;
+            border-radius: 0.375rem; /* 圆角 */
+            min-height: 150px; /* 最小高度 */
+            width: 100%; /* 宽度 */
+            margin-top: 1rem; /* 上边距 */
+            margin-bottom: 1rem; /* 下边距 */
+        }
+
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+            .placeholder-image { background-color: #e5e7eb !important; -webkit-print-color-adjust: exact; print-color-adjust: exact;} /* 确保打印背景色 */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 (第1页) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                   <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                 </svg>
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">化学键</h1>
+                <p class="text-2xl text-slate-600 mt-2">—— 连接原子的“神秘力量”</p>
+            </div>
+        </div>
+
+        <!-- 基本概念 (第2页) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-slate-500 rounded"></span>什么是化学键？</h2>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-8 rounded-lg text-lg text-slate-700 space-y-4">
+                    <p><strong>定义：</strong>原子之间<strong class="text-red-600">强烈的相互作用</strong>，把原子（或离子）结合在一起构成物质。</p>
+                    <p><strong>主要类型 (高中)：</strong></p>
+                    <ul class="list-disc list-inside ml-4">
+                        <li>离子键 (Ionic Bond)</li>
+                        <li>共价键 (Covalent Bond)</li>
+                    </ul>
+                     <p class="text-slate-500 text-base">(金属键将在后续课程学习)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 离子键 (第3页) - 形成过程 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>离子键：阴阳相吸</h2>
+                 <p class="mt-8 text-xl text-slate-700">带<strong class="text-sky-600">相反电荷离子</strong>之间的相互作用。</p>
+                 <div class="mt-8 bg-sky-50 border border-sky-200 p-8 rounded-lg">
+                    <h3 class="font-bold text-sky-800 text-xl mb-4">形成过程 (以NaCl为例)：</h3>
+                    
+                    <!-- 更新后的图片 -->
+                    <div class="w-full my-4 rounded-lg overflow-hidden border border-gray-200 bg-white">
+                        <img src="https://www.researchgate.net/profile/Deepak-Nayak-2/publication/341838190/figure/fig1/AS:898086937583616@1591132578501/Formation-of-NaCl-by-ionic-bonding-between-Na-and-Cl.png" 
+                             alt="氯化钠离子键形成过程示意图" 
+                             class="w-full h-auto object-contain"
+                             onerror="this.parentElement.innerHTML = '<div class=\'placeholder-image\'>图片加载失败</div>';">
+                    </div>
+                    <!-- 更新结束 -->
+
+                    <p class="text-lg text-slate-600">1. 活泼金属Na<strong class="text-red-600">失去</strong>电子 → Na⁺ (2-8 稳定结构)</p>
+                    <p class="text-lg text-slate-600 mt-2">2. 活泼非金属Cl<strong class="text-red-600">得到</strong>电子 → Cl⁻ (2-8-8 稳定结构)</p>
+                    <p class="text-lg text-slate-600 mt-2">3. Na⁺ 与 Cl⁻ 通过<strong class="text-red-600">静电作用</strong>结合。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 离子键 (第4页) - 本质与粒子 (新页面) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>离子键：本质与粒子</h2>
+                 <div class="mt-8 bg-gray-50 border border-gray-200 p-8 rounded-lg text-lg text-slate-700 space-y-6">
+                    <div>
+                        <h3 class="font-bold text-xl text-slate-800 mb-2">成键本质</h3>
+                        <p class="text-xl text-slate-600">静电作用 (包括阴阳离子间的<strong class="text-red-600">吸引</strong>，电子与电子、原子核与原子核间的<strong class="text-red-600">排斥</strong>)。</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-xl text-slate-800 mb-2">成键粒子</h3>
+                        <p class="text-xl text-slate-600"><strong class="text-red-600">阴、阳离子</strong>。</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 离子化合物 (第5页) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>离子化合物：含有离子键的化合物</h2>
+                <p class="mt-8 text-xl text-slate-700">通常由以下几类构成：</p>
+                 <div class="mt-6 space-y-4 text-lg">
+                    <p class="bg-sky-50 border border-sky-200 p-4 rounded-lg">1. 活泼金属 + 活泼非金属 (如: NaCl, MgO, CaF₂, Na₂O₂, NaH)</p>
+                    <p class="bg-sky-50 border border-sky-200 p-4 rounded-lg">2. 活泼金属 + 酸根/酸式根 (如: KNO₃, Na₂CO₃, NaHCO₃, CH₃COONa)</p>
+                    <p class="bg-sky-50 border border-sky-200 p-4 rounded-lg">3. 铵根 + 酸根/酸式根 (如: NH₄Cl, (NH₄)₂SO₄, NH₄NO₃)</p>
+                    <p class="bg-sky-50 border border-sky-200 p-4 rounded-lg">4. 强碱 (如: NaOH, KOH, Ba(OH)₂)</p>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 离子化合物易错点 (第6页) -->
+         <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-red-500 rounded"></span>离子化合物的易错点</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-red-800 text-xl">错误观点一</h3>
+                        <p class="mt-3 text-slate-600">离子化合物一定含金属元素。</p>
+                        <p class="mt-2 text-red-700 font-semibold">反例：NH₄Cl (铵盐)</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-red-800 text-xl">错误观点二</h3>
+                         <p class="mt-3 text-slate-600">金属+非金属组成的化合物一定是离子化合物。</p>
+                         <p class="mt-2 text-red-700 font-semibold">反例：AlCl₃ (共价化合物)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 共价键 (第7页) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-emerald-500 rounded"></span>共价键：携手合作</h2>
+                <p class="mt-8 text-xl text-slate-700">原子之间通过<strong class="text-emerald-600">共用电子对</strong>形成的相互作用。</p>
+                 <div class="mt-8 bg-emerald-50 border border-emerald-200 p-8 rounded-lg">
+                    <h3 class="font-bold text-emerald-800 text-xl mb-4">形成过程 (以Cl₂为例)：</h3>
+                    
+                    <!-- 更新后的图片 -->
+                    <div class="w-full my-4 rounded-lg overflow-hidden border border-gray-200 bg-white flex justify-center p-4">
+                        <img src="https://www.thegeoexchange.org/chemistry/bonding/Lewis-Structures/Cl2-lewis-structure.png" 
+                             alt="氯气共价键形成示意图 (路易斯结构)" 
+                             class="h-24 w-auto object-contain"
+                             onerror="this.parentElement.innerHTML = '<div class=\'placeholder-image\'>图片加载失败</div>';">
+                    </div>
+
+                    <p class="text-lg text-slate-600 mt-4 text-center">两个Cl原子各提供1个电子，<strong class="text-red-600">共用</strong>电子对，使双方都达到8电子稳定结构。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 共价键 (第8页) - 本质与粒子 (新页面) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-emerald-500 rounded"></span>共价键：本质与粒子</h2>
+                 <div class="mt-8 bg-gray-50 border border-gray-200 p-8 rounded-lg text-lg text-slate-700 space-y-6">
+                    <div>
+                        <h3 class="font-bold text-xl text-slate-800 mb-2">成键本质</h3>
+                        <p class="text-xl text-slate-600">原子核与<strong class="text-red-600">共用电子对</strong>之间的电性作用 (吸引和排斥)。</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-xl text-slate-800 mb-2">成键粒子</h3>
+                        <p class="text-xl text-slate-600"><strong class="text-red-600">原子</strong>。</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 共价键类型 (第9页) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-emerald-500 rounded"></span>共价键的类型</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-emerald-50 border border-emerald-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-emerald-800 text-xl">非极性共价键</h3>
+                        <p class="mt-3 text-slate-600"><strong class="text-red-600">同种</strong>非金属原子之间形成。</p>
+                        <p class="mt-2 text-slate-600">共用电子对<strong class="text-emerald-700">不偏向</strong>任何一方。</p>
+                        <p class="mt-2 mono">例：Cl₂, H₂, O₂, N₂</p>
+                    </div>
+                    <div class="bg-cyan-50 border border-cyan-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-cyan-800 text-xl">极性共价键</h3>
+                         <p class="mt-3 text-slate-600"><strong class="text-red-600">不同种</strong>非金属原子之间形成。</p>
+                         <p class="mt-2 text-slate-600">共用电子对<strong class="text-cyan-700">偏向</strong>得电子能力强的一方。</p>
+                         <p class="mt-2 mono">例：HCl, H₂O, NH₃, CO₂</p>
+                    </div>
+                </div>
+                <p class="mt-4 text-slate-500 text-base text-center">（离子键可以看作是极性共价键的极端情况，即电子对完全偏移）</p>
+            </div>
+        </div>
+        
+        <!-- 含有共价键的物质 (第9页) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-emerald-500 rounded"></span>哪些物质含有共价键？</h2>
+                 <div class="mt-8 bg-emerald-50 border border-emerald-200 p-6 rounded-lg text-lg">
+                    <ul class="list-disc list-inside space-y-3">
+                        <li>非金属单质 (除稀有气体外)</li>
+                        <li>非金属氢化物 (如 HCl, H₂O, NH₃, CH₄)</li>
+                        <li>含氧酸 (如 H₂SO₄, HNO₃, H₃PO₄)</li>
+                        <li>非金属氧化物 (如 CO₂, SO₂, SiO₂)</li>
+                        <li>绝大多数有机化合物 (如 乙醇 C₂H₅OH, 甲烷 CH₄)</li>
+                        <li>某些盐 (如 AlCl₃)</li>
+                        <li>弱碱 (如 NH₃·H₂O)</li>
+                    </ul>
+                    <p class="mt-4 text-red-600 font-semibold">注意：稀有气体是单原子分子，不存在化学键。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 例题 1 (第10页) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>随堂练习 (一)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列物质中，只含有离子键的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> NaOH</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> H₂O</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> NaCl</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> NH₄Cl</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 1 (第11页) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (一)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>A. NaOH 中 Na⁺ 和 OH⁻ 之间是离子键，O和H之间是共价键。<br>B. H₂O 只含共价键。<br>C. NaCl 由 Na⁺ 和 Cl⁻ 构成，<strong class="text-green-700">只含离子键</strong>。<br>D. NH₄Cl 中 NH₄⁺ 和 Cl⁻ 之间是离子键，N和H之间是共价键。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 2 (第12页) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>随堂练习 (二)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列物质中，含有非极性共价键的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> H₂O₂ (过氧化氢)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> HCl (氯化氢)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> CH₄ (甲烷)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> NaCl (氯化钠)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 2 (第13页) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (二)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(A)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>非极性共价键存在于同种非金属原子之间。H₂O₂的结构是 H-O-O-H，其中 O-O 键是<strong class="text-green-700">非极性共价键</strong> (O-H 键是极性共价键)。HCl 和 CH₄ 只含极性共价键。NaCl 是离子化合物。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 3 (第14页) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>随堂练习 (三)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列物质属于离子化合物的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> CO₂</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> NH₃</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> Ba(OH)₂</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> H₂SO₄</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 3 (第15页) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (三)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>离子化合物通常由金属阳离子和非金属阴离子或酸根离子构成。CO₂, NH₃, H₂SO₄ 都是共价化合物。<strong class="text-green-700">Ba(OH)₂</strong> 由 Ba²⁺ 离子和 OH⁻ 离子构成，属于离子化合物 (强碱)。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 4 (第16页) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>随堂练习 (四)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>关于化学键的说法，正确的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 离子化合物中一定含有共价键</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 共价化合物中一定不含离子键</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 非金属单质中一定含有共价键</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 含有金属元素的化合物一定是离子化合物</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 4 (第17页) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (四)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>A. 离子化合物可能含共价键 (如NaOH, Na₂O₂)。<br>B. <strong class="text-green-700">共价化合物</strong>的定义就是分子内原子间主要以共价键结合，<strong class="text-green-700">不含离子键</strong>。<br>C. 稀有气体是单原子分子，不含化学键。<br>D. 反例：AlCl₃ 是共价化合物。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 5 (第18页) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>随堂练习 (五)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列分子中的化学键属于极性共价键的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> N₂</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> MgCl₂</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> H₂S</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> C (金刚石)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 5 (第19页) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (五)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>极性共价键存在于不同种非金属原子之间。<br>A. N₂ 是同种原子，非极性键。<br>B. MgCl₂ 是离子化合物，含离子键。<br>C. <strong class="text-green-700">H₂S</strong> 中 H 和 S 是不同种非金属原子，形成<strong class="text-green-700">极性共价键</strong>。<br>D. 金刚石中 C 和 C 是同种原子，非极性键。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 结束页 (第20页) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>
+
+
+
+

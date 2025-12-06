@@ -1,0 +1,454 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>随机变量及其数字特征 - 课件 PPT</title>
+ <script src="https://cdn.tailwindcss.com"></script>
+ 
+ <!-- MathJax Configuration -->
+ <script>
+ window.MathJax = {
+ tex: {
+ inlineMath: [['$', '$'], ['\\(', '\\)']],
+ displayMath: [['$$', '$$'], ['\\[', '\\]']],
+ processEscapes: true
+ },
+ svg: { fontCache: 'global' }
+ };
+ </script>
+ <script id="MathJax-script" async src="https://cdn.bootcdn.net/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+ <style>
+ html, body {
+ margin: 0;
+ padding: 0;
+ font-family: 'Noto Serif SC', serif;
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
+ background-color: #f1f5f9;
+ }
+ 
+ #presentation-container {
+ max-width: 64rem; /* 宽屏效果 */
+ margin: 2rem auto;
+ background-color: white;
+ border-radius: 0.5rem;
+ box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+ }
+
+ .section {
+ width: 100%;
+ box-sizing: border-box;
+ padding: 3rem 4rem;
+ position: relative; 
+ min-height: 600px; 
+ display: flex;
+ flex-direction: column;
+ justify-content: center; 
+ align-items: center; 
+ text-align: center;
+ }
+ 
+ .section:not(:last-child) {
+ border-bottom: 1px solid #e5e7eb;
+ }
+ 
+ .formula-box {
+ background-color: #eff6ff; /* blue-50 */
+ padding: 1.5rem;
+ margin-top: 1.5rem;
+ margin-bottom: 1.5rem;
+ border-radius: 0.5rem;
+ font-size: 1.5rem;
+ width: 100%;
+ }
+
+ h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 1.5rem; color: #1e293b; }
+ h2 { font-size: 2rem; font-weight: 700; margin-bottom: 1.5rem; color: #1e293b; }
+ p { font-size: 1.25rem; color: #334155; margin-bottom: 1rem; line-height: 1.6; }
+ ul { text-align: left; font-size: 1.25rem; color: #334155; list-style-type: disc; margin-left: 2rem; }
+ li { margin-bottom: 0.5rem; }
+
+ .quiz-option {
+ background-color: #f8fafc;
+ padding: 1rem 2rem;
+ margin: 0.5rem 0;
+ border-radius: 0.5rem;
+ width: 100%;
+ text-align: left;
+ font-size: 1.25rem;
+ cursor: pointer;
+ transition: background-color 0.2s;
+ }
+ .quiz-option:hover { background-color: #e2e8f0; }
+
+ .answer-box {
+ background-color: #ecfdf5; /* green-50 */
+ color: #047857;
+ padding: 2rem;
+ border-radius: 0.5rem;
+ font-size: 1.5rem;
+ font-weight: bold;
+ margin-top: 2rem;
+ }
+
+ @media print {
+ @page { size: landscape; margin: 0; }
+ body, html { background-color: white; }
+ #presentation-container { max-width: 100%; margin: 0; box-shadow: none; }
+ .section { height: 100vh; width: 100vw; page-break-after: always; border-bottom: none; }
+ .section:last-child { page-break-after: auto; }
+ }
+ </style>
+</head>
+<body>
+
+<div id="presentation-container">
+
+    <!-- 封面 -->
+    <div class="section">
+        <h1 class="text-7xl mb-6">随机变量及其数字特征</h1>
+        <p class="text-2xl text-gray-500"> · 概率统计第四节</p>
+ <div class="mt-12 p-6 bg-slate-50 rounded-lg">
+ 
+ </div>
+ </div>
+
+ <!-- 1. 什么是随机变量：引入 -->
+ <div class="section">
+ <h2>1. 什么是随机变量？</h2>
+ <div class="w-full max-w-3xl text-left space-y-6">
+ <p><strong>定义：</strong> 顾名思义，它是一个变量，且跟随机事件有关。</p>
+ <div class="bg-gray-50 p-6 rounded-lg">
+ <p class="font-bold mb-2">🎲 例子：掷骰子</p>
+ <p>结果：$1, 2, 3, 4, 5, 6$ (无法确定，随机)</p>
+ <p>记这个结果为 $X$，则 $X$ 就是一个随机变量。</p>
+ </div>
+ <div class="bg-gray-50 p-6 rounded-lg">
+ <p class="font-bold mb-2">🌧️ 例子：量化文字事件</p>
+ <ul class="list-none ml-0">
+ <li>明天下雨 $\rightarrow$ 记作 $1$</li>
+ <li>明天不下雨 $\rightarrow$ 记作 $0$</li>
+ </ul>
+ <p class="mt-2 text-sm text-gray-500">本质：将自然语言转化为数字，以便数学研究。</p>
+ </div>
+ </div>
+ </div>
+
+ <!-- 2. 随机变量的严谨定义 -->
+ <div class="section">
+ <h2>随机变量的本质</h2>
+ <p>如果对于样本空间 $\Omega$ 中的每一个样本点 $\omega$，随机变量 $X$ 都对应一个<strong>唯一确定的实数值</strong>。</p>
+ 
+ <div class="my-6">
+ <!-- SVG Diagram from input -->
+ <svg width="600" height="250" viewBox="0 0 600 250" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+ <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+ <path d="M0,0 L0,6 L9,3 z" fill="#555" />
+ </marker>
+ </defs>
+ <ellipse cx="150" cy="125" rx="70" ry="100" fill="#e8eaf6" stroke="#3f51b5" stroke-width="2"/>
+ <text x="150" y="20" text-anchor="middle" font-weight="bold" fill="#3f51b5" font-size="16">样本空间 $\Omega$</text>
+ <circle cx="150" cy="70" r="4" fill="#3f51b5"/>
+ <text x="135" y="75" text-anchor="end" font-size="14" font-style="italic" fill="#3f51b5">ω₁</text>
+ <circle cx="150" cy="125" r="4" fill="#3f51b5"/>
+ <text x="135" y="130" text-anchor="end" font-size="14" font-style="italic" fill="#3f51b5">ω₂</text>
+ <circle cx="150" cy="180" r="4" fill="#3f51b5"/>
+ <text x="135" y="185" text-anchor="end" font-size="14" font-style="italic" fill="#3f51b5">ω₃</text>
+ <ellipse cx="450" cy="125" rx="70" ry="100" fill="#fce4ec" stroke="#c51162" stroke-width="2"/>
+ <text x="450" y="20" text-anchor="middle" font-weight="bold" fill="#c51162" font-size="16">实数集 $R$</text>
+ <circle cx="450" cy="70" r="4" fill="#c51162"/>
+ <text x="465" y="75" text-anchor="start" font-size="14" font-style="italic" fill="#c51162">x₁</text>
+ <circle cx="450" cy="125" r="4" fill="#c51162"/>
+ <text x="465" y="130" text-anchor="start" font-size="14" font-style="italic" fill="#c51162">x₂</text>
+ <circle cx="450" cy="180" r="4" fill="#c51162"/>
+ <text x="465" y="185" text-anchor="start" font-size="14" font-style="italic" fill="#c51162">x₃</text>
+ <path d="M160 70 Q 300 50 438 70" stroke="#555" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+ <path d="M160 125 L 438 125" stroke="#555" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+ <path d="M160 180 Q 300 200 438 180" stroke="#555" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+ <text x="300" y="110" text-anchor="middle" font-weight="bold" font-size="16" fill="#555">对应法则 $X$</text>
+ <text x="300" y="130" text-anchor="middle" font-size="12" fill="#777">(唯一确定)</text>
+ </svg>
+ </div>
+ 
+ <p class="text-xl font-bold text-blue-700">💡 核心理解：随机变量本质上就是样本空间上的一个函数。</p>
+ </div>
+
+ <!-- 3. 离散型随机变量的分布列 -->
+ <div class="section">
+ <h2>2. 离散型随机变量的分布列</h2>
+ <p>取值范围可一一列出（有限或可列）。</p>
+ <p>设 $X$ 的可能取值为 $x_1, x_2, \dots, x_n$，概率为 $p_i$。</p>
+ 
+ <div class="formula-box">
+ $$ P(X = x_i) = p_i, \quad i = 1, 2, \dots, n $$
+ </div>
+
+ <div class="text-left bg-gray-50 p-6 rounded-lg w-3/4">
+ <p class="font-bold">⚠️ 分布列的两大性质：</p>
+ <ol class="list-decimal ml-6 space-y-2">
+ <li><strong>概率非负：</strong> $p_i \ge 0$ (通常 $p_i > 0$)</li>
+ <li><strong>概率之和为1：</strong> $\sum_{i=1}^n p_i = 1$</li>
+ </ol>
+ </div>
+ </div>
+
+ <!-- 4. 线性变换的分布 -->
+ <div class="section">
+ <h2>线性变换 $Y = aX + b$</h2>
+ <p class="mb-8">如果已知 $X$ 的分布列，如何求 $Y$ 的分布？</p>
+ 
+ <div class="grid grid-cols-3 gap-4 text-center w-full max-w-4xl">
+ <div class="bg-blue-50 p-6 rounded">
+ <p class="font-bold text-gray-500 text-sm">X 的取值</p>
+ <p class="text-2xl mt-2">$x_i$</p>
+ </div>
+ <div class="flex items-center justify-center">
+ <span class="text-4xl text-gray-400">$\rightarrow$</span>
+ </div>
+ <div class="bg-green-50 p-6 rounded">
+ <p class="font-bold text-gray-500 text-sm">Y 的取值</p>
+ <p class="text-2xl mt-2">$a x_i + b$</p>
+ </div>
+ </div>
+
+ <div class="mt-8">
+ <p class="font-bold text-xl">概率 $p_i$ 保持不变！</p>
+ </div>
+ </div>
+
+ <!-- 5. 数学期望（均值） -->
+ <div class="section">
+ <h2>3. 数字特征：期望 (Expectation)</h2>
+ <p>反映随机变量平均取值的大小。</p>
+ 
+ <div class="formula-box">
+ $$ E(X) = \sum_{i=1}^n x_i p_i = x_1 p_1 + x_2 p_2 + \dots + x_n p_n $$
+ </div>
+
+ <p class="text-gray-500 mt-4">记忆方法：把同一列的取值和概率两两相乘，最后全加起来。</p>
+ </div>
+
+ <!-- 6. 期望例题：骰子 -->
+ <div class="section">
+ <h2>📝 例题：骰子的期望</h2>
+ <p>投掷一枚质地均匀的骰子。</p>
+ <p>取值 $X \in \{1, 2, 3, 4, 5, 6\}$</p>
+ <p>每个取值的概率均为 $p_i = \frac{1}{6}$</p>
+ <br>
+ <p class="text-xl font-bold">请计算 $E(X)$</p>
+ </div>
+
+ <!-- 7. 期望例题：骰子解答 -->
+ <div class="section">
+ <h2>✅ 解析：骰子的期望</h2>
+ <div class="w-full max-w-3xl overflow-x-auto">
+ $$ \begin{aligned} E(X) &= 1 \times \frac{1}{6} + 2 \times \frac{1}{6} + 3 \times \frac{1}{6} + 4 \times \frac{1}{6} + 5 \times \frac{1}{6} + 6 \times \frac{1}{6} \\[1em] &= \frac{1+2+3+4+5+6}{6} \\[1em] &= \frac{21}{6} \\[1em] &= \mathbf{3.5} \end{aligned} $$
+ </div>
+ </div>
+
+ <!-- 8. 期望的性质 -->
+ <div class="section">
+ <h2>期望的线性性质</h2>
+ <p>若 $Y = aX + b$，则：</p>
+ 
+ <div class="formula-box">
+ $$ E(aX+b) = a E(X) + b $$
+ </div>
+
+ <div class="text-left w-3/4 mt-6 text-gray-600">
+ <p>💡 <strong>直觉理解：</strong></p>
+ <ul class="list-disc ml-6 mt-2">
+ <li>所有数扩大 $a$ 倍，均值也扩大 $a$ 倍。</li>
+ <li>所有数加 $b$，均值也加 $b$。</li>
+ </ul>
+ </div>
+ </div>
+
+ <!-- 9. 方差 -->
+ <div class="section">
+ <h2>4. 数字特征：方差 (Variance)</h2>
+ <p>衡量数据的<strong>离散程度</strong>（波动大小）。</p>
+ 
+ <div class="formula-box">
+ $$ D(X) = \sum_{i=1}^n p_i (x_i - E(X))^2 $$
+ </div>
+
+ <p class="text-gray-500 mt-4">口诀：（每个值 减去 期望）的平方，乘概率，再求和。</p>
+ <p class="text-sm text-gray-400 mt-2">注：标准差 $\sigma = \sqrt{D(X)}$</p>
+ </div>
+
+ <!-- 10. 方差例题：骰子 -->
+ <div class="section">
+ <h2>📝 例题：骰子的方差</h2>
+ <p>已知 $X \in \{1, \dots, 6\}$，概率均为 $\frac{1}{6}$。</p>
+ <p>已知 $E(X) = 3.5$。</p>
+ <br>
+ <p class="text-xl font-bold">请计算 $D(X)$</p>
+ </div>
+
+ <!-- 11. 方差例题：骰子解答 -->
+ <div class="section">
+ <h2>✅ 解析：骰子的方差</h2>
+ <div class="w-full max-w-4xl overflow-x-auto text-lg">
+ $$ \begin{aligned} D(X) &= \frac{1}{6}\left[(1-3.5)^2 + (2-3.5)^2 + \dots + (6-3.5)^2\right] \\ &= \frac{1}{6} \left[ (-2.5)^2 + (-1.5)^2 + (-0.5)^2 + (0.5)^2 + (1.5)^2 + (2.5)^2 \right] \\ &= \frac{1}{6} \times (6.25 + 2.25 + 0.25 + 0.25 + 2.25 + 6.25) \\ &= \frac{1}{6} \times 17.5 = \frac{35}{12} \approx \mathbf{2.917} \end{aligned} $$
+ </div>
+ </div>
+
+ <!-- 12. 方差的性质 -->
+ <div class="section">
+ <h2>方差的线性性质</h2>
+ <p>若 $Y = aX + b$，则：</p>
+ 
+ <div class="formula-box">
+ $$ D(aX+b) = a^2 D(X) $$
+ </div>
+
+ <div class="text-left w-3/4 mt-6 bg-yellow-50 p-6 rounded-lg">
+ <p class="font-bold text-yellow-800">⚠️ 关键点：</p>
+ <ul class="list-disc ml-6 mt-2 text-yellow-900">
+ <li><strong>$b$ 消失了：</strong> 平移不改变离散程度。</li>
+ <li><strong>$a$ 变 $a^2$：</strong> 定义中有平方项，波动量级呈平方倍增长。</li>
+ </ul>
+ </div>
+ </div>
+
+ <!-- 13. 总结 -->
+ <div class="section">
+ <h2>🎉 课堂总结</h2>
+ <div class="w-3/4 bg-white p-8 rounded-xl shadow-sm border border-gray-100 text-left">
+ <ul class="space-y-4">
+ <li>📌 <strong>随机变量</strong>：样本空间上的函数。</li>
+ <li>📌 <strong>分布列</strong>：满足 $\sum p_i = 1$。</li>
+ <li>📌 <strong>期望</strong>：$E(X) = \sum x_i p_i$<br>
+ <span class="text-blue-600 ml-8">性质：$E(aX+b) = aE(X)+b$</span>
+ </li>
+ <li>📌 <strong>方差</strong>：$D(X) = \sum p_i (x_i - E(X))^2$<br>
+ <span class="text-red-600 ml-8">性质：$D(aX+b) = a^2 D(X)$</span>
+ </li>
+ </ul>
+ </div>
+ </div>
+
+ <!-- 测验 Q1 -->
+ <div class="section">
+ <h3 class="text-2xl font-bold mb-6">📝 课后小测验 Q1</h3>
+ <p class="mb-6">从数学定义的角度看，随机变量本质上是：</p>
+ <div class="w-full max-w-2xl">
+ <div class="quiz-option">A. 一个随机事件</div>
+ <div class="quiz-option">B. 样本空间上的一个函数</div>
+ <div class="quiz-option">C. 一个区间</div>
+ <div class="quiz-option">D. 一个概率值</div>
+ </div>
+ </div>
+
+ <!-- 测验 Q1 答案 -->
+ <div class="section">
+ <h3 class="text-2xl font-bold text-gray-400 mb-6">Q1 答案</h3>
+ <div class="answer-box">
+ ✅ B. 样本空间上的一个函数
+ </div>
+ <p class="mt-6 text-gray-500">它将样本点（如“明天下雨”）映射为唯一的实数值（如 1）。</p>
+ </div>
+
+ <!-- 测验 Q2 -->
+ <div class="section">
+ <h3 class="text-2xl font-bold mb-6">📝 课后小测验 Q2</h3>
+ <p class="mb-6">对于离散型随机变量的分布列，所有概率 $p_i$ 之和必须等于：</p>
+ <div class="w-full max-w-2xl">
+ <div class="quiz-option">A. 0</div>
+ <div class="quiz-option">B. 0.5</div>
+ <div class="quiz-option">C. 1</div>
+ <div class="quiz-option">D. 任意正数</div>
+ </div>
+ </div>
+
+ <!-- 测验 Q2 答案 -->
+ <div class="section">
+ <h3 class="text-2xl font-bold text-gray-400 mb-6">Q2 答案</h3>
+ <div class="answer-box">
+ ✅ C. 1
+ </div>
+ <p class="mt-6 text-gray-500">所有可能结果的概率总和为 100%（即 1）。</p>
+ </div>
+
+ <!-- 测验 Q3 -->
+ <div class="section">
+ <h3 class="text-2xl font-bold mb-6">📝 课后小测验 Q3</h3>
+ <p class="mb-6">已知 $E(X) = 2$，若 $Y = 3X + 1$，那么 $E(Y)$ 等于：</p>
+ <div class="w-full max-w-2xl">
+ <div class="quiz-option">A. 6</div>
+ <div class="quiz-option">B. 7</div>
+ <div class="quiz-option">C. 2</div>
+ <div class="quiz-option">D. 3</div>
+ </div>
+ </div>
+
+ <!-- 测验 Q3 答案 -->
+ <div class="section">
+ <h3 class="text-2xl font-bold text-gray-400 mb-6">Q3 答案</h3>
+ <div class="answer-box">
+ ✅ B. 7
+ </div>
+ <div class="mt-6 bg-white p-4 rounded text-gray-600">
+ $$ E(Y) = 3 E(X) + 1 = 3 \times 2 + 1 = 7 $$
+ </div>
+ </div>
+
+ <!-- 测验 Q4 -->
+ <div class="section">
+ <h3 class="text-2xl font-bold mb-6">📝 课后小测验 Q4</h3>
+ <p class="mb-6">已知 $D(X) = 2$，若 $Y = 3X + 5$，那么 $D(Y)$ 等于：</p>
+ <div class="w-full max-w-2xl">
+ <div class="quiz-option">A. 6</div>
+ <div class="quiz-option">B. 11</div>
+ <div class="quiz-option">C. 18</div>
+ <div class="quiz-option">D. 23</div>
+ </div>
+ </div>
+
+ <!-- 测验 Q4 答案 -->
+ <div class="section">
+ <h3 class="text-2xl font-bold text-gray-400 mb-6">Q4 答案</h3>
+ <div class="answer-box">
+ ✅ C. 18
+ </div>
+ <div class="mt-6 bg-white p-4 rounded text-gray-600">
+ $$ D(Y) = 3^2 D(X) = 9 \times 2 = 18 $$
+ <p class="text-sm mt-2">（注意：加数 5 对方差无影响，系数 3 要平方）</p>
+ </div>
+ </div>
+
+ <!-- 测验 Q5 -->
+ <div class="section">
+ <h3 class="text-2xl font-bold mb-6">📝 课后小测验 Q5</h3>
+ <p class="mb-6">抛掷一枚质地均匀的硬币（正面=1，反面=0），方差 $D(X)$ 是多少？</p>
+ <p class="text-gray-500 mb-6 text-sm">提示：$E(X)=0.5$</p>
+ <div class="w-full max-w-2xl">
+ <div class="quiz-option">A. 0.25</div>
+ <div class="quiz-option">B. 0.5</div>
+ <div class="quiz-option">C. 1</div>
+ <div class="quiz-option">D. 0</div>
+ </div>
+ </div>
+
+ <!-- 测验 Q5 答案 -->
+ <div class="section">
+ <h3 class="text-2xl font-bold text-gray-400 mb-6">Q5 答案</h3>
+ <div class="answer-box">
+ ✅ A. 0.25
+ </div>
+ <div class="mt-6 w-full max-w-2xl text-left bg-white p-4 rounded">
+ $$ \begin{aligned} D(X) &= p_1(x_1-0.5)^2 + p_2(x_2-0.5)^2 \\ &= 0.5(1-0.5)^2 + 0.5(0-0.5)^2 \\ &= 0.5(0.25) + 0.5(0.25) \\ &= 0.25 \end{aligned} $$
+ </div>
+ </div>
+
+</div>
+
+</body>
+</html>

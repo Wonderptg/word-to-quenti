@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>向量坐标法-升级版教程 (可打印)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 2.5rem 3rem;
+            position: relative; 
+            min-height: 550px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem 1.5rem;
+            margin-top: 1rem;
+            border-radius: 0.25rem;
+            font-size: 1.1rem;
+            line-height: 2;
+            overflow-x: auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.875rem;
+            line-height: 2.25rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 4px solid #60a5fa;
+            align-self: center;
+            display: inline-block;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh; width: 100vw; page-break-after: always; display: flex; flex-direction: column;
+                justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+     <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                macros: {
+                    vec: ['\\overrightarrow{#1}', 1]
+                }
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- Page 1: Title & Introduction -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">向量坐标法</h1>
+                <p class="text-2xl text-slate-600 mt-4">让立体几何“有迹可循”</p>
+                <p class="mt-8 text-xl text-cyan-700 font-semibold">"把'形'的问题，转化为'数'的运算"</p>
+                 <div class="mt-8 text-left text-lg bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    一提到立体几何，我们脑海里是不是就得各种旋转、平移？今天，我们来学习一个“大招”，一个能把复杂的空间想象问题，变成我们最熟悉的加减乘除的方法。
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2: How to build the coordinate system -->
+        <div class="section">
+            <h2 class="section-title">第一步：如何“建系”</h2>
+            <div class="w-full max-w-4xl mx-auto grid md:grid-cols-2 gap-8 items-center">
+                <div class="text-lg">
+                    <p>要在空间中定位，我们需要三条<strong class="text-red-500">两两垂直</strong>的坐标轴 x, y, z，就像教室的墙角一样。</p>
+                    <div class="mt-4 text-xl bg-amber-100 p-4 rounded-lg font-bold text-amber-800">
+                        关键规则：右手定则
+                    </div>
+                    <ul class="list-disc list-inside mt-4 space-y-2">
+                        <li>👍 <strong>大拇指</strong> → z 轴正方向 (高度)</li>
+                        <li>🖐️ <strong>四指弯曲</strong> → 从 x 轴扫向 y 轴</li>
+                    </ul>
+                    <p class="mt-4 font-bold text-blue-600">口诀：拇指朝天是Z轴，四指一扫，先X后Y。</p>
+                </div>
+                <div>
+                     <!-- SVG image for the right-hand rule, updated based on user image -->
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <line x1="100" y1="100" x2="180" y2="100" stroke="#0047AB" stroke-width="3" marker-end="url(#arrowhead-x)"/>
+                        <text x="185" y="93" fill="#0047AB" font-size="16" font-weight="bold" font-family="serif">X</text>
+                        
+                        <line x1="100" y1="100" x2="100" y2="20" stroke="#008080" stroke-width="3" marker-end="url(#arrowhead-z)"/>
+                        <text x="105" y="18" fill="#008080" font-size="16" font-weight="bold" font-family="serif">Z</text>
+                        
+                        <line x1="100" y1="100" x2="40" y2="130" stroke="#DC143C" stroke-width="3" marker-end="url(#arrowhead-y)"/>
+                        <text x="48" y="140" fill="#DC143C" font-size="16" font-weight="bold" font-family="serif">Y</text>
+                        
+                        <path d="M130 100 A 20 20 0 0 1 115 115" stroke="gray" stroke-width="1.5" fill="none" stroke-dasharray="3,3"/>
+                        <text x="120" y="125" fill="gray" font-size="15">⟳</text>
+
+                        <circle cx="100" cy="100" r="4" fill="black"/>
+                        <text x="90" y="115" fill="black" font-size="14" font-weight="bold" font-family="serif">O</text>
+                        
+                        <defs>
+                            <marker id="arrowhead-x" markerWidth="10" markerHeight="7" refX="2" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#0047AB"/></marker>
+                            <marker id="arrowhead-z" markerWidth="10" markerHeight="7" refX="2" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#008080"/></marker>
+                            <marker id="arrowhead-y" markerWidth="10" markerHeight="7" refX="2" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#DC143C"/></marker>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Page 3: How to find the point -->
+        <div class="section">
+            <h2 class="section-title">第二步：如何“求点”</h2>
+            <div class="w-full max-w-4xl mx-auto grid md:grid-cols-2 gap-8 items-center">
+                <div class="bg-emerald-50 p-6 rounded-lg border-l-4 border-emerald-500">
+                     <p class="font-bold text-lg text-emerald-800">例子：直三棱柱</p>
+                     <p>底面是等腰直角△ABC, $\angle C = 90^\circ$, $AC=BC=2$, 高为3。</p>
+                     <p class="mt-4"><strong>建系：</strong></p>
+                     <ul class="list-disc list-inside ml-4">
+                        <li>以 C 为原点 (0,0,0)</li>
+                        <li>以 CA 所在直线为 x 轴</li>
+                        <li>以 CB 所在直线为 y 轴</li>
+                        <li>以竖直棱所在直线为 z 轴</li>
+                     </ul>
+                </div>
+                <div>
+                    <!-- SVG image for the coordinate system of the prism, matched with the style above -->
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Axes -->
+                        <line x1="100" y1="150" x2="180" y2="150" stroke="#0047AB" stroke-width="2" marker-end="url(#arrowhead-x-2)"/>
+                        <text x="182" y="143" fill="#0047AB" font-size="14" font-weight="bold" font-family="serif">x</text>
+                        <line x1="100" y1="150" x2="100" y2="50" stroke="#008080" stroke-width="2" marker-end="url(#arrowhead-z-2)"/>
+                        <text x="87" y="48" fill="#008080" font-size="14" font-weight="bold" font-family="serif">z</text>
+                        <line x1="100" y1="150" x2="40" y2="180" stroke="#DC143C" stroke-width="2" marker-end="url(#arrowhead-y-2)"/>
+                        <text x="30" y="193" fill="#DC143C" font-size="14" font-weight="bold" font-family="serif">y</text>
+
+                        <!-- Prism Edges -->
+                        <!-- Let C=(100,150), A=(160,150), B=(60,170), height=80 -->
+                        <!-- Hidden Edges -->
+                        <line x1="100" y1="150" x2="160" y2="150" stroke="#4A5568" stroke-width="1" stroke-dasharray="3,3"/> <!-- C-A -->
+                        <line x1="100" y1="150" x2="60" y2="170" stroke="#4A5568" stroke-width="1" stroke-dasharray="3,3"/> <!-- C-B -->
+                        <line x1="100" y1="150" x2="100" y2="70" stroke="#4A5568" stroke-width="1" stroke-dasharray="3,3"/> <!-- C-C' -->
+
+                        <!-- Visible Edges -->
+                        <line x1="160" y1="150" x2="160" y2="70" stroke="#4A5568" stroke-width="1.5"/> <!-- A-A' -->
+                        <line x1="60" y1="170" x2="60" y2="90" stroke="#4A5568" stroke-width="1.5"/> <!-- B-B' -->
+                        <line x1="160" y1="70" x2="100" y2="70" stroke="#4A5568" stroke-width="1.5"/> <!-- A'-C' -->
+                        <line x1="60" y1="90" x2="100" y2="70" stroke="#4A5568" stroke-width="1.5"/> <!-- B'-C' -->
+                        <line x1="160" y1="150" x2="60" y2="170" stroke="#4A5568" stroke-width="1.5"/> <!-- A-B -->
+                        <line x1="160" y1="70" x2="60" y2="90" stroke="#4A5568" stroke-width="1.5"/> <!-- A'-B' -->
+
+                        
+                        <!-- Points -->
+                        <circle cx="100" cy="150" r="3" fill="black"/>
+                        <text x="90" y="160" fill="black" font-size="12" font-weight="bold" font-family="serif">C</text>
+                        <circle cx="160" cy="150" r="3" fill="black"/>
+                        <text x="165" y="150" fill="black" font-size="12" font-weight="bold" font-family="serif">A</text>
+                        <circle cx="60" cy="170" r="3" fill="black"/>
+                        <text x="50" y="180" fill="black" font-size="12" font-weight="bold" font-family="serif">B</text>
+                        <circle cx="100" cy="70" r="3" fill="black"/>
+                        <text x="90" y="70" fill="black" font-size="12" font-weight="bold" font-family="serif">C'</text>
+                        <circle cx="160" cy="70" r="3" fill="black"/>
+                        <text x="165" y="70" fill="black" font-size="12" font-weight="bold" font-family="serif">A'</text>
+                        <circle cx="60" cy="90" r="3" fill="black"/>
+                        <text x="50" y="90" fill="black" font-size="12" font-weight="bold" font-family="serif">B'</text>
+
+                        <defs>
+                            <marker id="arrowhead-x-2" markerWidth="10" markerHeight="7" refX="2" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#0047AB"/></marker>
+                            <marker id="arrowhead-z-2" markerWidth="10" markerHeight="7" refX="2" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#008080"/></marker>
+                            <marker id="arrowhead-y-2" markerWidth="10" markerHeight="7" refX="2" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#DC143C"/></marker>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Page 4: Core Weapon - Vectors & Formulas -->
+        <div class="section">
+            <h2 class="section-title">第三步：求向量与公式</h2>
+             <div class="w-full max-w-4xl mx-auto">
+                 <div class="formula-box text-center text-xl">
+                    $\vec{AB} = B - A = (x_2-x_1, y_2-y1, z_2-z_1)$ (终点减起点)
+                 </div>
+                 <p class="text-center mt-6 text-xl font-bold text-slate-700">王牌工具：数量积 (点积)</p>
+                 <div class="mt-4 text-left text-base bg-gray-50 p-4 rounded-lg">
+                    <p>数量积是连接“几何角度”和“代数坐标”的桥梁。它有两个至关重要的公式：</p>
+                    <ol class="list-decimal list-inside ml-4 mt-2">
+                        <li><strong>几何定义：</strong> $ \vec{a} \cdot \vec{b} = |\vec{a}| |\vec{b}| \cos\theta $</li>
+                        <li><strong>坐标公式：</strong> $ \vec{a} \cdot \vec{b} = x_1x_2 + y_1y_2 + z_1z_2 $</li>
+                    </ol>
+                    <p class="mt-2">我们真正要用的，是由它们推导出的<strong>求角公式</strong>：</p>
+                </div>
+                 <div class="mt-2 formula-box text-center text-base md:text-lg">
+                    $\cos\theta = \frac{\vec{a} \cdot \vec{b}}{|\vec{a}| |\vec{b}|} = \frac{x_1x_2 + y_1y_2 + z_1z_2}{\sqrt{x_1^2+y_1^2+z_1^2} \cdot \sqrt{x_2^2+y_2^2+z_2^2}}$
+                 </div>
+             </div>
+        </div>
+
+        <!-- Page 5: Practical Application -->
+        <div class="section">
+            <h2 class="section-title">第四步：实战演练</h2>
+            <div class="w-full max-w-4xl mx-auto grid md:grid-cols-2 gap-8 items-center">
+                <div class="text-base bg-violet-50 p-4 rounded-lg border-l-4 border-violet-500 space-y-2">
+                     <p><strong>实战：</strong>求异面直线 AB' 和 CA' 夾角的余弦值。</p>
+                 </div>
+                <div>
+                    <!-- SVG image for the coordinate system of the prism, matched with the style above -->
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Axes -->
+                        <line x1="100" y1="150" x2="180" y2="150" stroke="#0047AB" stroke-width="2" marker-end="url(#arrowhead-x-2)"/>
+                        <text x="182" y="143" fill="#0047AB" font-size="14" font-weight="bold" font-family="serif">x</text>
+                        <line x1="100" y1="150" x2="100" y2="50" stroke="#008080" stroke-width="2" marker-end="url(#arrowhead-z-2)"/>
+                        <text x="87" y="48" fill="#008080" font-size="14" font-weight="bold" font-family="serif">z</text>
+                        <line x1="100" y1="150" x2="40" y2="180" stroke="#DC143C" stroke-width="2" marker-end="url(#arrowhead-y-2)"/>
+                        <text x="30" y="193" fill="#DC143C" font-size="14" font-weight="bold" font-family="serif">y</text>
+
+                        <!-- Prism Edges -->
+                        <!-- Let C=(100,150), A=(160,150), B=(60,170), height=80 -->
+                        <!-- Hidden Edges -->
+                        <line x1="100" y1="150" x2="160" y2="150" stroke="#4A5568" stroke-width="1" stroke-dasharray="3,3"/> <!-- C-A -->
+                        <line x1="100" y1="150" x2="60" y2="170" stroke="#4A5568" stroke-width="1" stroke-dasharray="3,3"/> <!-- C-B -->
+                        <line x1="100" y1="150" x2="100" y2="70" stroke="#4A5568" stroke-width="1" stroke-dasharray="3,3"/> <!-- C-C' -->
+
+                        <!-- Visible Edges -->
+                        <line x1="160" y1="150" x2="160" y2="70" stroke="#4A5568" stroke-width="1.5"/> <!-- A-A' -->
+                        <line x1="60" y1="170" x2="60" y2="90" stroke="#4A5568" stroke-width="1.5"/> <!-- B-B' -->
+                        <line x1="160" y1="70" x2="100" y2="70" stroke="#4A5568" stroke-width="1.5"/> <!-- A'-C' -->
+                        <line x1="60" y1="90" x2="100" y2="70" stroke="#4A5568" stroke-width="1.5"/> <!-- B'-C' -->
+                        <line x1="160" y1="150" x2="60" y2="170" stroke="#4A5568" stroke-width="1.5"/> <!-- A-B -->
+                        <line x1="160" y1="70" x2="60" y2="90" stroke="#4A5568" stroke-width="1.5"/> <!-- A'-B' -->
+
+                        
+                        <!-- Points -->
+                        <circle cx="100" cy="150" r="3" fill="black"/>
+                        <text x="90" y="160" fill="black" font-size="12" font-weight="bold" font-family="serif">C</text>
+                        <circle cx="160" cy="150" r="3" fill="black"/>
+                        <text x="165" y="150" fill="black" font-size="12" font-weight="bold" font-family="serif">A</text>
+                        <circle cx="60" cy="170" r="3" fill="black"/>
+                        <text x="50" y="180" fill="black" font-size="12" font-weight="bold" font-family="serif">B</text>
+                        <circle cx="100" cy="70" r="3" fill="black"/>
+                        <text x="90" y="70" fill="black" font-size="12" font-weight="bold" font-family="serif">C'</text>
+                        <circle cx="160" cy="70" r="3" fill="black"/>
+                        <text x="165" y="70" fill="black" font-size="12" font-weight="bold" font-family="serif">A'</text>
+                        <circle cx="60" cy="90" r="3" fill="black"/>
+                        <text x="50" y="90" fill="black" font-size="12" font-weight="bold" font-family="serif">B'</text>
+
+                        <defs>
+                            <marker id="arrowhead-x-2" markerWidth="10" markerHeight="7" refX="2" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#0047AB"/></marker>
+                            <marker id="arrowhead-z-2" markerWidth="10" markerHeight="7" refX="2" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#008080"/></marker>
+                            <marker id="arrowhead-y-2" markerWidth="10" markerHeight="7" refX="2" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#DC143C"/></marker>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Page 6: Practice 1/4 -->
+        <div class="section">
+            <h2 class="section-title">随堂练习 (1/4)</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <div class="text-base md:text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200"><strong>1. (概念题)</strong> 建立空间直角坐标系时，我们选择的三条坐标轴必须满足什么条件？<br/>(A) 相互平行 (B) 两两垂直 (C) 夹角都是60° (D) 任意三条共点直线即可</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 7: Practice 2/4 -->
+        <div class="section">
+            <h2 class="section-title">随堂练习 (2/4)</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <div class="text-base md:text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200"><strong>2. (求点题)</strong> 在一个棱长为 2 的正方体 $ABCD-A'B'C'D'$ 中，以 D 为原点，DA 为 x 轴，DC 为 y 轴，DD' 为 z 轴建立坐标系。那么顶点 B' 的坐标是什么？<br/>(A) (2,2,0) (B) (0,2,2) (C) (2,0,2) (D) (2,2,2)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 8: Practice 3/4 -->
+        <div class="section">
+            <h2 class="section-title">随堂练习 (3/4)</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <div class="text-base md:text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200"><strong>3. (求向量题)</strong> 已知点 P(1,0,-2) 和点 Q(3,1,4)，那么向量 $\vec{PQ}$ 的坐标是什么？<br/>(A) (-2,-1,-6) (B) (4,1,2) (C) (2,1,6) (D) (2, 1, 2)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 9: Practice 4/4 -->
+        <div class="section">
+            <h2 class="section-title">随堂练习 (4/4)</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <div class="text-base md:text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200"><strong>4. (计算题)</strong> 已知 $\vec{a}=(1,2,-1), \vec{b}=(3,0,1)$，则 $\vec{a} \cdot \vec{b}$ 是多少？<br/>(A) 2 (B) 4 (C) 0 (D) 6</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Page 10: Solutions -->
+        <div class="section">
+            <h2 class="section-title">练习题解析</h2>
+             <div class="w-full max-w-4xl mx-auto">
+                 <div class="space-y-3 text-base">
+                     <div class="bg-emerald-50 p-3 rounded-lg">
+                         <p><strong>1. 答案：B</strong></p>
+                         <p><strong>解析：</strong>空间直角坐标系是研究空间向量的基础，其定义就要求三条坐标轴必须在原点处两两垂直。这是最基本的概念。</p>
+                     </div>
+                     <div class="bg-emerald-50 p-3 rounded-lg">
+                         <p><strong>2. 答案：D</strong></p>
+                         <p><strong>解析：</strong>从原点 D(0,0,0) 到达顶点 B'，可以分解为三步运动：<br/>- 沿 x 轴正方向（DA方向）移动 2 个单位，到达 A(2,0,0)。<br/>- 再沿 y 轴正方向（DC方向）移动 2 个单位，到达底面的 B(2,2,0)。<br/>- 最后沿 z 轴正方向（DD'方向）移动 2 个单位，最终到达 B'(2,2,2)。</p>
+                     </div>
+                     <div class="bg-emerald-50 p-3 rounded-lg">
+                         <p><strong>3. 答案：C</strong></p>
+                         <p><strong>解析：</strong>向量的坐标由其终点坐标减去起点坐标得到。$ \vec{PQ} = Q - P = (3-1, 1-0, 4-(-2)) = (2, 1, 6) $</p>
+                     </div>
+                     <div class="bg-emerald-50 p-3 rounded-lg">
+                         <p><strong>4. 答案：A</strong></p>
+                         <p><strong>解析：</strong>空间向量的数量积等于其对应坐标的乘积之和。$ \vec{a} \cdot \vec{b} = (1)(3) + (2)(0) + (-1)(1) = 3 + 0 - 1 = 2 $</p>
+                     </div>
+                 </div>
+             </div>
+        </div>
+
+        <!-- Page 11: Summary -->
+        <div class="section">
+            <h2 class="section-title">总结：掌握“四步舞”</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                 <div class="text-center text-lg bg-blue-50 p-6 rounded-lg border border-blue-200">
+                     <p>我们今天学习的坐标法，可以总结为一套威力巨大的“四步舞”，搞定大部分立体几何问题：</p>
+                </div>
+                <div class="mt-8 grid md:grid-cols-4 gap-4 text-center">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <p class="text-4xl">①</p>
+                        <p class="mt-2 text-xl font-bold text-slate-700">建系</p>
+                        <p class="text-sm mt-1">找墙角，用右手</p>
+                    </div>
+                     <div class="bg-gray-50 p-4 rounded-lg">
+                        <p class="text-4xl">②</p>
+                        <p class="mt-2 text-xl font-bold text-slate-700">求点</p>
+                         <p class="text-sm mt-1">给点上“身份证”</p>
+                    </div>
+                     <div class="bg-gray-50 p-4 rounded-lg">
+                        <p class="text-4xl">③</p>
+                        <p class="mt-2 text-xl font-bold text-slate-700">求向量</p>
+                        <p class="text-sm mt-1">终点减起点</p>
+                    </div>
+                     <div class="bg-gray-50 p-4 rounded-lg">
+                        <p class="text-4xl">④</p>
+                        <p class="mt-2 text-xl font-bold text-slate-700">用公式</p>
+                        <p class="text-sm mt-1">代入数量积</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
+

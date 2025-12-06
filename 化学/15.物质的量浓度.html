@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>溶液的浓度：物质的量浓度</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-cyan-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 10H4.222a2.25 2.25 0 01-2.121-3.14L4.222 2.5h9.556a2.25 2.25 0 012.121 3.14L14 10z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 10v11.5a3.75 3.75 0 01-7.5 0V10" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 10.5v.75a4.5 4.5 0 01-9 0v-.75" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5v.75a1.5 1.5 0 01-3 0v-.75" />
+                </svg>
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">物质的量浓度</h1>
+                <p class="text-2xl text-slate-600 mt-2">—— 高中化学计算的核心语言</p>
+            </div>
+        </div>
+
+        <!-- 定义 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>浓度的全新表示法</h2>
+                <div class="flex items-center mt-8 space-x-8">
+                    <div class="w-1/2">
+                        <p class="text-xl text-slate-700">在高中，我们使用<strong class="text-teal-600">物质的量浓度</strong>来更方便地进行化学计算。它表示单位体积溶液里，所含溶质的物质的量。</p>
+                        <div class="mt-8 bg-teal-50 border border-teal-200 p-8 rounded-lg text-center">
+                            <p class="mono text-3xl font-bold text-teal-800">C = n / V</p>
+                            <p class="mt-4 text-xl text-slate-700">浓度(C) = 溶质的物质的量(n) ÷ <strong class="text-red-600">溶液的体积(V)</strong></p>
+                            <p class="mt-2 text-lg text-slate-500">常用单位: mol/L (摩尔/升)</p>
+                        </div>
+                    </div>
+                    <div class="w-1/2">
+                        <!-- 图示 -->
+                        <svg viewBox="0 0 150 150" class="w-full h-auto">
+                           <!-- 烧杯 -->
+                            <path d="M30 120 L30 40 L120 40 L120 120 Z" fill="#e0f2f1" stroke="#4db6ac" stroke-width="2"/>
+                            <!-- 溶液 -->
+                            <rect x="30" y="60" width="90" height="60" fill="#b2dfdb" />
+                            <!-- 刻度线 -->
+                            <line x1="120" y1="60" x2="115" y2="60" stroke="#00796b" stroke-width="1.5"/>
+                            <text x="125" y="65" font-size="10px" fill="#00796b">V</text>
+
+                            <!-- 溶质粒子 n -->
+                            <circle cx="50" cy="90" r="3" fill="#00796b"/>
+                            <circle cx="75" cy="75" r="3" fill="#00796b"/>
+                            <circle cx="100" cy="100" r="3" fill="#00796b"/>
+                            <circle cx="60" cy="110" r="3" fill="#00796b"/>
+                            <circle cx="90" cy="85" r="3" fill="#00796b"/>
+                            <text x="75" y="30" text-anchor="middle" font-size="12px" fill="#333">n (溶质)</text>
+                            <path d="M75 35 L75 65" stroke="#00796b" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+                             <defs>
+                                <marker id="arrowhead" markerWidth="5" markerHeight="3.5" refX="0" refY="1.75" orient="auto">
+                                    <polygon points="0 0, 5 1.75, 0 3.5" fill="#00796b"/>
+                                </marker>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 基础计算 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>基础计算演练</h2>
+                 <div class="mt-8 bg-sky-50 border border-sky-200 p-6 rounded-lg">
+                    <p class="text-xl font-semibold text-sky-800">问题：将 14.2g 硫酸钠(Na₂SO₄)固体溶于水，配成 500mL 的溶液，其物质的量浓度是多少？</p>
+                    <div class="mt-6 text-lg space-y-3">
+                        <p><strong>1. 计算溶质的物质的量 (n):</strong><br>M(Na₂SO₄) = 23×2 + 32 + 16×4 = 142 g/mol。<br><code>n = m / M = 14.2g / 142 g/mol = 0.1 mol</code>。</p>
+                        <p><strong>2. 统一溶液体积单位 (V):</strong><br><code>V = 500 mL = 0.5 L</code>。</p>
+                        <p><strong>3. 计算浓度 (C):</strong><br><code>C = n / V = 0.1 mol / 0.5 L = 0.2 mol/L</code>。</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 常见误区 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-red-500 rounded"></span>常见理解误区</h2>
+                <div class="flex items-center mt-8 space-x-8">
+                    <div class="w-2/3">
+                        <p class="text-xl text-slate-700">下列操作配成的溶液，物质的量浓度<strong class="text-red-600">不为</strong> 1 mol/L 的是？</p>
+                        <div class="mt-6 bg-red-50 border border-red-200 p-6 rounded-lg text-lg space-y-4">
+                            <p><strong>(A) 将40g NaOH溶解在1L水中：</strong><br>错误！这是将溶质溶于1L<strong class="text-red-600">溶剂</strong>，最终<strong class="text-red-600">溶液</strong>体积不等于1L。</p>
+                            <p><strong>(B) 将22.4L HCl气体溶于水配成1L溶液：</strong><br>错误！未指明<strong class="text-red-600">标准状况</strong>，22.4L HCl不等于1 mol。</p>
+                            <p><strong>(C) 将1L 10mol/L浓盐酸加入9L水中：</strong><br>错误！<strong class="text-red-600">体积不能直接相加</strong>，1L浓盐酸 + 9L水 ≠ 10L溶液。</p>
+                        </div>
+                    </div>
+                     <div class="w-1/3 text-center">
+                        <!-- 图示 -->
+                        <svg viewBox="0 0 150 150" class="w-full h-auto">
+                           <!-- 错误 -->
+                            <g>
+                                <path d="M10 100 L10 40 L60 40 L60 100 Z" stroke="#ef4444" stroke-width="1.5" fill="none"/>
+                                <line x1="10" y1="50" x2="60" y2="50" stroke="#fca5a5" stroke-width="1" stroke-dasharray="2,2"/>
+                                <text x="65" y="52" font-size="8px" fill="#b91c1c">1L 水</text>
+                                <!-- 添加溶质后，液面升高 -->
+                                <path d="M10 45 C 25 40, 45 40, 60 45" fill="#fee2e2" stroke="#ef4444" stroke-width="1"/>
+                                <text x="35" y="115" font-size="9px" fill="#b91c1c" text-anchor="middle">错误: V > 1L</text>
+                            </g>
+                             <!-- 正确 -->
+                             <g>
+                                <path d="M90 100 L95 65 L125 65 L130 100 Z" fill="none" stroke="#22c55e" stroke-width="1.5"/>
+                                <path d="M105 65 L105 45 L115 45 L115 65" fill="none" stroke="#22c55e" stroke-width="1.5"/>
+                                <!-- 液面在刻度线 -->
+                                <line x1="95" y1="65" x2="125" y2="65" stroke="#22c55e" stroke-width="1.5"/>
+                                <text x="85" y="68" font-size="8px" fill="#15803d">1L</text>
+                                <text x="110" y="115" font-size="9px" fill="#15803d" text-anchor="middle">正确: V = 1L</text>
+                            </g>
+                        </svg>
+                         <p class="text-green-600 font-bold mt-2">正确操作：定容至目标体积。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 浓度换算 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>浓度与质量分数的换算</h2>
+                 <p class="mt-8 text-xl text-slate-700">物质的量浓度(C)与质量分数(w)可以通过一个便捷公式进行换算：</p>
+                 <div class="mt-8 bg-indigo-50 border border-indigo-200 p-8 rounded-lg text-center">
+                    <p class="mono text-2xl font-bold text-indigo-800">C = (1000 × ρ × w) / M</p>
+                    <p class="mt-4 text-slate-700 text-lg">ρ: 溶液密度(g/mL), w: 质量分数, M: 溶质摩尔质量(g/mol)</p>
+                 </div>
+                 <p class="mt-6 text-xl text-slate-600"><strong>例：</strong>98%的浓硫酸(ρ=1.84 g/mL)的物质的量浓度为：<br><code>C = (1000 × 1.84 × 98%) / 98 = 18.4 mol/L</code></p>
+            </div>
+        </div>
+
+        <!-- 离子浓度 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>溶液中的离子浓度</h2>
+                 <div class="mt-8 bg-purple-50 border border-purple-200 p-6 rounded-lg">
+                    <div class="flex items-center space-x-6">
+                        <div class="w-2/3">
+                            <p class="text-xl font-semibold text-purple-800">问题：在 0.1 mol/L 的 Na₂SO₄ 溶液中，Na⁺ 和 SO₄²⁻ 的浓度各是多少？</p>
+                            <div class="mt-6 text-lg space-y-3">
+                                <p><strong>1. 写出电离方程式：</strong><code>Na₂SO₄ = 2Na⁺ + SO₄²⁻</code></p>
+                                <p><strong>2. 确定比例关系：</strong>1个Na₂SO₄电离出2个Na⁺和1个SO₄²⁻，所以浓度比为 <code>C(Na₂SO₄) : C(Na⁺) : C(SO₄²⁻) = 1 : 2 : 1</code>。</p>
+                                <p><strong>3. 计算离子浓度：</strong><br><code>C(Na⁺) = 2 × 0.1 mol/L = 0.2 mol/L</code><br><code>C(SO₄²⁻) = 1 × 0.1 mol/L = 0.1 mol/L</code></p>
+                            </div>
+                        </div>
+                        <div class="w-1/3">
+                             <!-- 图示 -->
+                            <svg viewBox="0 0 150 100" class="w-full h-auto">
+                                <rect x="10" y="25" width="40" height="40" rx="5" fill="#ede9fe" stroke="#a78bfa"/>
+                                <text x="30" y="50" text-anchor="middle" font-size="10px" fill="#5b21b6">Na₂SO₄</text>
+                                <path d="M55 45 L 80 45" stroke="#6d28d9" stroke-width="1.5" marker-end="url(#arrowpurple)"/>
+                                <defs>
+                                    <marker id="arrowpurple" markerWidth="5" markerHeight="3.5" refX="0" refY="1.75" orient="auto">
+                                        <polygon points="0 0, 5 1.75, 0 3.5" fill="#6d28d9"/>
+                                    </marker>
+                                </defs>
+                                <circle cx="100" cy="25" r="10" fill="#c4b5fd"/>
+                                <text x="100" y="28" text-anchor="middle" font-size="8px" fill="#4c1d95">Na⁺</text>
+                                <circle cx="125" cy="25" r="10" fill="#c4b5fd"/>
+                                <text x="125" y="28" text-anchor="middle" font-size="8px" fill="#4c1d95">Na⁺</text>
+                                <circle cx="112.5" cy="65" r="15" fill="#ddd6fe"/>
+                                <text x="112.5" y="69" text-anchor="middle" font-size="10px" fill="#5b21b6">SO₄²⁻</text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 电荷守恒 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-amber-500 rounded"></span>电荷守恒原则</h2>
+                <p class="mt-8 text-xl text-slate-700">任何电解质溶液都呈电中性，即<strong class="text-amber-700">阳离子所带正电荷总数 = 阴离子所带负电荷总数</strong>。</p>
+                <div class="mt-8 bg-amber-50 border border-amber-200 p-8 rounded-lg">
+                   <p class="text-lg text-slate-700"><strong>书写技巧：</strong>阳离子放一边，阴离子放一边，电荷数作系数。</p>
+                   <p class="mt-4 text-xl text-center mono text-amber-800">
+                       <strong class="text-blue-600">2</strong>C(Ca²⁺) + <strong class="text-blue-600">1</strong>C(Na⁺) = <strong class="text-red-600">2</strong>C(SO₄²⁻) + <strong class="text-red-600">1</strong>C(Cl⁻)
+                   </p>
+                   <p class="mt-2 text-sm text-center text-slate-500">(以CaCl₂和Na₂SO₄混合溶液为例，忽略水电离)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 溶液稀释 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-rose-500 rounded"></span>溶液的稀释</h2>
+                <div class="flex items-center mt-8 space-x-8">
+                    <div class="w-1/2">
+                        <p class="text-xl text-slate-700">溶液稀释的本质是加入溶剂（通常是水），而<strong class="text-rose-600">溶质的物质的量(n)或质量(m)保持不变</strong>。</p>
+                        <div class="mt-8 bg-rose-50 border border-rose-200 p-8 rounded-lg text-center">
+                            <p class="mono text-3xl font-bold text-rose-800">C₁V₁ = C₂V₂</p>
+                            <p class="mt-4 text-xl text-slate-700">稀释前浓度 × 稀释前体积 = 稀释后浓度 × 稀释后体积</p>
+                        </div>
+                    </div>
+                    <div class="w-1/2">
+                        <!-- 图示 -->
+                        <svg viewBox="0 0 200 120" class="w-full h-auto">
+                            <!-- 浓溶液 -->
+                            <path d="M20 100 L20 40 L60 40 L60 100 Z" fill="#ffe4e6" stroke="#f43f5e" stroke-width="1.5"/>
+                            <rect x="20" y="70" width="40" height="30" fill="#fda4af"/>
+                            <circle cx="30" cy="80" r="3" fill="#9f1239"/>
+                            <circle cx="50" cy="85" r="3" fill="#9f1239"/>
+                            <circle cx="40" cy="95" r="3" fill="#9f1239"/>
+                            <text x="40" y="115" text-anchor="middle" font-size="10px" fill="#be123c">C₁, V₁</text>
+                            <!-- 加水 -->
+                            <text x="90" y="30" text-anchor="middle" font-size="10px" fill="#0ea5e9">+ 水</text>
+                            <path d="M75 50 L105 50" stroke="#0ea5e9" stroke-width="2" marker-end="url(#arrowblue)"/>
+                            <defs>
+                                <marker id="arrowblue" markerWidth="5" markerHeight="3.5" refX="0" refY="1.75" orient="auto">
+                                    <polygon points="0 0, 5 1.75, 0 3.5" fill="#0ea5e9"/>
+                                </marker>
+                            </defs>
+                            <!-- 稀溶液 -->
+                            <path d="M120 100 L120 20 L180 20 L180 100 Z" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="1.5"/>
+                            <rect x="120" y="60" width="60" height="40" fill="#7dd3fc"/>
+                            <circle cx="135" cy="80" r="3" fill="#0369a1"/>
+                            <circle cx="165" cy="70" r="3" fill="#0369a1"/>
+                            <circle cx="150" cy="90" r="3" fill="#0369a1"/>
+                             <text x="150" y="115" text-anchor="middle" font-size="10px" fill="#0369a1">C₂, V₂</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 稀释计算 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>稀释计算实战</h2>
+                 <div class="mt-8 bg-green-50 border border-green-200 p-6 rounded-lg">
+                    <p class="text-xl font-semibold text-green-800">问题：将 a mL 5 mol/L 的 Mg(NO₃)₂ 溶液稀释至 b mL，稀释后溶液中 NO₃⁻ 的浓度是多少？</p>
+                    <div class="mt-6 text-lg space-y-3">
+                        <p><strong>1. 计算稀释前 NO₃⁻ 浓度：</strong><br><code>Mg(NO₃)₂ → Mg²⁺ + 2NO₃⁻</code><br>稀释前 <code>C(NO₃⁻) = 2 × 5 mol/L = 10 mol/L</code>。</p>
+                        <p><strong>2. 应用稀释公式 (对NO₃⁻)：</strong><br><code>C₁(NO₃⁻) × V₁ = C₂(NO₃⁻) × V₂</code></p>
+                        <p><strong>3. 代入数值求解：</strong><br><code>10 mol/L × a mL = C₂(NO₃⁻) × b mL</code><br><code>C₂(NO₃⁻) = (10a / b) mol/L</code>。</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 例题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (一)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>配制 1 L 1.0 mol/L 的 NaCl 溶液，下列操作正确的是 ( )</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 将 58.5g NaCl 溶于 1 L 水中</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 将 1 L 10 mol/L NaCl 溶液加 9 L 水</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 将 58.5g NaCl 溶于少量水，再加水至 1 L</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 将 22.4L HCl 气体通入 1 L水中</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (一)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>物质的量浓度定义中的 V 是<strong class="text-red-600">溶液</strong>的体积。正确操作是称取 1 mol (58.5g) NaCl，在烧杯中用少量水溶解，转移至 1L 容量瓶中，再加水至刻度线。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (二)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>0.5 L 2 mol/L 的 AlCl₃ 溶液中，Cl⁻ 的物质的量浓度是 ( )</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 2 mol/L</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 3 mol/L</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 6 mol/L</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 1 mol/L</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (二)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>AlCl₃ 电离为 1 个 Al³⁺ 和 3 个 Cl⁻。因此 Cl⁻ 的浓度是 AlCl₃ 溶液浓度的 3 倍。<code>C(Cl⁻) = 3 × 2 mol/L = 6 mol/L</code>。溶液体积 0.5 L 在此为干扰信息。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (三)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>从 1 L 2 mol/L 的 NaOH 溶液中取出 100 mL，这 100 mL 溶液的浓度是 ( )</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 2 mol/L</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 0.2 mol/L</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 20 mol/L</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 0.1 mol/L</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (三)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(A)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>溶液具有<strong class="text-red-600">均一性</strong>。从均匀的溶液中取出任意体积，其浓度都与原溶液相同。因此浓度仍然是 2 mol/L。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (四)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>将 100 mL 1 mol/L 的盐酸稀释至 200 mL，稀释后溶液的浓度为 ( )</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 1 mol/L</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 2 mol/L</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 0.5 mol/L</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 0.2 mol/L</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (四)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>根据稀释公式 <code>C₁V₁ = C₂V₂</code>。<br><code>1 mol/L × 100 mL = C₂ × 200 mL</code><br><code>C₂ = (1 × 100) / 200 = 0.5 mol/L</code>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (五)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>质量分数为 36.5% 的浓盐酸 (密度为 1.2 g/mL)，其物质的量浓度约为 ( )</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 1.2 mol/L</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 6 mol/L</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 10 mol/L</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 12 mol/L</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (五)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>使用换算公式 <code>C = (1000 × ρ × w) / M</code>。<br>M(HCl) = 36.5 g/mol。<br><code>C = (1000 × 1.2 g/mL × 36.5%) / 36.5 g/mol = 12 mol/L</code>。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看，下节课再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基本不等式 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 600px; /* 保证内容较少时也有足够高度 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .cartoon-canvas {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            width: 100px;
+            height: 100px;
+        }
+
+        .content-top {
+            justify-content: flex-start;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+
+            .section:not(.content-top) {
+                 justify-content: center;
+            }
+
+            .section:last-child {
+                page-break-after: auto;
+            }
+            .cartoon-canvas {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- Section 1: Title -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">基本不等式</h1>
+                <p class="text-2xl text-slate-600 mt-4">探寻最值的奥秘</p>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 2: Intro -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">开场白：是何方神圣？</h2>
+                <p class="mt-8 text-xl text-slate-700 leading-relaxed">
+                    用一条12米长的绳子围出一块长方形花圃，怎样才能让面积最大？
+                </p>
+                <p class="mt-4 text-xl text-slate-700 leading-relaxed">
+                    这个问题的答案，就藏在<strong class="text-red-600">基本不等式</strong>里！
+                </p>
+                <div class="mt-6 bg-amber-50 p-6 rounded-lg text-lg text-center">
+                    <p class="text-2xl font-semibold">a² + b² ≥ 2ab</p>
+                    <p class="mt-2 text-slate-600"> (当a, b ≥ 0)</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 3: Condition -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">“等号”何时能画上？</h2>
+                <p class="mt-6 text-2xl font-semibold text-center text-slate-700">a² + b² ≥ 2ab</p>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-lg text-center">
+                    <p class="text-2xl font-bold text-green-700">当且仅当 a = b 时，等号成立。</p>
+                </div>
+                <p class="mt-6 text-xl text-slate-700">
+                    <strong>这为什么重要？</strong>
+                    <br>
+                    我们算出的最值只是“理论值”，必须验证题目条件是否允许 a=b，否则最值可能取不到！
+                </p>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 3.5: Trap Example -->
+        <div class="section content-top">
+            <div class="w-full max-w-4xl mx-auto">
+                 <div class="bg-red-50 p-6 rounded-lg text-lg">
+                    <h3 class="font-bold text-red-700 text-2xl">举个“坑”例：</h3>
+                    <p class="mt-4 text-slate-700 text-xl">求 f(x) = x + 9/x 的最小值 (当 x > 0)。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 4: Type 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">实战演练：和积定值问题</h2>
+                 <div class="mt-6 bg-purple-50 p-6 rounded-lg">
+                    <h3 class="font-bold text-purple-700 text-2xl">积定和最小</h3>
+                    <p class="mt-2 text-lg text-slate-700">一块面积为36㎡的长方形地，周长最小是多少？</p>
+                    <p class="mt-2 text-base text-slate-600">设长l, 宽w。lw=36。周长P=2(l+w)。<br>
+                    l+w ≥ 2√lw = 2√36 = 12。<br>
+                    所以 P ≥ 2×12=24。当l=w=6时取等。
+                    </p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 5: Type 1 cont. -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">实战演练：和积定值问题</h2>
+                 <div class="mt-6 bg-purple-50 p-6 rounded-lg">
+                    <h3 class="font-bold text-purple-700 text-2xl">和定积最大</h3>
+                    <p class="mt-2 text-lg text-slate-700">用20米长的绳子围成一个长方形，最大面积是多少？</p>
+                    <p class="mt-2 text-base text-slate-600">设长l, 宽w。2(l+w)=20 => l+w=10。<br>
+                    10 = l+w ≥ 2√lw => 5 ≥ √lw => 25 ≥ lw。<br>
+                    所以最大面积为25㎡。当l=w=5时取等。
+                    </p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 6: Type 2 Title -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2">实战演练：非齐次式问题</h2>
+                <p class="mt-6 text-xl text-slate-700 text-center">
+                    <strong>特征：</strong>式子里的各项“长得不太一样”，经常是一项和它倒数相关的形式。
+                </p>
+                <p class="mt-4 text-2xl font-semibold text-center text-red-600">
+                    核心目标：变形，让根号里的变量能被约掉！
+                </p>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 6.1: Type 2 Technique 1 -->
+        <div class="section content-top">
+            <div class="w-full max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-700 text-center mb-6">技巧1：直接约分</h3>
+                 <div class="mt-6 bg-teal-50 p-6 rounded-lg">
+                    <p class="text-lg text-slate-700">求 f(x) = 3x + 27/x 的最小值 (当 x>0)。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 6.2: Type 2 Technique 2 -->
+        <div class="section content-top">
+            <div class="w-full max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-700 text-center mb-6">技巧2：“凑项”大法</h3>
+                 <div class="mt-6 bg-teal-50 p-6 rounded-lg">
+                    <p class="text-lg text-slate-700">求 f(x) = x² - 2 + 4/(x²-2) 的最小值 (当x²>2)。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 6.3: Type 2 Technique 3 -->
+        <div class="section content-top">
+            <div class="w-full max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-700 text-center mb-6">技巧3：分式变形</h3>
+                 <div class="mt-6 bg-teal-50 p-6 rounded-lg">
+                    <p class="text-lg text-slate-700">求 f(x) = (x²+2x+5)/(x+1) 的最小值 (当 x+1>0)。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 7: Type 3 Title -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-orange-500 pb-2">实战演练：齐次式问题</h2>
+                 <p class="mt-6 text-xl text-slate-700 text-center"><strong>特征：</strong>通常是分式，分子分母各项“次数”相同。</p>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 7.1: Type 3 Technique 1 -->
+        <div class="section content-top">
+             <div class="w-full max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-700 text-center mb-6">技巧1：直接约分</h3>
+                 <div class="mt-6 bg-orange-50 p-4 rounded-lg">
+                    <p class="text-lg text-slate-700">求 f(x,y) = 2x/3y + 27y/8x 的最小值 (x,y同号)。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 7.2: Type 3 Technique 2 -->
+        <div class="section content-top">
+             <div class="w-full max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-700 text-center mb-6">技巧2：拆分子</h3>
+                <div class="mt-4 bg-orange-50 p-4 rounded-lg">
+                    <p class="text-lg text-slate-700">求 f(x,y) = (2x²+8y²)/(xy) 的最小值 (x,y>0)。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 7.3: Type 3 Technique 3 -->
+        <div class="section content-top">
+             <div class="w-full max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-700 text-center mb-6">技巧3：“换元法”</h3>
+                 <div class="mt-6 bg-orange-50 p-4 rounded-lg">
+                    <p class="text-lg text-slate-700">求 f(a,b) = (2a+b)/(a-3b) + 4(a-3b)/(2a+b) 的最小值 (同号非0)。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 7.4: Type 3 Technique 4 -->
+        <div class="section content-top">
+             <div class="w-full max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-700 text-center mb-6">技巧4：“1的代换”</h3>
+                 <div class="mt-6 bg-orange-50 p-4 rounded-lg">
+                    <p class="text-lg text-slate-700">已知 2x+5y=10 (x,y>0)，求 1/x + 1/y 的最小值。</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 8: Problems Title -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800">课堂练习时间！</h2>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 9: Problem 1 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">题型一：和为定值求积的最值</h2>
+                <div class="mt-6 text-lg">
+                    <p class="font-semibold">例题1．若a,b都为正实数，a+2b=1，则ab的最大值是（&nbsp;&nbsp;&nbsp;&nbsp;）</p>
+                    <ul class="list-none pl-4 space-y-2 mt-2">
+                        <li>A． 1/4</li>
+                        <li>B． 2/9</li>
+                        <li>C． 1/2</li>
+                        <li>D． 1/8</li>
+                    </ul>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 10: Problem 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">题型一：和为定值求积的最值</h2>
+                <div class="mt-6 text-lg">
+                    <p class="font-semibold">例题2．已知正数 x 、 y 满足 x + y/2 = 4，则 xy 的最大值为_______.</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 11: Answers Title -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800">答案与解析</h2>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 12: Answer 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">例题1 解析</h3>
+                <div class="mt-4 bg-slate-50 p-4 rounded-lg text-lg">
+                    <p><strong class="text-blue-600">【答案】D</strong></p>
+                    <p class="mt-2 text-slate-700">【解析】因为 a,b 都为正实数，a+2b=1，
+                    <br>所以，1 = a+2b ≥ 2√(a * 2b) = 2√2ab。
+                    <br>两边平方：1 ≥ 4 * 2ab = 8ab。
+                    <br>所以 ab ≤ 1/8。
+                    <br>当且仅当a=2b，代入a+2b=1得 a=1/2, b=1/4 时，ab取最大值 1/8。
+                    <br>故选：D
+                    </p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 13: Answer 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">例题2 解析</h3>
+                <div class="mt-4 bg-slate-50 p-4 rounded-lg text-lg">
+                    <p><strong class="text-blue-600">【答案】8</strong></p>
+                    <p class="mt-2 text-slate-700">【解析】
+                    4 = x + y/2 ≥ 2√(x * y/2) = 2√(xy/2)。
+                    <br>两边除以2: 2 ≥ √(xy/2)。
+                    <br>两边平方: 4 ≥ xy/2。
+                    <br>所以 8 ≥ xy。
+                    <br>当且仅当 x = y/2，代入 x+y/2=4 得 x=2, y=4 时，xy取最大值8。
+                    <br>故答案为：8。
+                    </p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 14: Summary -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">课程小结</h2>
+                <p class="mt-6 text-xl text-slate-700">今天我们学了啥？</p>
+                <ul class="mt-4 list-disc list-inside space-y-3 text-lg">
+                    <li><strong>基本不等式：</strong> a+b ≥ 2√ab (a,b≥0)。</li>
+                    <li><strong>等号成立的关键：</strong>当 a=b 的时候。</li>
+                    <li><strong>三大经典题型：</strong>“和积定值”，“非齐次式”(凑项)，“齐次式”(拆分)。</li>
+                </ul>
+                <p class="mt-6 text-xl font-bold">基本不等式就像个多面手，能解决很多看起来复杂的最值问题！</p>
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvases = document.querySelectorAll('.cartoon-canvas');
+            canvases.forEach((canvas, index) => {
+                const ctx = canvas.getContext('2d');
+                drawCartoon(ctx, index, canvas.width, canvas.height);
+            });
+        });
+
+        function drawCartoon(ctx, index, w, h) {
+            ctx.clearRect(0, 0, w, h);
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 2;
+
+            const mood = index % 4; 
+
+            switch (index % 12) {
+                case 0: // Garden fence
+                    ctx.strokeStyle = '#ca8a04';
+                    ctx.strokeRect(w*0.1, h*0.2, w*0.8, h*0.6);
+                    for(let i=0.2; i<0.8; i+=0.1){
+                        ctx.beginPath();
+                        ctx.moveTo(w*i, h*0.2);
+                        ctx.lineTo(w*i, h*0.8);
+                        ctx.stroke();
+                    }
+                    break;
+                case 1: // a^2 >= 0
+                    ctx.font = 'bold 40px Arial';
+                    ctx.fillStyle = '#16a34a';
+                    ctx.fillText('a²', w*0.2, h*0.6);
+                    ctx.fillText('≥ 0', w*0.5, h*0.6);
+                    break;
+                case 2: // Equal sign
+                    ctx.lineWidth = 8;
+                    ctx.strokeStyle = '#2563eb';
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.2, h*0.4);
+                    ctx.lineTo(w*0.8, h*0.4);
+                    ctx.moveTo(w*0.2, h*0.6);
+                    ctx.lineTo(w*0.8, h*0.6);
+                    ctx.stroke();
+                    break;
+                case 3: // Product and Sum
+                    ctx.font = 'bold 30px Arial';
+                    ctx.fillStyle = '#f59e0b';
+                    ctx.fillText('积=定值', w*0.1, h*0.3);
+                    ctx.fillStyle = '#8b5cf6';
+                    ctx.fillText('和→最小', w*0.1, h*0.7);
+                    break;
+                case 4: // Sum and Product
+                    ctx.font = 'bold 30px Arial';
+                    ctx.fillStyle = '#8b5cf6';
+                    ctx.fillText('和=定值', w*0.1, h*0.3);
+                     ctx.fillStyle = '#f59e0b';
+                    ctx.fillText('积→最大', w*0.1, h*0.7);
+                    break;
+                case 5: // Puzzle pieces
+                    ctx.fillStyle = '#3b82f6';
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.2, h*0.3);
+                    ctx.lineTo(w*0.5, h*0.3);
+                    ctx.arc(w*0.5, h*0.4, w*0.1, -Math.PI/2, Math.PI/2);
+                    ctx.lineTo(w*0.2, h*0.5);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    ctx.fillStyle = '#ef4444';
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.8, h*0.6);
+                    ctx.lineTo(w*0.5, h*0.6);
+                    ctx.arc(w*0.5, h*0.5, w*0.1, Math.PI/2, -Math.PI/2, true);
+                    ctx.lineTo(w*0.8, h*0.4);
+                    ctx.closePath();
+                    ctx.fill();
+                    break;
+                case 6: // Cancel out
+                    ctx.font = 'bold 40px Arial';
+                    ctx.fillStyle = 'black';
+                    ctx.fillText('√a·(1/a)', w*0.1, h*0.6);
+                    ctx.strokeStyle = 'red';
+                    ctx.lineWidth = 4;
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.2, h*0.3);
+                    ctx.lineTo(w*0.8, h*0.7);
+                    ctx.stroke();
+                    break;
+                 case 7: // Homogeneous fraction
+                    ctx.font = 'bold 25px Arial';
+                    ctx.fillStyle = '#0ea5e9';
+                    ctx.fillText('x²', w*0.4, h*0.3);
+                    ctx.fillText('y', w*0.4, h*0.7);
+                    ctx.strokeStyle = 'black';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.3, h*0.45);
+                    ctx.lineTo(w*0.7, h*0.45);
+                    ctx.stroke();
+                    break;
+                case 8: // Number 1
+                    ctx.font = 'bold 80px Arial';
+                    ctx.fillStyle = '#f97316';
+                    ctx.fillText('1', w*0.4, h*0.8);
+                    break;
+                default: // A checkmark
+                    ctx.strokeStyle = '#16a34a';
+                    ctx.lineWidth = 8;
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.2, h*0.5);
+                    ctx.lineTo(w*0.4, h*0.7);
+                    ctx.lineTo(w*0.8, h*0.3);
+                    ctx.stroke();
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
+

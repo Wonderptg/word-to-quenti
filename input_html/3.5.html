@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>玩转分式函数值域 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 500px; /* 保证内容较少时也有足够高度 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .cartoon-canvas {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            width: 100px;
+            height: 100px;
+        }
+
+        .graph-canvas {
+            border-radius: 0.5rem;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* 打印样式 */
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+
+            .print-row-container {
+                flex-direction: row !important;
+                width: 100%;
+                gap: 2rem;
+                align-items: center;
+            }
+
+            .section:last-child {
+                page-break-after: auto;
+            }
+            .cartoon-canvas {
+                display: block !important;
+            }
+
+            #solutions-section-1, #solutions-section-2 {
+                justify-content: flex-start;
+                padding-top: 4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- Section 1: 标题页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">玩转分式函数值域</h1>
+                <p class="text-2xl text-slate-600 mt-4">从入门到高阶</p>
+                <p class="mt-8 text-xl text-red-600 font-semibold">"不管函数多复杂，画出图像全拿下！"</p>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 2: 反比例函数 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-gray-500 pb-2">青铜段位：反比例函数</h2>
+                <p class="mt-6 text-xl text-slate-700 leading-relaxed">
+                    先从老朋友热身： <strong class="text-blue-600">y = -2/x</strong>
+                </p>
+                <div class="mt-6 bg-gray-50 p-6 rounded-lg text-lg">
+                    <p class="font-semibold">求 y=-2/x 在 x∈[-2, -1) 上的值域。</p>
+                    <ul class="list-decimal list-inside mt-4 space-y-2">
+                        <li><strong>画图：</strong> 图像在二、四象限。</li>
+                        <li><strong>截取：</strong> 找到 x=-2 (实心) 和 x=-1 (空心) 之间的部分。</li>
+                        <li><strong>看范围：</strong>
+                            <p>当 x=-2, y=1 (最低点)。</p>
+                            <p>当 x→-1, y→2 (取不到的最高点)。</p>
+                        </li>
+                        <li class="mt-2 font-bold text-xl">值域： [1, 2)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2.5: 反比例函数 (图像) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <p class="text-2xl text-slate-600 mb-4">图像展示：y = -2/x,  x∈[-2, -1)</p>
+                 <div class="mt-6 flex justify-center items-center">
+                    <canvas id="graph-canvas-inverse" class="graph-canvas" width="300" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: 一次/一次型函数 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-sky-500 pb-2">白银段位：一次比一次</h2>
+                <p class="mt-6 text-xl text-slate-700 leading-relaxed">
+                    难度升级： <strong class="text-blue-600">y = (x+5)/(2x-4)</strong>
+                </p>
+                <div class="mt-6 bg-sky-50 p-6 rounded-lg text-lg">
+                    <p class="font-semibold">神器：“渐近线三步定位法”</p>
+                    <ul class="list-decimal list-inside mt-4 space-y-2">
+                        <li><strong>竖直渐近线:</strong> 分母=0 → 2x-4=0 → <strong class="text-red-600">x=2</strong></li>
+                        <li><strong>水平渐近线:</strong> x→∞, y ≈ x/2x → <strong class="text-red-600">y=1/2</strong></li>
+                        <li><strong>特殊点定象限:</strong> 令 x=0, y=-5/4=-1.25。点(0, -1.25) 在左下方。</li>
+                         <li class="mt-2 font-bold text-xl">值域： (-∞, 1/2) U (1/2, +∞)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3.5: 一次/一次型函数 (图像) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <p class="text-2xl text-slate-600 mb-4">图像展示：y = (x+5)/(2x-4)</p>
+                <div class="mt-6 flex justify-center items-center">
+                    <canvas id="graph-canvas-linear" class="graph-canvas" width="300" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: 对勾函数 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-emerald-500 pb-2">帮手1：对勾函数</h2>
+                <p class="mt-6 text-xl text-slate-700 leading-relaxed">
+                    解锁超级英雄！形如 y = ax + b/x, (ab>0)
+                </p>
+                <div class="mt-6 bg-emerald-50 p-6 rounded-lg text-lg">
+                    <p class="font-semibold">例如: y = 3x + 12/x</p>
+                    <ul class="list-disc list-inside mt-4 space-y-2">
+                        <li>图像形似耐克Logo。</li>
+                        <li><strong>取等条件:</strong> 当 3x = 12/x → x²=4 → x=2 时，取最小值。</li>
+                        <li><strong>最小值:</strong> y_min = 3(2) + 12/2 = 12。顶点 (2, 12)。</li>
+                         <li><strong>最大值:</strong> y_max = -12。顶点 (-2, -12)。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 4.5: 对勾函数 (图像) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <p class="text-2xl text-slate-600 mb-4">图像展示：y = 3x + 12/x</p>
+                <div class="mt-6 flex justify-center items-center">
+                    <canvas id="graph-canvas-hook" class="graph-canvas" width="300" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 5: 双刀函数 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-rose-500 pb-2">帮手2：双刀/飘带函数</h2>
+                <p class="mt-8 text-xl text-slate-700">如果中间是减号，比如 <strong class="text-blue-600">y = x - 9/x</strong></p>
+                <p class="mt-4 text-lg">图像就变成了两把锋利的“双刀”，在各自的定义域里一路向上，永不回头，是<strong class="text-rose-600">单调递增</strong>的！</p>
+                 <div class="mt-6 flex justify-center items-center">
+                    <canvas id="graph-canvas-double-knife" class="graph-canvas" width="300" height="300"></canvas>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 6: 总结 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">总结与升华</h2>
+                <p class="mt-6 text-2xl text-slate-700 text-center">我们的“通关秘籍”是什么？</p>
+                <div class="mt-6 bg-amber-50 p-8 rounded-lg text-center">
+                    <p class="text-3xl font-bold text-amber-700">万变不离其宗——分离常数！</p>
+                    <p class="mt-4 text-xl text-slate-600">所有努力，都是为了找到藏在函数背后的那个 “对勾函数”！</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 7: 课后作业 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800">课后修炼题 (1/4)</h2>
+                <div class="mt-8 bg-violet-50 p-6 rounded-lg text-xl">
+                    <strong>1.</strong> 求函数 y = (x²+4)/x 在 x>0 上的值域。
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 8: 课后作业 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800">课后修炼题 (2/4)</h2>
+                <div class="mt-8 bg-violet-50 p-6 rounded-lg text-xl">
+                    <strong>2.</strong> 求函数 y = (x+1)/(x-2) 在 x∈[3, 5] 上的值域。
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 9: 课后作业 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800">课后修炼题 (3/4)</h2>
+                <div class="mt-8 bg-violet-50 p-6 rounded-lg text-xl">
+                    <strong>3.</strong> 求函数 y = 4/x 在 x∈(0, 2] 上的值域。
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 10: 课后作业 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800">课后修炼题 (4/4)</h2>
+                <div class="mt-8 bg-violet-50 p-6 rounded-lg text-xl">
+                    <strong>4.</strong> 求函数 y = x + 4/x 在 x∈[1, 4] 上的值域。
+                </div>
+                <p class="mt-8 text-center text-slate-600">做完后可以翻到下一页查看解析哦！</p>
+            </div>
+        </div>
+
+        <!-- Section 11: 课后作业解析 (1/2) -->
+        <div class="section" id="solutions-section-1">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">课后修炼题解析 (1/2)</h2>
+                <div class="space-y-4 text-base">
+                    <!-- 解析 1 -->
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <p class="font-bold text-lg mb-2">1. 解析 y = (x²+4)/x,  x>0</p>
+                        <p><strong>方法：</strong>分离常数，构造对勾函数。</p>
+                        <p>① <strong>化简：</strong> y = x²/x + 4/x = x + 4/x。</p>
+                        <p>② <strong>分析：</strong>这是一个经典的对勾函数，且定义域为 x>0。根据基本不等式（或对勾函数性质），当 x=4/x 时，即 x=2 时，函数取得最小值。</p>
+                        <p>③ <strong>求解：</strong> y_min = 2 + 4/2 = 4。</p>
+                        <p class="mt-2 font-bold text-red-600">所以，值域为 [4, +∞)。</p>
+                    </div>
+                    <!-- 解析 2 -->
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <p class="font-bold text-lg mb-2">2. 解析 y = (x+1)/(x-2), x∈[3, 5]</p>
+                        <p><strong>方法：</strong>利用函数单调性。</p>
+                        <p>① <strong>化简：</strong> y = ((x-2)+3)/(x-2) = 1 + 3/(x-2)。</p>
+                        <p>② <strong>判断单调性：</strong>函数在区间 (2, +∞) 上是单调递减的。因此，它在子区间 [3, 5] 上也是单调递减的。</p>
+                        <p>③ <strong>计算端点值：</strong>最大值在 x=3 处取得，最小值在 x=5 处取得。</p>
+                         <ul class="list-disc list-inside ml-4">
+                            <li>y_max = (3+1)/(3-2) = 4。</li>
+                            <li>y_min = (5+1)/(5-2) = 6/3 = 2。</li>
+                        </ul>
+                        <p class="mt-2 font-bold text-red-600">所以，值域为 [2, 4]。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 12: 课后作业解析 (2/2) -->
+        <div class="section" id="solutions-section-2">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">课后修炼题解析 (2/2)</h2>
+                <div class="space-y-4 text-base">
+                    <!-- 解析 3 -->
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <p class="font-bold text-lg mb-2">3. 解析 y = 4/x, x∈(0, 2]</p>
+                        <p><strong>方法：</strong>利用函数单调性。</p>
+                        <p>① <strong>判断单调性：</strong>函数 y = 4/x 在区间 (0, +∞) 上是单调递减的。因此，它在子区间 (0, 2] 上也是单调递减的。</p>
+                        <p>② <strong>分析边界：</strong></p>
+                         <ul class="list-disc list-inside ml-4">
+                            <li>当 x=2 时，函数取得最小值，y_min = 4/2 = 2。</li>
+                            <li>当 x 从右侧趋近于 0 (x→0+) 时，y 趋近于正无穷大 (+∞)。</li>
+                        </ul>
+                        <p class="mt-2 font-bold text-red-600">所以，值域为 [2, +∞)。</p>
+                    </div>
+                     <!-- 解析 4 -->
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <p class="font-bold text-lg mb-2">4. 解析 y = x + 4/x, x∈[1, 4]</p>
+                        <p><strong>方法：</strong>分析对勾函数在特定区间上的图像。</p>
+                        <p>① <strong>分析函数：</strong>这是一个对勾函数，对称轴为y轴，在 (0, +∞) 上，当 x=2 时取得最小值 y=4。</p>
+                        <p>② <strong>结合区间：</strong>函数的“对勾”最低点 x=2 正好在区间 [1, 4] 内部。所以函数在 [1, 2] 上递减，在 [2, 4] 上递增。</p>
+                        <p>③ <strong>比较端点与最值：</strong></p>
+                         <ul class="list-disc list-inside ml-4">
+                            <li>区间内的最小值为 y(2) = 4。</li>
+                            <li>比较两个端点的值：y(1) = 1+4/1=5，y(4)=4+4/4=5。</li>
+                        </ul>
+                        <p class="mt-2 font-bold text-red-600">所以，值域为 [4, 5]。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 为所有小画布绘制卡通图标
+            const canvases = document.querySelectorAll('.cartoon-canvas');
+            canvases.forEach((canvas, index) => {
+                const ctx = canvas.getContext('2d');
+                drawCartoon(ctx, index, canvas.width, canvas.height); 
+            });
+
+            // 绘制反比例函数图像
+            const inverseCanvas = document.getElementById('graph-canvas-inverse');
+            if (inverseCanvas) {
+                drawInverseGraph(inverseCanvas.getContext('2d'));
+            }
+            
+            // 绘制一次/一次型函数图像
+            const linearCanvas = document.getElementById('graph-canvas-linear');
+            if (linearCanvas) {
+                drawLinearGraph(linearCanvas.getContext('2d'));
+            }
+            
+            // 绘制对勾函数图像
+            const hookCanvas = document.getElementById('graph-canvas-hook');
+            if (hookCanvas) {
+                drawHookGraph(hookCanvas.getContext('2d'));
+            }
+
+            // 绘制双刀函数图像
+            const doubleKnifeCanvas = document.getElementById('graph-canvas-double-knife');
+            if (doubleKnifeCanvas) {
+                drawDoubleKnifeGraph(doubleKnifeCanvas.getContext('2d'));
+            }
+        });
+
+        // 绘制坐标轴
+        function drawAxes(ctx, xMin, xMax, yMin, yMax) {
+            const w = ctx.canvas.width;
+            const h = ctx.canvas.height;
+            const toCanvasX = (x) => (x - xMin) / (xMax - xMin) * w;
+            const toCanvasY = (y) => h - (y - yMin) / (yMax - yMin) * h;
+
+            ctx.clearRect(0, 0, w, h);
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillRect(0, 0, w, h);
+
+            // 绘制坐标轴线
+            ctx.strokeStyle = '#9ca3af';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(0, toCanvasY(0));
+            ctx.lineTo(w, toCanvasY(0));
+            ctx.moveTo(toCanvasX(0), 0);
+            ctx.lineTo(toCanvasX(0), h);
+            ctx.stroke();
+            ctx.fillStyle = '#6b7280';
+            ctx.font = '12px Arial';
+            ctx.fillText('y', toCanvasX(0) + 5, 12);
+            ctx.fillText('x', w - 12, toCanvasY(0) - 5);
+            return { toCanvasX, toCanvasY };
+        }
+
+        // 绘制反比例函数
+        function drawInverseGraph(ctx) {
+            const xMin = -5, xMax = 5, yMin = -5, yMax = 5;
+            const { toCanvasX, toCanvasY } = drawAxes(ctx, xMin, xMax, yMin, yMax);
+            
+            const func = x => -2 / x;
+
+            // 绘制函数曲线
+            ctx.strokeStyle = '#3b82f6';
+            ctx.lineWidth = 2.5;
+            // 第二象限
+            ctx.beginPath();
+            for (let x = -5; x < 0; x += 0.05) {
+                ctx.lineTo(toCanvasX(x), toCanvasY(func(x)));
+            }
+            ctx.stroke();
+            // 第四象限
+            ctx.beginPath();
+            for (let x = 0.1; x <= 5; x += 0.05) {
+                 ctx.lineTo(toCanvasX(x), toCanvasY(func(x)));
+            }
+            ctx.stroke();
+
+            // 高亮特定定义域
+            ctx.strokeStyle = '#ef4444';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+             for (let x = -2; x < -1; x += 0.05) {
+                ctx.lineTo(toCanvasX(x), toCanvasY(func(x)));
+            }
+            ctx.stroke();
+            
+            // 绘制端点
+            ctx.fillStyle = '#ef4444';
+            ctx.beginPath();
+            ctx.arc(toCanvasX(-2), toCanvasY(1), 5, 0, 2 * Math.PI); // 实心点
+            ctx.fill();
+            
+            ctx.strokeStyle = '#ef4444';
+            ctx.fillStyle = 'white';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(toCanvasX(-1), toCanvasY(2), 5, 0, 2 * Math.PI); // 空心点
+            ctx.fill();
+            ctx.stroke();
+
+             // 添加文本标签
+            ctx.fillStyle = 'black';
+            ctx.font = 'bold 12px Arial';
+            ctx.fillText('(-2, 1)', toCanvasX(-2) - 40, toCanvasY(1) + 5);
+            ctx.fillText('(-1, 2)', toCanvasX(-1) + 10, toCanvasY(2));
+        }
+
+        // 绘制一次/一次型函数
+        function drawLinearGraph(ctx) {
+            const xMin = -5, xMax = 9, yMin = -5, yMax = 5;
+            const { toCanvasX, toCanvasY } = drawAxes(ctx, xMin, xMax, yMin, yMax);
+            
+            const func = x => (x + 5) / (2 * x - 4);
+
+            // 绘制渐近线
+            ctx.strokeStyle = '#f59e0b';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([5, 5]);
+            // 竖直渐近线 x=2
+            ctx.beginPath();
+            ctx.moveTo(toCanvasX(2), 0);
+            ctx.lineTo(toCanvasX(2), ctx.canvas.height);
+            ctx.stroke();
+            // 水平渐近线 y=0.5
+            ctx.beginPath();
+            ctx.moveTo(0, toCanvasY(0.5));
+            ctx.lineTo(ctx.canvas.width, toCanvasY(0.5));
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            ctx.fillStyle = '#d97706';
+            ctx.font = 'bold 12px Arial';
+            ctx.fillText('x=2', toCanvasX(2) + 5, 15);
+            ctx.fillText('y=0.5', ctx.canvas.width - 40, toCanvasY(0.5) - 5);
+
+
+            // 绘制函数曲线
+            ctx.strokeStyle = '#0ea5e9';
+            ctx.lineWidth = 2.5;
+            // 左侧部分
+            ctx.beginPath();
+            for (let x = -5; x < 2; x += 0.05) {
+                ctx.lineTo(toCanvasX(x), toCanvasY(func(x)));
+            }
+            ctx.stroke();
+            // 右侧部分
+            ctx.beginPath();
+            for (let x = 2.01; x <= 9; x += 0.05) {
+                 ctx.lineTo(toCanvasX(x), toCanvasY(func(x)));
+            }
+            ctx.stroke();
+
+            // 绘制特殊点
+            ctx.fillStyle = '#e11d48';
+            ctx.beginPath();
+            ctx.arc(toCanvasX(0), toCanvasY(-1.25), 5, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.font = 'bold 12px Arial';
+            ctx.fillText('(0, -1.25)', toCanvasX(0) + 10, toCanvasY(-1.25) + 5);
+        }
+
+        // 绘制对勾函数
+        function drawHookGraph(ctx) {
+            const xMin = -8, xMax = 8, yMin = -20, yMax = 20;
+            const { toCanvasX, toCanvasY } = drawAxes(ctx, xMin, xMax, yMin, yMax);
+            
+            const func = x => (3 * x) + (12 / x);
+
+            // 绘制函数曲线
+            ctx.strokeStyle = '#10b981';
+            ctx.lineWidth = 2.5;
+            // 右半部分 (x > 0)
+            ctx.beginPath();
+            for (let x = 0.5; x <= 8; x += 0.1) {
+                ctx.lineTo(toCanvasX(x), toCanvasY(func(x)));
+            }
+            ctx.stroke();
+             // 左半部分 (x < 0)
+            ctx.beginPath();
+            for (let x = -8; x <= -0.5; x += 0.1) {
+                ctx.lineTo(toCanvasX(x), toCanvasY(func(x)));
+            }
+            ctx.stroke();
+            
+            // 绘制极值点
+            ctx.fillStyle = '#ef4444';
+            ctx.beginPath();
+            ctx.arc(toCanvasX(2), toCanvasY(12), 5, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(toCanvasX(-2), toCanvasY(-12), 5, 0, 2 * Math.PI);
+            ctx.fill();
+
+            ctx.fillStyle = 'black';
+            ctx.font = 'bold 12px Arial';
+            ctx.fillText('Min (2, 12)', toCanvasX(2) + 5, toCanvasY(12) + 15);
+            ctx.fillText('Max (-2, -12)', toCanvasX(-2) - 80, toCanvasY(-12) - 5);
+        }
+
+        // 绘制双刀函数
+        function drawDoubleKnifeGraph(ctx) {
+            const xMin = -10, xMax = 10, yMin = -15, yMax = 15;
+            const { toCanvasX, toCanvasY } = drawAxes(ctx, xMin, xMax, yMin, yMax);
+            
+            const func = x => x - (9 / x);
+
+            // 绘制斜渐近线 y=x
+            ctx.strokeStyle = '#f59e0b';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(toCanvasX(xMin), toCanvasY(xMin));
+            ctx.lineTo(toCanvasX(xMax), toCanvasY(xMax));
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.fillStyle = '#d97706';
+            ctx.font = 'bold 12px Arial';
+            ctx.fillText('y=x', toCanvasX(xMax) - 35, toCanvasY(xMax) + 15);
+
+
+            // 绘制函数曲线
+            ctx.strokeStyle = '#f43f5e'; // 使用与章节标题匹配的玫瑰色
+            ctx.lineWidth = 2.5;
+            // 右半部分 (x > 0)
+            ctx.beginPath();
+            for (let x = 0.5; x <= xMax; x += 0.1) {
+                ctx.lineTo(toCanvasX(x), toCanvasY(func(x)));
+            }
+            ctx.stroke();
+             // 左半部分 (x < 0)
+            ctx.beginPath();
+            for (let x = xMin; x <= -0.5; x += 0.1) {
+                ctx.lineTo(toCanvasX(x), toCanvasY(func(x)));
+            }
+            ctx.stroke();
+        }
+
+        // 绘制装饰性卡通图标
+        function drawCartoon(ctx, index, w, h) {
+            ctx.clearRect(0, 0, w, h);
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 2;
+
+            switch (index % 7) {
+                case 0: // 火箭
+                    ctx.fillStyle = '#d1d5db';
+                    ctx.beginPath();
+                    ctx.moveTo(w/2, h*0.1);
+                    ctx.lineTo(w*0.3, h*0.7);
+                    ctx.lineTo(w*0.7, h*0.7);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                    ctx.fillStyle = '#ef4444';
+                    ctx.fillRect(w*0.2, h*0.7, w*0.6, h*0.2);
+                    break;
+                case 1: // 抛物线
+                    ctx.strokeStyle = '#22c55e';
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.1, h*0.9);
+                    ctx.quadraticCurveTo(w/2, -h*0.2, w*0.9, h*0.9);
+                    ctx.stroke();
+                    break;
+                case 2: // 齿轮
+                    ctx.strokeStyle = '#6b7280';
+                    let R = w*0.25, r = w*0.15;
+                    for(let i=0; i<8; i++){
+                        let angle = i * Math.PI/4;
+                        ctx.beginPath();
+                        ctx.moveTo(w*0.35 + r*Math.cos(angle), h*0.35 + r*Math.sin(angle));
+                        ctx.lineTo(w*0.35 + R*Math.cos(angle), h*0.35 + R*Math.sin(angle));
+                        ctx.stroke();
+                    }
+                     R = w*0.2, r = w*0.1;
+                    for(let i=0; i<8; i++){
+                        let angle = i * Math.PI/4 + Math.PI/8;
+                        ctx.beginPath();
+                        ctx.moveTo(w*0.7 + r*Math.cos(angle), h*0.7 + r*Math.sin(angle));
+                        ctx.lineTo(w*0.7 + R*Math.cos(angle), h*0.7 + R*Math.sin(angle));
+                        ctx.stroke();
+                    }
+                    break;
+                case 3: // 韦恩图
+                    ctx.strokeStyle = '#3b82f6';
+                    ctx.beginPath();
+                    ctx.arc(w*0.4, h*0.5, w*0.3, 0, Math.PI*2);
+                    ctx.stroke();
+                    ctx.strokeStyle = '#16a34a';
+                     ctx.beginPath();
+                    ctx.arc(w*0.6, h*0.5, w*0.3, 0, Math.PI*2);
+                    ctx.stroke();
+                    break;
+                case 4: // 带坐标轴的图
+                    ctx.strokeStyle = 'black';
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.1, h*0.8);
+                    ctx.lineTo(w*0.9, h*0.8);
+                    ctx.moveTo(w/2, h*0.1);
+                    ctx.lineTo(w/2, h*0.9);
+                    ctx.stroke();
+                    ctx.strokeStyle = '#ef4444';
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.2, h*0.9);
+                    ctx.quadraticCurveTo(w/2, h*0.5, w*0.8, h*0.9);
+                    ctx.stroke();
+                    break;
+                case 5: // 问号
+                    ctx.font = 'bold 80px Arial';
+                    ctx.fillStyle = '#f43f5e';
+                    ctx.fillText('?', w*0.4, h*0.8);
+                    break;
+                default: // 点赞
+                    ctx.fillStyle = '#fde047';
+                    ctx.strokeStyle = 'black';
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.3, h*0.9);
+                    ctx.lineTo(w*0.3, h*0.5);
+                    ctx.arc(w*0.5, h*0.5, w*0.2, Math.PI, 0);
+                    ctx.lineTo(w*0.7, h*0.9);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
+

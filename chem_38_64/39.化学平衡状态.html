@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>化学平衡：基本概念</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">化学平衡</h1>
+                <p class="text-2xl text-slate-600 mt-2">基本概念与平衡状态</p>
+            </div>
+        </div>
+        
+        <!-- 什么是可逆反应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>什么是可逆反应？</h2>
+                <div class="mt-8 bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-blue-800 text-xl">定义：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">在<strong class="text-red-600">相同条件</strong>下，既能向<strong class="text-blue-700">正反应</strong>方向进行，同时又能向<strong class="text-blue-700">逆反应</strong>方向进行的反应。</p>
+                </div>
+                <div class="mt-6 space-y-3 text-lg bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="mono text-center">2SO₂(g) + O₂(g) ⇌ 2SO₃(g)</p>
+                    <p class="mono text-center">Cl₂ + H₂O ⇌ HCl + HClO</p>
+                    <p class="mono text-center">N₂(g) + 3H₂(g) ⇌ 2NH₃(g)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 可逆反应辨析 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>可逆反应辨析</h2>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">这不是可逆反应：</h3>
+                    <p class="mono mt-2">2H₂ + O₂ --(点燃)→ 2H₂O</p>
+                    <p class="mono mt-2">2H₂O --(电解)→ 2H₂↑ + O₂↑</p>
+                    <p class="mt-4"><strong>原因：</strong>反应条件<strong class="text-red-900">不同</strong>。“点燃”和“电解”不是相同条件，反应不能同时进行。</p>
+                </div>
+                <div class="mt-8 bg-gray-100 p-6 rounded-lg text-center">
+                    <p class="text-lg text-slate-700">可逆反应在方程式中用<strong class="text-2xl mono text-red-600">⇌</strong>表示。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 可逆反应的特征 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>可逆反应的特征</h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full">双向性</strong><p class="mt-2 text-lg">分为方向相反的两个反应（正反应、逆反应）。</p></div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full">双同性</strong><p class="mt-2 text-lg">在<strong class="text-red-600">相同条件</strong>下，正、逆反应<strong class="text-red-600">同时</strong>进行。</p></div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full">共存性</strong><p class="mt-2 text-lg">反应物转化率<strong class="text-red-600">小于100%</strong>。反应物与生成物<strong class="text-red-600">共同存在</strong>。反应有<strong class="text-red-600">限度</strong>。</p></div>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 什么是化学平衡状态 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>什么是化学平衡状态？</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-green-800 text-xl">定义：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">在一定条件下的<strong class="text-blue-600">可逆反应</strong>中，当<strong class="text-red-600">正反应速率</strong>等于<strong class="text-red-600">逆反应速率</strong>时 (<code>v(正) = v(逆)</code>)，反应体系中所有物质的浓度（或物质的量等）都<strong class="text-red-600">不再发生变化</strong>的状态。</p>
+                </div>
+                <p class="mt-6 text-xl text-slate-700"><strong>前提：</strong>只有<strong class="text-blue-600">可逆反应</strong>才能建立化学平衡。</p>
+            </div>
+        </div>
+
+        <!-- 动态平衡 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>动态平衡 (Dynamic Equilibrium)</h2>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold text-center">
+                    <p class="text-2xl mono">v(正) = v(逆) ≠ 0</p>
+                </div>
+                <div class="mt-6 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">特点：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">平衡<strong class="text-red-600">不是</strong>反应停止了。从微观上看，正、逆反应<strong class="text-red-600">仍在进行</strong>，只是速率相等。</p>
+                    <p class="mt-2 text-slate-600 text-lg"><strong>例：</strong><code>H₂(g) + I₂(g) ⇌ 2HI(g)</code> 达平衡时，<code>H₂</code> 的消耗速率 = <code>H₂</code> 的生成速率。</p>
+                    <p class="mt-4 text-slate-600 text-lg"><strong>类比：</strong>银行存款10亿。花钱速率(逆) = 赚钱速率(正)，宏观存款(浓度)不变，但微观上钱仍在进出。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 化学平衡的特征 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>化学平衡的特征</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-blue-800 text-2xl">定 (Constant)</h3>
+                        <p class="mt-3 text-slate-600">平衡混合物中，各组分的百分含量、浓度、物质的量等保持<strong class="text-blue-700">恒定</strong>。</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-red-800 text-2xl">变 (Variable)</h3>
+                        <p class="mt-3 text-slate-600">化学平衡是<strong class="text-red-700">有条件的、相对的</strong>。当外界条件改变时，化学平衡可能被破坏并发生<strong class="text-red-700">移动</strong>。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 化学平衡状态的建立 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>化学平衡状态的建立</h2>
+                <p class="mt-8 text-xl text-slate-700">以 <code>H₂(g) + I₂(g) ⇌ 2HI(g)</code> 为例：</p>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-lg">
+                        <h3 class="font-semibold text-lg">Case 1: 从正反应开始 (投 H₂ 和 I₂)</h3>
+                        <p class="mt-2 text-lg text-slate-700">[H₂] [I₂] 逐渐<strong class="text-red-600">↓</strong> ⟹ <code>v(正)</code> 逐渐<strong class="text-red-600">↓</strong></p>
+                        <p class="mt-1 text-lg text-slate-700">[HI] 逐渐<strong class="text-blue-600">↑</strong> ⟹ <code>v(逆)</code> 逐渐<strong class="text-blue-600">↑</strong></p>
+                        <p class="mt-2 text-lg text-slate-700"><strong>最终：</strong><code>v(正) = v(逆)</code>，达到平衡。</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-lg">
+                         <h3 class="font-semibold text-lg">Case 2: 从逆反应开始 (只投 HI)</h3>
+                        <p class="mt-2 text-lg text-slate-700">[HI] 逐渐<strong class="text-red-600">↓</strong> ⟹ <code>v(逆)</code> 逐渐<strong class="text-red-600">↓</strong></p>
+                        <p class="mt-1 text-lg text-slate-700">[H₂] [I₂] 逐渐<strong class="text-blue-600">↑</strong> ⟹ <code>v(正)</code> 逐渐<strong class="text-blue-600">↑</strong></p>
+                        <p class="mt-2 text-lg text-slate-700"><strong>最终：</strong><code>v(正) = v(逆)</code>，达到平衡。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 如何判定化学平衡状态 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>如何判定化学平衡状态？</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-green-50 border border-green-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-green-800 text-2xl">方法一：直接判定 (定义法)</h3>
+                        <p class="mt-3 text-slate-600 text-center text-3xl mono font-bold">v(正) = v(逆)</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-red-800 text-2xl">方法二：间接判定 (口诀法)</h3>
+                        <p class="mt-3 text-slate-600 text-center text-3xl font-bold">变量不变，即达平衡</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- “变量不变”的辨析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>“变量不变”的辨析</h2>
+                <p class="mt-8 text-xl text-slate-700">口诀的核心在于<strong class="text-red-600">“变量”</strong>二字。</p>
+                <div class="mt-8 space-y-4">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800 text-xl">是“变量”：</h3>
+                        <p class="mt-3 text-slate-600 text-lg">一个物理量（如 [A] 的浓度），在反应开始后<strong class="text-blue-700">一直在变</strong>，当它突然<strong class="text-blue-700">不再变化</strong>时，说明达到了平衡。</p>
+                    </div>
+                    <div class="bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-gray-800 text-xl">不是“变量” (是“常量”)：</h3>
+                        <p class="mt-3 text-slate-600 text-lg">一个物理量（如总质量，或<code>A+B⇌C+D</code>的总物质的量），从反应开始到结束<strong class="text-gray-700">始终不变</strong>。它恒定不变<strong class="text-red-600">不能</strong>说明达到了平衡。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 判定标准 (一)：浓度/物质的量 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>判定标准 (一)：浓度/物质的量</h2>
+                <p class="mt-8 text-xl text-slate-700">反应：<code>mA(g) + nB(g) ⇌ pC(g) + qD(g)</code> (假设从A、B投料)</p>
+                <div class="mt-8 bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
+                    <p class="text-xl font-bold text-green-700">√ 一定是平衡的标志：</p>
+                    <p class="mt-2 text-lg text-slate-700">
+                        <strong class="text-green-800">各</strong>物质的物质的量、浓度、质量、质量分数、体积分数... <strong class="text-red-600">不再变化</strong>。
+                    </p>
+                    <p class="mt-1 text-sm text-slate-500">（因为 [A], [B] 一定在↓，[C], [D] 一定在↑，它们都是“变量”。）</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 判定标准 (二)：速率 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>判定标准 (二)：速率</h2>
+                <div class="mt-8 bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
+                    <p class="text-xl font-bold text-green-700">√ 一定是平衡的标志：</p>
+                    <p class="mt-2 text-lg text-slate-700">1. 单位时间内，消耗 m mol A，同时<strong class="text-green-800">生成</strong> m mol A。(<code>v(A,正) = v(A,逆)</code>)</p>
+                    <p class="mt-2 text-lg text-slate-700">2. 单位时间内，消耗 n mol B，同时<strong class="text-green-800">消耗</strong> q mol D。(<code>v(B,正) = v(D,逆)</code>，且n:q符合计量数)</p>
+                    <p class="mt-2 text-lg text-slate-700">3. 同一物质，断键速率 = 成键速率。</p>
+                </div>
+                <div class="mt-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
+                    <p class="text-xl font-bold text-red-700">× 不是平衡的标志：</p>
+                    <p class="mt-2 text-lg text-slate-700">1. <code>v(A):v(B):v(C):v(D) = m:n:p:q</code> (任何时刻都成立)</p>
+                    <p class="mt-2 text-lg text-slate-700">2. 单位时间内，生成 n mol B，同时消耗 q mol D。(同为逆反应)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 判定标准 (三)：压强/体积 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>判定标准 (三)：压强/体积</h2>
+                <p class="mt-8 text-xl text-slate-700">反应：<code>mA(g) + nB(g) ⇌ pC(g) + qD(g)</code></p>
+                <div class="mt-8 bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-blue-800 text-xl">Case 1: 反应前后气体计量数不等</h3>
+                    <p class="mono mt-2 text-center text-lg">m + n ≠ p + q</p>
+                    <p class="mt-3 text-slate-600 text-lg">此时，总物质的量(n)是<strong class="text-blue-700">“变量”</strong>。</p>
+                    <p class="mt-3 text-lg text-green-700 font-bold">√ 平衡标志：<br/>恒温恒容下，<strong class="text-red-600">总压强</strong>不再变化。<br/>恒温恒压下，<strong class="text-red-600">总体积</strong>不再变化。</p>
+                </div>
+                <div class="mt-6 bg-red-50 border border-red-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-red-800 text-xl">Case 2: 反应前后气体计量数相等</h3>
+                    <p class="mono mt-2 text-center text-lg">m + n = p + q</p>
+                    <p class="mt-3 text-slate-600 text-lg">此时，总物质的量(n)是<strong class="text-gray-700">“常量”</strong>。</p>
+                    <p class="mt-3 text-lg text-red-700 font-bold">× 不是平衡标志：<br/>总压强或总体积<strong class="text-red-600">始终不变</strong>，无法用于判断。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 判定标准 (四)：平均摩尔质量 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>判定标准 (四)：平均摩尔质量 (M̄)</h2>
+                <p class="mt-8 text-xl text-slate-700 text-center mono">M̄ = m / n</p>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <p class="mt-3 text-slate-600 text-lg"><strong>分析：</strong> <code>m</code> (气体总质量) 和 <code>n</code> (气体总物质的量) 中，<strong class="text-red-600">至少有一个是“变量”</strong>，<code>M̄</code> 才能作为判断标志。</p>
+                    <p class="mt-4 text-lg text-red-700 font-bold">× 不能判断：<br/>
+                    <code>m+n = p+q</code> 且 <strong class="text-red-600">全部是气体</strong> (m, n均不变)</p>
+                    <p class="mt-3 text-lg text-green-700 font-bold">√ 可以判断：<br/>
+                    1. <code>m+n ≠ p+q</code> (n 是变量)<br/>
+                    2. <strong class="text-red-600">有非气体</strong>参与反应 (m 是变量)。<br/> <span class="text-sm text-slate-500">例如 <code>A(s) + 2B(g) ⇌ C(g) + D(g)</code>，反应前后气体总物质的量n不变 (2→2)，但固体A转化为气体C和D，气体总质量m发生变化，m是“变量”。</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 判定标准 (五)：T, ρ, 颜色 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>判定标准 (五)：T, ρ, 颜色</h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-green-50 border border-green-200 p-4 rounded-lg">
+                        <p class="text-xl font-bold text-green-700">√ 温度 (T)</p>
+                        <p class="mt-2 text-lg text-slate-700">在<strong class="text-red-600">绝热体系</strong> (与外界无热交换) 中，反应必伴随热效应 (吸热/放热)，T是<strong class="text-blue-600">“变量”</strong>。当T不再变化，即达平衡。</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                        <p class="text-xl font-bold text-red-700">× 密度 (ρ)</p>
+                        <p class="mt-2 text-lg text-slate-700">在<strong class="text-red-600">恒温恒容</strong>下，对于<strong class="text-red-600">全部为气体</strong>的反应，<code>ρ = m / V</code>。m (总质量) 和 V (体积) 始终不变，ρ是<strong class="text-gray-700">“常量”</strong>。</p>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 p-4 rounded-lg">
+                        <p class="text-xl font-bold text-green-700">√ 体系颜色</p>
+                        <p class="mt-2 text-lg text-slate-700">如果反应物或生成物<strong class="text-red-600">有颜色</strong> (如 <code>I₂</code> 紫色, <code>NO₂</code> 红棕色)，其浓度是<strong class="text-blue-600">“变量”</strong>。当颜色深度不再变化，即达平衡。</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（一）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">可逆反应的“可逆”是指？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 反应物可以 100% 转化为生成物</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 反应只能正向进行</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 反应可以在不同条件下向正、逆方向进行</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 在相同条件下，正、逆反应能同时进行</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（一）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>可逆反应的关键特征是在<strong class="text-red-600">相同条件</strong>下，正向反应和逆向反应能<strong class="text-red-600">同时</strong>发生。C选项的“不同条件”是错误的，例如电解水和氢气燃烧。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（二）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">化学平衡状态的本质特征是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 反应物浓度为 0</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 正、逆反应速率均为 0 (反应停止)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 反应物和生成物浓度相等</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 正、逆反应速率相等且不为 0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（二）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>化学平衡是一种<strong class="text-red-600">动态平衡</strong>，其根本标志是 <code>v(正) = v(逆) ≠ 0</code>。反应并未停止 (B错)，反应物也不会耗尽 (A错)，浓度也不一定相等 (C错)。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（三）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">下列哪个物理量在反应 <code>H₂(g) + I₂(g) ⇌ 2HI(g)</code> 达到平衡时<strong class="text-red-600">不再</strong>变化？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 体系的总压强</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 体系的总物质的量</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 混合气体的密度</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> H₂ 的浓度</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（三）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>该反应是气体计量数相等 (1+1=2) 的反应。在恒温恒容下，总压强(A)、总物质的量(B)、密度(C) 始终是<strong class="text-gray-700">“常量”</strong>，不能作为平衡标志。</p>
+                    <p>H₂ 的浓度在反应开始后不断减小，是<strong class="text-blue-600">“变量”</strong>，当它不再变化时，说明达到了平衡。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（四）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">对于反应 <code>2SO₂(g) + O₂(g) ⇌ 2SO₃(g)</code>，下列哪个<strong class="text-red-600">能</strong>说明已达平衡？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 恒温恒容下，容器内密度不变</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> SO₂, O₂, SO₃ 的浓度之比为 2:1:2</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 恒温恒容下，容器内总压强不变</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 消耗 2 mol SO₂ 的同时，消耗 1 mol O₂</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（四）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p><strong>(A)</strong> 恒温恒容下，气体总质量m和体积V始终不变，密度ρ是<strong class="text-gray-700">“常量”</strong>。</p>
+                    <p><strong>(B)</strong> 浓度之比不一定等于计量数之比，与起始量有关。</p>
+                    <p><strong>(C)</strong> 此反应气体计量数不等 (2+1 ≠ 2)，总物质的量n是<strong class="text-blue-600">“变量”</strong>，总压强P也是“变量”。当P不再变化，即达平衡。</p>
+                    <p><strong>(D)</strong> 消耗SO₂和消耗O₂ 描述的<strong class="text-red-600">同为正反应</strong>速率，任何时刻都成立。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（五）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">在一个绝热（不与外界热交换）的密闭容器中进行放热反应 <code>A(g) ⇌ B(g)</code>。哪个物理量不再变化时，说明反应达到平衡？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 密度</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 压强</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 温度</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> A的质量</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 5 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（五）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C) 和 (D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p><strong>(A)(B)</strong> 反应 <code>1(g) ⇌ 1(g)</code> 气体计量数相等，总物质的量n和总压强P是<strong class="text-gray-700">“常量”</strong>。密度ρ也是“常量”。</p>
+                    <p><strong>(C)</strong> 体系<strong class="text-red-600">绝热</strong>且反应<strong class="text-red-600">放热</strong>，所以反应开始后温度T会不断升高，T是<strong class="text-blue-600">“变量”</strong>。当T不变时，即达平衡。</p>
+                    <p><strong>(D)</strong> A是反应物，其质量m(A)不断减少，是<strong class="text-blue-600">“变量”</strong>。当m(A)不变时，即达平衡。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                 </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看！下节课我们将学习更多精彩内容！</p>
+                <p class="mt-4 text-2xl text-slate-600">下节课再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- 导航控件 -->
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <!-- JS 逻辑 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

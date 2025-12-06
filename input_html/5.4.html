@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三角函数的全新世界 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .graph-canvas {
+            border-radius: 0.5rem;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+
+            #unit-circle-section .printable-content,
+            #practice-240-section .printable-content {
+                flex-direction: row;
+                width: 100%;
+                justify-content: space-evenly;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">三角函数的全新世界</h1>
+                <p class="text-2xl text-slate-600 mt-4">告别“新手村”，获取一套能处理任何角度的“神装”</p>
+                <p class="mt-8 text-xl text-cyan-600 font-semibold">"sin(-30°) 到底是多少？邻边和对边还能是负数吗？"</p>
+            </div>
+        </div>
+
+        <!-- 核心概念：单位圆定义 -->
+        <div class="section" id="unit-circle-section">
+            <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 printable-content">
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-gray-500 pb-2">核心神装：单位圆</h2>
+                    <p class="mt-6 text-lg text-slate-700 leading-relaxed">
+                        在一个半径为1的单位圆中，角α的终边与圆的交点为 P(x, y)。从今天起，三角函数与坐标牢牢绑定：
+                    </p>
+                    <div class="mt-4 space-y-2">
+                        <div class="bg-red-50 p-2 rounded-lg text-xl"><strong>cos(α) = x</strong> (横坐标)</div>
+                        <div class="bg-sky-50 p-2 rounded-lg text-xl"><strong>sin(α) = y</strong> (纵坐标)</div>
+                        <div class="bg-emerald-50 p-2 rounded-lg text-xl"><strong>tan(α) = y/x</strong> (斜率)</div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center items-center">
+                    <canvas id="unit-circle-canvas" class="graph-canvas" width="300" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 上手实战 -->
+        <div class="section" id="practice-240-section">
+            <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 printable-content">
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">上手实战：求240°函数值</h2>
+                     <ol class="list-decimal list-inside mt-4 space-y-2 text-lg">
+                        <li><strong>定位：</strong>180°+60°，终边在第三象限。</li>
+                        <li><strong>找参考：</strong>终边与x轴的锐角是 240°-180°=60°。</li>
+                        <li><strong>定大小：</strong>参考60°三角形，交点坐标绝对值为 (1/2, √3/2)。</li>
+                        <li><strong>定符号：</strong>第三象限 x, y 均为负。P点真实坐标为 (-1/2, -√3/2)。</li>
+                        <li class="font-bold mt-2"><strong>出答案：</strong>
+                            <p class="font-normal">cos(240°) = x = -1/2</p>
+                            <p class="font-normal">sin(240°) = y = -√3/2</p>
+                            <p class="font-normal">tan(240°) = y/x = √3</p>
+                        </li>
+                    </ol>
+                </div>
+                <div class="md:w-1/2 flex justify-center items-center">
+                    <canvas id="example-240-canvas" class="graph-canvas" width="300" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 规律总结 (推理) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-sky-500 pb-2">规律总结：符号看象限 (推理)</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg text-center">
+                        <p class="font-bold">Sine 看 y 坐标</p>
+                        <p class="text-base mt-2 text-slate-600">y 在坐标系上方为正<br/>(一、二象限)</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg text-center">
+                        <p class="font-bold">Cosine 看 x 坐标</p>
+                        <p class="text-base mt-2 text-slate-600">x 在坐标系右侧为正<br/>(一、四象限)</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg text-center">
+                        <p class="font-bold">Tangent 看 x, y 同号</p>
+                        <p class="text-base mt-2 text-slate-600">x, y 同号时为正<br/>(一、三象限)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 规律总结 (口诀) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-sky-500 pb-2">记忆口诀：符号看象限</h2>
+                <p class="mt-8 text-xl text-slate-700">一个简单好记的中文口诀：</p>
+                <div class="mt-4 bg-sky-50 p-6 rounded-lg text-3xl font-bold text-sky-800">
+                    一全正，二正弦，三正切，四余弦
+                </div>
+                <div class="mt-6 flex justify-center items-center">
+                    <canvas id="signs-quadrants-canvas" class="graph-canvas" width="300" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 内功心法 (商数关系) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-violet-500 pb-2">内功心法：商数关系</h2>
+                <div class="mt-12">
+                    <div class="bg-violet-50 p-8 rounded-lg inline-block">
+                        <p class="text-3xl">tan(α) = sin(α) / cos(α)</p>
+                    </div>
+                </div>
+                <p class="mt-8 text-xl text-slate-600">正切是终边斜率，即 y / x。</p>
+            </div>
+        </div>
+
+        <!-- 内功心法 (平方关系) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-violet-500 pb-2">内功心法：平方关系 (最重要)</h2>
+                <div class="mt-12">
+                     <div class="bg-violet-50 p-8 rounded-lg inline-block">
+                        <p class="text-3xl">sin²(α) + cos²(α) = 1</p>
+                    </div>
+                </div>
+                <p class="mt-8 text-xl text-slate-600">源于单位圆中的勾股定理 x² + y² = 1²。</p>
+            </div>
+        </div>
+        
+        <!-- 内功应用：知一求二 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-violet-500 pb-2">内功应用：“知一求二”</h2>
+                <div class="mt-8 text-lg bg-gray-50 p-6 rounded-lg">
+                    <p class="font-bold text-xl">经典问题：</p>
+                    <p class="mt-2">已知角α在第三象限，cos(α) = -5/13，求sin(α)和tan(α)？</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 技巧应用 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-rose-500 pb-2">技巧应用：齐次式问题</h2>
+                 <div class="mt-6 text-lg bg-rose-50 p-6 rounded-lg">
+                    <p>已知 tan(α) = 4，求 (sin(α) - 3cos(α)) / (2sin(α) + cos(α)) 的值？</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">实战练习 (1/4)</h2>
+                <div class="space-y-6 text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <p><strong>1.</strong> 角 150° 的正弦值 (sin 150°)，余弦值 (cos 150°) 和正切值 (tan 150°) 分别是？</p>
+                        <div class="mt-2 pl-4 text-base grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1">
+                            <p>A. sin(150°) = √3/2, cos(150°) = -1/2, tan(150°) = -√3</p>
+                            <p>B. sin(150°) = 1/2, cos(150°) = -√3/2, tan(150°) = -√3/3</p>
+                            <p>C. sin(150°) = -1/2, cos(150°) = √3/2, tan(150°) = -√3/3</p>
+                            <p>D. sin(150°) = 1/2, cos(150°) = √3/2, tan(150°) = √3/3</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">实战练习 (2/4)</h2>
+                <div class="space-y-6 text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <p><strong>2.</strong> 已知角 α 的终边在第四象限，且 sin(α) = -12/13，求 cos(α) 和 tan(α) 的值。</p>
+                         <div class="mt-2 pl-4 text-base grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1">
+                            <p>A. cos(α) = -12/13, tan(α) = 1</p>
+                            <p>B. cos(α) = -5/13, tan(α) = 12/5</p>
+                            <p>C. cos(α) = 5/13, tan(α) = -12/5</p>
+                            <p>D. cos(α) = 5/13, tan(α) = 12/5</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">实战练习 (3/4)</h2>
+                <div class="space-y-6 text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <p><strong>3.</strong> 如果角 θ 满足 tan(θ)>0 且 cos(θ)<0，那么角 θ 的终边在哪个象限？</p>
+                         <div class="mt-2 pl-4 text-base grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1">
+                            <p>A. 第二象限</p>
+                            <p>B. 第一象限</p>
+                            <p>C. 第三象限</p>
+                            <p>D. 第四象限</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">实战练习 (4/4)</h2>
+                <div class="space-y-6 text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <p><strong>4.</strong> 已知 tan(α) = 3，求表达式 (2sin(α)-cos(α))/(3sin(α)+2cos(α)) 的值。</p>
+                         <div class="mt-2 pl-4 text-base grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1">
+                            <p>A. 7/9</p>
+                            <p>B. 1</p>
+                            <p>C. 5/11</p>
+                            <p>D. 1/3</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题解析 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析</h2>
+                <div class="space-y-3 text-base">
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>1. 答案：B (sin=1/2, cos=-√3/2, tan=-√3/3)</strong></p>
+                        <p><strong>解析：</strong>150°在第二象限，参考角30°。根据口诀“二正弦”，只有sin为正。sin(150°)=sin(30°)=1/2, cos(150°)=-cos(30°)=-√3/2, tan(150°)=sin/cos=-1/√3=-√3/3。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>2. 答案：C (cos=5/13, tan=-12/5)</strong></p>
+                        <p><strong>解析：</strong>辅助三角形法，对边12，斜边13，则邻边为5。第四象限根据口诀“四余弦”，只有cos为正。所以cos(α)=5/13, tan(α)=-12/5。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>3. 答案：C (第三象限)</strong></p>
+                        <p><strong>解析：</strong>tan>0说明在第一或第三象限。cos<0说明在第二或第三象限。取交集，共同的象限是第三象限。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>4. 答案：C (5/11)</strong></p>
+                        <p><strong>解析：</strong>齐次式，分子分母同除cos(α)，得(2tanα-1)/(3tanα+2)。代入tan(α)=3，得(2*3-1)/(3*3+2) = 5/11。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 课堂总结 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8">课堂总结</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                    <div class="bg-sky-100 p-6 rounded-lg">
+                        <h3 class="font-bold text-2xl mb-2">神装：单位圆</h3>
+                        <p>用坐标(x,y)定义一切，处理任何角度。</p>
+                    </div>
+                    <div class="bg-amber-100 p-6 rounded-lg">
+                         <h3 class="font-bold text-2xl mb-2">规律：符号看象限</h3>
+                         <p>“一全正，二正弦，三正切，四余弦。”</p>
+                    </div>
+                    <div class="bg-violet-100 p-6 rounded-lg">
+                         <h3 class="font-bold text-2xl mb-2">内功：两大关系</h3>
+                         <p>平方关系与商数关系，解决“知一求二”。</p>
+                    </div>
+                    <div class="bg-rose-100 p-6 rounded-lg">
+                         <h3 class="font-bold text-2xl mb-2">技巧：齐次式</h3>
+                         <p>分子分母同除，强行创造已知条件。</p>
+                    </div>
+                </div>
+                 <p class="mt-12 text-2xl text-slate-700">把单位圆刻在脑中，你将所向披靡！</p>
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Helper to draw axes
+            function drawAxes(ctx) {
+                const w = ctx.canvas.width;
+                const h = ctx.canvas.height;
+                const midX = w / 2;
+                const midY = h / 2;
+
+                ctx.save();
+                ctx.clearRect(0, 0, w, h);
+                ctx.fillStyle = '#f8fafc';
+                ctx.fillRect(0, 0, w, h);
+
+                ctx.strokeStyle = '#9ca3af';
+                ctx.lineWidth = 1;
+                // X-Axis
+                ctx.beginPath();
+                ctx.moveTo(0, midY);
+                ctx.lineTo(w, midY);
+                ctx.stroke();
+                // Y-Axis
+                ctx.beginPath();
+                ctx.moveTo(midX, 0);
+                ctx.lineTo(midX, h);
+                ctx.stroke();
+                
+                ctx.fillStyle = '#6b7280';
+                ctx.font = '12px Arial';
+                ctx.fillText('y', midX + 5, 12);
+                ctx.fillText('x', w - 12, midY - 5);
+                ctx.restore();
+            }
+
+            function drawAngleLine(ctx, angleDeg, color, radius) {
+                const midX = ctx.canvas.width / 2;
+                const midY = ctx.canvas.height / 2;
+                const rad = -angleDeg * Math.PI / 180; // Correct for canvas y-down coordinate system
+                ctx.save();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(midX, midY);
+                ctx.lineTo(midX + radius * Math.cos(rad), midY + radius * Math.sin(rad));
+                ctx.stroke();
+                ctx.restore();
+                return {x: midX + radius * Math.cos(rad), y: midY + radius * Math.sin(rad)};
+            }
+
+            // Canvas 1: Unit Circle
+            const canvas1 = document.getElementById('unit-circle-canvas');
+            if(canvas1) {
+                const ctx = canvas1.getContext('2d');
+                drawAxes(ctx);
+                const midX = canvas1.width / 2;
+                const midY = canvas1.height / 2;
+                const radius = canvas1.width * 0.4;
+
+                ctx.strokeStyle = '#d1d5db';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(midX, midY, radius, 0, 2 * Math.PI);
+                ctx.stroke();
+                
+                const p = drawAngleLine(ctx, 135, '#ef4444', radius);
+
+                ctx.fillStyle = '#ef4444';
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 5, 0, 2*Math.PI);
+                ctx.fill();
+                ctx.font = 'bold 14px Arial';
+                ctx.fillText('P(x, y)', p.x - 50, p.y - 10);
+                
+                // Draw reference triangle
+                ctx.strokeStyle = '#a1a1aa';
+                ctx.setLineDash([2,2]);
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+                ctx.lineTo(p.x, midY);
+                ctx.stroke();
+                
+                ctx.font = '16px Noto Serif SC';
+                ctx.fillStyle = 'red';
+                ctx.fillText('x', p.x + (midX-p.x)/2, midY + 15);
+                ctx.fillStyle = 'blue';
+                ctx.fillText('y', p.x - 15, p.y + (midY-p.y)/2);
+                ctx.fillStyle = 'black';
+                ctx.fillText('1', midX + (p.x-midX)/2 -10, midY + (p.y-midY)/2);
+            }
+
+            // Canvas 2: Example 240 deg
+            const canvas2 = document.getElementById('example-240-canvas');
+            if(canvas2) {
+                const ctx = canvas2.getContext('2d');
+                drawAxes(ctx);
+                const midX = canvas2.width / 2;
+                const midY = canvas2.height / 2;
+                const radius = canvas2.width * 0.4;
+                
+                // Draw the unit circle
+                ctx.strokeStyle = '#d1d5db';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(midX, midY, radius, 0, 2 * Math.PI);
+                ctx.stroke();
+                
+                const p = drawAngleLine(ctx, 240, '#ef4444', radius);
+
+                // Arc
+                ctx.strokeStyle = '#f59e0b';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.arc(midX, midY, radius, 0, -240*Math.PI/180, true);
+                ctx.stroke();
+
+                // Reference triangle
+                ctx.strokeStyle = '#a1a1aa';
+                ctx.setLineDash([2,2]);
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+                ctx.lineTo(p.x, midY);
+                ctx.stroke();
+
+                ctx.fillStyle = '#ef4444';
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 5, 0, 2*Math.PI);
+                ctx.fill();
+                ctx.font = 'bold 12px Arial';
+                ctx.textAlign = 'right';
+                ctx.fillText('P(-1/2, -√3/2)', p.x - 10, p.y + 15);
+                
+                // Reference angle
+                ctx.strokeStyle = 'black';
+                ctx.textAlign = 'center'; // Reset alignment
+                ctx.beginPath();
+                ctx.arc(midX, midY, radius * 0.18, -180*Math.PI/180, -240*Math.PI/180, true);
+                ctx.stroke();
+                ctx.font = '12px Noto Serif SC';
+                ctx.fillText('60°', midX - 30, midY + 30);
+            }
+
+             // Canvas 3: Signs Quadrants
+            const canvas3 = document.getElementById('signs-quadrants-canvas');
+            if(canvas3) {
+                const ctx = canvas3.getContext('2d');
+                drawAxes(ctx);
+                const midX = canvas3.width / 2;
+                const midY = canvas3.height / 2;
+                
+                ctx.font = 'bold 24px Noto Serif SC';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+
+                // Q1
+                ctx.fillStyle = '#10b981';
+                ctx.fillText('全 (+)', midX + midX/2, midY - midY/2);
+                
+                // Q2
+                ctx.fillStyle = '#3b82f6';
+                ctx.fillText('sin (+)', midX - midX/2, midY - midY/2);
+
+                // Q3
+                ctx.fillStyle = '#f59e0b';
+                ctx.fillText('tan (+)', midX - midX/2, midY + midY/2);
+
+                // Q4
+                ctx.fillStyle = '#ef4444';
+                ctx.fillText('cos (+)', midX + midX/2, midY + midY/2);
+            }
+
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>空间向量及其运算 (优化版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.875rem;
+            line-height: 2.25rem;
+            font-weight: 700;
+            color: #1e293b;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.25rem;
+            font-size: 1.25rem;
+            line-height: 1.8;
+            overflow-x: auto;
+        }
+
+        .example-box {
+            background-color: #f8fafc;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .example-box h3 {
+             font-size: 1.25rem;
+             font-weight: 700;
+             margin-bottom: 1rem;
+        }
+
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+
+            .print-grid-layout {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 2rem !important;
+                width: 100% !important;
+                align-items: center !important;
+            }
+        }
+    </style>
+     <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                macros: {
+                    vec: ['\\overrightarrow{#1}', 1]
+                }
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">空间向量</h1>
+                <p class="text-2xl text-slate-600 mt-4">从几何直观到代数运算的“降维打击”</p>
+                <p class="mt-8 text-xl text-cyan-600 font-semibold">"平面向量怎么玩，空间向量就怎么玩！"</p>
+            </div>
+        </div>
+
+        <!-- 问题导入 -->
+        <div class="section">
+            <h2 class="section-title border-b-4 border-amber-400">问题导入：恼人的“异面直线”</h2>
+            <div class="w-full max-w-4xl mx-auto text-lg text-slate-700 space-y-4">
+                <p>思考一个经典问题：在一个正四棱锥（金字塔）中，如何求侧棱PA和底面对角线BD这两条<strong>异面直线</strong>所成的角？</p>
+                <p>按照传统几何方法，我们可能需要：</p>
+                <ul class="list-disc list-inside bg-amber-50 p-4 rounded-lg">
+                    <li>发挥空间想象力，平移其中一条直线，使它们相交。</li>
+                    <li>构造一个新的辅助三角形。</li>
+                    <li>在这个三角形中利用余弦定理解出角度。</li>
+                </ul>
+                <p class="font-bold text-center mt-6">计算繁琐，且对空间想象能力要求极高！</p>
+                <p class="font-bold text-center text-rose-600">别怕！今天学习的“空间向量”，就是解决这类问题的“终极武器”！</p>
+            </div>
+        </div>
+
+        <!-- 线性运算：加法 -->
+        <div class="section">
+            <h2 class="section-title border-b-4 border-gray-400">线性运算 (一)：向量加法</h2>
+            <div class="w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center print-grid-layout">
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <h3 class="font-bold text-xl mb-2">三角形法则 (首尾相接)</h3>
+                    <p class="text-base">
+                        想象从长方体的顶点A走到C'。我们可以直接走体对角线 $\vec{AC'}$，也可以“走折线”：先沿着 $\vec{AB}$，再走 $\vec{BC}$，最后走 $\vec{CC'}$。
+                        <br><br>
+                        路径之和等于首尾之连，最终效果完全一样。
+                    </p>
+                    <div class="formula-box text-center text-lg mt-4 p-3 border-l-4 border-blue-500">
+                        $\vec{AC'} = \vec{AB} + \vec{BC} + \vec{CC'}$
+                    </div>
+                </div>
+                <div class="flex justify-center items-center p-4">
+                    <!-- SVG for Vector Addition -->
+                    <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                        <title>向量加法示意图</title>
+                        <defs>
+                            <marker id="arrowhead-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#3b82f6"/>
+                            </marker>
+                            <marker id="arrowhead-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#ef4444"/>
+                            </marker>
+                        </defs>
+                        <!-- back faces (dashed) -->
+                        <path d="M 50 150 L 150 200 L 150 80" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="4" fill="none"/>
+                        <path d="M 50 150 L 250 150" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="4" fill="none"/>
+                        <path d="M 150 200 L 350 200" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="4" fill="none"/>
+                        
+                        <!-- front faces (solid) -->
+                        <path d="M 250 150 L 250 30 L 350 80 L 350 200" stroke="#4b5563" stroke-width="2" fill="none"/>
+                        <path d="M 50 30 L 150 80 L 350 80" stroke="#4b5563" stroke-width="2" fill="none"/>
+                        <path d="M 50 30 L 250 30" stroke="#4b5563" stroke-width="2" fill="none"/>
+                        <path d="M 50 30 L 50 150" stroke="#4b5563" stroke-width="2" fill="none"/>
+                        <path d="M 150 80 L 150 200" stroke="#4b5563" stroke-width="2" fill="none"/>
+                        
+                        <!-- Vector Path (A->B->C->C') -->
+                        <path d="M 50 30 L 250 30" stroke="#3b82f6" stroke-width="3" marker-end="url(#arrowhead-blue)"/>
+                        <path d="M 250 30 L 350 80" stroke="#3b82f6" stroke-width="3" marker-end="url(#arrowhead-blue)"/>
+                        <path d="M 350 80 L 350 200" stroke="#3b82f6" stroke-width="3" marker-end="url(#arrowhead-blue)"/>
+                        
+                        <!-- Resultant Vector (A->C') -->
+                        <path d="M 50 30 L 350 200" stroke="#ef4444" stroke-width="3.5" marker-end="url(#arrowhead-red)"/>
+                        
+                        <!-- Labels -->
+                        <text x="40" y="25" font-size="16" fill="#1e293b">A</text>
+                        <text x="255" y="25" font-size="16" fill="#1e293b">B</text>
+                        <text x="355" y="75" font-size="16" fill="#1e293b">C</text>
+                        <text x="355" y="215" font-size="16" fill="#1e293b">C'</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 线性运算：减法 -->
+        <div class="section">
+            <h2 class="section-title border-b-4 border-gray-400">线性运算 (二)：向量减法</h2>
+            <div class="w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center print-grid-layout">
+                 <div class="flex justify-center items-center p-4">
+                    <!-- SVG for Vector Subtraction -->
+                    <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                        <title>向量减法示意图</title>
+                        <defs>
+                            <marker id="arrowhead-blue-sub" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#3b82f6"/>
+                            </marker>
+                            <marker id="arrowhead-red-sub" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#ef4444"/>
+                            </marker>
+                        </defs>
+                        <!-- Cuboid structure (same as before) -->
+                        <path d="M 50 150 L 150 200 L 150 80" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="4" fill="none"/>
+                        <path d="M 50 150 L 250 150" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="4" fill="none"/>
+                        <path d="M 150 200 L 350 200" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="4" fill="none"/>
+                        <path d="M 250 30 L 350 80 L 350 200" stroke="#4b5563" stroke-width="2" fill="none"/>
+                        <path d="M 50 30 L 150 80 L 350 80" stroke="#4b5563" stroke-width="2" fill="none"/>
+                        <path d="M 50 30 L 250 30" stroke="#4b5563" stroke-width="2" fill="none"/>
+                        <path d="M 50 30 L 50 150" stroke="#4b5563" stroke-width="2" fill="none"/>
+                        <path d="M 150 80 L 150 200" stroke="#4b5563" stroke-width="2" fill="none"/>
+
+                        <!-- Original Vectors from A -->
+                        <path d="M 50 30 L 350 200" stroke="#3b82f6" stroke-width="3" marker-end="url(#arrowhead-blue-sub)"/>
+                        <path d="M 50 30 L 250 150" stroke="#3b82f6" stroke-width="3" marker-end="url(#arrowhead-blue-sub)"/>
+                        
+                        <!-- Resultant Vector (B'->C') -->
+                        <path d="M 250 150 L 350 200" stroke="#ef4444" stroke-width="3.5" marker-end="url(#arrowhead-red-sub)"/>
+
+                        <!-- Labels -->
+                        <text x="40" y="25" font-size="16" fill="#1e293b">A</text>
+                        <text x="245" y="165" font-size="16" fill="#1e293b">B'</text>
+                        <text x="355" y="215" font-size="16" fill="#1e293b">C'</text>
+                        <text x="190" y="100" font-size="16" fill="#3b82f6" style="font-style:italic;">$\vec{AC'}$</text>
+                        <text x="140" y="110" font-size="16" fill="#3b82f6" style="font-style:italic;">$\vec{AB'}$</text>
+                        <text x="290" y="190" font-size="16" fill="#ef4444" style="font-style:italic;">$\vec{B'C'}$</text>
+                    </svg>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 md:order-first">
+                    <h3 class="font-bold text-xl mb-2">几何减法 (共起点，连终点)</h3>
+                    <p class="text-base">
+                        从同一起点 A 出发，有向量 $\vec{AC'}$ 和 $\vec{AB'}$。
+                        <br><br>
+                        它们的差是连接它们终点的向量，并且箭头<strong>指向被减向量</strong>($\vec{AC'}$)的终点。
+                    </p>
+                    <div class="formula-box text-center text-lg mt-4 p-3 border-l-4 border-blue-500">
+                         $\vec{AC'} - \vec{AB'} = \vec{B'C'}$
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 空间向量基本定理 -->
+        <div class="section">
+            <h2 class="section-title border-b-4 border-emerald-500">空间向量基本定理</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <p class="text-lg text-slate-700">如果三个向量 $\vec{a}, \vec{b}, \vec{c}$ <strong>不共面</strong>，那么空间中任意一个向量 $\vec{p}$ 都可以被唯一地表示为这三个向量的线性组合。不共面的 $\vec{a}, \vec{b}, \vec{c}$ 称为空间的一组<strong>基底</strong>。</p>
+                <div class="formula-box text-center">
+                    $\vec{p} = x\vec{a} + y\vec{b} + z\vec{c}$
+                </div>
+                 <p class="mt-6 text-center text-slate-600">这就像是给空间里的每一个向量都发了一个唯一的“身份证号” (x, y, z)。</p>
+            </div>
+        </div>
+
+        <!-- 基本定理应用：例1 -->
+        <div class="section">
+            <h2 class="section-title border-b-4 border-emerald-500">基本定理应用：例1</h2>
+            <div class="w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center print-grid-layout">
+                <div class="example-box border-l-4 border-emerald-500">
+                    <h3 class="text-emerald-800">例1：分解向量</h3>
+                    <p>在四面体O-ABC中, $\vec{OA}=\vec{a}, \vec{OB}=\vec{b}, \vec{OC}=\vec{c}$。M是BC中点, P在AM上且 AP=2PM。请用基底 $\vec{a}, \vec{b}, \vec{c}$ 表示向量 $\vec{OP}$。</p>
+                </div>
+                <div class="flex justify-center items-center p-4">
+                    <!-- SVG for Tetrahedron -->
+                    <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                        <title>四面体向量分解示意图</title>
+                        <defs>
+                            <marker id="arrow-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#3b82f6"/></marker>
+                            <marker id="arrow-b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#16a34a"/></marker>
+                            <marker id="arrow-c" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#f59e0b"/></marker>
+                            <marker id="arrow-p" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ef4444"/></marker>
+                        </defs>
+                        <!-- Base triangle -->
+                        <path d="M 50 250 L 150 280 L 350 220 Z" stroke="#9ca3af" stroke-width="1.5" fill="rgba(200,200,200,0.1)"/>
+                        <!-- Edges from apex O -->
+                        <path d="M 200 50 L 50 250" stroke="#4b5563" stroke-width="1.5" />
+                        <path d="M 200 50 L 150 280" stroke="#4b5563" stroke-width="1.5" />
+                        <path d="M 200 50 L 350 220" stroke="#4b5563" stroke-width="1.5" />
+                        <!-- Median AM -->
+                        <path d="M 50 250 L 250 250" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="3,3" />
+                        
+                        <!-- Basis Vectors -->
+                        <path d="M 200 50 L 50 250" stroke="#3b82f6" stroke-width="2.5" marker-end="url(#arrow-a)"/>
+                        <path d="M 200 50 L 150 280" stroke="#16a34a" stroke-width="2.5" marker-end="url(#arrow-b)"/>
+                        <path d="M 200 50 L 350 220" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow-c)"/>
+
+                        <!-- Resultant Vector OP -->
+                        <path d="M 200 50 L 183 250" stroke="#ef4444" stroke-width="3" marker-end="url(#arrow-p)"/>
+
+                        <!-- Points -->
+                        <circle cx="200" cy="50" r="4" fill="#1e293b"/>
+                        <circle cx="50" cy="250" r="4" fill="#1e293b"/>
+                        <circle cx="150" cy="280" r="4" fill="#1e293b"/>
+                        <circle cx="350" cy="220" r="4" fill="#1e293b"/>
+                        <circle cx="250" cy="250" r="4" fill="#1e293b"/>
+                        <circle cx="183" cy="250" r="4" fill="#ef4444"/>
+
+                        <!-- Labels -->
+                        <text x="205" y="45" font-size="18" fill="#1e293b">O</text>
+                        <text x="35" y="255" font-size="18" fill="#1e293b">A</text>
+                        <text x="145" y="295" font-size="18" fill="#1e293b">B</text>
+                        <text x="355" y="225" font-size="18" fill="#1e293b">C</text>
+                        <text x="255" y="245" font-size="18" fill="#1e293b">M</text>
+                        <text x="175" y="268" font-size="18" fill="#ef4444">P</text>
+                        <text x="110" y="140" font-size="16" fill="#3b82f6" style="font-style:italic;">$\vec{a}$</text>
+                        <text x="160" y="160" font-size="16" fill="#16a34a" style="font-style:italic;">$\vec{b}$</text>
+                        <text x="280" y="130" font-size="16" fill="#f59e0b" style="font-style:italic;">$\vec{c}$</text>
+                        <text x="200" y="160" font-size="16" fill="#ef4444" style="font-style:italic;">$\vec{OP}$</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 数量积 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="section-title border-b-4 border-violet-500">数量积：解决角度和长度的“核武器”</h2>
+                <div class="formula-box text-center text-2xl border-l-4 border-violet-500">
+                    $\vec{a} \cdot \vec{b} = |\vec{a}| |\vec{b}| \cos(\theta)$
+                </div>
+                <p class="text-center text-lg text-slate-700">这个公式有两个超级强大的用途：</p>
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                     <div class="bg-violet-50 p-6 rounded-lg text-center">
+                         <h3 class="font-bold text-xl mb-2">求角度</h3>
+                         <p class="text-lg">变形即可得到夹角余弦公式：</p>
+                         <p class="text-xl mt-2 font-mono">$\cos(\theta) = \frac{\vec{a} \cdot \vec{b}}{|\vec{a}| |\vec{b}|}$</p>
+                     </div>
+                      <div class="bg-violet-50 p-6 rounded-lg text-center">
+                         <h3 class="font-bold text-xl mb-2">求长度 (模)</h3>
+                         <p class="text-lg">向量自己和自己点乘：</p>
+                         <p class="text-xl mt-2 font-mono">$|\vec{a}|^2 = \vec{a} \cdot \vec{a}$</p>
+                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 综合应用 -->
+        <div class="section">
+            <h2 class="section-title border-b-4 border-rose-500">综合应用：向量法三部曲</h2>
+            <div class="w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center print-grid-layout">
+                <div class="example-box border-l-4 border-rose-500">
+                    <h3 class="text-rose-800">例2：再战“金字塔”</h3>
+                    <p>正四棱锥P-ABCD, 底面边长2, 侧棱长3。求异面直线PA和BD所成角的余弦值。</p>
+                </div>
+                <div class="flex justify-center items-center p-4">
+                    <!-- SVG for Pyramid -->
+                    <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                        <title>正四棱锥示意图</title>
+                         <defs>
+                            <marker id="arrowhead-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#16a34a"/>
+                            </marker>
+                         </defs>
+                        <!-- Base (dashed lines are hidden) -->
+                        <polygon points="50,250 150,280 350,220" fill="rgba(150,150,150,0.1)" />
+                        <path d="M 50,250 L 250,190" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="4" fill="none"/>
+
+                        <!-- Side Edges -->
+                        <path d="M 200,50 L 50,250" stroke="#4b5563" stroke-width="2" fill="none"/>
+                        <path d="M 200,50 L 150,280" stroke="#4b5563" stroke-width="2" fill="none"/>
+                        <path d="M 200,50 L 350,220" stroke="#4b5563" stroke-width="2" fill="none"/>
+                        <path d="M 200,50 L 250,190" stroke="#4b5563" stroke-width="2" fill="none"/>
+
+                        <!-- Base (solid lines) -->
+                        <path d="M 50,250 L 150,280 L 350,220 L 250,190" stroke="#4b5563" stroke-width="2" fill="none" opacity="0.3"/>
+                        <path d="M 50,250 L 150,280" stroke="#4b5563" stroke-width="2"/>
+                        <path d="M 150,280 L 350,220" stroke="#4b5563" stroke-width="2"/>
+
+                        <!-- Highlighted Vectors -->
+                        <path d="M 200,50 L 50,250" stroke="#ef4444" stroke-width="3.5" marker-start="url(#arrowhead-green)"/>
+                        <path d="M 150,280 L 250,190" stroke="#3b82f6" stroke-width="3.5" marker-end="url(#arrowhead-green)"/>
+                        
+                        <!-- Labels -->
+                        <text x="195" y="45" font-size="18" fill="#1e293b">P</text>
+                        <text x="35" y="255" font-size="18" fill="#1e293b">A</text>
+                        <text x="145" y="295" font-size="18" fill="#1e293b">B</text>
+                        <text x="355" y="225" font-size="18" fill="#1e293b">C</text>
+                        <text x="255" y="185" font-size="18" fill="#1e293b">D</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="section-title">随堂练习 (一)</h2>
+                <div class="space-y-4 text-base md:text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg text-2xl"><strong>1.</strong> 在空间中，表示任意向量最少需要几个不共面的基底向量？<br/><br/>(A) 1个 <br/>(B) 2个 <br/>(C) 3个 <br/>(D) 4个</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="section-title">随堂练习 (二)</h2>
+                <div class="space-y-4 text-base md:text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg text-2xl"><strong>2.</strong> 在正方体 ABCD-A'B'C'D' 中, $\vec{AC} + \vec{AA'}$ 的结果是？<br/><br/>(A) $\vec{AD'}$ <br/>(B) $\vec{AC'}$ <br/>(C) $\vec{AB'}$</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="section-title">随堂练习 (三)</h2>
+                <div class="space-y-4 text-base md:text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg text-2xl"><strong>3.</strong> 已知 $|\vec{a}|=2, |\vec{b}|=4$, 夹角为60°, 则 $\vec{a} \cdot \vec{b}$ 的值为？<br/><br/>(A) 2 <br/>(B) 4 <br/>(C) 8 <br/>(D) $4\sqrt{3}$</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="section-title">随堂练习 (四)</h2>
+                <div class="space-y-4 text-base md:text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg text-2xl"><strong>4.</strong> 若非零向量 $\vec{a}, \vec{b}$ 满足 $\vec{a} \cdot \vec{b} = 0$, 则两向量关系为？<br/><br/>(A) 平行 <br/>(B) 共线 <br/>(C) 相等 <br/>(D) 垂直</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题答案 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="section-title border-b-4 border-emerald-500">练习题答案与解析</h2>
+                <div class="space-y-4 text-base">
+                    <div class="bg-emerald-50 p-4 rounded-lg">
+                        <p><strong>1. 答案：C</strong><br><strong>解析：</strong>根据空间向量基本定理，需要3个不共面的向量作为基底来表示空间中的任意向量。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-4 rounded-lg">
+                        <p><strong>2. 答案：B</strong><br><strong>解析：</strong>$\vec{AC} + \vec{AA'} = \vec{AC} + \vec{CC'}$ (因为 $\vec{AA'}=\vec{CC'}$)。根据三角形法则，结果为 $\vec{AC'}$。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-4 rounded-lg">
+                        <p><strong>3. 答案：B</strong><br><strong>解析：</strong>$\vec{a} \cdot \vec{b} = |\vec{a}| |\vec{b}| \cos(60^\circ) = 2 \cdot 4 \cdot \frac{1}{2} = 4$。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-4 rounded-lg">
+                        <p><strong>4. 答案：D</strong><br><strong>解析：</strong>对于非零向量，数量积为零是它们相互垂直的充要条件。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 总结与展望 -->
+        <div class="section">
+             <h2 class="section-title border-b-4 border-cyan-400">总结与展望</h2>
+             <div class="w-full max-w-4xl mx-auto">
+                <p class="text-xl font-bold text-center mb-6">向量法解决立体几何问题的“三步走”战略：</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                    <div class="bg-cyan-50 p-6 rounded-lg">
+                        <div class="text-4xl mb-2">①</div>
+                        <h3 class="text-xl font-bold">选基底</h3>
+                        <p>建立你的“导航系统”</p>
+                    </div>
+                    <div class="bg-cyan-50 p-6 rounded-lg">
+                        <div class="text-4xl mb-2">②</div>
+                        <h3 class="text-xl font-bold">做翻译</h3>
+                        <p>用基底语言表达目标向量</p>
+                    </div>
+                    <div class="bg-cyan-50 p-6 rounded-lg">
+                        <div class="text-4xl mb-2">③</div>
+                        <h3 class="text-xl font-bold">搞运算</h3>
+                        <p>专心进行代数计算</p>
+                    </div>
+                </div>
+                <div class="mt-8 bg-slate-100 p-4 rounded-lg text-center">
+                    <p class="font-bold text-lg">展望：</p>
+                    <p>如果基底本身就相互垂直（像墙角一样），计算会不会更简单？</p>
+                    <p class="text-slate-600 mt-2">没错！这正是我们下一节课的内容——<strong>空间直角坐标系</strong>，那才是真正的“降维打击”！</p>
+                </div>
+             </div>
+        </div>
+
+    </div>
+</body>
+</html>
+

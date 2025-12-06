@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 标题使用了我之前生成的内容的标题 -->
+    <title>沉淀溶解平衡（简化版）</title>
+    <!-- 样式和字体库完全来自您上传的 "新建 文本文档.html" -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 (来自您上传的文件) */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code, .mono-highlight {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        
+        /* 表格样式 (来自您上传的文件) */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+        }
+        .styled-table th, .styled-table td {
+            border: 1px solid #cbd5e1;
+            padding: 0.75rem 1rem;
+            text-align: left; /* 改为左对齐更易读 */
+        }
+        .styled-table thead {
+            background-color: #f8fafc;
+        }
+        .styled-table th {
+            font-weight: 700;
+            color: #334155;
+        }
+        .styled-table tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+        .styled-table tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+        
+        /* 练习题选项 (来自您上传的文件) */
+        .quiz-option {
+            margin-top: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+            background-color: #f8fafc; /* 使用稍暗的背景 */
+            border: 1px solid #e2e8f0;
+            font-size: 1.1rem;
+        }
+        .quiz-option strong {
+            color: #4338ca;
+            margin-right: 0.5rem;
+        }
+
+        /* 打印专用样式 (来自您上传的文件) */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- Slide 1: 封面页 (内容来自我的生成) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">水溶液中的离子反应与平衡</h1>
+                <p class="text-2xl text-slate-600 mt-2">（五）沉淀溶解平衡</p>
+            </div>
+        </div>
+        
+        <!-- Slide 2: 课程介绍 (内容来自我的生成) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>别担心，这节课很简单！</h2>
+                <p class="mt-8 text-xl text-slate-700">“沉淀溶解平衡”是很多同学的知识盲区。</p>
+                <div class="mt-8 bg-green-50 border border-green-200 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">这节课，我们就用最简单的方式，一步一步彻底搞懂它！</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: 沉淀溶解平衡的基本概念 (内容来自我的生成) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>什么是沉淀溶解平衡？</h2>
+                 <ul class="mt-8 space-y-4 text-xl text-slate-700 list-none">
+                    <li class="flex items-start">
+                        <span class="text-indigo-500 mr-3 mt-1">▶</span>
+                        <div><strong>想象一下：</strong>你往水里加入难溶的盐（比如 <code class="mono-highlight">AgCl</code>），它开始<strong class="text-indigo-600">溶解</strong>。</div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-indigo-500 mr-3 mt-1">▶</span>
+                        <div><strong>同时：</strong>溶液中的离子（<code class="mono-highlight">Ag⁺</code>, <code class="mono-highlight">Cl⁻</code>）越来越多，它们会重新撞在一起，变回<strong class="text-red-600">沉淀</strong>。</div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-indigo-500 mr-3 mt-1">▶</span>
+                        <div><strong>最后：</strong>当 <strong class="text-indigo-600">[溶解速率]</strong> = <strong class="text-red-600">[沉淀速率]</strong> 时，溶液满了（饱和了）。</div>
+                    </li>
+                 </ul>
+                <div class="mt-8 bg-green-50 border border-green-200 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700"><strong>结论：</strong>这就达到了“沉淀溶解平衡”！它是一种<strong class="text-green-700">动态平衡</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: 理解“动态平衡” (内容来自我的生成) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>理解“动态平衡”</h2>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800 text-xl">v(溶解) > v(沉淀)</h3>
+                        <p class="mt-3 text-slate-700">溶解的“力”大于沉淀的“力”。</p>
+                        <p class="mt-2 text-slate-700"><strong>结果：</strong>沉淀在净减少，溶液还不饱和。</p>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-green-800 text-xl">v(溶解) = v(沉淀)</h3>
+                        <p class="mt-3 text-slate-700">两个“力”刚好相等。</p>
+                        <p class="mt-2 text-slate-700"><strong>结果：</strong>沉淀质量不变，溶液达到饱和，<strong class="text-green-700">这就是平衡！</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 5: 平衡方程式 (内容来自我的生成) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>如何书写平衡方程式？</h2>
+                 <div class="mt-8 bg-blue-100 text-blue-800 p-6 rounded-lg text-lg text-center font-semibold">
+                    <p>以 AgCl 为例，我们把溶解和电离合并为一步：</p>
+                    <p class="mono mt-2 text-xl">AgCl(s) ⇌ Ag⁺(aq) + Cl⁻(aq)</p>
+                </div>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-gray-800 text-xl">重点：</h3>
+                        <ul class="mt-3 text-slate-700 list-disc list-inside">
+                            <li><code class="mono-highlight">(s)</code> 代表固体沉淀。</li>
+                            <li><code class="mono-highlight">(aq)</code> 代表溶液中的离子。</li>
+                            <li><code class="mono-highlight">⇌</code> 是可逆符号。</li>
+                        </ul>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-red-800 text-xl">易错点：</h3>
+                        <p class="mt-3 text-slate-700">AgCl 虽然难溶，但溶解的部分是<strong class="text-red-600">完全电离</strong>的，所以它是<strong class="text-red-600">强电解质</strong>！</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 6: 影响因素 (一) (内容来自我的生成) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>影响平衡的因素 (一)</h2>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-red-700 text-xl">1. 温度 (T)</h3>
+                        <p class="mt-3 text-slate-700">溶解过程通常是<strong class="text-red-600">吸热</strong>的。</p>
+                        <p class="mt-2 text-slate-700"><strong>操作：</strong><strong class="text-red-600">升高温度 (T↑)</strong></p>
+                        <p class="mt-2 text-slate-700"><strong>移动：</strong>平衡向吸热（溶解）方向 (正向 →) 移动。</p>
+                        <p class="mt-2 text-slate-700"><strong>结论：</strong>溶解度 (S) 增大。</p>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-700 text-xl">2. 同离子效应 (重点)</h3>
+                        <p class="mt-3 text-slate-700"><strong>平衡：</strong><code class="mono-highlight">AgCl(s) ⇌ Ag⁺ + Cl⁻</code></p>
+                        <p class="mt-2 text-slate-700"><strong>操作：</strong>加入 <code class="mono-highlight">NaCl</code></p>
+                        <p class="mt-2 text-slate-700"><strong>发生：</strong><code class="mono-highlight">[Cl⁻]</code> 增大 ↑</p>
+                        <p class="mt-2 text-slate-700"><strong>移动：</strong>平衡<strong class="text-red-600">逆向 (←)</strong> 移动。</p>
+                        <p class="mt-2 text-slate-700"><strong>结论：</strong>溶解度 (S) 减小。</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: 影响因素 (二) (内容来自我的生成) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>影响平衡的因素 (二)</h2>
+                 <p class="mt-8 text-xl text-slate-700">核心：通过反应“吃掉”某个离子，使其浓度降低。</p>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-lg">
+                    <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                        <h3 class="font-bold text-gray-800 text-lg">方法一：加酸</h3>
+                        <p class="mt-2 text-slate-700"><code class="mono-highlight">CaCO₃(s) ⇌ Ca²⁺ + CO₃²⁻</code></p>
+                        <p class="mt-2 text-slate-700">加入 <code class="mono-highlight">HCl</code>，<code class="mono-highlight">H⁺</code> “吃掉” <code class="mono-highlight">CO₃²⁻</code>，使其浓度 <strong class="text-red-600">↓</strong>，平衡<strong class="text-blue-600">正向 (→)</strong> 移动，<strong class="text-blue-600">沉淀溶解</strong>。</p>
+                    </div>
+                    <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                        <h3 class="font-bold text-gray-800 text-lg">方法二：加盐</h3>
+                        <p class="mt-2 text-slate-700"><code class="mono-highlight">Mg(OH)₂(s) ⇌ Mg²⁺ + 2OH⁻</code></p>
+                        <p class="mt-2 text-slate-700">加入 <code class="mono-highlight">NH₄Cl</code>，<code class="mono-highlight">NH₄⁺</code> “吃掉” <code class="mono-highlight">OH⁻</code>，使其浓度 <strong class="text-red-600">↓</strong>，平衡<strong class="text-blue-600">正向 (→)</strong> 移动，<strong class="text-blue-600">沉淀溶解</strong>。</p>
+                    </div>
+                     <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                        <h3 class="font-bold text-gray-800 text-lg">方法三：氧化还原</h3>
+                        <p class="mt-2 text-slate-700"><code class="mono-highlight">CuS(s) ⇌ Cu²⁺ + S²⁻</code></p>
+                        <p class="mt-2 text-slate-700">加入 <code class="mono-highlight">HNO₃</code>，<code class="mono-highlight">NO₃⁻</code> 氧化“吃掉” <code class="mono-highlight">S²⁻</code>，使其浓度 <strong class="text-red-600">↓</strong>，平衡<strong class="text-blue-600">正向 (→)</strong> 移动，<strong class="text-blue-600">沉淀溶解</strong>。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 8: Ksp 表达式 (内容来自我的生成) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>核心概念：溶度积 (Ksp)</h2>
+                 <p class="mt-8 text-xl text-slate-700">Ksp 本质上就是平衡常数 (K)。<strong class="text-red-600">规则：固体 (s) 不写入！</strong></p>
+                 <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>平衡 (Equilibrium)</th>
+                            <th>Ksp 表达式 (Expression)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code class="mono-highlight">AgCl(s) ⇌ Ag⁺ + Cl⁻</code></td>
+                            <td><code class="mono-highlight">Ksp = [Ag⁺] · [Cl⁻]</code></td>
+                        </tr>
+                        <tr>
+                            <td><code class="mono-highlight">Fe(OH)₃(s) ⇌ Fe³⁺ + 3OH⁻</code></td>
+                            <td><code class="mono-highlight">Ksp = [Fe³⁺] · [OH⁻]³</code></td>
+                        </tr>
+                        <tr>
+                            <td><code class="mono-highlight">Ca₃(PO₄)₂(s) ⇌ 3Ca²⁺ + 2PO₄³⁻</code></td>
+                            <td><code class="mono-highlight">Ksp = [Ca²⁺]³ · [PO₄³⁻]²</code></td>
+                        </tr>
+                    </tbody>
+                 </table>
+            </div>
+        </div>
+
+        <!-- Slide 12: 应用 (沉淀的转化) (内容来自我的生成) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>核心应用：沉淀的转化</h2>
+                <div class="mt-8 bg-purple-50 border border-purple-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-purple-800 text-xl">原理：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">沉淀总是自发地向<strong class="text-red-600">更难溶</strong>（溶解度 S 更小）的方向转化。</p>
+                </div>
+                 <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">这是一个“抢夺”的故事：</h3>
+                    <p class="mt-3 text-lg text-slate-700">已知 S(AgCl) > S(AgI) (AgI 更难溶)</p>
+                    <p class="mono mt-2 text-lg text-center"><code class="mono-highlight">AgCl(s, 白色) + I⁻(aq) → AgI(s, 黄色) + Cl⁻(aq)</code></p>
+                    <p class="mt-3 text-lg text-slate-700"><strong>解释：</strong><code class="mono-highlight">I⁻</code> 对 <code class="mono-highlight">Ag⁺</code> 的“吸引力”比 <code class="mono-highlight">Cl⁻</code> 更强（生成的 <code class="mono-highlight">AgI</code> 更难溶），所以 <code class="mono-highlight">I⁻</code> 把 <code class="mono-highlight">Ag⁺</code> “抢”过来了。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 13: 沉淀转化的应用 (内容来自我的生成) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>沉淀转化的实际应用</h2>
+                 <div class="mt-8 space-y-4 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                        <strong class="font-bold text-blue-700 text-xl">1. 锅炉除垢：</strong>
+                        <p class="mt-2 text-slate-700"><code class="mono-highlight">CaSO₄(s)</code> (难溶于酸) + <code class="mono-highlight">Na₂CO₃(aq)</code> → <code class="mono-highlight">CaCO₃(s)</code> (易溶于酸)</p>
+                        <p class="mt-1 text-slate-700">先用纯碱浸泡转化，再用盐酸溶解 <code class="mono-highlight">CaCO₃</code>。</p>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 p-4 rounded-lg">
+                        <strong class="font-bold text-green-700 text-xl">2. 预防龋齿：</strong>
+                        <p class="mt-2 text-slate-700"><code>牙齿(羟基磷灰石)</code> + <code class="mono-highlight">F⁻</code> (含氟牙膏) → <code>氟磷灰石(更难溶)</code></p>
+                        <p class="mt-1 text-slate-700">转化为更难溶、更耐酸腐蚀的氟磷灰石。</p>
+                    </div>
+                    <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                        <strong class="font-bold text-gray-700 text-xl">3. 污水除杂：</strong>
+                        <p class="mt-2 text-slate-700">调节pH，使 <code class="mono-highlight">Fe³⁺</code> 转化为 <code class="mono-highlight">Fe(OH)₃</code> 沉淀。或加入 <code class="mono-highlight">S²⁻</code> 除去 <code class="mono-highlight">Cu²⁺</code> (生成 <code class="mono-highlight">CuS</code>)。</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: 随堂练习 1 (内容来自我的生成) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（一）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">沉淀溶解平衡的建立是指？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="quiz-option"><strong>(A)</strong> 沉淀和溶解完全停止</p>
+                        <p class="quiz-option"><strong>(B)</strong> 沉淀速率 = 溶解速率</p>
+                        <p class="quiz-option"><strong>(C)</strong> 溶液中离子浓度为 0</p>
+                        <p class="quiz-option"><strong>(D)</strong> 固体全部溶解</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: 练习题 1 解析 (内容来自我的生成) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习（一）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>沉淀溶解平衡是一种<strong class="text-red-600">动态平衡</strong>，其根本标志是 <code class="mono-highlight">v(溶解) = v(沉淀)</code> 且均不为 0。此时固体质量不变，溶液达到饱和。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: 随堂练习 2 (内容来自我的生成) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（二）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700"><code class="mono-highlight">Mg(OH)₂(s) ⇌ Mg²⁺(aq) + 2OH⁻(aq)</code> 的 Ksp 表达式是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="quiz-option mono"><strong>(A)</strong> [Mg²⁺][OH⁻]</p>
+                        <p class="quiz-option mono"><strong>(B)</strong> [Mg²⁺][OH⁻]²</p>
+                        <p class="quiz-option mono"><strong>(C)</strong> [Mg²⁺][OH⁻]² / [Mg(OH)₂]</p>
+                        <p class="quiz-option mono"><strong>(D)</strong> [Mg²⁺] + [OH⁻]²</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: 练习题 2 解析 (内容来自我的生成) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习（二）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>Ksp 是平衡时<strong class="text-blue-600">离子浓度</strong>的<strong class="text-blue-600">幂之积</strong>。<br/>1. <strong class="text-red-600">固体 <code class="mono-highlight">Mg(OH)₂(s)</code> 不写入</strong> 表达式。<br/>2. <code class="mono-highlight">OH⁻</code> 的<strong class="text-red-600">系数 2</strong> 变为<strong class="text-red-600">指数 2</strong>。<br/>因此 Ksp = [Mg²⁺][OH⁻]²。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: 随堂练习 3 (内容来自我的生成) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（三）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">向 <code class="mono-highlight">AgCl</code> 的饱和溶液中加入少量 <code class="mono-highlight">NaCl</code> 固体，会发生什么？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="quiz-option"><strong>(A)</strong> AgCl 溶解度增大，Ksp 增大</p>
+                        <p class="quiz-option"><strong>(B)</strong> AgCl 溶解度减小，Ksp 减小</p>
+                        <p class="quiz-option"><strong>(C)</strong> AgCl 溶解度增大，Ksp 不变</p>
+                        <p class="quiz-option"><strong>(D)</strong> AgCl 溶解度减小，Ksp 不变</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: 练习题 3 解析 (内容来自我的生成) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习（三）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>1. Ksp 是平衡常数，<strong class="text-red-600">只受温度影响</strong>。温度不变，<strong class="text-red-600">Ksp 不变</strong>。<br/>2. 加入 <code class="mono-highlight">NaCl</code> 导致 <code class="mono-highlight">[Cl⁻]</code> 增大，发生<strong class="text-blue-600">同离子效应</strong>，平衡 <code class="mono-highlight">AgCl(s) ⇌ Ag⁺ + Cl⁻</code> <strong class="text-blue-600">逆向移动 (←)</strong>，使 AgCl 的<strong class="text-red-600">溶解度 (S) 减小</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: 随堂练习 4 (内容来自我的生成) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（四）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">下列哪种操作<strong class="text-red-600">不能</strong>使 <code class="mono-highlight">CaCO₃</code> 沉淀溶解？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="quiz-option"><strong>(A)</strong> 加入 <code class="mono-highlight">HCl</code> 溶液</p>
+                        <p class="quiz-option"><strong>(B)</strong> 加入 <code class="mono-highlight">CH₃COOH</code> 溶液</p>
+                        <p class="quiz-option"><strong>(C)</strong> 加入 <code class="mono-highlight">Na₂CO₃</code> 溶液</p>
+                        <p class="quiz-option"><strong>(D)</strong> 通入 <code class="mono-highlight">CO₂</code> 气体 (并加水)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 21: 练习题 4 解析 (内容来自我的生成) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习（四）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>要使沉淀溶解，必须使平衡 <code class="mono-highlight">CaCO₃(s) ⇌ Ca²⁺ + CO₃²⁻</code> <strong>正向移动 (→)</strong>，即<strong class="text-red-600">降低</strong>离子浓度。</p>
+                    <p><strong>(A)(B)</strong> <code class="mono-highlight">H⁺</code> (来自HCl或醋酸) "吃掉" <code class="mono-highlight">CO₃²⁻</code>，<strong class="text-blue-600">溶解</strong>。</p>
+                    <p><strong>(C)</strong> 加入 <code class="mono-highlight">Na₂CO₃</code>，<code class="mono-highlight">[CO₃²⁻]</code> 增大 (同离子效应)，平衡逆移，<strong class="text-red-600">更不溶</strong>。</p>
+                    <p><strong>(D)</strong> 通入 CO₂，<code class="mono-highlight">CO₂ + H₂O + CaCO₃ → Ca(HCO₃)₂</code> (可溶)，<strong class="text-blue-600">溶解</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 22: 随堂练习 5 (内容来自我的生成) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（五）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">已知 Ksp(AgCl) > Ksp(AgI)。向 AgCl 悬浊液中滴加 KI 溶液，会观察到？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="quiz-option"><strong>(A)</strong> 沉淀溶解</p>
+                        <p class="quiz-option"><strong>(B)</strong> 沉淀由白色变为黄色</p>
+                        <p class="quiz-option"><strong>(C)</strong> 沉淀由黄色变为白色</p>
+                        <p class="quiz-option"><strong>(D)</strong> 没有明显变化</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 23: 练习题 5 解析 (内容来自我的生成) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习（五）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>这是<strong class="text-red-600">沉淀的转化</strong>。AgCl 和 AgI 是同类型沉淀，Ksp(AgCl) > Ksp(AgI)，说明 <strong>S(AgCl) > S(AgI)</strong> (AgI 更难溶)。</p>
+                    <p>沉淀会自发向<strong class="text-red-600">更难溶</strong>的方向转化，即 <code class="mono-highlight">AgCl(s, 白) + I⁻ → AgI(s, 黄) + Cl⁻</code>。</p>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Slide 24: 结束页 (内容来自我的生成) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                 </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">课程结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看！你已经掌握了沉淀溶解平衡！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- 导航控件 (来自您上传的文件) -->
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <!-- JS 逻辑 (来自您上传的文件) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>
+```

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>化学反应与热能</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-orange-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
+                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
+                 </svg>
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">化学反应与热能</h1>
+                <p class="text-2xl text-slate-600 mt-2">—— 感受反应中的能量变化</p>
+            </div>
+        </div>
+
+        <!-- 课程说明 (已删除) -->
+        
+        <!-- 实验探究：放热反应 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>实验探究：镁与盐酸反应</h2>
+                 <p class="mt-8 text-xl text-slate-700">将镁条放入稀盐酸中，观察现象并测量温度变化。</p>
+                 <div class="mt-8 bg-orange-50 border border-orange-200 p-8 rounded-lg">
+                    <h3 class="font-bold text-orange-800 text-xl mb-4">实验现象 (陆海空)：</h3>
+                     <ul class="list-disc list-inside text-lg text-slate-600 space-y-2">
+                         <li><strong>[空]</strong> 产生<strong class="text-red-600">大量气泡</strong> (H₂)。</li>
+                         <li><strong>[海]</strong> 溶液<strong class="text-red-600">温度升高</strong> (可用温度计测量或手摸试管壁)。</li>
+                         <li><strong>[陆]</strong> 镁条<strong class="text-red-600">逐渐溶解</strong>。</li>
+                     </ul>
+                 </div>
+                 <p class="mt-6 text-xl text-slate-600"><strong>结论：</strong>该反应向外界<strong class="text-red-600">释放</strong>热量，是<strong class="text-red-600">放热反应</strong>。</p>
+            </div>
+        </div>
+
+        <!-- 实验探究：吸热反应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>实验探究：Ba(OH)₂·8H₂O与NH₄Cl反应</h2>
+                 <p class="mt-8 text-xl text-slate-700">将氢氧化钡晶体与氯化铵固体混合，观察现象。</p>
+                 <div class="mt-8 bg-sky-50 border border-sky-200 p-8 rounded-lg">
+                     <h3 class="font-bold text-sky-800 text-xl mb-4">实验现象：</h3>
+                      <ul class="list-disc list-inside text-lg text-slate-600 space-y-2">
+                          <li><strong>[空]</strong> 产生有<strong class="text-red-600">刺激性气味</strong>的气体 (NH₃)。</li>
+                          <li><strong>[海/环境]</strong> 烧杯壁<strong class="text-red-600">变冰凉</strong>。</li>
+                          <li><strong>[陆]</strong> 混合物变成<strong class="text-red-600">糊状</strong>。</li>
+                          <li>若烧杯放在滴水的木片上，木片会与烧杯<strong class="text-red-600">冻结</strong>在一起。</li>
+                      </ul>
+                 </div>
+                  <p class="mt-6 text-xl text-slate-600"><strong>结论：</strong>该反应从外界<strong class="text-red-600">吸收</strong>热量，是<strong class="text-red-600">吸热反应</strong>。</p>
+            </div>
+        </div>
+
+        <!-- 常见放热吸热反应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-700 rounded"></span>常见的放热反应与吸热反应</h2>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-red-800 text-xl">常见放热反应 🔥</h3>
+                        <ul class="list-disc list-inside mt-3 text-slate-600 space-y-2">
+                            <li>活泼金属与水/酸的反应</li>
+                            <li><strong class="text-red-700">燃烧反应</strong> (必放热)</li>
+                            <li><strong class="text-red-700">酸碱中和</strong>反应 (必放热)</li>
+                            <li><strong class="text-red-700">大多数</strong>化合反应</li>
+                        </ul>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800 text-xl">常见吸热反应 ❄️</h3>
+                         <ul class="list-disc list-inside mt-3 text-slate-600 space-y-2">
+                            <li>Ba(OH)₂·8H₂O与NH₄Cl反应</li>
+                             <li>C + CO₂ <span class="text-slate-500">(高温)</span> → 2CO</li>
+                             <li>C + H₂O(g) <span class="text-slate-500">(高温)</span> → CO + H₂</li>
+                            <li><strong class="text-blue-700">大多数</strong>分解反应 (如 CaCO₃ → CaO + CO₂)</li>
+                        </ul>
+                    </div>
+                </div>
+                 <p class="mt-4 text-slate-500 text-base text-center">(在必修阶段，若无特殊说明，可认为化合反应放热，分解反应吸热)</p>
+            </div>
+        </div>
+
+        <!-- 反应本质：化学键 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>反应本质：旧键断裂与新键形成</h2>
+                <p class="mt-8 text-xl text-slate-700">化学反应的本质是<strong class="text-purple-600">原子重新组合</strong>的过程，伴随着化学键的变化。</p>
+                 <div class="mt-8 bg-purple-50 border border-purple-200 p-8 rounded-lg text-lg text-center space-y-4">
+                    <p><strong>旧化学键断裂：</strong><strong class="text-red-600">吸收</strong>能量 (需要克服原子间引力)</p>
+                    <p><strong>新化学键形成：</strong><strong class="text-green-600">放出</strong>能量 (原子结合形成稳定结构)</p>
+                 </div>
+                 <p class="mt-6 text-xl text-slate-600">化学反应总是伴随着<strong class="text-red-600">能量变化</strong>，并遵循<strong class="text-purple-700">质量守恒</strong>和<strong class="text-purple-700">能量守恒</strong>定律。</p>
+            </div>
+        </div>
+        
+        <!-- 能量变化计算 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>从键能角度判断反应热效应</h2>
+                 <p class="mt-8 text-xl text-slate-700">可以通过比较<strong class="text-orange-600">断键吸收的总能量</strong>与<strong class="text-orange-600">成键放出的总能量</strong>来判断反应是吸热还是放热。</p>
+                 <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                     <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg text-center">
+                         <h3 class="font-bold text-blue-800">吸热反应</h3>
+                         <p class="mt-2 text-slate-600">吸收总能量 > 放出总能量</p>
+                         <p class="mono text-2xl mt-2 text-blue-700">ΔE<sub>吸</sub> > ΔE<sub>放</sub></p>
+                     </div>
+                      <div class="bg-red-50 border border-red-200 p-6 rounded-lg text-center">
+                         <h3 class="font-bold text-red-800">放热反应</h3>
+                         <p class="mt-2 text-slate-600">吸收总能量 < 放出总能量</p>
+                         <p class="mono text-2xl mt-2 text-red-700">ΔE<sub>吸</sub> < ΔE<sub>放</sub></p>
+                     </div>
+                 </div>
+                  <p class="mt-4 text-slate-600 text-lg"><strong>反应热 (ΔH) ≈ 吸收总能量 - 放出总能量</strong> (将在选修深入学习)</p>
+            </div>
+        </div>
+
+        <!-- 能量变化图 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>化学反应的能量变化图</h2>
+                 <p class="mt-8 text-xl text-slate-700">能量变化图可以直观地表示反应物和生成物的相对能量高低。</p>
+                 <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                     <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                          <h3 class="font-bold text-red-800 text-lg text-center">放热反应</h3>
+                         <p class="text-center text-slate-600 mt-4">反应物总能量 > 生成物总能量</p>
+                     </div>
+                      <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                          <h3 class="font-bold text-blue-800 text-lg text-center">吸热反应</h3>
+                          <p class="text-center text-slate-600 mt-4">反应物总能量 < 生成物总能量</p>
+                      </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 例题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (一)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列反应中，属于放热反应的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> Ba(OH)₂·8H₂O与NH₄Cl反应</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 碳酸钙高温分解</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 甲烷燃烧</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> C与CO₂高温反应</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (一)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p><strong class="text-green-700">燃烧反应</strong>都属于放热反应。A、B、D都是常见的吸热反应。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (二)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>化学反应的本质是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 分子分裂成原子</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 原子重新组合</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 能量的释放或吸收</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 旧化学键断裂和新化学键形成</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (二)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>从微观角度看，化学反应的本质是反应物中<strong class="text-green-700">旧化学键的断裂</strong>和生成物中<strong class="text-green-700">新化学键的形成</strong>的过程，这个过程伴随着原子的重新组合和能量的变化。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (三)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>在一个化学反应中，如果断裂旧化学键吸收的总能量大于形成新化学键放出的总能量，则该反应是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 放热反应</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 吸热反应</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 既不吸热也不放热</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 无法判断</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (三)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>断键吸收能量，成键放出能量。如果吸收的总能量大于放出的总能量 (ΔE<sub>吸</sub> > ΔE<sub>放</sub>)，则整个反应表现为从外界吸收能量，是<strong class="text-green-700">吸热反应</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (四)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列过程中，需要吸收能量的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> H₂燃烧</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> NaOH与HCl反应</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> H-H键的断裂</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> H₂O由气态变为液态</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1-4 h-1 bg-green-500 rounded"></span>练习 (四)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>燃烧和酸碱中和都是放热反应。水蒸气液化是物理变化，放出热量。<strong class="text-green-700">化学键的断裂</strong>总是需要<strong class="text-green-700">吸收能量</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (五)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>根据能量变化图，如果反应物的总能量低于生成物的总能量，该反应是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 放热反应</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 吸热反应</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 氧化还原反应</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 分解反应</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (五)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>如果反应物的总能量低于生成物的总能量，说明在反应过程中体系的能量升高了，这需要从外界吸收能量才能实现。因此，该反应是<strong class="text-green-700">吸热反应</strong>。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

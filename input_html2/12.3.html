@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二项式定理 (演示版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <!-- MathJax Library -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 64rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 4rem;
+            position: relative; 
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            page-break-after: always;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 6px solid #3b82f6;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border-radius: 0.25rem;
+            font-size: 1.25rem;
+            line-height: 1.8;
+            overflow-x: auto;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .highlight-box {
+            background-color: #fffbe6;
+            border: 2px dashed #f59e0b;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-size: 1.1rem;
+            margin-top: 1.5rem;
+        }
+
+        .image-placeholder {
+            background-color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 1.2rem;
+            border-radius: 0.5rem;
+            margin: 1.5rem auto;
+            overflow: hidden;
+        }
+
+        .quiz-option {
+            padding: 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quiz-option:hover {
+            background-color: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0mm;
+            }
+
+            body, html {
+                width: 100%;
+                height: 100%;
+                background-color: white;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            #presentation-container {
+                margin: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+                width: 100% !important;
+                max-width: none !important;
+            }
+            
+            .section {
+                height: 100vh !important;
+                width: 100vw !important;
+                max-width: none !important;
+                min-height: 0 !important;
+                page-break-after: always !important;
+                break-after: page !important;
+                page-break-inside: avoid !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                align-items: center !important;
+                padding: 1cm !important;
+                border-bottom: none !important;
+            }
+
+            .section > div {
+                width: 90% !important;
+                max-width: 100% !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-6xl font-bold text-slate-800 mb-6">二项式定理</h1>
+                <p class="text-3xl text-slate-600 mt-4">本质：一次“自助购”的排列组合游戏</p>
+                <div class="mt-12 p-6 bg-blue-50 rounded-xl inline-block">
+                    <p class="text-2xl text-blue-800 font-semibold">"别被 $\sum$ 吓住，本质就是分袋子拿东西"</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第一部分：核心解密 -->
+        <div class="section">
+             <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-4 mb-8">一、核心解密：括号里的“二选一”</h2>
+            <div class="w-full max-w-5xl mx-auto grid grid-cols-2 gap-8 items-center">
+                <div>
+                    <p class="text-xl mb-4 font-bold">原理：袋子模型</p>
+                    <p class="text-lg mb-4">$(x+y)^4 = (x+y)(x+y)(x+y)(x+y)$</p>
+                    <p class="text-lg text-slate-700">这就像 <strong>4个袋子</strong>，每个袋子必须且只能拿一样东西 ($x$ 或 $y$)。</p>
+                    
+                    <div class="bg-sky-50 p-4 rounded mt-6 border-l-4 border-sky-500">
+                        <p class="font-bold text-sky-900">例子：凑 $x^2y^2$</p>
+                        <p class="mt-2">意味着要从4个袋子里：</p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li>选2个袋子拿 $y$</li>
+                            <li>剩下2个袋子自动拿 $x$</li>
+                        </ul>
+                        <p class="mt-2 font-bold text-xl text-center">方案数 = $C_4^2 = 6$</p>
+                    </div>
+                </div>
+                
+                <div class="image-placeholder h-80 bg-slate-50 border border-slate-200 rounded-xl overflow-hidden">
+                    <!-- SVG: Bag Model -->
+                    <svg viewBox="0 0 400 300" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Bags -->
+                        <g transform="translate(20, 100)">
+                            <path d="M 10,0 Q 10,80 40,80 Q 70,80 70,0 L 60,-10 L 20,-10 Z" fill="#bfdbfe" stroke="#3b82f6" stroke-width="2" />
+                            <text x="40" y="40" text-anchor="middle" font-weight="bold" fill="#1e3a8a">1</text>
+                            <text x="40" y="110" text-anchor="middle" font-weight="bold" fill="#ef4444">x</text>
+                        </g>
+                        <g transform="translate(110, 100)">
+                            <path d="M 10,0 Q 10,80 40,80 Q 70,80 70,0 L 60,-10 L 20,-10 Z" fill="#bfdbfe" stroke="#3b82f6" stroke-width="2" />
+                            <text x="40" y="40" text-anchor="middle" font-weight="bold" fill="#1e3a8a">2</text>
+                            <text x="40" y="110" text-anchor="middle" font-weight="bold" fill="#ef4444">x</text>
+                        </g>
+                        <g transform="translate(200, 100)">
+                            <path d="M 10,0 Q 10,80 40,80 Q 70,80 70,0 L 60,-10 L 20,-10 Z" fill="#bfdbfe" stroke="#3b82f6" stroke-width="2" />
+                            <text x="40" y="40" text-anchor="middle" font-weight="bold" fill="#1e3a8a">3</text>
+                            <text x="40" y="110" text-anchor="middle" font-weight="bold" fill="#10b981">y</text>
+                        </g>
+                        <g transform="translate(290, 100)">
+                            <path d="M 10,0 Q 10,80 40,80 Q 70,80 70,0 L 60,-10 L 20,-10 Z" fill="#bfdbfe" stroke="#3b82f6" stroke-width="2" />
+                            <text x="40" y="40" text-anchor="middle" font-weight="bold" fill="#1e3a8a">4</text>
+                            <text x="40" y="110" text-anchor="middle" font-weight="bold" fill="#10b981">y</text>
+                        </g>
+                        
+                        <!-- Selection Highlight -->
+                        <rect x="200" y="80" width="180" height="140" rx="10" fill="none" stroke="#10b981" stroke-width="2" stroke-dasharray="5,5" />
+                        <text x="290" y="250" text-anchor="middle" font-size="14" fill="#059669">选2个拿 y -> C(4,2)</text>
+                        
+                        <!-- Formula -->
+                        <text x="200" y="50" text-anchor="middle" font-size="20" font-weight="bold" fill="#334155">(x+y)(x+y)(x+y)(x+y)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 第二部分：通项公式 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-amber-500 pb-4 mb-8">二、防坑指南：通项公式</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <div class="formula-box text-2xl mb-8">
+                    $$T_{k+1} = C_n^k a^{n-k} b^k$$
+                </div>
+                
+                <div class="grid grid-cols-2 gap-8">
+                    <div class="bg-red-50 p-6 rounded-lg border border-red-100">
+                        <h3 class="text-2xl font-bold text-red-800 mb-4">1. 为什么是 $T_{k+1}$?</h3>
+                        <p class="text-lg">计数从 0 开始。</p>
+                        <p class="text-lg mt-2">选 0 个 $b$ 是第一项。</p>
+                        <div class="bg-white p-2 mt-4 text-center font-bold text-red-600 rounded">
+                            项数 = $k + 1$
+                        </div>
+                    </div>
+                    
+                    <div class="bg-amber-50 p-6 rounded-lg border border-amber-100">
+                        <h3 class="text-2xl font-bold text-amber-800 mb-4">2. 谁是 $a$，谁是 $b$?</h3>
+                        <p class="text-lg">对于 $(x - 2)^5$：</p>
+                        <p class="text-lg mt-2">$a = x$</p>
+                        <p class="text-lg font-bold text-amber-700">$b = -2$ (带符号！)</p>
+                        <div class="bg-white p-2 mt-4 text-center font-bold text-amber-700 rounded">
+                            不要弄丢负号！
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第三部分：二项式系数性质 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-4 mb-8">三、系数性质：爬山运动</h2>
+            <div class="w-full max-w-5xl mx-auto grid grid-cols-2 gap-8 items-center">
+                <div>
+                    <p class="text-xl mb-4 font-bold">系数值 $C_n^k$ 的变化规律</p>
+                    <p class="text-lg mb-4 text-slate-600">像爬山：两头小，中间大，对称。</p>
+                    
+                    <div class="space-y-4">
+                        <div class="p-4 bg-emerald-50 rounded border-l-4 border-emerald-500">
+                            <p class="font-bold text-emerald-900">偶数 $n=6$ (单峰)</p>
+                            <p>6个苹果分2人，对半分(3:3)最公平。</p>
+                            <p>最大值：$k=3$</p>
+                        </div>
+                        <div class="p-4 bg-emerald-50 rounded border-l-4 border-emerald-500">
+                            <p class="font-bold text-emerald-900">奇数 $n=5$ (双峰)</p>
+                            <p>没法绝对公平，(2:3)和(3:2)一样大。</p>
+                            <p>最大值：$k=2, k=3$</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="image-placeholder h-80 bg-slate-50 border border-slate-200 rounded-xl overflow-hidden">
+                    <!-- SVG: Bell Curve -->
+                    <svg viewBox="0 0 400 300" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Axes -->
+                        <line x1="20" y1="250" x2="380" y2="250" stroke="#94a3b8" stroke-width="2" />
+                        
+                        <!-- Curve (Even n=6) -->
+                        <path d="M 40,250 Q 100,250 140,150 Q 200,0 260,150 Q 300,250 360,250" fill="none" stroke="#059669" stroke-width="3" />
+                        <circle cx="200" cy="75" r="6" fill="#059669" />
+                        
+                        <!-- Curve (Odd n=5) - Dashed, slightly offset -->
+                        <path d="M 40,250 Q 100,250 130,160 Q 170,60 200,80 Q 230,60 270,160 Q 300,250 360,250" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5,5" />
+                        <circle cx="167" cy="90" r="4" fill="#f59e0b" />
+                        <circle cx="233" cy="90" r="4" fill="#f59e0b" />
+                        
+                        <!-- Legends moved to bottom -->
+                        <text x="120" y="285" text-anchor="middle" font-weight="bold" fill="#059669">n偶: 单峰</text>
+                        <text x="280" y="285" text-anchor="middle" font-weight="bold" fill="#f59e0b">n奇: 双峰</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <div class="bg-blue-600 text-white px-4 py-1 rounded-t-lg inline-block font-bold">课间小练 1/4</div>
+                <div class="bg-white border-2 border-gray-200 p-8 rounded-b-lg rounded-tr-lg shadow-lg">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-6">题目 1</h3>
+                    <p class="text-xl mb-8">在 $(a+b)^6$ 的展开式中，一共有多少项？</p>
+                    <div class="space-y-2 text-lg">
+                        <div class="quiz-option">(A) 5项</div>
+                        <div class="quiz-option">(B) 6项</div>
+                        <div class="quiz-option">(C) 7项</div>
+                        <div class="quiz-option">(D) 8项</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 解析 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-400 mb-4">题目 1 解析</h3>
+                <div class="bg-green-50 border-l-8 border-green-500 p-8 rounded shadow-sm">
+                    <p class="text-3xl font-bold text-green-800 mb-6">✅ 正确答案：(C)</p>
+                    <div class="text-xl leading-relaxed text-slate-700">
+                        <p><strong>解析：</strong></p>
+                        <p class="mt-4">二项式展开式的项数总是比指数 $n$ 多 1。</p>
+                        <p class="mt-2">也就是从 $C_n^0$ 选到 $C_n^n$。</p>
+                        <p class="mt-4 text-green-700 font-bold">项数 = $6 + 1 = 7$ 项。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <div class="bg-blue-600 text-white px-4 py-1 rounded-t-lg inline-block font-bold">课间小练 2/4</div>
+                <div class="bg-white border-2 border-gray-200 p-8 rounded-b-lg rounded-tr-lg shadow-lg">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-6">题目 2 (计算题)</h3>
+                    <p class="text-xl mb-8">在 $(x-1)^4$ 的展开式中， $x^2$ 的系数是多少？</p>
+                    <div class="space-y-2 text-lg">
+                        <div class="quiz-option">(A) 4</div>
+                        <div class="quiz-option">(B) 6</div>
+                        <div class="quiz-option">(C) -4</div>
+                        <div class="quiz-option">(D) -6</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 解析 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-400 mb-4">题目 2 解析</h3>
+                <div class="bg-green-50 border-l-8 border-green-500 p-8 rounded shadow-sm">
+                    <p class="text-3xl font-bold text-green-800 mb-6">✅ 正确答案：(B)</p>
+                    <div class="text-xl leading-relaxed text-slate-700">
+                        <p><strong>解析：</strong> 使用“袋子模型”：</p>
+                        <ul class="list-disc list-inside mt-4 space-y-2">
+                            <li>一共4个袋子，要凑 $x^2$，所以选 2 个 $x$。</li>
+                            <li>剩下 2 个袋子选 $-1$。</li>
+                        </ul>
+                        <p class="mt-4 font-bold">计算：</p>
+                        <div class="formula-box bg-white mt-2 text-xl">
+                            $C_4^2 \times (x)^2 \times (-1)^2 = 6 \times x^2 \times 1 = 6x^2$
+                        </div>
+                        <p class="mt-2 text-sm text-slate-500">注：偶数次方的负号变成了正号。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <div class="bg-blue-600 text-white px-4 py-1 rounded-t-lg inline-block font-bold">课间小练 3/4</div>
+                <div class="bg-white border-2 border-gray-200 p-8 rounded-b-lg rounded-tr-lg shadow-lg">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-6">题目 3</h3>
+                    <p class="text-xl mb-8">在二项式定理通项公式 $T_{k+1} = C_n^k a^{n-k} b^k$ 中，如果要求展开式的第 5 项，那么 $k$ 的值应该是多少？</p>
+                    <div class="space-y-2 text-lg">
+                        <div class="quiz-option">(A) 3</div>
+                        <div class="quiz-option">(B) 4</div>
+                        <div class="quiz-option">(C) 5</div>
+                        <div class="quiz-option">(D) 6</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 解析 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-400 mb-4">题目 3 解析</h3>
+                <div class="bg-green-50 border-l-8 border-green-500 p-8 rounded shadow-sm">
+                    <p class="text-3xl font-bold text-green-800 mb-6">✅ 正确答案：(B)</p>
+                    <div class="text-xl leading-relaxed text-slate-700">
+                        <p><strong>解析：</strong></p>
+                        <p class="mt-4">通项公式是 $T_{k+1}$。</p>
+                        <p class="mt-2">下标 $k+1$ 代表这是第几项。</p>
+                        <p class="mt-4">要求第 5 项 $\implies k+1=5 \implies k=4$。</p>
+                        <p class="mt-2 text-green-700 font-bold">口诀：$k$ 永远比项数少 1。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <div class="bg-blue-600 text-white px-4 py-1 rounded-t-lg inline-block font-bold">课间小练 4/4</div>
+                <div class="bg-white border-2 border-gray-200 p-8 rounded-b-lg rounded-tr-lg shadow-lg">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-6">题目 4</h3>
+                    <p class="text-xl mb-8">当 $n=8$ 时，二项式系数 $C_8^k$ 取得最大值时，$k$ 等于多少？</p>
+                    <div class="space-y-2 text-lg">
+                        <div class="quiz-option">(A) 3</div>
+                        <div class="quiz-option">(B) 4</div>
+                        <div class="quiz-option">(C) 5</div>
+                        <div class="quiz-option">(D) 8</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 解析 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-400 mb-4">题目 4 解析</h3>
+                <div class="bg-green-50 border-l-8 border-green-500 p-8 rounded shadow-sm">
+                    <p class="text-3xl font-bold text-green-800 mb-6">✅ 正确答案：(B)</p>
+                    <div class="text-xl leading-relaxed text-slate-700">
+                        <p><strong>解析：</strong></p>
+                        <p class="mt-4">$n=8$ 是偶数。</p>
+                        <p class="mt-2">偶数时的二项式系数呈现“单峰”结构，最大值出现在正中间。</p>
+                        <p class="mt-4 text-green-700 font-bold">计算：$k = n/2 = 8/2 = 4$。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 总结与思考 -->
+         <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-5xl font-bold text-slate-800 mb-10">行动建议</h2>
+                <div class="bg-indigo-50 p-8 rounded-xl border border-indigo-100 text-left">
+                    <h3 class="text-2xl font-bold text-indigo-800 mb-4">手动推导</h3>
+                    <p class="text-lg leading-relaxed">
+                        请拿出纸笔，不要看书，试着推导一下 $(x-1)^5$ 的展开式。<br><br>
+                        <strong>检查点：</strong> 注意第二项和第四项的符号是不是负的？
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

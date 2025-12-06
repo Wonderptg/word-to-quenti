@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>集合第一课：什么是集合？ (宋体可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 (正常浏览时) */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif; /* 应用宋体风格字体 */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 设置页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem; /* 限制最大宽度，类似文档 */
+            margin: 2rem auto; /* 居中显示 */
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2rem; /* 为内容提供足够的垂直间距 */
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 1.5rem;
+        }
+        th, td {
+            border: 1px solid #e2e8f0;
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+        th {
+            background-color: #f8fafc;
+        }
+        code {
+            background-color: #f1f5f9;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        /* 打印专用样式 (只在打印时生效) */
+        @media print {
+            /* 1. 设置打印页面为横向，且无边距 */
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            /* 重置body和容器的样式，使其充满打印页面 */
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact; /* 确保背景色和颜色能被打印 */
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            /* 2. 让每个section成为独立的一页，并强制分页 */
+            .section {
+                height: 100vh; /* 高度占满一页 */
+                width: 100vw;  /* 宽度占满一页 */
+                page-break-after: always; /* 每个section后强制分页 */
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none; /* 打印时去掉分隔线 */
+            }
+
+            /* 确保最后一个section后面没有多余的空白页 */
+            .section:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- Section 1: 欢迎页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">集合第一课：什么是集合？</h1>
+                <p class="text-xl text-slate-600 mt-4">大家好，欢迎来到我们的《集合》第一课！</p>
+                <div class="mt-8 text-left text-lg text-slate-700 bg-slate-50 p-6 rounded-lg">
+                    <p>今天我们将一起弄明白三个关键问题：</p>
+                    <ul class="list-disc list-inside mt-2 space-y-1">
+                        <li>什么是集合？</li>
+                        <li>为什么要学集合？</li>
+                        <li>集合是怎么表示的？</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: 课程介绍 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800">课程介绍</h2>
+                <p class="mt-8 text-2xl text-slate-700 leading-relaxed max-w-2xl mx-auto">
+                    这节课虽然涉及到的概念不少，但其实不难。我们就像拼拼图一样，一块一块拼起来，最后你会发现，原来集合挺有意思的！
+                </p>
+            </div>
+        </div>
+        
+        <!-- Section 3: 第一部分 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">第一部分：万物皆可“研究对象”</h2>
+                <p class="mt-6 text-xl text-slate-700">我们生活在一个充满信息的世界，各行各业都需要“研究对象”。</p>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-lg">
+                    <div class="bg-blue-50 p-6 rounded-lg shadow">
+                        <h3 class="font-bold text-blue-800">侦探破案</h3>
+                        <p class="mt-2 text-slate-600">研究案发现场留下的线索：脚印、毛发、指纹等。</p>
+                    </div>
+                    <div class="bg-green-50 p-6 rounded-lg shadow">
+                        <h3 class="font-bold text-green-800">植物学家</h3>
+                        <p class="mt-2 text-slate-600">关注各种植物：小草、灌木、大树等。</p>
+                    </div>
+                    <div class="bg-purple-50 p-6 rounded-lg shadow">
+                        <h3 class="font-bold text-purple-800">游戏策划</h3>
+                        <p class="mt-2 text-slate-600">研究玩家行为：谁最爱玩刺客、谁总爱换皮肤等。</p>
+                    </div>
+                </div>
+                <p class="mt-8 text-2xl font-semibold text-center text-slate-800 bg-amber-100 p-4 rounded-lg">换句话说，只要你想研究，它就能成为你的研究对象！</p>
+            </div>
+        </div>
+
+        <!-- Section 4: 第二部分 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">第二部分：把研究对象“装进篮子”——这就是集合</h2>
+                <p class="mt-6 text-xl text-slate-700">“我不想只研究大树，我还想研究蘑菇、小草、蒲公英，一起研究！”</p>
+                <p class="mt-4 text-2xl font-semibold text-blue-700">恭喜你，你就在“无意识”地创建一个集合了！</p>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-lg text-slate-800">我们把某一类研究对象“归在一起”，这个“整体”就叫 <strong class="text-red-600">集合</strong>。</p>
+                    <div class="mt-4 border-l-4 border-red-500 pl-4">
+                        <p class="text-lg text-slate-700"><strong class="text-red-600">集合</strong> = 一组对象的总体</p>
+                        <p class="text-lg text-slate-700"><strong class="text-blue-600">元素</strong> = 集合里的每一个具体成员</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: 第三部分 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">第三部分：换个角度理解集合和元素</h2>
+                <div class="mt-8 space-y-8 text-lg">
+                    <div class="bg-green-50 p-6 rounded-lg shadow-md">
+                        <p>一个 <strong class="text-green-700">班级</strong> 就是一个集合。</p>
+                        <p class="mt-2">班里的每个同学——王小明、李小红、张大龙……他们就是这个集合里的 <strong class="text-green-700">元素</strong>。</p>
+                        <p class="mt-4 text-sm text-slate-500">班级（集合）表示“整体”，学生（元素）表示“组成整体的一个个具体个体”。</p>
+                    </div>
+                    <div class="bg-yellow-50 p-6 rounded-lg shadow-md">
+                        <p>你的 <strong class="text-yellow-700">“文具大宝盒”</strong> 就是一个集合！</p>
+                        <p class="mt-2">里面的圆珠笔、橡皮擦、尺子、便利贴……它们就是 <strong class="text-yellow-700">元素</strong>。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 6: 第四部分 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">第四部分：最贴近生活的集合例子</h2>
+                <p class="mt-6 text-xl text-slate-700">“我们学校食堂里最受欢迎的四道菜”：</p>
+                <div class="mt-4 flex flex-wrap justify-center gap-4 text-center text-lg">
+                    <span class="bg-red-100 text-red-800 py-2 px-4 rounded-full">红烧鸡腿</span>
+                    <span class="bg-yellow-100 text-yellow-800 py-2 px-4 rounded-full">番茄炒蛋</span>
+                    <span class="bg-purple-100 text-purple-800 py-2 px-4 rounded-full">麻辣豆腐</span>
+                    <span class="bg-green-100 text-green-800 py-2 px-4 rounded-full">糖醋里脊</span>
+                </div>
+                <div class="mt-8 bg-slate-100 p-6 rounded-lg text-xl">
+                    <p>这四道菜可以组成一个集合：“本周最受欢迎食堂菜品集合”。</p>
+                    <p class="mt-4">✔ <strong class="text-blue-600">集合</strong> 是“最受欢迎菜品”这个整体。</p>
+                    <p class="mt-2">✔ <strong class="text-red-600">元素</strong> 是具体的那几道菜！</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 7: 元素关系 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">元素关系与数学符号</h2>
+                <p class="mt-6 text-xl text-slate-700">一个元素和集合的关系只有两种：</p>
+                <ul class="list-disc list-inside text-xl mt-4 space-y-2 text-slate-800">
+                    <li>一个元素 <strong class="text-green-600">属于</strong> 某个集合。</li>
+                    <li>一个元素 <strong class="text-red-600">不属于</strong> 某个集合。</li>
+                </ul>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <h3 class="font-semibold text-2xl">数学中的表示方法：</h3>
+                    <p class="mt-4 text-2xl">我们用符号 <code>∈</code> 表示“属于”。</p>
+                    <p class="mt-2 text-2xl">我们用符号 <code>∉</code> 表示“不属于”。</p>
+                    <div class="mt-6 text-xl space-y-2">
+                        <p>例如：<code>1 ∈ {1, 2, 3}</code> (1 属于集合 {1, 2, 3})</p>
+                        <p>例如：<code>-1 ∉ {1, 2, 3}</code> (-1 不属于集合 {1, 2, 3})</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 8: 确定性 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">集合的基本特性 (1): 确定性</h2>
+                <p class="mt-6 text-xl text-slate-700"><strong>确定性</strong> 就是：能不能明确判断某个元素到底在不在集合里？有没有一个统一的判断标准？</p>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded">
+                        <h3 class="font-bold text-red-800">❌ 不具备确定性</h3>
+                        <p class="mt-2 text-slate-600">所有“唱歌好听的同学” (标准主观)</p>
+                        <p class="mt-2 text-slate-600">“成绩好的学生” (标准模糊)</p>
+                    </div>
+                    <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded">
+                        <h3 class="font-bold text-green-800">✅ 具备确定性</h3>
+                        <p class="mt-2 text-slate-600">数学成绩在 90 分及以上的学生 (标准明确)</p>
+                        <p class="mt-2 text-slate-600">比 100 大的自然数 (标准明确)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 9: 小游戏 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">小游戏时间：哪些能构成集合？</h2>
+                <div class="mt-6 space-y-4 text-lg">
+                    <p>1. 所有“刷抖音时间超过3小时”的同学？ <span class="font-bold text-red-600 ml-2">❌ 不行 (定义模糊)</span></p>
+                    <p>2. 在一次测试中英语成绩低于60分的同学？ <span class="font-bold text-green-600 ml-2">✅ 可以 (标准明确)</span></p>
+                    <p>3. 喜欢辣条的人？ <span class="font-bold text-red-600 ml-2">❌ 不行 (没统一标准)</span></p>
+                    <p>4. 放学后第一时间冲去小卖部的学生？ <span class="font-bold text-red-600 ml-2">❌ 不行 (难界定)</span></p>
+                </div>
+                <div class="mt-8 bg-blue-100 text-blue-800 p-4 rounded-lg text-xl font-semibold">
+                    ✔ 所以只有第 2 项是可以构成集合的。
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 10: 无序性 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2 inline-block">集合的基本特性 (2): 无序性</h2>
+                <p class="mt-6 text-xl text-slate-700"><strong>无序性</strong> 指的是：集合中元素的排列顺序没有关系。</p>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg text-2xl">
+                    <p><code>{2, 4, 6}</code></p>
+                    <p class="font-bold my-2">=</p>
+                    <p><code>{4, 2, 6}</code></p>
+                     <p class="font-bold my-2">=</p>
+                    <p><code>{6, 4, 2}</code></p>
+                </div>
+                <p class="mt-6 text-xl text-slate-700">只要元素一样，不管你怎么排列，它们都是 <strong class="text-red-600">同一个集合</strong>。</p>
+            </div>
+        </div>
+
+        <!-- Section 11: 互异性 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">集合的基本特性 (3): 互异性</h2>
+                <p class="mt-6 text-xl text-slate-700"><strong>互异性</strong> 指的是：集合中不能出现重复元素。</p>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded">
+                        <h3 class="font-bold text-red-800">❌ 错误写法</h3>
+                        <p class="mt-2 text-slate-600 text-2xl"><code>{3, 3, 5, 7}</code></p>
+                    </div>
+                    <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded">
+                        <h3 class="font-bold text-green-800">✅ 正确写法</h3>
+                        <p class="mt-2 text-slate-600 text-2xl"><code>{3, 5, 7}</code></p>
+                    </div>
+                </div>
+                <p class="mt-6 text-xl text-slate-700">集合中的每一个元素都是独一无二的。</p>
+            </div>
+        </div>
+
+        <!-- Section 12: 经典例题 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">经典数字例题</h2>
+                <div class="mt-4 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-lg">题目：已知集合 S = {A², A + B, B ÷ A}，并且 S = {1, A, 0}，问 A 和 B 的值是多少？</p>
+                </div>
+                <div class="mt-4 text-lg space-y-2">
+                    <p><strong>1. 分析元素 0：</strong> 集合中有 0，所以 <code>B ÷ A = 0</code>，得出 <code>B = 0</code> (且 A ≠ 0)。</p>
+                    <p><strong>2. 代入 B=0：</strong> S = {A², A, 0}。因为 S = {1, A, 0}，所以 <code>A² = 1</code>。</p>
+                    <p><strong>3. 求解 A：</strong> <code>A² = 1</code> 的解是 <code>A = 1</code> 或 <code>A = -1</code>。</p>
+                    <p><strong>4. 检验互异性：</strong></p>
+                    <p class="ml-4"> - 如果 A = 1，那么集合 S = {1, 1, 0}。出现了重复元素 1，<strong class="text-red-600">不满足互异性</strong>！ ❌</p>
+                    <p class="ml-4"> - 如果 A = -1，那么集合 S = {1, -1, 0}。元素各不相同，<strong class="text-green-600">满足互异性</strong>！ ✅</p>
+                    <p class="mt-4 text-xl font-bold text-blue-700">答案：A = -1, B = 0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 13: 常见数集 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">常见数集及其符号</h2>
+                <div class="mt-6 space-y-3 text-lg">
+                    <p><strong>自然数集 (N):</strong> 包含0和正整数。 <code>N = {0, 1, 2, 3, ...}</code></p>
+                    <p><strong>正整数集 (N⁺ 或 N*):</strong> 不包含0的自然数。 <code>N⁺ = {1, 2, 3, ...}</code></p>
+                    <p><strong>整数集 (Z):</strong> 包括正整数、负整数和0。 <code>Z = {..., -2, -1, 0, 1, 2, ...}</code></p>
+                    <p><strong>有理数集 (Q):</strong> 能写成分数形式的数。 <code>Q = {p/q | p,q ∈ Z, q ≠ 0}</code></p>
+                    <p><strong>实数集 (R):</strong> 数轴上所有的点，包括有理数和无理数 (如 π, √2)。</p>
+                </div>
+                <p class="mt-6 text-xl font-semibold text-center text-red-700 bg-red-100 p-4 rounded-lg">这些字母是数学中的固定约定，必须熟记！</p>
+            </div>
+        </div>
+
+        <!-- Section 14: 数集表格 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">必背总结：常见数集符号</h2>
+                <table class="text-lg">
+                    <thead>
+                        <tr>
+                            <th>数集名称</th>
+                            <th>符号</th>
+                            <th>内容举例</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>自然数</td>
+                            <td><code>N</code></td>
+                            <td>0, 1, 2, 3, ...</td>
+                        </tr>
+                        <tr>
+                            <td>正整数</td>
+                            <td><code>N⁺</code> / <code>N*</code></td>
+                            <td>1, 2, 3, ...（不含0）</td>
+                        </tr>
+                        <tr>
+                            <td>整数</td>
+                            <td><code>Z</code></td>
+                            <td>..., -2, -1, 0, 1, 2, ...</td>
+                        </tr>
+                        <tr>
+                            <td>有理数</td>
+                            <td><code>Q</code></td>
+                            <td>1/2, -3, 0.75</td>
+                        </tr>
+                        <tr>
+                            <td>实数</td>
+                            <td><code>R</code></td>
+                            <td>所有有理数 + 无理数（π、√2）</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section 15: 表示方法介绍 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <h2 class="text-4xl font-bold text-slate-800">集合的表示方法</h2>
+                 <div class="mt-12 flex flex-col md:flex-row justify-center items-center gap-8 text-2xl">
+                    <div class="bg-blue-50 p-6 rounded-lg shadow">
+                        <p>列举法</p>
+                        <p class="text-lg mt-2 font-sans">(Roster Method)</p>
+                    </div>
+                    <div class="bg-green-50 p-6 rounded-lg shadow">
+                        <p>描述法</p>
+                        <p class="text-lg mt-2 font-sans">(Set-Builder Notation)</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- Section 16: 列举法 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">一、列举法 (一个个列出来)</h2>
+                <div class="mt-6 space-y-4 text-xl">
+                    <p><strong>例1:</strong> 大于1且小于5的整数</p>
+                    <p class="ml-4"><code>A = {2, 3, 4}</code></p>
+                    <p><strong>例2:</strong> 绝对值小于3的整数</p>
+                    <p class="ml-4"><code>B = {-2, -1, 0, 1, 2}</code></p>
+                    <p><strong>例3:</strong> 所有偶数 (用省略号)</p>
+                    <p class="ml-4"><code>C = {..., -2, 0, 2, ...}</code></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 17: 描述法 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">二、描述法 (用“条件”来刻画)</h2>
+                <div class="mt-6 bg-yellow-100 p-4 rounded-lg text-center">
+                    <p class="text-2xl">{ 研究对象 | 满足的条件 }</p>
+                </div>
+                <div class="mt-6 space-y-4 text-xl">
+                    <p><strong>例1:</strong> 大于1且小于5的整数</p>
+                    <p class="ml-4"><code>A = {x | 1 < x < 5, x ∈ Z}</code></p>
+                    <p><strong>例2:</strong> 绝对值小于3的整数</p>
+                    <p class="ml-4"><code>B = {x ∈ Z | |x| < 3}</code></p>
+                </div>
+            </div>
+        </div>
+
+         <!-- Section 18: 描述法进阶 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">描述法进阶</h2>
+                <div class="mt-6 space-y-4 text-xl">
+                    <p><strong>所有偶数:</strong></p>
+                    <p class="ml-4"><code>C = {x | x = 2k, k ∈ Z}</code></p>
+                    <p><strong>所有奇数:</strong></p>
+                    <p class="ml-4"><code>D = {x | x = 2k + 1, k ∈ Z}</code></p>
+                    <p><strong>第一象限的点集:</strong></p>
+                    <p class="ml-4"><code>E = {(x, y) | x > 0, y > 0}</code></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: 课后习题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-10">课后习题</h2>
+                <div class="mb-12">
+                    <h3 class="text-2xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">重点题型一：集合的概念</h3>
+                    <div class="mt-6 text-lg space-y-4">
+                        <p class="font-semibold">例题1．下面各组对象中不能形成集合的是（&nbsp;&nbsp;&nbsp;&nbsp;）</p>
+                        <ul class="list-none pl-4 space-y-2">
+                            <li>A．所有的直角三角形</li>
+                            <li>B．一次函数y=x+1</li>
+                            <li>C．高一年级中家离学校很远的学生</li>
+                            <li>D．参加智选未来线上课的所有同学</li>
+                        </ul>
+                        <div class="mt-4 bg-slate-50 p-4 rounded-lg">
+                            <p><strong class="text-blue-600">【答案】C</strong></p>
+                            <p class="mt-2 text-slate-700">【解析】集合的元素必须是确定的。选项A，B，D中的对象都是确定的，可以构成集合。而选项C中“家离学校很远”的标准不确定，因人而异，没有一个明确的界限，所以这些学生无法构成一个确定的集合。故选：C。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: 课后习题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-4xl font-bold text-slate-800 text-center mb-10">课后习题</h2>
+                <div class="mb-12">
+                    <h3 class="text-2xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">重点题型二：元素与集合的关系</h3>
+                    <div class="mt-6 text-lg space-y-4">
+                        <p class="font-semibold">例题1．给出下列关系：① π ∈ R；② √2 ∈ Q；③ -3 ∉ N*；④ |-√5| ∉ Q，其中正确的个数为（&nbsp;&nbsp;&nbsp;&nbsp;）</p>
+                        <ul class="list-none pl-4 space-y-2">
+                            <li>A．1</li>
+                            <li>B．2</li>
+                            <li>C．3</li>
+                            <li>D．4</li>
+                        </ul>
+                        <div class="mt-4 bg-slate-50 p-4 rounded-lg">
+                            <p><strong class="text-blue-600">【答案】B</strong></p>
+                            <p class="mt-2 text-slate-700">【解析】π是实数，属于实数集R，故①正确；√2是无理数，不属于有理数集Q，故②错误；-3是负整数，不属于正整数集N*，故③正确；|-√5| = √5 是无理数，不属于有理数集Q，故④正确。所以正确的个数为2。故选：B。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section: 课后习题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-4xl font-bold text-slate-800 text-center mb-10">课后习题</h2>
+                <div class="mb-12">
+                    <h3 class="text-2xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">重点题型三：集合的表示方法（1）列举法</h3>
+                    <div class="mt-6 text-lg space-y-4">
+                        <p class="font-semibold">例题1．方程 x² - x = 0 的所有实数根组成的集合为（&nbsp;&nbsp;&nbsp;&nbsp;）</p>
+                        <ul class="list-none pl-4 space-y-2">
+                            <li>A．{0}</li>
+                            <li>B．{1}</li>
+                            <li>C．{0, 1}</li>
+                            <li>D．{(-1, 0), (1, 0)}</li>
+                        </ul>
+                        <div class="mt-4 bg-slate-50 p-4 rounded-lg">
+                            <p><strong class="text-blue-600">【答案】C</strong></p>
+                            <p class="mt-2 text-slate-700">【解析】解方程 x² - x = 0，可得 x(x - 1) = 0，解得 x = 0 或 x = 1。所以方程的所有实数根组成的集合为 {0, 1}。故选：C。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: 课后习题 4 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-4xl font-bold text-slate-800 text-center mb-10">课后习题</h2>
+                <div>
+                     <h3 class="text-2xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">重点题型三：集合的表示方法（2）描述法</h3>
+                    <div class="mt-6 text-lg space-y-4">
+                        <p class="font-semibold">例题1．由大于-3且小于2的偶数所组成的集合是（&nbsp;&nbsp;&nbsp;&nbsp;）</p>
+                        <ul class="list-none pl-4 space-y-2">
+                            <li>A．{-1, 1}</li>
+                            <li>B．{-2, 0}</li>
+                            <li>C．{x | -3 < x < 2, x ∈ Z}</li>
+                            <li>D．{-2, 0, 2}</li>
+                        </ul>
+                        <div class="mt-4 bg-slate-50 p-4 rounded-lg">
+                            <p><strong class="text-blue-600">【答案】B</strong></p>
+                            <p class="mt-2 text-slate-700">【解析】大于-3且小于2的整数有-2, -1, 0, 1。在这些数中，偶数是-2和0。因此，所求集合为 {-2, 0}。故选：B。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 19: 总结 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">✅ 总结：两种表示方法</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 p-6 rounded-lg shadow">
+                        <h3 class="font-bold text-blue-800">列举法</h3>
+                        <p class="mt-4 text-slate-700">适用于元素个数有限或规律明确时。</p>
+                    </div>
+                    <div class="bg-green-50 p-6 rounded-lg shadow">
+                        <h3 class="font-bold text-green-800">描述法</h3>
+                        <p class="mt-4 text-slate-700">适用于元素个数无限或不好列出时。</p>
+                    </div>
+                </div>
+                 <p class="mt-12 text-2xl font-semibold text-center text-slate-800">记住结构，多加练习，你也能又快又准！</p>
+            </div>
+        </div>
+        
+        <!-- Section 20: 结尾 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800">课程结束，感谢观看！</h2>
+                <p class="mt-8 text-2xl text-slate-700 leading-relaxed max-w-2xl mx-auto">
+                    希望你对集合有了初步的认识。数学的旅程才刚刚开始，继续加油！
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
+
+

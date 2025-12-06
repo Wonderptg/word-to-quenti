@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>水溶液中的离子反应与平衡</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- 引入 MathJax 库用于渲染 LaTeX 公式和化学式 -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        // MathJax 配置，确保 LaTeX 语法中的 $...$ 被识别
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        
+        /* 表格样式 */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+        }
+        .styled-table th, .styled-table td {
+            border: 1px solid #cbd5e1;
+            padding: 0.75rem 1rem;
+            text-align: center;
+        }
+        .styled-table thead {
+            background-color: #f8fafc;
+        }
+        .styled-table th {
+            font-weight: 700;
+            color: #334155;
+        }
+        .styled-table tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+        .styled-table tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+        
+        /* 确保 MathJax 渲染的内容不影响布局 */
+        .MathJax {
+            display: inline !important;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">水溶液中的离子反应与平衡</h1>
+                <p class="text-2xl text-slate-600 mt-2">（一）强弱电解质与电离平衡</p>
+            </div>
+        </div>
+        
+        <!-- 课程介绍 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>课程介绍：最困难的内容</h2>
+                <p class="mt-8 text-xl text-slate-700">水溶液平衡是高中化学<strong class="text-red-600">最困难</strong>的内容，也是高考<strong class="text-red-600">选择题的压轴题</strong>考点。</p>
+                <p class="mt-4 text-xl text-slate-700">这部分内容需要付出时间和努力，但越困难的知识点，越注重教授方法与技巧。</p>
+                <div class="mt-8 bg-green-50 border border-green-200 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">请大家坚持下去，从零基础开始，逐一破解题型！</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 强电解质 vs 弱电解质 (定义) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>强电解质 vs 弱电解质</h2>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800 text-2xl text-center">强电解质</h3>
+                        <p class="mt-4 text-slate-600 text-center">在水溶液中<strong class="text-blue-700">全部电离</strong>的电解质。</p>
+                        <p class="mt-2 text-slate-600 text-center mono">HCl → H⁺ + Cl⁻</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-red-800 text-2xl text-center">弱电解质</h3>
+                        <p class="mt-4 text-slate-600 text-center">在水溶液中<strong class="text-red-700">部分电离</strong>的电解质。</p>
+                        <p class="mt-2 text-slate-600 text-center mono">CH₃COOH ⇌ CH₃COO⁻ + H⁺</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 强弱电解质对比 (表格) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>强弱电解质对比</h2>
+                <div class="overflow-x-auto">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>特征</th>
+                                <th>强电解质</th>
+                                <th>弱电解质</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold">电离程度</td>
+                                <td class="text-blue-700 font-bold">完全 (100%)</td>
+                                <td class="text-red-700 font-bold">部分 (如 1%)</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">存在形式</td>
+                                <td><strong class="text-blue-700">只有离子</strong><br/>(没有电解质分子)</td>
+                                <td><strong class="text-red-700">离子 + 分子</strong><br/>(分子占绝大多数)</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">电离平衡</td>
+                                <td><strong class="text-blue-700">不存在</strong> (单向)</td>
+                                <td><strong class="text-red-700">存在</strong> (可逆)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 强电解质举例 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-blue-500 rounded"></span>强电解质举例</h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">强碱</strong><p class="mt-2 text-lg">NaOH, KOH, Ca(OH)₂, Ba(OH)₂...<br/>(通常是离子化合物)</p></div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">强酸</strong><p class="mt-2 text-lg">HCl, H₂SO₄, HNO₃, HBr, HI, HClO₄<br/>(六大强酸，共价化合物)</p></div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">绝大多数盐</strong><p class="mt-2 text-lg">NaCl, KNO₃, NH₄Cl...<br/>也包括<strong class="text-red-600">难溶性的盐</strong>，如 <code>BaSO₄</code>, <code>AgCl</code>。</p></div>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 弱电解质举例 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-red-500 rounded"></span>弱电解质举例</h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong class="bg-red-100 text-red-700 px-3 py-1 rounded-full">弱酸</strong><p class="mt-2 text-lg">除六大强酸外的所有酸。<br/>如：CH₃COOH (醋酸), H₂CO₃ (碳酸), HF, HClO, H₂S, H₂SO₃ ...</p></div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong class="bg-red-100 text-red-700 px-3 py-1 rounded-full">弱碱</strong><p class="mt-2 text-lg">除四大强碱外的所有碱。<br/>如：NH₃·H₂O (一水合氨), Fe(OH)₃ ...</p></div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong class="bg-red-100 text-red-700 px-3 py-1 rounded-full">水 (H₂O)</strong><p class="mt-2 text-lg">水自身能极微弱电离 (<code>H₂O ⇌ H⁺ + OH⁻</code>)，是<strong class="text-red-600">极弱</strong>的电解质。</p></div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 常见误区 (一)：导电性 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>常见误区 (一)：导电性</h2>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">误区：“强电解质溶液导电性一定强，弱电解质溶液导电性一定弱。”</h3>
+                    <p class="text-2xl text-center font-bold mt-4">× 错误</p>
+                </div>
+                 <div class="mt-6 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">辨析：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">导电性取决于<strong class="text-red-600">离子浓度</strong>和离子所带电荷。</p>
+                    <p class="mt-2 text-slate-600 text-lg"><strong>例 1 (浓度相同)：</strong><code>0.1 M HCl</code> 导电性 > <code>0.1 M CH₃COOH</code> (强 > 弱)</p>
+                    <p class="mt-2 text-slate-600 text-lg"><strong>例 2 (浓度不同)：</strong><code>1 M CH₃COOH</code> 导电性 > <code>0.0001 M HCl</code> (弱 > 强)</p>
+                    <p class="mt-4 text-slate-600 text-lg"><strong>结论：</strong>强弱只代表<strong class="text-blue-600">电离程度</strong>，与<strong class="text-blue-600">离子浓度</strong>没有必然关系。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 常见误区 (二)：化学键 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>常见误区 (二)：化学键</h2>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">误区：“含有强极性键的化合物一定是强电解质。”</h3>
+                    <p class="text-2xl text-center font-bold mt-4">× 错误</p>
+                </div>
+                 <div class="mt-6 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">辨析：</h3>
+                    <p class="mt-3 text-slate-600 text-lg"><strong>强电解质：</strong> <code>HCl</code> (强极性键)</p>
+                    <p class="mt-2 text-slate-600 text-lg"><strong>弱电解质：</strong> <code>HF</code> (F的电负性 > Cl，H-F键极性更强，但HF是弱酸)</p>
+                    <p class="mt-2 text-slate-600 text-lg"><strong>弱电解质：</strong> <code>H₂O</code> (O的电负性 > Cl，H-O键极性更强，但H₂O是极弱电解质)</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 常见误区 (三)：溶解度 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>常见误区 (三)：溶解度</h2>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">误区：“溶解度大的是强电解质，溶解度小的是弱电解质。”</h3>
+                    <p class="text-2xl text-center font-bold mt-4">× 错误</p>
+                </div>
+                 <div class="mt-6 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">辨析 (反例)：</h3>
+                    <p class="mt-3 text-slate-600 text-lg"><strong>溶解度小 vs 强电解质：</strong> <code>BaSO₄</code>, <code>AgCl</code> 难溶于水，但<strong class="text-blue-600">溶解的部分完全电离</strong>，是<strong class="text-blue-600">强电解质</strong>。</p>
+                    <p class="mt-2 text-slate-600 text-lg"><strong>溶解度大 vs 弱电解质：</strong> <code>CH₃COOH</code> (醋酸) 与水任意互溶，溶解度极大，但<strong class="text-red-600">只能部分电离</strong>，是<strong class="text-red-600">弱电解质</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 弱电解质的电离平衡 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>弱电解质的电离平衡</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-green-800 text-xl">定义：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">在一定条件下，当弱电解质<strong class="text-blue-700">分子电离</strong>成离子的速率，与<strong class="text-red-700">离子结合</strong>成分子的速率<strong class="text-green-700">相等</strong>时，体系中各组分浓度不再变化的状态。</p>
+                </div>
+                <p class="mt-6 text-xl text-slate-700 text-center">电离平衡是化学平衡的一种特例。</p>
+            </div>
+        </div>
+
+        <!-- 电离平衡的建立 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>电离平衡的建立 (以醋酸为例)</h2>
+                <p class="mt-8 text-xl text-slate-700 mono text-center">CH₃COOH ⇌ CH₃COO⁻ + H⁺</p>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <p class="mt-2 text-lg text-slate-700"><strong>开始：</strong>投入 CH₃COOH，<code>v(正)</code> 最大，<code>v(逆)</code> = 0。</p>
+                    <p class="mt-2 text-lg text-slate-700"><strong>过程：</strong>[CH₃COOH]↓, <code>v(正)</code><strong class="text-red-600">↓</strong>； [离子]↑, <code>v(逆)</code><strong class="text-blue-600">↑</strong>。</p>
+                    <p class="mt-2 text-lg text-slate-700"><strong>平衡：</strong><code>v(正) = v(逆) ≠ 0</code>。各组分浓度不再变化。</p>
+                </div>
+                 <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg text-center font-semibold">
+                    这是一个<strong class="text-red-900">动态平衡</strong>：电离和结合仍在发生，只是速率相等。
+                </div>
+            </div>
+        </div>
+
+        <!-- 电离方程式的书写 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>电离方程式的书写</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800 text-2xl">强电解质</h3>
+                        <p class="mt-3 text-slate-600 text-center">完全电离，用<strong class="text-blue-700 text-3xl mono">=</strong></p>
+                        <p class="mt-2 text-slate-600 mono text-center">HCl = H⁺ + Cl⁻</p>
+                        <p class="mt-2 text-slate-600 mono text-center">Ba(OH)₂ = Ba²⁺ + 2OH⁻</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-red-800 text-2xl">弱电解质</h3>
+                        <p class="mt-3 text-slate-600 text-center">部分电离，用<strong class="text-red-700 text-3xl mono">⇌</strong></p>
+                        <p class="mt-2 text-slate-600 mono text-center">CH₃COOH ⇌ H⁺ + CH₃COO⁻</p>
+                        <p class="mt-2 text-slate-600 mono text-center">NH₃·H₂O ⇌ NH₄⁺ + OH⁻</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 电离方程式 (多元弱酸) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>电离方程式 (多元弱酸)</h2>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">多元弱酸：<strong class="text-red-900">分步电离，不可合并</strong></h3>
+                </div>
+                <div class="mt-6 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">例如：碳酸 (H₂CO₃)</h3>
+                    <p class="mono mt-2 text-lg"><strong>第一步 (主要)：</strong> H₂CO₃ ⇌ H⁺ + HCO₃⁻</p>
+                    <p class="mono mt-2 text-lg"><strong>第二步 (次要)：</strong> HCO₃⁻ ⇌ H⁺ + CO₃²⁻</p>
+                    <p class="mt-4 text-slate-600 text-lg">溶液中离子浓度： <code>[H₂CO₃] >> [HCO₃⁻] >> [CO₃²⁻]</code></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 电离方程式 (多元弱碱) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>电离方程式 (多元弱碱)</h2>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">多元弱碱：<strong class="text-red-900">一步到位 (高中简化)</strong></h3>
+                </div>
+                <div class="mt-6 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">例如：氢氧化铁 (Fe(OH)₃)</h3>
+                    <p class="mono mt-2 text-lg text-center">Fe(OH)₃ ⇌ Fe³⁺ + 3OH⁻</p>
+                    <p class="mt-4 text-slate-600 text-lg">（虽然 Fe(OH)₃ 是弱电解质，但电离过程复杂，高中阶段简化为一步书写）</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 影响电离平衡的因素 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>影响电离平衡的因素 (重点)</h2>
+                <p class="mt-8 text-xl text-slate-700">以 <code>CH₃COOH</code> 为例，其电离是<strong class="text-red-600">吸热</strong>反应：</p>
+                <div class="mt-8 bg-cyan-50 border border-cyan-200 p-6 rounded-lg">
+                    <p class="mono text-center text-xl">CH₃COOH ⇌ H⁺ + CH₃COO⁻     ΔH > 0 (吸热)</p>
+                </div>
+                <p class="mt-6 text-xl text-slate-700 text-center">电离平衡也遵循<strong class="text-red-600">勒夏特列原理</strong>。</p>
+            </div>
+        </div>
+
+        <!-- 因素 (一)：加水稀释 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>因素 (一)：加水稀释</h2>
+                <p class="mt-8 text-xl text-slate-700">向 <code>CH₃COOH</code> 溶液中加水：</p>
+                 <div class="mt-8 space-y-3 text-lg">
+                    <p class="p-3 rounded-md bg-white border"><strong>改变：</strong> [CH₃COOH], [H⁺], [CH₃COO⁻] 浓度均<strong class="text-red-600">减小</strong>。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>移动：</strong> 平衡向<strong class="text-blue-600">正向 (→)</strong> 移动（向离子数目增多的方向）。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>电离程度(α)：</strong> <strong class="text-blue-600">增大 ↑</strong> (越稀越电离)。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>n(H⁺)：</strong> 氢离子<strong class="text-blue-600">数目 增多 ↑</strong> (因平衡正移)。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>c(H⁺)：</strong> 氢离子<strong class="text-red-600">浓度 减小 ↓</strong> (体积增大的效果 > 平衡移动的效果)。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>导电性：</strong> <strong class="text-red-600">减弱 ↓</strong> (离子浓度降低)。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 因素 (二)：加冰醋酸 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>因素 (二)：加冰醋酸 (增大浓度)</h2>
+                <p class="mt-8 text-xl text-slate-700">向 <code>CH₃COOH</code> 溶液中加少量冰醋酸 (固体，V不变)：</p>
+                 <div class="mt-8 space-y-3 text-lg">
+                    <p class="p-3 rounded-md bg-white border"><strong>改变：</strong> [CH₃COOH] 浓度<strong class="text-blue-600">增大</strong>。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>移动：</strong> 平衡向<strong class="text-blue-600">正向 (→)</strong> 移动 (消耗CH₃COOH)。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>电离程度(α)：</strong> <strong class="text-red-600">减小 ↓</strong> (越浓越不电离)。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>n(H⁺)：</strong> 氢离子<strong class="text-blue-600">数目 增多 ↑</strong> (因平衡正移)。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>c(H⁺)：</strong> 氢离子<strong class="text-blue-600">浓度 增大 ↑</strong> (V不变，n(H⁺)增多)。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>导电性：</strong> <strong class="text-blue-600">增强 ↑</strong> (离子浓度增大)。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 因素 (三)：同离子效应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>因素 (三)：同离子效应</h2>
+                 <p class="mt-8 text-xl text-slate-700"><code>CH₃COOH ⇌ H⁺ + CH₃COO⁻</code></p>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800 text-xl text-center">A. 加 HCl 气体 (V不变)</h3>
+                        <p class="mt-3 text-slate-600"><strong>改变：</strong> <code>[H⁺]</code> <strong class="text-blue-700">增大 ↑</strong></p>
+                        <p class="mt-2 text-slate-600"><strong>移动：</strong> 平衡<strong class="text-red-700">逆向 (←)</strong> 移动</p>
+                        <p class="mt-2 text-slate-600"><strong>α：</strong> <strong class="text-red-700">减小 ↓</strong></p>
+                        <p class="mt-2 text-slate-600"><strong>c(H⁺)：</strong> <strong class="text-blue-700">增大 ↑</strong> (外加的远大于平衡移动的)</p>
+                        <p class="mt-2 text-slate-600"><strong>导电性：</strong> <strong class="text-blue-700">增强 ↑</strong> (加入强电解质)</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-red-800 text-xl text-center">B. 加 CH₃COONa 固体 (V不变)</h3>
+                        <p class="mt-3 text-slate-600"><strong>改变：</strong> <code>[CH₃COO⁻]</code> <strong class="text-red-700">增大 ↑</strong></p>
+                        <p class="mt-2 text-slate-600"><strong>移动：</strong> 平衡<strong class="text-red-700">逆向 (←)</strong> 移动</p>
+                        <p class="mt-2 text-slate-600"><strong>α：</strong> <strong class="text-red-700">减小 ↓</strong></p>
+                        <p class="mt-2 text-slate-600"><strong>c(H⁺)：</strong> <strong class="text-red-700">减小 ↓</strong> (平衡逆移消耗H⁺)</p>
+                        <p class="mt-2 text-slate-600"><strong>导电性：</strong> <strong class="text-blue-700">增强 ↑</strong> (加入强电解质)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 因素 (四)：消耗 H⁺ -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>因素 (四)：消耗 H⁺</h2>
+                 <p class="mt-8 text-xl text-slate-700"><code>CH₃COOH ⇌ H⁺ + CH₃COO⁻</code></p>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800 text-xl text-center">A. 加 NaOH 固体 (V不变)</h3>
+                        <p class="mt-3 text-slate-600"><strong>改变：</strong> <code>[H⁺]</code> <strong class="text-red-700">减小 ↓</strong> (被中和)</p>
+                        <p class="mt-2 text-slate-600"><strong>移动：</strong> 平衡<strong class="text-blue-700">正向 (→)</strong> 移动</p>
+                        <p class="mt-2 text-slate-600"><strong>α：</strong> <strong class="text-blue-700">增大 ↑</strong></p>
+                        <p class="mt-2 text-slate-600"><strong>c(H⁺)：</strong> <strong class="text-red-700">减小 ↓</strong></p>
+                        <p class="mt-2 text-slate-600"><strong>导电性：</strong> <strong class="text-blue-700">增强 ↑</strong> (生成强电解质CH₃COONa)</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-red-800 text-xl text-center">B. 加 Mg 粉 (V不变)</h3>
+                        <p class="mt-3 text-slate-600"><strong>改变：</strong> <code>[H⁺]</code> <strong class="text-red-700">减小 ↓</strong> (Mg + 2H⁺ → ...)</p>
+                        <p class="mt-2 text-slate-600"><strong>移动：</strong> 平衡<strong class="text-blue-700">正向 (→)</strong> 移动</p>
+                        <p class="mt-2 text-slate-600"><strong>α：</strong> <strong class="text-blue-700">增大 ↑</strong></p>
+                        <p class="mt-2 text-slate-600"><strong>c(H⁺)：</strong> <strong class="text-red-700">减小 ↓</strong></p>
+                        <p class="mt-2 text-slate-600"><strong>导电性：</strong> <strong class="text-blue-700">增强 ↑</strong> (生成强电解质(CH₃COO)₂Mg)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 因素 (五)：升高温度 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>因素 (五)：升高温度</h2>
+                <p class="mt-8 text-xl text-slate-700">向 <code>CH₃COOH</code> 溶液中升高温度 (电离是<strong class="text-red-600">吸热</strong>反应)：</p>
+                 <div class="mt-8 space-y-3 text-lg">
+                    <p class="p-3 rounded-md bg-white border"><strong>改变：</strong> 温度 <strong class="text-blue-600">升高</strong>。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>移动：</strong> 平衡向<strong class="text-blue-600">正向 (→)</strong> 移动 (吸热方向)。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>电离程度(α)：</strong> <strong class="text-blue-600">增大 ↑</strong>。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>c(H⁺)：</strong> 氢离子<strong class="text-blue-600">浓度 增大 ↑</strong>。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>导电性：</strong> <strong class="text-blue-600">增强 ↑</strong> (离子浓度增大)。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 因素总结 (表格) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>影响电离平衡的因素 (总结)</h2>
+                <div class="overflow-x-auto">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>操作 (对CH₃COOH)</th>
+                                <th>平衡移动</th>
+                                <th>c(H⁺)</th>
+                                <th>电离程度($\alpha$)</th>
+                                <th>导电性</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="font-bold">加水稀释</td> <td class="text-blue-600 font-bold">正向 →</td> <td class="text-red-600 font-bold">↓</td> <td class="text-blue-600 font-bold">↑ (越稀越电离)</td> <td class="text-red-600 font-bold">↓</td> </tr>
+                            <tr><td class="font-bold">加冰醋酸</td> <td class="text-blue-600 font-bold">正向 →</td> <td class="text-blue-600 font-bold">↑</td> <td class="text-red-600 font-bold">↓ (越浓越不电离)</td> <td class="text-blue-600 font-bold">↑</td> </tr>
+                            <tr><td class="font-bold">加 HCl(g)</td> <td class="text-red-600 font-bold">逆向 ←</td> <td class="text-blue-600 font-bold">↑</td> <td class="text-red-600 font-bold">↓</td> <td class="text-blue-600 font-bold">↑</td> </tr>
+                            <tr><td class="font-bold">加 NaOH(s)</td> <td class="text-blue-600 font-bold">正向 →</td> <td class="text-red-600 font-bold">↓</td> <td class="text-blue-600 font-bold">↑</td> <td class="text-blue-600 font-bold">↑</td> </tr>
+                            <tr><td class="font-bold">加 $CH_3COONa$(s)</td> <td class="text-red-600 font-bold">逆向 ←</td> <td class="text-red-600 font-bold">↓</td> <td class="text-red-600 font-bold">↓</td> <td class="text-blue-600 font-bold">↑</td> </tr>
+                            <tr><td class="font-bold">加 Mg(s)</td> <td class="text-blue-600 font-bold">正向 →</td> <td class="text-red-600 font-bold">↓</td> <td class="text-blue-600 font-bold">↑</td> <td class="text-blue-600 font-bold">↑</td> </tr>
+                            <tr><td class="font-bold">升高温度</td> <td class="text-blue-600 font-bold">正向 →</td> <td class="text-blue-600 font-bold">↑</td> <td class="text-blue-600 font-bold">↑</td> <td class="text-blue-600 font-bold">↑</td> </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 例题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (一)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列物质在水溶液中，属于弱电解质的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> $H_2SO_4$</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> $BaSO_4$</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> $NH_3 \cdot H_2O$</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> $NaCl$</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (一)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>硫酸($H_2SO_4$)是强酸，氯化钠($NaCl$)是盐，硫酸钡($BaSO_4$)是难溶但溶解部分完全电离的强电解质；只有一水合氨($NH_3 \cdot H_2O$)是弱碱，属于弱电解质。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 例题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (二)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列关于电解质强弱与溶液导电性的关系，说法正确的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 强电解质溶液导电性一定强于弱电解质溶液</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 溶液导电性越强，电解质的电离程度越大</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 弱电解质的电离程度远小于强电解质</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 难溶盐 $AgCl$ 溶解度小，因此是弱电解质</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (二)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>(A) 错误，导电性由离子浓度决定，稀的强电解质可能弱于浓的弱电解质。(B) 错误，导电性由离子浓度决定，而电离程度是百分比，两者无必然关系。(C) 正确，弱电解质只能部分电离，而强电解质是完全电离。(D) 错误，强弱取决于电离程度，难溶盐溶解的部分完全电离，仍属于强电解质。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 例题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (三)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>向 $CH_3COOH$ (醋酸) 溶液中加入少量醋酸钠固体 ($CH_3COONa$)，达到新的电离平衡时，下列叙述正确的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 醋酸的电离程度增大</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> $c(H^+)$ 增大</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 电离平衡向逆反应方向移动</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 溶液的导电性减弱</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (三)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>醋酸钠($CH_3COONa$)是强电解质，加入后，$c(CH_3COO^-)$ 增大，抑制了醋酸的电离，根据勒夏特列原理，电离平衡向逆反应方向移动，电离程度减小，导致 $c(H^+)$ 减小。由于加入了强电解质，总离子浓度增大，故导电性增强。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                 </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看！请大家务必掌握影响电离平衡的因素。</p>
+                <p class="mt-4 text-2xl text-slate-600">下节课我们将学习电离平衡常数，再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- 导航控件 -->
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <!-- JS 逻辑 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

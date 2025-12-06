@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>弧度制：角的天然语言 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .graph-canvas {
+            border-radius: 0.5rem;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">弧度制：角的“天然”语言</h1>
+                <p class="text-2xl text-slate-600 mt-4">一种更纯粹、更本质的角的度量方式</p>
+            </div>
+        </div>
+
+        <!-- 破冰：聊聊单位 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-cyan-500 pb-2">破冰：我们为什么需要新“单位”？</h2>
+                <p class="mt-6 text-lg text-slate-700 leading-relaxed">
+                    我们用“度”来衡量角，比如圆的一周是 <strong class="text-cyan-600">360°</strong>。但这“360”其实是古巴比伦人的人为规定，因为它能被很多数整除，很方便。
+                </p>
+                <p class="mt-4 text-lg text-slate-700 leading-relaxed">
+                    这就像有的地方用“英尺”量身高，但科学界通用“米”。因为“米”的定义更标准、更“自然”。
+                </p>
+                <p class="mt-4 text-xl text-slate-800 font-semibold leading-relaxed">
+                    今天，我们就来寻找一种藏在圆本身的结构里，不需要人为规定的、更“天然”的度量角的方式。
+                </p>
+            </div>
+        </div>
+
+        <!-- 探索：在圆里寻找天然单位 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto flex flex-col items-center gap-6">
+                <div class="w-full">
+                    <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-gray-500 pb-2">探索：在圆里寻找“天然单位”</h2>
+                    <p class="mt-6 text-lg text-slate-700 leading-relaxed">
+                        对于一个确定的角，虽然半径 r 和弧长 l 都在变，但它们的<strong class="text-red-600">比值 l / r</strong> 却是固定的！无论圆画多大，这个比值永远一样。
+                    </p>
+                    <p class="mt-4 text-lg text-slate-700 italic">这个不变的比值，不就是描述这个角大小的完美信物吗？</p>
+                    <div class="mt-6 bg-amber-50 p-4 rounded-lg text-xl font-bold text-amber-800 text-center">
+                        弧度定义： α = l / r
+                    </div>
+                </div>
+                <div class="w-full flex flex-col md:flex-row print:flex-row justify-around items-start gap-4 mt-4">
+                    <div class="flex-1 text-center">
+                        <p class="font-semibold mb-2">1. 画出角和弧长</p>
+                        <canvas id="radian-step1-canvas" class="graph-canvas w-full" width="200" height="200"></canvas>
+                    </div>
+                    <div class="flex-1 text-center">
+                         <p class="font-semibold mb-2">2. 改变半径</p>
+                        <canvas id="radian-step2-canvas" class="graph-canvas w-full" width="200" height="200"></canvas>
+                    </div>
+                    <div class="flex-1 text-center">
+                         <p class="font-semibold mb-2">3. 发现比值不变</p>
+                        <canvas id="radian-step3-canvas" class="graph-canvas w-full" width="200" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 换算：打通“度”与“弧度” -->
+         <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-emerald-500 pb-2">打通“度”与“弧度”的桥梁</h2>
+                <p class="mt-6 text-xl text-slate-700">一个完整的周角 (360°)，对应的弧长是整个圆的周长 (C = 2πr)。</p>
+                <p class="mt-4 text-lg">按公式计算：α = 弧长 / 半径 = 2πr / r = 2π</p>
+                <p class="mt-2 text-2xl">于是，我们得到了换算的“石碑”：<strong class="text-red-600">360° = 2π (rad)</strong></p>
+                <div class="mt-4 bg-emerald-50 p-6 rounded-lg text-2xl font-bold text-emerald-800">
+                    核心换算公式：180° = π (rad)
+                </div>
+                <p class="mt-4 text-slate-600 text-base leading-relaxed">
+                    <strong>请注意：</strong>这不是“180 = 3.14”。而是指“180度的角”和“π弧度的角”是同一个角，就像“1米”和“100厘米”是同一个长度一样。
+                </p>
+            </div>
+        </div>
+        
+        <!-- 换算练习 (1/2): 弧度转角度 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-sky-500 pb-2">换算练练手 (1/2)</h2>
+                <div class="mt-8 text-lg">
+                    <div class="bg-sky-50 p-6 rounded-lg inline-block">
+                        <p class="font-bold text-xl mb-3 text-sky-800">弧度 → 角度 (技巧：见π换180°)</p>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>π/2 → 180°/2 = 90°</li>
+                            <li>π/4 → 180°/4 = 45°</li>
+                            <li>-π/3 → -180°/3 = -60°</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 换算练习 (2/2): 角度转弧度 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-violet-500 pb-2">换算练练手 (2/2)</h2>
+                <div class="mt-8 text-lg">
+                    <div class="bg-violet-50 p-6 rounded-lg inline-block">
+                        <p class="font-bold text-xl mb-3 text-violet-800">角度 → 弧度 (技巧：看它是180°的几分之几)</p>
+                         <ul class="list-disc list-inside space-y-2">
+                            <li>60° → (60/180)π = π/3</li>
+                            <li>135° → (135/180)π = 3π/4</li>
+                            <li>300° → (300/180)π = 5π/3</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 强化：形成肌肉记忆 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row print:flex-row items-center gap-8">
+                <div class="w-full md:w-1/2 print:w-1/2">
+                    <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-rose-500 pb-2">强化：形成肌肉记忆</h2>
+                    <p class="mt-6 text-lg text-slate-700 leading-relaxed">
+                        以下特殊角必须像乘法口诀一样熟练，形成条件反射！
+                    </p>
+                    <ul class="list-disc list-inside mt-4 space-y-3 text-base">
+                        <li><strong>30°家族 (π/6):</strong> 30°=π/6, 150°=5π/6, 210°=7π/6</li>
+                        <li><strong>45°家族 (π/4):</strong> 45°=π/4, 135°=3π/4, 225°=5π/4</li>
+                        <li><strong>60°家族 (π/3):</strong> 60°=π/3, 120°=2π/3, 240°=4π/3</li>
+                        <li><strong>坐标轴:</strong> 0°=0, 90°=π/2, 180°=π, 270°=3π/2, 360°=2π</li>
+                    </ul>
+                </div>
+                <div class="w-full md:w-1/2 print:w-1/2 flex justify-center items-center">
+                    <canvas id="special-angles-canvas" class="graph-canvas" width="300" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 应用 (1/2): 终边相同的角 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">应用 (1/2): 终边相同的角</h2>
+                <div class="mt-8">
+                    <div class="bg-blue-50 p-6 rounded-lg text-lg inline-block">
+                        <div class="mb-2">
+                            <p class="text-lg flex items-baseline flex-wrap">
+                                <strong class="text-xl text-blue-800 mr-3">终边相同的角:</strong> <span class="mr-3">以前：α + k·360°</span> <span class="mr-3">→</span> <strong>现在：α + 2kπ (k是整数)</strong>
+                            </p>
+                        </div>
+                        <div class="mt-3 border-t pt-3">
+                            <p class="font-semibold">例：找出与 -9π/4 终边相同的最小正角。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 应用 (2/2): 生活中的弧度 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-indigo-500 pb-2">应用 (2/2): 生活中的弧度</h2>
+                <div class="mt-8">
+                     <div class="bg-indigo-50 p-6 rounded-lg text-lg inline-block">
+                        <p class="font-bold text-xl mb-2 text-indigo-800">角速度</p>
+                        <p>时钟的分针走一圈 (60分钟) 是 2π 弧度。</p>
+                        <p>那么它走1分钟，转过的角速度是：</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 (1/4) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">实战练习 (1/4)</h2>
+                <div class="space-y-4 text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg"><strong>1.</strong> 若 α = -5 rad，则角 α 的终边在？ (A.第一象限 B.第二象限 C.第三象限 D.第四象限)</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题 (2/4) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">实战练习 (2/4)</h2>
+                <div class="space-y-4 text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg"><strong>2.</strong> 考试用时2小时，钟表时针转过的弧度数是？ (A. π/3 B. -π/3 C. 2π/3 D. -2π/3)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 (3/4) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">实战练习 (3/4)</h2>
+                <div class="space-y-4 text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg"><strong>3.</strong> 下列结论中错误的是？<br>
+                        <span class="ml-4">A. -150° 化成弧度是 -7π/6 rad</span><br>
+                        <span class="ml-4">B. -10π/3 rad 化成度是 -600°</span><br>
+                        <span class="ml-4">C. 67°30' 化成弧度是 3π/8 rad</span><br>
+                        <span class="ml-4">D. π/12 rad 化成度是 15°</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 (4/4) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">实战练习 (4/4)</h2>
+                <div class="space-y-4 text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg"><strong>4.</strong> 将 300° 化为弧度是？ (A. 4π/3 B. 5π/3 C. 11π/6 D. 23π/12)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题解析 (1/4) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析 (1/4)</h2>
+                <div class="space-y-3 text-base">
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>1. 答案：A (第一象限)</strong></p>
+                        <p><strong>详解：</strong>由于 -2π < -5 < -3π/2，故角 α 的终边在第一象限。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题解析 (2/4) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析 (2/4)</h2>
+                <div class="space-y-3 text-base">
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>2. 答案：B (-π/3)</strong></p>
+                        <p><strong>详解：</strong>因为时针旋转一周为12小时，转过的角度为2π，按顺时针转所形成的角为负角，所以经过2小时，时针所转过的弧度数为 - (1/6) × 2π = -π/3。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题解析 (3/4) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析 (3/4)</h2>
+                <div class="space-y-3 text-base">
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>3. 答案：A</strong></p>
+                        <p><strong>详解：</strong>对于A, -150° = -150 × (π/180) = -5π/6，A错误；对于B, -10π/3 = (-10π/3) × (180°/π) = -600°，B正确；对于C, 67°30' = 67.5° = 67.5 × (π/180) = 3π/8，C正确；对于D, π/12 = (π/12) × (180°/π) = 15°，D正确。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题解析 (4/4) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析 (4/4)</h2>
+                <div class="space-y-3 text-base">
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>4. 答案：B (5π/3)</strong></p>
+                        <p><strong>详解：</strong>根据 180° = π rad，得 300° = 300/180 × π (rad) = 5π/3 (rad)。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 课堂总结 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8">课堂总结</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                    <div class="bg-sky-100 p-6 rounded-lg">
+                        <h3 class="font-bold text-2xl mb-2">① 为什么学弧度？</h3>
+                        <p>更自然、更本质，是科学的通用语言。</p>
+                    </div>
+                    <div class="bg-amber-100 p-6 rounded-lg">
+                        <h3 class="font-bold text-2xl mb-2">② 弧度是什么？</h3>
+                        <p>弧长与半径的比值 (α = l/r)。</p>
+                    </div>
+                    <div class="bg-emerald-100 p-6 rounded-lg">
+                        <h3 class="font-bold text-2xl mb-2">③ 怎么换算？</h3>
+                        <p>核心桥梁：180° = π。</p>
+                    </div>
+                     <div class="bg-rose-100 p-6 rounded-lg">
+                        <h3 class="font-bold text-2xl mb-2">④ 要做什么？</h3>
+                        <p>背熟特殊角的弧度值！</p>
+                    </div>
+                </div>
+                <p class="mt-8 text-lg text-slate-700 leading-relaxed">
+                    从今天起，请慢慢习惯用 π/2 代替 90°。一开始会有点别扭，就像刚学外语。但只要坚持使用，它很快就会成为你的母语。
+                </p>
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Helper to draw axes
+            function drawAxes(ctx) {
+                const w = ctx.canvas.width;
+                const h = ctx.canvas.height;
+                const midX = w / 2;
+                const midY = h / 2;
+
+                ctx.save();
+                ctx.strokeStyle = '#9ca3af';
+                ctx.lineWidth = 1;
+                // X-Axis
+                ctx.beginPath();
+                ctx.moveTo(0, midY);
+                ctx.lineTo(w, midY);
+                ctx.stroke();
+                // Y-Axis
+                ctx.beginPath();
+                ctx.moveTo(midX, 0);
+                ctx.lineTo(midX, h);
+                ctx.stroke();
+                
+                ctx.fillStyle = '#6b7280';
+                ctx.font = '10px Arial';
+                ctx.fillText('y', midX + 5, 10);
+                ctx.fillText('x', w - 10, midY - 5);
+                ctx.restore();
+            }
+
+            // Shared drawing function for Radian Definition steps
+            function drawCircleAndArc(ctx, cx, cy, radius, angle, radiusColor, arcColor, rLabel, lLabel) {
+                ctx.save();
+                // Draw the full circle outline
+                ctx.strokeStyle = '#d1d5db';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
+                ctx.stroke();
+
+                // Draw the arc
+                ctx.strokeStyle = arcColor;
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.arc(cx, cy, radius, 0, -angle, true);
+                ctx.stroke();
+
+                // Draw radius lines
+                ctx.strokeStyle = radiusColor;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(cx + radius, cy);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(cx + radius * Math.cos(-angle), cy + radius * Math.sin(-angle));
+                ctx.stroke();
+
+                // Draw labels
+                ctx.font = 'bold 14px Noto Serif SC';
+                ctx.fillStyle = radiusColor;
+                ctx.fillText(rLabel, cx + radius * 0.5, cy - 5);
+                
+                ctx.fillStyle = arcColor;
+                ctx.save();
+                ctx.translate(cx + radius * 0.9 * Math.cos(-angle/2), cy + radius * 0.9 * Math.sin(-angle/2));
+                ctx.rotate(-angle/2 + Math.PI/2);
+                ctx.textAlign = 'center';
+                ctx.fillText(lLabel, 0, 0);
+                ctx.restore();
+
+                ctx.fillStyle = 'black';
+                ctx.font = 'bold 16px Noto Serif SC';
+                ctx.fillText('α', cx + 15, cy - 15);
+                ctx.fillText('O', cx - 15, cy + 15);
+                ctx.restore();
+            }
+
+            const angle = Math.PI / 3; // 60 degrees
+
+            // Step 1 Canvas
+            const canvasStep1 = document.getElementById('radian-step1-canvas');
+            if (canvasStep1) {
+                const ctx = canvasStep1.getContext('2d');
+                const w = canvasStep1.width;
+                const h = canvasStep1.height;
+                const midX = w / 2;
+                const midY = h / 2;
+                const radius1 = w * 0.4;
+                
+                ctx.fillStyle = '#f8fafc';
+                ctx.fillRect(0, 0, w, h);
+                drawAxes(ctx);
+                drawCircleAndArc(ctx, midX, midY, radius1, angle, '#ef4444', '#3b82f6', 'r₁', 'l₁');
+            }
+
+            // Step 2 Canvas
+            const canvasStep2 = document.getElementById('radian-step2-canvas');
+            if (canvasStep2) {
+                const ctx = canvasStep2.getContext('2d');
+                const w = canvasStep2.width;
+                const h = canvasStep2.height;
+                const midX = w / 2;
+                const midY = h / 2;
+                const radius1 = w * 0.25;
+                const radius2 = w * 0.4;
+
+                ctx.fillStyle = '#f8fafc';
+                ctx.fillRect(0, 0, w, h);
+                drawAxes(ctx);
+                drawCircleAndArc(ctx, midX, midY, radius1, angle, '#ef4444', '#3b82f6', 'r₁', 'l₁');
+                drawCircleAndArc(ctx, midX, midY, radius2, angle, '#ef4444', '#10b981', 'r₂', 'l₂');
+            }
+
+            // Step 3 Canvas
+            const canvasStep3 = document.getElementById('radian-step3-canvas');
+            if (canvasStep3) {
+                const ctx = canvasStep3.getContext('2d');
+                const w = canvasStep3.width;
+                const h = canvasStep3.height;
+                const midX = w / 2;
+                const midY = h / 2;
+                const radius1 = w * 0.25;
+                const radius2 = w * 0.4;
+                
+                ctx.fillStyle = '#f8fafc';
+                ctx.fillRect(0, 0, w, h);
+                drawAxes(ctx);
+                drawCircleAndArc(ctx, midX, midY, radius1, angle, '#ef4444', '#3b82f6', 'r₁', 'l₁');
+                drawCircleAndArc(ctx, midX, midY, radius2, angle, '#ef4444', '#10b981', 'r₂', 'l₂');
+
+                ctx.fillStyle = '#dc2626';
+                ctx.font = 'bold 16px Noto Serif SC';
+                ctx.textAlign = 'center';
+                ctx.fillText('比值 l/r 固定!', midX, 18);
+                
+                ctx.fillStyle = 'black';
+                ctx.font = 'bold 12px Noto Serif SC';
+                ctx.fillText(`l₁/r₁ = l₂/r₂ ≈ ${angle.toFixed(2)}`, midX, h - 15);
+            }
+
+
+            // Canvas 2: Special Angles
+            const canvas2 = document.getElementById('special-angles-canvas');
+            if (canvas2) {
+                 const ctx = canvas2.getContext('2d');
+                 drawAxes(ctx);
+                 const midX = canvas2.width / 2;
+                 const midY = canvas2.height / 2;
+                 const radius = canvas2.width * 0.45;
+
+                 ctx.strokeStyle = '#d1d5db';
+                 ctx.beginPath();
+                 ctx.arc(midX, midY, radius, 0, 2*Math.PI);
+                 ctx.stroke();
+
+                 const angles = [
+                    {deg: 30, rad: 'π/6', color: '#10b981'},
+                    {deg: 45, rad: 'π/4', color: '#f59e0b'},
+                    {deg: 60, rad: 'π/3', color: '#ef4444'},
+                    {deg: 90, rad: 'π/2', color: '#3b82f6'},
+                    {deg: 120, rad: '2π/3', color: '#ef4444'},
+                    {deg: 135, rad: '3π/4', color: '#f59e0b'},
+                    {deg: 150, rad: '5π/6', color: '#10b981'},
+                    {deg: 180, rad: 'π', color: '#3b82f6'},
+                 ];
+
+                 angles.forEach(a => {
+                    const rad = -a.deg * Math.PI / 180;
+                    ctx.strokeStyle = a.color;
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(midX, midY);
+                    ctx.lineTo(midX + radius*0.8 * Math.cos(rad), midY + radius*0.8 * Math.sin(rad));
+                    ctx.stroke();
+
+                    ctx.fillStyle = a.color;
+                    ctx.font = '12px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(a.rad, midX + radius * Math.cos(rad), midY + radius * Math.sin(rad));
+                 });
+            }
+
+        });
+    </script>
+</body>
+</html>
+

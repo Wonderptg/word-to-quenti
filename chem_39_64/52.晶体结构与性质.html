@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>晶体结构与性质</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$','$$'], ['\\[','\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <!-- MathJax Library -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        /* 基础字体 */
+        body { font-family: "Microsoft YaHei", "SimHei", sans-serif; }
+        
+        /* 打印优化核心样式 */
+        @media print {
+            @page {
+                size: landscape; /* 强制横向 */
+                margin: 0;
+            }
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                background-color: white;
+            }
+            .no-print { display: none !important; }
+            
+            .slide-container {
+                display: block !important;
+                height: auto !important;
+                overflow: visible !important;
+            }
+            
+            .slide {
+                display: flex !important;
+                break-after: page;
+                page-break-after: always;
+                height: 100vh;
+                width: 100vw;
+                border: none;
+                margin: 0;
+                padding: 2rem 3rem; /* 打印时的内边距 */
+                box-sizing: border-box;
+            }
+        }
+
+        /* 屏幕显示样式 */
+        .slide {
+            display: none;
+            height: 100vh;
+            width: 100%;
+            flex-direction: column;
+            justify-content: center;
+            background-color: white;
+            padding: 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slide.active {
+            display: flex;
+        }
+
+        /* 强调框样式 */
+        .concept-box {
+            background-color: #eff6ff; /* blue-50 */
+            border-left: 6px solid #3b82f6; /* blue-500 */
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .highlight-box {
+            background-color: #fdf2f8; /* pink-50 */
+            border-left: 6px solid #db2777; /* pink-600 */
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* 选项样式 */
+        .option-item {
+            padding: 1rem 1.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1.25rem;
+        }
+        .option-item:hover {
+            background-color: #f3f4f6;
+            border-color: #9ca3af;
+        }
+
+        /* SVG 样式 */
+        .particle { fill: #4b5563; }
+        .bond { stroke: #9ca3af; stroke-width: 2; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- 导航栏 (打印隐藏) -->
+    <div class="no-print fixed bottom-6 right-6 z-50 flex gap-4 bg-white p-3 rounded-xl shadow-2xl border border-gray-200">
+        <button onclick="prevSlide()" class="px-5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-bold transition">上一页</button>
+        <span id="page-indicator" class="px-4 py-2 font-mono text-lg flex items-center font-bold text-blue-600">1 / 1</span>
+        <button onclick="nextSlide()" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold transition">下一页</button>
+        <button onclick="window.print()" class="px-5 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-bold transition flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+            打印课件
+        </button>
+    </div>
+
+    <div class="slide-container">
+
+        <!-- P1: 封面 -->
+        <div class="slide active">
+            <div class="flex-1 flex flex-col justify-center items-center text-center">
+                <div class="mb-10">
+                    <!-- 晶体图标 -->
+                    <svg width="150" height="150" viewBox="0 0 100 100">
+                        <path d="M50 10 L85 30 L85 70 L50 90 L15 70 L15 30 Z" fill="none" stroke="#2563eb" stroke-width="3"/>
+                        <path d="M50 10 L50 50 L85 70" fill="none" stroke="#2563eb" stroke-width="2" stroke-dasharray="4"/>
+                        <path d="M15 70 L50 50 L15 30" fill="none" stroke="#2563eb" stroke-width="2" stroke-dasharray="4"/>
+                        <circle cx="50" cy="10" r="4" fill="#1e40af"/>
+                        <circle cx="85" cy="30" r="4" fill="#1e40af"/>
+                        <circle cx="85" cy="70" r="4" fill="#1e40af"/>
+                        <circle cx="50" cy="90" r="4" fill="#1e40af"/>
+                        <circle cx="15" cy="70" r="4" fill="#1e40af"/>
+                        <circle cx="15" cy="30" r="4" fill="#1e40af"/>
+                        <circle cx="50" cy="50" r="4" fill="#1e40af" opacity="0.5"/>
+                    </svg>
+                </div>
+                <h1 class="text-6xl font-extrabold text-slate-900 mb-6 tracking-tight">晶体结构与性质</h1>
+                <h2 class="text-3xl text-blue-600 font-medium mb-12">第一课时：物质的聚集状态与晶体特征</h2>
+                <div class="w-32 h-2 bg-blue-500 rounded-full"></div>
+            </div>
+        </div>
+
+        <!-- P2: 物质聚集状态的认知 -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-slate-800 mb-8 border-b-4 border-blue-200 pb-4">一、 物质聚集状态的认知发展</h3>
+            <div class="space-y-8 text-2xl leading-relaxed">
+                <div class="concept-box">
+                    <p class="font-bold text-xl text-blue-800 mb-2">早期认知 (20世纪前)：</p>
+                    <p>认为<span class="font-bold text-red-600">分子</span>是保持物质性质的最小粒子。物质的三态（固、液、气）仅是分子间距离的变化。</p>
+                </div>
+                
+                <div class="highlight-box">
+                    <p class="font-bold text-xl text-pink-800 mb-2">现代认知 (X射线衍射技术后)：</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>许多固体不是由分子构成的 (如 $NaCl$, 金刚石, 金属)。</li>
+                        <li><span class="font-bold">等离子体</span>：电子 + 阳离子 + 电中性粒子 (呈电中性)。</li>
+                        <li><span class="font-bold">离子液体</span>：熔点不高，仅由离子组成的液体。</li>
+                        <li><span class="font-bold">液晶</span>：介于液态和固态之间的特殊状态。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- P3: 晶体与非晶体的定义 -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-slate-800 mb-8 border-b-4 border-blue-200 pb-4">二、 晶体与非晶体</h3>
+            <div class="flex gap-12 h-full">
+                <div class="w-1/2 flex flex-col space-y-6">
+                    <div class="flex-1 bg-blue-50 p-6 rounded-lg border border-blue-200">
+                        <h4 class="text-3xl font-bold text-blue-900 mb-4">晶体 (Crystal)</h4>
+                        <p class="text-xl mb-4">内部微粒在三维空间呈<span class="text-red-600 font-bold">周期性有序排列</span>。</p>
+                        <p class="text-lg text-gray-600">例子：冰、碘、金刚石、NaCl、石英。</p>
+                    </div>
+                    <div class="flex-1 bg-gray-50 p-6 rounded-lg border border-gray-200">
+                        <h4 class="text-3xl font-bold text-gray-700 mb-4">非晶体 (Amorphous)</h4>
+                        <p class="text-xl mb-4">内部微粒排列<span class="text-red-600 font-bold">相对无序</span>。</p>
+                        <p class="text-lg text-gray-600">例子：玻璃、炭黑、玛瑙。</p>
+                    </div>
+                </div>
+                <div class="w-1/2 flex flex-col items-center justify-center">
+                    <!-- SVG: 晶体 vs 非晶体 微观结构 -->
+                    <svg viewBox="0 0 400 300" class="w-full bg-white rounded shadow-md border">
+                        <text x="100" y="30" font-size="18" font-weight="bold" text-anchor="middle">晶体 (有序)</text>
+                        <text x="300" y="30" font-size="18" font-weight="bold" text-anchor="middle">非晶体 (无序)</text>
+                        <line x1="200" y1="40" x2="200" y2="280" stroke="#e5e7eb" stroke-width="2" stroke-dasharray="5,5"/>
+                        
+                        <!-- Ordered Lattice -->
+                        <g transform="translate(40, 60)">
+                            <circle cx="0" cy="0" r="6" class="particle" fill="#2563eb"/> <circle cx="40" cy="0" r="6" class="particle" fill="#2563eb"/> <circle cx="80" cy="0" r="6" class="particle" fill="#2563eb"/> <circle cx="120" cy="0" r="6" class="particle" fill="#2563eb"/>
+                            <circle cx="0" cy="40" r="6" class="particle" fill="#2563eb"/> <circle cx="40" cy="40" r="6" class="particle" fill="#2563eb"/> <circle cx="80" cy="40" r="6" class="particle" fill="#2563eb"/> <circle cx="120" cy="40" r="6" class="particle" fill="#2563eb"/>
+                            <circle cx="0" cy="80" r="6" class="particle" fill="#2563eb"/> <circle cx="40" cy="80" r="6" class="particle" fill="#2563eb"/> <circle cx="80" cy="80" r="6" class="particle" fill="#2563eb"/> <circle cx="120" cy="80" r="6" class="particle" fill="#2563eb"/>
+                            <circle cx="0" cy="120" r="6" class="particle" fill="#2563eb"/> <circle cx="40" cy="120" r="6" class="particle" fill="#2563eb"/> <circle cx="80" cy="120" r="6" class="particle" fill="#2563eb"/> <circle cx="120" cy="120" r="6" class="particle" fill="#2563eb"/>
+                        </g>
+                        
+                        <!-- Disordered Structure -->
+                        <g transform="translate(240, 60)">
+                            <circle cx="10" cy="10" r="6" class="particle" fill="#9ca3af"/> <circle cx="50" cy="5" r="6" class="particle" fill="#9ca3af"/> <circle cx="90" cy="15" r="6" class="particle" fill="#9ca3af"/> <circle cx="125" cy="8" r="6" class="particle" fill="#9ca3af"/>
+                            <circle cx="5" cy="50" r="6" class="particle" fill="#9ca3af"/> <circle cx="45" cy="45" r="6" class="particle" fill="#9ca3af"/> <circle cx="85" cy="55" r="6" class="particle" fill="#9ca3af"/> <circle cx="115" cy="40" r="6" class="particle" fill="#9ca3af"/>
+                            <circle cx="15" cy="90" r="6" class="particle" fill="#9ca3af"/> <circle cx="60" cy="85" r="6" class="particle" fill="#9ca3af"/> <circle cx="95" cy="95" r="6" class="particle" fill="#9ca3af"/> <circle cx="130" cy="80" r="6" class="particle" fill="#9ca3af"/>
+                            <circle cx="8" cy="130" r="6" class="particle" fill="#9ca3af"/> <circle cx="55" cy="120" r="6" class="particle" fill="#9ca3af"/> <circle cx="90" cy="135" r="6" class="particle" fill="#9ca3af"/> <circle cx="120" cy="125" r="6" class="particle" fill="#9ca3af"/>
+                        </g>
+                        
+                        <text x="200" y="260" font-size="14" fill="#6b7280" text-anchor="middle">微观结构示意图</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- P4: 晶体的特点 (1) 自范性 -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-slate-800 mb-8 border-b-4 border-blue-200 pb-4">三、 晶体的特点 (1)：自范性</h3>
+            <div class="space-y-6 text-2xl">
+                <div class="concept-box">
+                    <p class="font-bold mb-2">定义：</p>
+                    <p>在适宜条件下，晶体能<span class="font-bold text-blue-600">自发地</span>呈现封闭的、规则的几何多面体外形。</p>
+                </div>
+                
+                <ul class="list-disc list-inside space-y-4 text-gray-800">
+                    <li><strong>本质原因：</strong> 微观粒子在三维空间内的<span class="font-bold text-red-600">周期性有序排列</span>的宏观表现。</li>
+                    <li><strong>必要条件：</strong> <span class="font-bold text-blue-600">生长的速率适当</span>。
+                        <ul class="list-none pl-8 mt-2 text-gray-600 text-xl">
+                            <li>- 速率太快 $\rightarrow$ 粉末或非晶体 (如玛瑙)。</li>
+                            <li>- 速率适当 $\rightarrow$ 完美晶体 (如水晶)。</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p class="text-gray-500 text-lg mt-4 italic">“自发”不代表“必然发生”，需要条件配合。</p>
+            </div>
+        </div>
+
+        <!-- P5: 晶体的特点 (2) 各向异性 -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-slate-800 mb-8 border-b-4 border-blue-200 pb-4">四、 晶体的特点 (2)：各向异性</h3>
+            <div class="space-y-8 text-2xl">
+                <p class="leading-relaxed">
+                    由于微观排列在不同方向上不相同，晶体在不同方向上表现出不同的<strong>物理性质</strong>（如硬度、导热性、导电性、光学性质等）。
+                </p>
+                
+                <div class="grid grid-cols-2 gap-8">
+                    <div class="bg-gray-100 p-6 rounded border-l-8 border-gray-600">
+                        <h4 class="font-bold text-2xl mb-4">石墨 (Graphite)</h4>
+                        <p><strong>层内：</strong> 导电性极好。</p>
+                        <p><strong>层间：</strong> 导电性差。</p>
+                        <p class="mt-2 text-sm text-gray-500">（不同方向电导率相差1万倍）</p>
+                    </div>
+                    <div class="bg-gray-100 p-6 rounded border-l-8 border-gray-600">
+                        <h4 class="font-bold text-2xl mb-4">云母 (Mica)</h4>
+                        <p><strong>解理：</strong> 容易沿层间方向剥离。</p>
+                        <p><strong>垂直：</strong> 难以剥离。</p>
+                    </div>
+                </div>
+                
+                <div class="highlight-box mt-4">
+                    <p class="text-center font-bold">非晶体通常呈现“各向同性”。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- P6: 区分方法与获取途径 -->
+        <div class="slide">
+            <h3 class="text-4xl font-bold text-slate-800 mb-8 border-b-4 border-blue-200 pb-4">五、 区分方法与获取途径</h3>
+            <div class="flex gap-12 h-full">
+                <div class="w-1/2 space-y-6">
+                    <div class="concept-box">
+                        <p class="font-bold text-xl text-red-700">最科学的区分方法：</p>
+                        <p class="text-2xl mt-2">X-射线衍射实验</p>
+                        <ul class="list-disc list-inside mt-2 text-lg text-gray-700">
+                            <li>晶体：明锐的衍射谱线/斑点。</li>
+                            <li>非晶体：无固定谱线。</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-yellow-50 p-6 rounded border-l-6 border-yellow-500">
+                        <p class="font-bold text-xl text-yellow-800">获得晶体的 3 种途径：</p>
+                        <ol class="list-decimal list-inside mt-2 text-lg text-gray-700 space-y-1">
+                            <li><strong>熔融态凝固：</strong> (如熔融硫冷却)</li>
+                            <li><strong>气态凝华：</strong> (如碘蒸气凝华)</li>
+                            <li><strong>溶质析出：</strong> (如硫酸铜结晶)</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="w-1/2 flex justify-center items-center">
+                    <!-- SVG: X-Ray Diffraction Comparison -->
+                    <svg viewBox="0 0 300 250" class="w-full bg-white border rounded shadow-sm">
+                        <line x1="30" y1="220" x2="280" y2="220" stroke="black" stroke-width="2"/>
+                        <line x1="30" y1="220" x2="30" y2="20" stroke="black" stroke-width="2"/>
+                        
+                        <!-- Crystal: Sharp Peaks -->
+                        <path d="M30 210 L50 210 L55 50 L60 210 L100 210 L105 80 L110 210 L150 210 L155 60 L160 210 L280 210" 
+                              fill="none" stroke="#dc2626" stroke-width="2" />
+                        <text x="160" y="40" fill="#dc2626" font-weight="bold" font-size="14">晶体 (尖锐峰)</text>
+                        
+                        <!-- Amorphous: Broad Hump -->
+                        <path d="M30 215 Q 100 215 150 160 T 280 215" 
+                              fill="none" stroke="#2563eb" stroke-width="3" stroke-dasharray="5,5" opacity="0.6"/>
+                        <text x="200" y="150" fill="#2563eb" font-weight="bold" font-size="14">非晶体 (漫射峰)</text>
+                        
+                        <text x="130" y="240" font-size="12">衍射角</text>
+                        <text x="10" y="130" font-size="12" writing-mode="tb">强度</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- P7: 例题 (无解析) -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">【例题】晶体与非晶体的判断</h3>
+            <div class="text-2xl space-y-6">
+                <p>下列关于晶体与非晶体的说法中，正确的是：</p>
+                <div class="space-y-4 mt-8">
+                    <p>A. 晶体都有固定的熔点，非晶体没有固定的熔点</p>
+                    <p>B. 晶体都具有规则的几何外形，而非晶体都不具有</p>
+                    <p>C. 区分晶体和非晶体最可靠的方法是测定熔点</p>
+                    <p>D. 具有各向异性的固体不一定是晶体</p>
+                </div>
+                <div class="mt-auto text-gray-400 text-lg">（请同学们思考）</div>
+            </div>
+        </div>
+
+        <!-- P8: 练习题 (题目) -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">【课堂练习】X射线衍射</h3>
+            <div class="text-2xl space-y-8">
+                <p class="font-bold">题目：</p>
+                <p>某同学在实验室获得了两种外观非常相似的白色固体粉末，一种是结晶二氧化硅，另一种是无定形二氧化硅（非晶体）。</p>
+                <p>为了从科学的角度严格区分这,两种固体，该同学应该采用下列哪种技术手段？</p>
+                <div class="space-y-4 mt-4">
+                    <div class="option-item">A. 观察外形</div>
+                    <div class="option-item">B. 测定密度</div>
+                    <div class="option-item">C. X射线衍射实验</div>
+                    <div class="option-item">D. 测定化学成分</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- P9: 练习题 (解析) -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-green-700 mb-6 border-b-2 border-green-200">【练习解析】</h3>
+            <div class="text-2xl space-y-6">
+                <div class="bg-green-100 p-6 rounded border-l-8 border-green-600">
+                    <p class="font-bold mb-4">正确答案：C</p>
+                </div>
+                <div class="space-y-4 text-gray-700">
+                    <p><strong>解析：</strong></p>
+                    <p>1. <strong>外形：</strong> 粉末状固体很难肉眼区分是否有规则外形。</p>
+                    <p>2. <strong>成分：</strong> 两者化学成分都是 $SiO_2$，无法区分。</p>
+                    <p>3. <strong>本质区别：</strong> 晶体与非晶体的本质区别在于微观粒子排列是否有序。</p>
+                    <p>4. <strong>实验手段：</strong> <span class="text-red-600 font-bold">X射线衍射</span>是区分晶体和非晶体最可靠、最科学的实验方法。晶体有尖锐谱线，非晶体无。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 5道基础选择题 (一题一页 + 解析一页) ==================== -->
+
+        <!-- Q1 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">【基础巩固 1】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6">
+                <p class="text-3xl font-bold mb-4">1. 下列不属于晶体特性的是：</p>
+                <div class="space-y-4 text-2xl">
+                    <div class="option-item">A. 自范性</div>
+                    <div class="option-item">B. 各向异性</div>
+                    <div class="option-item">C. 固定的熔点</div>
+                    <div class="option-item">D. 各向同性</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- A1 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-green-700 mb-6 border-b-2 border-green-200">【答案与解析 1】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6 text-2xl">
+                <div class="bg-green-100 p-6 rounded border-l-8 border-green-600">
+                    <p class="font-bold">正确答案：D</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded">
+                    <p class="font-bold text-gray-700 mb-2">解析：</p>
+                    <p>晶体具有各向异性，而非晶体通常表现为<span class="font-bold text-red-600">各向同性</span>。自范性、各向异性和固定熔点都是晶体的典型特征。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">【基础巩固 2】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6">
+                <p class="text-3xl font-bold mb-4">2. 区别晶体与非晶体的最本质依据是：</p>
+                <div class="space-y-4 text-2xl">
+                    <div class="option-item">A. 是否具有规则的几何外形</div>
+                    <div class="option-item">B. 内部微粒是否呈现周期性有序排列</div>
+                    <div class="option-item">C. 是否有固定的熔点</div>
+                    <div class="option-item">D. 硬度的大小</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- A2 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-green-700 mb-6 border-b-2 border-green-200">【答案与解析 2】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6 text-2xl">
+                <div class="bg-green-100 p-6 rounded border-l-8 border-green-600">
+                    <p class="font-bold">正确答案：B</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded">
+                    <p class="font-bold text-gray-700 mb-2">解析：</p>
+                    <p>晶体和非晶体的<span class="font-bold text-red-600">本质区别</span>在于微观结构。晶体内部微粒在三维空间呈周期性有序排列，而非晶体相对无序。其他选项（外形、熔点）是宏观表现。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">【基础巩固 3】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6">
+                <p class="text-3xl font-bold mb-4">3. 下列关于等离子体的说法，正确的是：</p>
+                <div class="space-y-4 text-2xl">
+                    <div class="option-item">A. 等离子体不属于物质的聚集状态</div>
+                    <div class="option-item">B. 等离子体带正电荷</div>
+                    <div class="option-item">C. 等离子体是由电子、阳离子和电中性粒子组成的</div>
+                    <div class="option-item">D. 等离子体就是离子液体</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- A3 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-green-700 mb-6 border-b-2 border-green-200">【答案与解析 3】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6 text-2xl">
+                <div class="bg-green-100 p-6 rounded border-l-8 border-green-600">
+                    <p class="font-bold">正确答案：C</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded">
+                    <p class="font-bold text-gray-700 mb-2">解析：</p>
+                    <p>等离子体是一种特殊的物质聚集状态，包含电子、阳离子和电中性粒子，整体呈<span class="font-bold text-red-600">电中性</span>。它与离子液体完全不同。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">【基础巩固 4】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6">
+                <p class="text-3xl font-bold mb-4">4. 石墨晶体在层平行方向上的导电率远高于垂直方向，这体现了晶体的：</p>
+                <div class="space-y-4 text-2xl">
+                    <div class="option-item">A. 自范性</div>
+                    <div class="option-item">B. 各向异性</div>
+                    <div class="option-item">C. 周期性</div>
+                    <div class="option-item">D. 对称性</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- A4 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-green-700 mb-6 border-b-2 border-green-200">【答案与解析 4】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6 text-2xl">
+                <div class="bg-green-100 p-6 rounded border-l-8 border-green-600">
+                    <p class="font-bold">正确答案：B</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded">
+                    <p class="font-bold text-gray-700 mb-2">解析：</p>
+                    <p>在不同方向上表现出不同的物理性质（如导电性），正是晶体<span class="font-bold text-red-600">各向异性</span>的体现。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200">【基础巩固 5】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6">
+                <p class="text-3xl font-bold mb-4">5. 下列哪项不是获得晶体的常见途径：</p>
+                <div class="space-y-4 text-2xl">
+                    <div class="option-item">A. 熔融态物质凝固</div>
+                    <div class="option-item">B. 气态物质凝华</div>
+                    <div class="option-item">C. 溶质从溶液中析出</div>
+                    <div class="option-item">D. 固体物质粉碎</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- A5 -->
+        <div class="slide">
+            <h3 class="text-3xl font-bold text-green-700 mb-6 border-b-2 border-green-200">【答案与解析 5】</h3>
+            <div class="flex flex-col justify-center h-full space-y-6 text-2xl">
+                <div class="bg-green-100 p-6 rounded border-l-8 border-green-600">
+                    <p class="font-bold">正确答案：D</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded">
+                    <p class="font-bold text-gray-700 mb-2">解析：</p>
+                    <p>固体粉碎只是改变了物质的物理形状大小，并没有经历结晶过程，不能作为“获得晶体”的途径。常见途径包括凝固、凝华和结晶析出。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结束页 -->
+        <div class="slide text-center">
+            <h2 class="text-5xl font-bold text-blue-900 mb-8">课程结束</h2>
+            <p class="text-3xl text-gray-600 mb-12">下节课预告：分子晶体与共价晶体</p>
+            <div class="w-24 h-24 bg-blue-600 rounded-full mx-auto flex items-center justify-center text-white text-4xl animate-bounce">
+                👋
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const indicator = document.getElementById('page-indicator');
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+            indicator.textContent = `${currentSlide + 1} / ${slides.length}`;
+            window.scrollTo(0, 0);
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+
+        // Initialize
+        updateSlide();
+    </script>
+</body>
+</html>

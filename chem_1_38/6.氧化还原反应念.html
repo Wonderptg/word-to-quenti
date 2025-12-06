@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>氧化还原反应的基本概念</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 70vh;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f1f5f9;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e5e7eb;
+            z-index: 10;
+        }
+
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-teal-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                    <path d="M2 17l10 5 10-5"></path>
+                    <path d="M2 12l10 5 10-5"></path>
+                </svg>
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">氧化还原反应的基本概念</h1>
+                <p class="text-2xl text-slate-700 mt-2">—— 戴上“化合价”的新眼镜看世界</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2">从生活经验出发</h2>
+                <div class="mt-8 flex flex-col md:flex-row items-center gap-8">
+                    <div class="flex-1">
+                        <p class="text-xl text-slate-700">我们来看一个熟悉的反应：把一小片锌丢进盐酸里。</p>
+                        <div class="mt-4 bg-teal-50 p-6 rounded-lg text-center">
+                            <p class="text-2xl font-mono">Zn + 2HCl → ZnCl₂ + H₂↑</p>
+                            <p class="mt-4 text-lg">这是一个标准的<strong class="text-teal-600">置换反应</strong>。</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0">
+                        <svg width="200" height="200" viewBox="0 0 200 200">
+                            <path d="M 40 180 L 40 80 Q 40 60 60 60 L 140 60 Q 160 60 160 80 L 160 180 Z" fill="#e0f2f1" stroke="#9ca3af" stroke-width="2"/>
+                            <rect x="30" y="180" width="140" height="10" fill="#a7f3d0" stroke="#9ca3af" stroke-width="2"/>
+                            <rect x="80" y="120" width="40" height="50" fill="#94a3b8" rx="5"/>
+                            <circle cx="90" cy="100" r="5" fill="#a1a1aa" opacity="0.8"><animate attributeName="cy" values="100;90;100" dur="2s" repeatCount="indefinite"/></circle>
+                            <circle cx="110" cy="90" r="4" fill="#a1a1aa" opacity="0.8"><animate attributeName="cy" values="90;80;90" dur="2.5s" repeatCount="indefinite"/></circle>
+                            <circle cx="130" cy="110" r="6" fill="#a1a1aa" opacity="0.8"><animate attributeName="cy" values="110;95;110" dur="1.8s" repeatCount="indefinite"/></circle>
+                            <circle cx="70" cy="115" r="3" fill="#a1a1aa" opacity="0.8"><animate attributeName="cy" values="115;105;115" dur="3s" repeatCount="indefinite"/></circle>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2">戴上“化合价”的新眼镜</h2>
+                <p class="mt-8 text-xl text-slate-700">我们来为反应中的每一个元素标注化合价：</p>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <div class="flex justify-center items-end gap-x-3 md:gap-x-4 text-xl font-mono text-slate-800">
+                        <!-- Zn -->
+                        <div class="text-center">
+                            <p class="h-6 text-red-600">0</p>
+                            <strong class="text-2xl">Zn</strong>
+                        </div>
+                        <!-- + -->
+                        <div class="text-2xl font-bold pb-1">+</div>
+                        <!-- 2HCl -->
+                        <div class="text-center">
+                            <p class="h-6"><span class="text-blue-600">+1</span><span class="ml-1">-1</span></p>
+                            <strong class="text-2xl">2HCl</strong>
+                        </div>
+                        <!-- → -->
+                        <div class="text-2xl font-bold pb-1">→</div>
+                        <!-- ZnCl₂ -->
+                        <div class="text-center">
+                            <p class="h-6"><span class="text-blue-600">+2</span><span class="ml-1">-1</span></p>
+                            <strong class="text-2xl">ZnCl₂</strong>
+                        </div>
+                        <!-- + -->
+                        <div class="text-2xl font-bold pb-1">+</div>
+                        <!-- H₂↑ -->
+                        <div class="text-center">
+                            <p class="h-6 text-red-600">0</p>
+                            <strong class="text-2xl">H₂↑</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-8 text-2xl space-y-2 text-center">
+                    <p>锌(Zn)的化合价从 0 <span class="text-red-500 font-bold">升高</span> 到 +2！</p>
+                    <p>氢(H)的化合价从 +1 <span class="text-green-500 font-bold">降低</span> 到 0！</p>
+                </div>
+                <p class="mt-8 text-2xl font-semibold text-center text-red-700 bg-red-100 p-4 rounded-lg">像这样，化合价“有高有低、有起有落”的反应，就是<strong class="text-red-600">氧化还原反应</strong>！</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-indigo-500 pb-2">核心概念：特征与本质</h2>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 p-6 rounded-lg text-center">
+                        <svg class="w-16 h-16 mx-auto text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10M18 20V4M6 20V16"></path></svg>
+                        <h3 class="font-bold text-blue-800 text-xl mt-4">特征 (我们能看到的)</h3>
+                        <p class="mt-2 text-slate-600">反应前后，有元素的<strong class="text-blue-600">化合价发生升降</strong>。</p>
+                    </div>
+                    <div class="bg-green-50 p-6 rounded-lg text-center">
+                        <svg class="w-16 h-16 mx-auto text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12h-6m3-3v6M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <h3 class="font-bold text-green-800 text-xl mt-4">本质 (背后发生的事)</h3>
+                        <p class="mt-2 text-slate-600">反应过程中，发生了<strong class="text-green-600">电子的转移</strong>（得失或偏移）。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">电子的“霸气转账”：镁带燃烧</h2>
+                <p class="mt-6 text-xl text-center font-mono">2Mg + O₂ → 2MgO</p>
+                <div class="mt-6 flex justify-center items-center text-center">
+                    <svg width="300" height="150" viewBox="0 0 300 150">
+                        <text x="50" y="70" font-size="30" text-anchor="middle">Mg</text>
+                        <text x="50" y="95" font-size="12" text-anchor="middle" fill="#64748b">失去2e⁻</text>
+                        <text x="250" y="70" font-size="30" text-anchor="middle">O</text>
+                        <text x="250" y="95" font-size="12" text-anchor="middle" fill="#64748b">得到2e⁻</text>
+                        <path d="M 80 65 Q 150 -10 220 65" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="5,5"/>
+                        <circle cx="80" cy="65" r="4" fill="#f59e0b"><animateMotion path="M 0 0 Q 70 -75 140 0" dur="2s" repeatCount="indefinite" /></circle>
+                        <circle cx="80" cy="65" r="4" fill="#f59e0b"><animateMotion path="M 0 0 Q 70 -75 140 0" dur="2s" begin="0.2s" repeatCount="indefinite" /></circle>
+                    </svg>
+                </div>
+                <div class="mt-2 bg-amber-50 p-6 rounded-lg text-lg">
+                    <p>• 镁 (Mg): <strong class="text-amber-700">失去</strong>电子，化合价从0<strong class="text-amber-700">升高</strong>到+2，这个过程叫作<strong class="text-amber-700">被氧化</strong>。</p>
+                    <p class="mt-2">• 氧 (O): <strong class="text-amber-700">得到</strong>电子，化合价从0<strong class="text-amber-700">降低</strong>到-2，这个过程叫作<strong class="text-amber-700">被还原</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800">核心口诀</h2>
+                <div class="mt-12 text-6xl font-bold text-slate-800 tracking-widest leading-loose text-center">
+                    <div class="inline-block p-4"><span class="text-red-600">失</span><span class="text-blue-600">升</span><span class="text-red-600">氧</span></div><br>
+                    <div class="inline-block p-4"><span class="text-green-600">得</span><span class="text-purple-600">降</span><span class="text-green-600">还</span></div>
+                </div>
+                <p class="mt-8 text-xl text-slate-600 text-center">
+                    <strong>失</strong>去电子，化合价<strong>升</strong>高，被<strong>氧</strong>化；<br>
+                    <strong>得</strong>到电子，化合价<strong>降</strong>低，被<strong>还</strong>原。
+                </p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-cyan-500 pb-2">电子的“拉锯拔河”：水的形成</h2>
+                <p class="mt-6 text-xl text-center font-mono">2H₂ + O₂ → 2H₂O</p>
+                <div class="mt-6 flex justify-center items-center text-center p-4 bg-slate-50 rounded-lg">
+                     <svg width="300" height="120" viewBox="0 0 300 120">
+                        <text x="50" y="60" font-size="30">H</text>
+                        <text x="50" y="85" font-size="12" fill="#64748b">力气小</text>
+                        <text x="250" y="60" font-size="40" font-weight="bold">O</text>
+                        <text x="250" y="85" font-size="12" fill="#64748b">力气大</text>
+                        <text x="150" y="30" font-size="12" text-anchor="middle" fill="#0891b2">共用电子对偏向O</text>
+                        <ellipse cx="150" cy="55" rx="50" ry="20" fill="#cffafe" stroke="#67e8f9" stroke-width="2"/>
+                        <circle cx="120" cy="55" r="4" fill="#0e7490"/>
+                        <circle cx="130" cy="55" r="4" fill="#0e7490"/>
+                    </svg>
+                </div>
+                <div class="mt-8 bg-cyan-50 p-6 rounded-lg text-lg">
+                    <p>当非金属相遇时，电子不会完全转移，而是形成共用电子对。但力气大的“氧”会把共用电子对拉向自己这边，导致电子<strong class="text-cyan-700">偏移</strong>。</p>
+                    <p class="mt-4">• 氢 (H): 电子对<strong class="text-cyan-700">偏离</strong>，“好像”失去了，化合价升高为+1。</p>
+                    <p class="mt-2">• 氧 (O): 电子对<strong class="text-cyan-700">偏向</strong>，“好像”得到了，化合价降低为-2。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-gray-500 pb-2">四大反应类型与氧化还原的关系</h2>
+                <div class="mt-8 flex justify-center items-center">
+                    <svg width="550" height="300" viewBox="0 0 550 300">
+                        <ellipse cx="250" cy="150" rx="180" ry="120" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+                        <text x="250" y="45" font-size="20" text-anchor="middle" font-weight="bold">氧化还原反应</text>
+                        <circle cx="180" cy="150" r="40" fill="#e0f2fe"/>
+                        <text x="180" y="155" text-anchor="middle">置换反应</text>
+                        <text x="180" y="125" text-anchor="middle" font-size="12">(全部是)</text>
+                        <circle cx="500" cy="150" r="40" fill="#fef2f2"/>
+                        <text x="500" y="155" text-anchor="middle">复分解反应</text>
+                        <text x="500" y="185" text-anchor="middle" font-size="12">(全部不是)</text>
+                        <ellipse cx="320" cy="110" rx="60" ry="40" fill="#e0e7ff" fill-opacity="0.7"/>
+                        <text x="320" y="115" text-anchor="middle">化合反应</text>
+                        <ellipse cx="320" cy="190" rx="60" ry="40" fill="#dcfce7" fill-opacity="0.7"/>
+                        <text x="320" y="195" text-anchor="middle">分解反应</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-gray-500 pb-2">关系解析</h2>
+                <ul class="mt-8 text-xl space-y-4">
+                    <li><strong class="text-blue-600">置换反应：</strong>一定有单质参与，化合价百分之百会变，<strong class="text-blue-600">全部是</strong>氧化还原反应。</li>
+                    <li><strong class="text-red-600">复分解反应：</strong>只是交换离子，化合价从头到尾都没变，<strong class="text-red-600">全部不是</strong>氧化还原反应。</li>
+                    <li><strong class="text-purple-600">化合与分解反应：</strong>是“墙头草”，<strong class="text-purple-600">部分是，部分不是</strong>。</li>
+                </ul>
+                 <div class="mt-8 bg-yellow-100 text-yellow-800 p-6 rounded-lg text-xl font-semibold">
+                    快速判断秘诀：看到有<strong class="text-yellow-900">单质</strong>参与的化合反应，或有<strong class="text-yellow-900">单质</strong>生成的分解反应，那它就一定是氧化还原反应！
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-pink-500 pb-2">高手进阶：特殊类型</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-pink-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-pink-800 text-xl">歧化反应 (内讧)</h3>
+                        <p class="mt-2 text-slate-600">同一元素，反应后一部分化合价<strong class="text-pink-600">升高</strong>，一部分<strong class="text-pink-600">降低</strong>。</p>
+                        <p class="mt-2 font-mono text-sm">Cl₂ + 2NaOH → NaCl + NaClO + H₂O</p>
+                    </div>
+                    <div class="bg-teal-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-teal-800 text-xl">归中反应 (会合)</h3>
+                        <p class="mt-2 text-slate-600">同一元素的高价和低价，反应后生成<strong class="text-teal-600">中间价态</strong>。</p>
+                        <p class="mt-2 font-mono text-sm">2H₂S + SO₂ → 3S↓ + 2H₂O</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-gray-500 pb-2">今日总结</h2>
+                <ul class="mt-8 text-2xl space-y-6">
+                    <li>看到什么特征，就知道是氧化还原反应？ <strong class="text-gray-700">化合价有升有降！</strong></li>
+                    <li>背后的真正原因是什么？ <strong class="text-gray-700">电子的转移或偏移！</strong></li>
+                    <li>失电子，化合价升高，叫什么？ <strong class="text-red-600">被氧化！</strong></li>
+                    <li>得电子，化合价降低，叫什么？ <strong class="text-green-600">被还原！</strong></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-5xl font-bold text-slate-800">课程结束</h2>
+                <p class="mt-8 text-2xl text-slate-700">下节课，我们将揪出反应中的“幕后黑手”和“大善人”——氧化剂和还原剂！下课！</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">随堂练习（一）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">判断一个反应是否为氧化还原反应的根本依据是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 是否有氧气参与</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 是否有单质生成</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 反应前后元素化合价是否变化</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 反应是否需要加热</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">练习题（一）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>氧化还原反应的<strong class="text-green-700">特征</strong>就是反应前后有元素化合价的升降。这是我们判断的直接依据。其<strong class="text-green-700">本质</strong>是电子的转移，但从反应式上最直观的判断方法就是看化合价。</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">随堂练习（二）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">在反应 <code>2Na + 2H₂O → 2NaOH + H₂↑</code> 中，被还原的元素是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 钠 (Na)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 氢 (H)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 氧 (O)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 没有元素被还原</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">练习题（二）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>我们先标出化合价：</p>
+                    <p class="font-mono text-center text-xl my-4">2<span class="text-red-500">Na</span>(0) + 2<span class="text-blue-500">H</span>₂(+1)O(-2) → 2Na(+1)OH + <span class="text-blue-500">H</span>₂(0)↑</p>
+                    <p>钠(Na)的化合价从0升高到+1，被氧化。水中的氢(H)元素，一部分化合价从+1<strong class="text-green-700">降低</strong>到0（生成氢气），被还原。氧的化合价不变。</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">随堂练习（三）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">下列哪个反应<strong class="text-red-600">不属于</strong>氧化还原反应？</p>
+                     <div class="mt-6 space-y-3 text-lg font-mono">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> CaCO₃ → CaO + CO₂↑</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 2KMnO₄ → K₂MnO₄ + MnO₂ + O₂↑</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> Cl₂ + H₂O → HCl + HClO</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> Fe + CuSO₄ → FeSO₄ + Cu</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">练习题（三）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(A)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>我们逐一检查化合价是否变化：</p>
+                     <ul class="list-disc list-inside">
+                        <li>(A) 碳酸钙分解，所有元素的化合价（Ca:+2, C:+4, O:-2）都没有改变。它属于分解反应，但<strong class="text-green-700">不是</strong>氧化还原反应。</li>
+                        <li>(B) 氧元素的化合价从-2升高到0，锰元素的化合价从+7降低，是氧化还原反应。</li>
+                        <li>(C) 氯元素的化合价从0一部分降低到-1，一部分升高到+1，是歧化反应，属于氧化还原反应。</li>
+                        <li>(D) 典型的置换反应，一定是氧化还原反应。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">随堂练习（四）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">根据口诀“失升氧，得降还”，在氧化还原反应中，发生氧化反应的物质，其元素的化合价会怎样变化？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 升高</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 降低</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 不变</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 可能升高也可能降低</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">练习题（四）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(A)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>口诀的第一句“失升氧”已经告诉我们答案：</p>
+                    <p><strong>失</strong>去电子 → 化合价<strong>升</strong>高 → 发生<strong>氧</strong>化反应。</p>
+                    <p>所以，发生氧化反应的物质，其元素的化合价会<strong class="text-green-700">升高</strong>。</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">随堂练习（五）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">下列哪种基本反应类型<strong class="text-red-600">一定不是</strong>氧化还原反应？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 化合反应</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 分解反应</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 置换反应</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 复分解反应</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">练习题（五）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                     <ul class="list-disc list-inside">
+                        <li><strong>置换反应</strong>一定有单质参与，所以一定是氧化还原反应。</li>
+                        <li><strong>化合反应</strong>和<strong>分解反应</strong>，如果有单质参与或生成，就是氧化还原反应；如果没有，就不是。</li>
+                        <li><strong>复分解反应</strong>的本质是交换离子，反应前后所有元素的化合价都<strong class="text-green-700">不会改变</strong>，所以它一定不是氧化还原反应。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-5xl font-bold text-slate-800">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-700">感谢大家的参与！</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                sections.forEach((section, index) => {
+                    section.style.display = index === pageIndex ? 'flex' : 'none';
+                });
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>
+

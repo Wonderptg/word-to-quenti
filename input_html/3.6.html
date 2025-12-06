@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>幂函数：形态各异的“一家人” (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 500px; /* 保证内容较少时也有足够高度 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .cartoon-canvas {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            width: 100px;
+            height: 100px;
+        }
+
+        .graph-canvas {
+            border-radius: 0.5rem;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+
+            .print-row-container {
+                flex-direction: row !important;
+                width: 100%;
+                gap: 2rem;
+                align-items: center;
+            }
+
+            .section:last-child {
+                page-break-after: auto;
+            }
+            .cartoon-canvas {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- Section 1: Title -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">幂函数：形态各异的“一家人”</h1>
+                <p class="text-2xl text-slate-600 mt-4">今天的明星脸: y = x<sup>α</sup></p>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 2: Definition -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">破冰起航：幂函数的“身份证”</h2>
+                <p class="mt-8 text-2xl text-center">
+                    y = x<sup>α</sup>
+                </p>
+                <div class="mt-6 text-lg grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-blue-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800">关键信息 1:</h3>
+                        <p class="mt-2">底数 <strong class="text-red-600">x</strong> 是自变量。</p>
+                    </div>
+                    <div class="bg-green-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-green-800">关键信息 2:</h3>
+                        <p class="mt-2">指数 <strong class="text-red-600">α</strong> 是一个常数。</p>
+                    </div>
+                </div>
+                 <p class="mt-6 text-lg text-slate-600">例如 y=x² (二次函数), y=x⁻¹ (反比例函数) 都是这个家族的核心成员。</p>
+            </div>
+        </div>
+
+        <!-- Section 3: Family Gathering (Text) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">寻踪觅迹：家族特征</h2>
+                <p class="mt-8 text-xl text-slate-700"><strong>第一个家族特征：</strong>它们的图像都经过一个共同的点 <strong class="text-red-600">(1, 1)</strong>。</p>
+                <p class="mt-6 text-xl text-slate-700"><strong>第二个家族特征：</strong>在第一象限，指数 α 决定了函数的“性格”。</p>
+                <div class="mt-6 space-y-4">
+                    <div class="bg-red-50 p-4 rounded-lg">
+                        <h3 class="font-semibold text-lg">🚀 “火箭型” (α > 1)</h3>
+                        <p class="text-base mt-1">如 y=x³, 增长迅猛，越来越陡。</p>
+                    </div>
+                    <div class="bg-yellow-50 p-4 rounded-lg">
+                        <h3 class="font-semibold text-lg">🧗 “登山型” (0 < α < 1)</h3>
+                        <p class="text-base mt-1">如 y=√x, 增长平缓，越走越慢。</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h3 class="font-semibold text-lg">🎢 “滑梯型” (α < 0)</h3>
+                        <p class="text-base mt-1">如 y=x⁻², 在第一象限飞流直下。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3.5: Family Gathering (Graph) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">家族成员图像对比</h2>
+                <p class="mt-6 text-lg text-slate-600">将“火箭”、“登山”、“滑梯”三种类型放在一起直观比较。</p>
+                <div class="mt-6 flex justify-center items-center">
+                    <canvas id="graph-canvas-family" class="graph-canvas" width="400" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Three Spells Intro -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2">登堂入室：画图三句“咒语”</h2>
+                <p class="mt-8 text-xl text-slate-700">记住三个问题，就能画出任意幂函数！</p>
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 text-lg">
+                    <div class="bg-teal-50 p-6 rounded-lg"><strong>咒语一</strong><p class="mt-2 text-base">你在第一象限长啥样？ (定“型”)</p></div>
+                    <div class="bg-teal-50 p-6 rounded-lg"><strong>咒语二</strong><p class="mt-2 text-base">你的地盘有多大？ (定“义”)</p></div>
+                    <div class="bg-teal-50 p-6 rounded-lg"><strong>咒语三</strong><p class="mt-2 text-base">你是“对称”的吗？ (定“性”)</p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: Spell 1 Details -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2">咒语一：你在第一象限长啥样？ (定“型”)</h2>
+                <p class="mt-6 text-xl text-slate-700">这句是看它的“性格”，由指数α的大小决定。</p>
+                <div class="mt-6 text-lg bg-slate-50 p-6 rounded-lg">
+                    <p>我们以 <strong class="text-red-600">y=x<sup>5/3</sup></strong> 为例。</p>
+                    <p class="mt-2">它的指数 5/3 ≈ 1.67，是大于1的。</p>
+                    <p class="mt-4 text-2xl font-bold text-center">所以，它是“火箭型” 🚀，在第一象限飞速增长。</p>
+                </div>
+                <p class="mt-6 text-lg text-slate-600 text-center">我们先画出它在第一象限的草图。</p>
+            </div>
+        </div>
+
+        <!-- Section 6: Spell 2 Details -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 print-row-container">
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2">咒语二：你的地盘有多大？ (定“义”)</h2>
+                    <p class="mt-6 text-lg text-slate-700">这句是问它的定义域，关键看指数分母是奇数还是偶数。</p>
+                    <div class="mt-6 bg-blue-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-blue-700">分母为偶，根下为正</h3>
+                        <p class="text-base mt-1">y=x<sup>1/4</sup> = ⁴√x。分母是4(偶)，根号下不能为负。<strong>定义域: x≥0</strong>。</p>
+                    </div>
+                     <div class="mt-4 bg-green-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-green-700">分母为奇，畅通无阻</h3>
+                        <p class="text-base mt-1">y=x<sup>5/3</sup> = ³√x⁵。分母是3(奇)，什么数都能放。<strong>定义域: R</strong>。</p>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center items-center">
+                    <canvas id="graph-canvas-domain" class="graph-canvas" width="300" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 7.1: Spell 3 Details (Odd) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2">咒语三：你是“对称”的吗？ (定“性”)</h2>
+                <p class="mt-8 text-xl text-slate-700">如果定义域关于原点对称，我们就来判断函数的奇偶性。</p>
+                <div class="mt-8 bg-rose-50 p-6 rounded-lg">
+                    <h3 class="font-bold text-2xl text-rose-700">奇函数：关于原点对称</h3>
+                    <p class="mt-2 text-lg">例如: y = x<sup>5/3</sup></p>
+                    <p class="mt-1 text-lg">因为 f(-x) = (-x)<sup>5/3</sup> = -x<sup>5/3</sup> = -f(x)</p>
+                    <canvas id="graph-canvas-odd" class="graph-canvas mt-4 mx-auto" width="280" height="280"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 7.2: Spell 3 Details (Even) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2">咒语三：你是“对称”的吗？ (定“性”)</h2>
+                 <p class="mt-8 text-xl text-slate-700">我们再看一个偶函数的例子。</p>
+                <div class="mt-8 bg-indigo-50 p-6 rounded-lg">
+                     <h3 class="font-bold text-2xl text-indigo-700">偶函数：关于y轴对称</h3>
+                     <p class="mt-2 text-lg">例如: y = x<sup>-4/3</sup></p>
+                     <p class="mt-1 text-lg">因为 g(-x) = (-x)<sup>-4/3</sup> = x<sup>-4/3</sup> = g(x)</p>
+                     <canvas id="graph-canvas-even" class="graph-canvas mt-4 mx-auto" width="280" height="280"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 8.1: Impostors (Definition) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-rose-500 pb-2">明察秋毫：别被“冒牌货”骗了</h2>
+                <div class="mt-8 bg-rose-50 p-8 rounded-lg text-center">
+                    <p class="text-2xl"><strong>核心定义：</strong></p>
+                    <p class="mt-2 text-xl">幂函数 y=x<sup>α</sup> 的系数必须是 <strong class="text-red-600">1</strong>！</p>
+                </div>
+                <p class="mt-6 text-xl text-center">像 <strong class="text-slate-500 line-through">y=2x⁴</strong> 这样的函数，不是纯正的幂函数家族成员。</p>
+            </div>
+        </div>
+
+        <!-- Section 8.2: Impostors (Example) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-rose-500 pb-2">“冒牌货”例题精讲</h2>
+                 <div class="mt-6 bg-slate-50 p-6 rounded-lg text-lg">
+                    <p class="font-semibold">例题：已知 f(x)=(k²−3)x<sup>k</sup> 是一个幂函数, 且经过点 (2, 1/4)，求k。</p>
+                    <ol class="list-decimal list-inside mt-4 space-y-2 text-base">
+                        <li><strong>第一步 (定身份):</strong> 因为是幂函数, 所以系数 k²−3 = 1。解得 k²=4, 即 k=2 或 k=-2。</li>
+                        <li><strong>第二步 (代入验真):</strong>
+                            <ul class="list-disc list-inside ml-4 mt-1">
+                                <li><strong>当k=2时:</strong> 函数为 f(x)=x²。代入点(2, 1/4) => f(2)=2²=4。这与给定的y值 1/4 不符，所以 <strong class="text-red-500">k=2 淘汰</strong>。</li>
+                                <li><strong>当k=-2时:</strong> 函数为 f(x)=x⁻²。代入点(2, 1/4) => f(2)=2⁻²=1/4。完全正确！</li>
+                            </ul>
+                        </li>
+                        <li class="mt-4 font-bold text-xl">最终答案: k = -2</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 9.1: Practice 1 -->
+        <div class="section justify-start">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center">课堂练习 (一)</h2>
+                <div class="mt-8 text-lg">
+                    <div class="bg-indigo-50 p-6 rounded-lg">
+                        <p><strong>1.</strong> 已知点 M(2, b) 在幂函数 f(x)=(b−1)x<sup>n</sup> 的图象上，则 b+2n= ( &nbsp;&nbsp;&nbsp;&nbsp; )</p>
+                        <p class="mt-4 text-base grid grid-cols-4 gap-2"><span>A. 2</span><span>B. 3</span><span>C. 4</span><span>D. 5</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 9.2: Practice 2 -->
+        <div class="section justify-start">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center">课堂练习 (二)</h2>
+                <div class="mt-8 text-lg">
+                    <div class="bg-indigo-50 p-6 rounded-lg">
+                        <p><strong>2.</strong> 幂函数 f(x)=(m²−(5/2)m+2)x<sup>m</sup> 在区间 (0,+∞) 上单调递增，则下列说法正确的是 ( &nbsp;&nbsp;&nbsp;&nbsp; )</p>
+                        <p class="mt-4 text-base grid grid-cols-2 gap-2"><span>A. m=1/2</span><span>B. m=1/2 或 m=2</span><span>C. m=2</span><span>D. m=-1/2 或 m=2</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 9.3: Practice 3 -->
+        <div class="section justify-start">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center">课堂练习 (三)</h2>
+                <div class="mt-8 text-lg">
+                    <div class="bg-indigo-50 p-6 rounded-lg">
+                        <p><strong>3.</strong> 已知函数 f(x)=(m²−4m+5)x<sup>m</sup> (m∈R) 为幂函数，则 m= ( &nbsp;&nbsp;&nbsp;&nbsp; )</p>
+                        <p class="mt-4 text-base grid grid-cols-4 gap-2"><span>A. -1</span><span>B. 1</span><span>C. -2</span><span>D. 2</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 9.4: Practice 4 -->
+        <div class="section justify-start">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center">课堂练习 (四)</h2>
+                <div class="mt-8 text-lg">
+                    <div class="bg-indigo-50 p-6 rounded-lg">
+                        <p><strong>4.</strong> 已知 f(x)=(a−1)x<sup>a</sup> 为幂函数，则 f(-2)= ( &nbsp;&nbsp;&nbsp;&nbsp; )</p>
+                        <p class="mt-4 text-base grid grid-cols-4 gap-2"><span>A. -4</span><span>B. -1/4</span><span>C. 4</span><span>D. 1/4</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 10.1: Solution 1 -->
+        <div class="section justify-start">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center">练习一：解析</h2>
+                <div class="mt-8 space-y-4 text-lg">
+                    <div class="bg-indigo-50 p-4 rounded-lg">
+                         <p><strong>题目:</strong> 已知点 M(2, b) 在幂函数 f(x)=(b−1)x<sup>n</sup> 的图象上，则 b+2n= ?</p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg">
+                        <p class="font-semibold text-xl">答案: C. 4</p>
+                        <p class="mt-4 text-base"><strong>① 定系数:</strong> f(x)是幂函数 ⟹ 系数 (b−1) 必须等于 1 ⟹ b=2。</p>
+                        <p class="mt-2 text-base"><strong>② 定指数:</strong> 函数化为 f(x)=x<sup>n</sup>。点 M(2, b) 即 M(2, 2) 在图像上，代入得 2 = 2<sup>n</sup> ⟹ n=1。</p>
+                        <p class="mt-2 text-base"><strong>③ 计算结果:</strong> b+2n = 2 + 2(1) = 4。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 10.2: Solution 2 -->
+        <div class="section justify-start">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center">练习二：解析</h2>
+                <div class="mt-8 space-y-4 text-lg">
+                    <div class="bg-indigo-50 p-4 rounded-lg">
+                         <p><strong>题目:</strong> 幂函数 f(x)=(m²−(5/2)m+2)x<sup>m</sup> 在(0,+∞)上单调递增，则m=?</p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg">
+                        <p class="font-semibold text-xl">答案: B. m=1/2 或 m=2</p>
+                        <p class="mt-4 text-base"><strong>① 定系数:</strong> f(x)是幂函数 ⟹ m²-(5/2)m+2 = 1。方程两边同乘2得 2m²-5m+2=0。因式分解为 (2m-1)(m-2)=0。解得 m=1/2 或 m=2。</p>
+                        <p class="mt-2 text-base"><strong>② 定指数:</strong> 函数 f(x)=x<sup>m</sup> 在(0,+∞)上单调递增 ⟹ 指数m > 0。我们得到的两个解 m=1/2 和 m=2 都大于0，符合条件。</p>
+                        <p class="mt-2 text-base"><strong>③ 最终结果:</strong> m=1/2 或 m=2。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 10.3: Solution 3 -->
+        <div class="section justify-start">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center">练习三：解析</h2>
+                <div class="mt-8 space-y-4 text-lg">
+                    <div class="bg-indigo-50 p-4 rounded-lg">
+                         <p><strong>题目:</strong> 已知函数 f(x)=(m²−4m+5)x<sup>m</sup> (m∈R) 为幂函数，则 m=？</p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg">
+                        <p class="font-semibold text-xl">答案: D. 2</p>
+                        <p class="mt-4 text-base"><strong>① 定系数:</strong> f(x)是幂函数 ⟹ 系数 m²−4m+5 必须等于 1。</p>
+                        <p class="mt-2 text-base"><strong>② 解方程:</strong> m²−4m+4=0。这是一个完全平方公式 (m-2)²=0。</p>
+                        <p class="mt-2 text-base"><strong>③ 最终结果:</strong> m=2。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 10.4: Solution 4 -->
+        <div class="section justify-start">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center">练习四：解析</h2>
+                <div class="mt-8 space-y-4 text-lg">
+                     <div class="bg-indigo-50 p-4 rounded-lg">
+                         <p><strong>题目:</strong> 已知 f(x)=(a−1)x<sup>a</sup> 为幂函数，则 f(-2)=？</p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg">
+                        <p class="font-semibold text-xl">答案: C. 4</p>
+                        <p class="mt-4 text-base"><strong>① 定系数:</strong> f(x)是幂函数 ⟹ 系数 (a−1) 必须等于 1 ⟹ a=2。</p>
+                        <p class="mt-2 text-base"><strong>② 得函数:</strong> 函数为 f(x)=x²。</p>
+                        <p class="mt-2 text-base"><strong>③ 计算结果:</strong> f(-2) = (-2)² = 4。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 11: Summary -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">满载而归：总结</h2>
+                 <ul class="mt-6 list-disc list-inside space-y-4 text-xl text-slate-700">
+                    <li>认识了幂函数的身份证：<strong>y=x<sup>α</sup></strong>, 并且系数必须是1。</li>
+                    <li>发现了家族两大特征：图像都过 <strong>(1, 1)</strong> 点，第一象限有三种性格（火箭、登山、滑梯）。</li>
+                    <li>掌握了画图三句“咒语”：<strong>定型、定义、定性</strong>。</li>
+                </ul>
+                <p class="mt-8 text-xl text-center font-bold">感受数学从简单形式中演化出无穷变化的魅力！</p>
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Draw cartoon for all small canvases
+            const canvases = document.querySelectorAll('.cartoon-canvas');
+            canvases.forEach((canvas, index) => {
+                const ctx = canvas.getContext('2d');
+                drawCartoon(ctx, index, canvas.width, canvas.height); 
+            });
+
+            // Draw family graph
+            const familyCanvas = document.getElementById('graph-canvas-family');
+            if (familyCanvas) {
+                drawPowerFamilyGraph(familyCanvas.getContext('2d'));
+            }
+
+            // Draw domain graph
+            const domainCanvas = document.getElementById('graph-canvas-domain');
+            if (domainCanvas) {
+                drawDomainGraph(domainCanvas.getContext('2d'));
+            }
+
+            // Draw parity graphs
+            const oddCanvas = document.getElementById('graph-canvas-odd');
+            const evenCanvas = document.getElementById('graph-canvas-even');
+            if (oddCanvas && evenCanvas) {
+                drawParityGraphs(oddCanvas.getContext('2d'), evenCanvas.getContext('2d'));
+            }
+        });
+
+        function drawPowerFamilyGraph(ctx) {
+            const w = ctx.canvas.width;
+            const h = ctx.canvas.height;
+            const xMin = -2.5, xMax = 3, yMin = -2.5, yMax = 5;
+
+            const toCanvasX = (x) => (x - xMin) / (xMax - xMin) * w;
+            const toCanvasY = (y) => h - (y - yMin) / (yMax - yMin) * h;
+            
+            ctx.clearRect(0, 0, w, h);
+
+            // Draw axes
+            ctx.strokeStyle = '#6b7280'; // Darker axes
+            ctx.lineWidth = 1.5; // Thicker axes
+            ctx.beginPath();
+            ctx.moveTo(0, toCanvasY(0));
+            ctx.lineTo(w, toCanvasY(0));
+            ctx.moveTo(toCanvasX(0), 0);
+            ctx.lineTo(toCanvasX(0), h);
+            ctx.stroke();
+            ctx.fillStyle = '#334155';
+            ctx.font = 'bold 14px Arial';
+            ctx.fillText('y', toCanvasX(0) + 8, 15);
+            ctx.fillText('x', w - 15, toCanvasY(0) - 8);
+
+            // Draw y=x reference line
+            ctx.strokeStyle = '#a3a3a3';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath();
+            ctx.moveTo(toCanvasX(-2.5), toCanvasY(-2.5));
+            ctx.lineTo(toCanvasX(5), toCanvasY(5));
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+
+            const functions = [
+                { func: x => Math.pow(x, 3), color: '#ef4444', label: 'y=x³ (火箭)' },
+                { func: x => Math.pow(x, 1/2), color: '#f59e0b', label: 'y=√x (登山)' },
+                { func: x => Math.pow(x, -2), color: '#6b7280', label: 'y=x⁻² (滑梯)' },
+            ];
+
+            functions.forEach(f => {
+                ctx.strokeStyle = f.color;
+                ctx.lineWidth = 3; // Thicker function lines
+                ctx.beginPath();
+                let firstPoint = true;
+                for (let x_math = -xMax; x_math <= xMax; x_math += 0.02) {
+                    if ( (f.label.includes('√x') || f.label.includes('x⁻²')) && x_math <= 0.01) continue;
+                    let y_math = f.func(x_math);
+                    if (isNaN(y_math) || !isFinite(y_math)) {
+                        firstPoint = true;
+                        continue;
+                    }
+                    let canvasX = toCanvasX(x_math);
+                    let canvasY = toCanvasY(y_math);
+                    if (firstPoint) {
+                        ctx.moveTo(canvasX, canvasY);
+                        firstPoint = false;
+                    } else {
+                        ctx.lineTo(canvasX, canvasY);
+                    }
+                }
+                ctx.stroke();
+            });
+
+            // Annotate common point (1,1)
+            ctx.fillStyle = 'black';
+            ctx.beginPath();
+            ctx.arc(toCanvasX(1), toCanvasY(1), 5, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.font = 'bold 14px Arial';
+            ctx.fillText('(1, 1)', toCanvasX(1) + 8, toCanvasY(1) - 8);
+            
+            // Add direct labels instead of legend
+            ctx.font = 'bold 18px "Noto Serif SC"';
+            
+            // y=x³
+            ctx.fillStyle = '#ef4444';
+            ctx.fillText('y=x³', toCanvasX(1.5), toCanvasY(4));
+
+            // y=√x
+            ctx.fillStyle = '#f59e0b';
+            ctx.fillText('y=√x', toCanvasX(2.2), toCanvasY(1.2));
+
+            // y=x⁻²
+            ctx.fillStyle = '#6b7280';
+            ctx.fillText('y=x⁻²', toCanvasX(0.4), toCanvasY(4));
+            
+            // y=x
+            ctx.fillStyle = '#a3a3a3';
+            ctx.font = 'bold 14px Arial';
+            ctx.fillText('y=x', toCanvasX(2.6), toCanvasY(2.8));
+        }
+
+        function drawDomainGraph(ctx) {
+            const w = ctx.canvas.width;
+            const h = ctx.canvas.height;
+            const xMin = -3, xMax = 3, yMin = -3, yMax = 5;
+
+            const toCanvasX = (x) => (x - xMin) / (xMax - xMin) * w;
+            const toCanvasY = (y) => h - (y - yMin) / (yMax - yMin) * h;
+            
+            ctx.clearRect(0, 0, w, h);
+            ctx.strokeStyle = '#9ca3af';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(0, toCanvasY(0));
+            ctx.lineTo(w, toCanvasY(0));
+            ctx.moveTo(toCanvasX(0), 0);
+            ctx.lineTo(toCanvasX(0), h);
+            ctx.stroke();
+            ctx.fillStyle = '#6b7280';
+            ctx.font = '12px Arial';
+            ctx.fillText('y', toCanvasX(0) + 5, 12);
+            ctx.fillText('x', w - 12, toCanvasY(0) - 5);
+            
+            // Draw y=x^(1/4) - blue
+            ctx.strokeStyle = '#3b82f6'; 
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            let firstPoint = true;
+            for (let x_math = 0; x_math <= xMax; x_math += 0.02) {
+                let y_math = Math.pow(x_math, 1/4);
+                if (isNaN(y_math) || !isFinite(y_math)) continue;
+                let canvasX = toCanvasX(x_math);
+                let canvasY = toCanvasY(y_math);
+                if (firstPoint) { ctx.moveTo(canvasX, canvasY); firstPoint = false; } 
+                else { ctx.lineTo(canvasX, canvasY); }
+            }
+            ctx.stroke();
+            
+            // Draw y=x^(5/3) - green
+            ctx.strokeStyle = '#16a34a';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            firstPoint = true;
+            for (let x_math = xMin; x_math <= xMax; x_math += 0.02) {
+                let y_math = Math.sign(x_math) * Math.pow(Math.abs(x_math), 5/3);
+                if (isNaN(y_math) || !isFinite(y_math)) continue;
+                let canvasX = toCanvasX(x_math);
+                let canvasY = toCanvasY(y_math);
+                if (firstPoint) { ctx.moveTo(canvasX, canvasY); firstPoint = false; } 
+                else { ctx.lineTo(canvasX, canvasY); }
+            }
+            ctx.stroke();
+
+            // Labels
+            ctx.font = 'bold 14px "Noto Serif SC"';
+            ctx.fillStyle = '#3b82f6';
+            ctx.fillText('y=x¹/⁴ (定义域 x≥0)', toCanvasX(0.5), toCanvasY(2.5));
+            ctx.fillStyle = '#16a34a';
+            ctx.fillText('y=x⁵/³ (定义域 R)', toCanvasX(-2.8), toCanvasY(4));
+        }
+
+        function drawParityGraphs(oddCtx, evenCtx) {
+            // Common drawing function
+            const draw = (ctx, func, color, xMin, xMax, yMin, yMax, label) => {
+                const w = ctx.canvas.width;
+                const h = ctx.canvas.height;
+                const toCanvasX = (x) => (x - xMin) / (xMax - xMin) * w;
+                const toCanvasY = (y) => h - (y - yMin) / (yMax - yMin) * h;
+                
+                ctx.clearRect(0, 0, w, h);
+                ctx.strokeStyle = '#9ca3af';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(0, toCanvasY(0));
+                ctx.lineTo(w, toCanvasY(0));
+                ctx.moveTo(toCanvasX(0), 0);
+                ctx.lineTo(toCanvasX(0), h);
+                ctx.stroke();
+                
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2.5;
+                ctx.beginPath();
+                let firstPoint = true;
+                for (let x_math = xMin; x_math <= xMax; x_math += 0.01) {
+                    if (Math.abs(x_math) < 0.01 && !isFinite(func(x_math))) {
+                        firstPoint = true;
+                        continue;
+                    }
+                    let y_math = func(x_math);
+                    if (isNaN(y_math) || !isFinite(y_math)) {
+                        firstPoint = true;
+                        continue;
+                    }
+                    let canvasX = toCanvasX(x_math);
+                    let canvasY = toCanvasY(y_math);
+                    if (firstPoint) { ctx.moveTo(canvasX, canvasY); firstPoint = false; } 
+                    else { ctx.lineTo(canvasX, canvasY); }
+                }
+                ctx.stroke();
+                ctx.fillStyle = color;
+                ctx.font = 'bold 14px "Noto Serif SC"';
+                ctx.textAlign = 'center';
+                ctx.fillText(label, w/2, 20);
+            };
+
+            // Draw odd function: y = x^(5/3)
+            draw(oddCtx, x => Math.sign(x) * Math.pow(Math.abs(x), 5/3), '#be185d', -2, 2, -4, 4, '奇函数图像');
+            
+            // Draw even function: y = x^(-4/3)
+            draw(evenCtx, x => Math.pow(Math.abs(x), -4/3), '#4f46e5', -3, 3, -1, 6, '偶函数图像');
+        }
+
+
+        function drawCartoon(ctx, index, w, h) {
+            ctx.clearRect(0, 0, w, h);
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 2;
+
+            switch (index % 7) {
+                case 0: // Family icon
+                    ctx.fillStyle = '#60a5fa';
+                    ctx.beginPath();
+                    ctx.arc(w*0.35, h*0.4, w*0.15, 0, Math.PI*2);
+                    ctx.fill();
+                    ctx.fillRect(w*0.2, h*0.55, w*0.3, h*0.3);
+
+                    ctx.fillStyle = '#fbbf24';
+                    ctx.beginPath();
+                    ctx.arc(w*0.65, h*0.5, w*0.1, 0, Math.PI*2);
+                    ctx.fill();
+                    ctx.fillRect(w*0.55, h*0.6, w*0.2, h*0.2);
+                    break;
+                case 1: // Parabola up
+                    ctx.strokeStyle = '#22c55e';
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.1, h*0.9);
+                    ctx.quadraticCurveTo(w/2, -h*0.2, w*0.9, h*0.9);
+                    ctx.stroke();
+                    break;
+                case 2: // Gears
+                    ctx.strokeStyle = '#6b7280';
+                    let R = w*0.25, r = w*0.15;
+                    for(let i=0; i<8; i++){
+                        let angle = i * Math.PI/4;
+                        ctx.beginPath();
+                        ctx.moveTo(w*0.35 + r*Math.cos(angle), h*0.35 + r*Math.sin(angle));
+                        ctx.lineTo(w*0.35 + R*Math.cos(angle), h*0.35 + R*Math.sin(angle));
+                        ctx.stroke();
+                    }
+                     R = w*0.2, r = w*0.1;
+                    for(let i=0; i<8; i++){
+                        let angle = i * Math.PI/4 + Math.PI/8;
+                        ctx.beginPath();
+                        ctx.moveTo(w*0.7 + r*Math.cos(angle), h*0.7 + r*Math.sin(angle));
+                        ctx.lineTo(w*0.7 + R*Math.cos(angle), h*0.7 + R*Math.sin(angle));
+                        ctx.stroke();
+                    }
+                    break;
+                case 3: // Venn Diagram
+                    ctx.strokeStyle = '#3b82f6';
+                    ctx.beginPath();
+                    ctx.arc(w*0.4, h*0.5, w*0.3, 0, Math.PI*2);
+                    ctx.stroke();
+                    ctx.strokeStyle = '#16a34a';
+                     ctx.beginPath();
+                    ctx.arc(w*0.6, h*0.5, w*0.3, 0, Math.PI*2);
+                    ctx.stroke();
+                    break;
+                case 4: // Graph with axis
+                    ctx.strokeStyle = 'black';
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.1, h*0.8);
+                    ctx.lineTo(w*0.9, h*0.8);
+                    ctx.moveTo(w/2, h*0.1);
+                    ctx.lineTo(w/2, h*0.9);
+                    ctx.stroke();
+                    ctx.strokeStyle = '#ef4444';
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.2, h*0.9);
+                    ctx.quadraticCurveTo(w/2, h*0.5, w*0.8, h*0.9);
+                    ctx.stroke();
+                    break;
+                case 5: // Question mark
+                    ctx.font = 'bold 80px Arial';
+                    ctx.fillStyle = '#f43f5e';
+                    ctx.fillText('?', w*0.4, h*0.8);
+                    break;
+                default: // Thumbs up
+                    ctx.fillStyle = '#fde047';
+                    ctx.strokeStyle = 'black';
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.3, h*0.9);
+                    ctx.lineTo(w*0.3, h*0.5);
+                    ctx.arc(w*0.5, h*0.5, w*0.2, Math.PI, 0);
+                    ctx.lineTo(w*0.7, h*0.9);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+
+

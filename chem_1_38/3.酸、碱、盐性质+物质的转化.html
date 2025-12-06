@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>物质的王国——酸、碱、盐与转化</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2rem;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- Slide 1: 开场 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">物质的王国</h1>
+                <p class="text-2xl text-slate-700 mt-2">—— 酸、碱、盐与转化</p>
+            </div>
+        </div>
+        
+        <!-- Slide 2: 引入 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2">课程导入</h2>
+                <div class="mt-8 text-xl text-slate-700 leading-relaxed">
+                    <p>上节课，我们学习了如何给物质进行分类。</p>
+                    <p class="mt-6">今天，我们将重新审视初中就学过的“老朋友”——<strong class="text-teal-600">酸、碱、盐</strong>，从一个全新的、更精确的角度来认识它们，并构建它们之间的转化关系网络。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: 重新认识“酸” - 定义 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">一、重新认识“酸”</h2>
+                <div class="mt-8 bg-blue-50 p-6 rounded-lg text-xl">
+                    <p class="font-bold text-blue-800">高中定义：</p>
+                    <p class="mt-2">电离时，生成的阳离子<strong class="text-blue-600">全部</strong>是氢离子(<code>H⁺</code>)的化合物。</p>
+                    <hr class="my-4 border-blue-200">
+                    <p class="font-bold text-blue-800">反例：</p>
+                    <p class="mt-2">硫酸氢钠 (<code>NaHSO₄</code>)，电离生成 <code>Na⁺</code>, <code>H⁺</code>, <code>SO₄²⁻</code>。阳离子不全是H⁺，所以它属于<strong class="text-red-600">盐</strong>，不是酸。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: 酸的分类 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">酸的分类</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div>
+                        <h3 class="font-bold text-xl text-slate-700">按是否含氧</h3>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>含氧酸</strong>: H₂SO₄, HNO₃</li>
+                            <li><strong>无氧酸</strong>: HCl, H₂S</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-xl text-slate-700">按“元数” (可电离的H⁺个数)</h3>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>一元酸</strong>: HCl, CH₃COOH</li>
+                            <li><strong>二元酸</strong>: H₂SO₄, H₂CO₃</li>
+                            <li><strong>三元酸</strong>: H₃PO₄</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 5: 强酸与弱酸 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-red-500 pb-2">酸的分类：按强弱</h2>
+                <p class="mt-6 text-xl text-slate-700">这是最重要的分类方法！</p>
+                <div class="mt-8 bg-red-50 p-6 rounded-lg text-lg">
+                    <p class="font-bold text-red-800 text-xl">六大强酸 (必须背诵！)</p>
+                    <p class="mt-4 grid grid-cols-2 gap-2 text-center text-xl">
+                        <span><code>HCl</code> (盐酸)</span>
+                        <span><code>H₂SO₄</code> (硫酸)</span>
+                        <span><code>HNO₃</code> (硝酸)</span>
+                        <span><code>HBr</code> (氢溴酸)</span>
+                        <span><code>HI</code> (氢碘酸)</span>
+                        <span><code>HClO₄</code> (高氯酸)</span>
+                    </p>
+                    <p class="mt-6">除了这六种，其他常见的酸（如醋酸、碳酸、磷酸）都属于<strong class="text-red-600">弱酸</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: 酸的通性 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">酸的化学通性</h2>
+                <div class="mt-8 text-xl space-y-3">
+                    <p>1. 与指示剂作用：使紫色石蕊变<strong class="text-red-500">红</strong></p>
+                    <p>2. 酸 + 活泼金属 → 盐 + H₂ (仅限<strong class="text-blue-600">非氧化性酸</strong>)</p>
+                    <p>3. 酸 + 碱性氧化物 → 盐 + H₂O</p>
+                    <p>4. 酸 + 碱 → 盐 + H₂O (中和反应)</p>
+                    <p>5. 酸 + 某些盐 → 新酸 + 新盐</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: 重新认识“碱” -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">二、重新认识“碱”</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl">
+                    <p class="font-bold text-green-800">高中定义：</p>
+                    <p class="mt-2">电离时，生成的阴离子<strong class="text-green-600">全部</strong>是氢氧根离子(<code>OH⁻</code>)的化合物。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 8: 碱的分类 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">碱的分类：按强弱和溶解度</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-lg">
+                    <p class="font-bold text-green-800 text-xl">四大强碱 (必须背诵！)</p>
+                    <p class="mt-4 grid grid-cols-2 gap-2 text-center text-xl">
+                        <span><code>KOH</code> (氢氧化钾)</span>
+                        <span><code>NaOH</code> (氢氧化钠)</span>
+                        <span><code>Ca(OH)₂</code> (氢氧化钙)</span>
+                        <span><code>Ba(OH)₂</code> (氢氧化钡)</span>
+                    </p>
+                    <hr class="my-4 border-green-200">
+                    <p class="font-bold text-red-600">特别注意：</p>
+                    <p><code>Ca(OH)₂</code> 虽然是<strong class="text-green-600">强碱</strong>，但它在水中的溶解度很小，属于<strong class="text-green-600">微溶</strong>物。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: 重新认识“盐” -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">三、重新认识“盐”</h2>
+                <div class="mt-8 bg-purple-50 p-6 rounded-lg text-xl">
+                    <p class="font-bold text-purple-800">定义：</p>
+                    <p class="mt-2">由<strong class="text-purple-600">金属阳离子</strong>（或<strong class="text-purple-600">铵根离子 NH₄⁺</strong>）和<strong class="text-purple-600">酸根阴离子</strong>构成的化合物。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: 盐的分类 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">盐的分类 (拓展)</h2>
+                <ul class="mt-8 text-xl space-y-4">
+                    <li><strong>正盐</strong>: Na₂CO₃, CuSO₄ (完全中和的产物)</li>
+                    <li><strong>酸式盐</strong>: NaHCO₃, NaHSO₄ (酸过量/不完全中和)</li>
+                    <li><strong>碱式盐</strong>: Cu₂(OH)₂CO₃ (碱过量)</li>
+                </ul>
+                <div class="mt-8 text-center">
+                    <p class="text-lg text-slate-600 mb-2">以硫酸为例，理解酸式盐的形成过程：</p>
+                    <svg width="100%" viewBox="0 0 500 130" xmlns="http://www.w3.org/2000/svg" class="mx-auto">
+                        <title>多元酸的分步中和示意图</title>
+                        <!-- H2SO4 -->
+                        <g>
+                            <rect x="10" y="50" width="100" height="40" rx="5" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+                            <text x="60" y="75" text-anchor="middle" font-family="monospace" font-size="14">H₂SO₄</text>
+                        </g>
+                        <!-- First arrow -->
+                        <path d="M 120 70 L 180 70" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arrow-salt)"/>
+                        <text x="150" y="60" text-anchor="middle" font-size="12">+ NaOH</text>
+                        <text x="150" y="90" text-anchor="middle" font-size="12">(不足量)</text>
+                        <!-- NaHSO4 (Acid Salt) -->
+                        <g>
+                            <rect x="190" y="50" width="120" height="40" rx="5" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+                            <text x="250" y="75" text-anchor="middle" font-family="monospace" font-size="14">NaHSO₄ (酸式盐)</text>
+                        </g>
+                        <!-- Second arrow -->
+                        <path d="M 320 70 L 380 70" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arrow-salt)"/>
+                        <text x="350" y="60" text-anchor="middle" font-size="12">+ NaOH</text>
+                        <!-- Na2SO4 (Normal Salt) -->
+                        <g>
+                            <rect x="390" y="50" width="100" height="40" rx="5" fill="#ecfdf5" stroke="#16a34a" stroke-width="2"/>
+                            <text x="440" y="75" text-anchor="middle" font-family="monospace" font-size="14">Na₂SO₄ (正盐)</text>
+                        </g>
+                        <defs>
+                            <marker id="arrow-salt" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b" />
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+                <div class="mt-8 bg-yellow-100 text-yellow-800 p-6 rounded-lg text-xl font-semibold">
+                    辩证思维：酸式盐溶液不一定显酸性！例如，<code>NaHCO₃</code> (小苏打) 溶液就呈<strong class="text-yellow-900">碱性</strong>。
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 11: 物质转化网络 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2">四、构建物质转化网络</h2>
+                <div class="mt-6 text-center text-sm">
+                    <!-- This is a simplified representation using basic HTML and Tailwind for layout -->
+                    <div class="grid grid-cols-3 gap-y-4 items-center">
+                        <!-- Row 1 -->
+                        <div class="p-2 bg-gray-200 rounded">金属</div>
+                        <div class="text-2xl">&rarr;</div>
+                        <div class="p-2 bg-sky-100 rounded">碱性氧化物</div>
+                        
+                        <!-- Row 2 with arrows -->
+                        <div class="flex justify-center items-center h-16">
+                            <span class="text-2xl transform -rotate-90">&rarr;</span>
+                        </div>
+                        <div></div>
+                        <div class="flex justify-center items-center h-16">
+                            <span class="text-2xl transform -rotate-90">&rarr;</span>
+                        </div>
+
+                        <!-- Row 3 -->
+                        <div class="p-2 bg-purple-100 rounded col-span-3">盐</div>
+
+                        <!-- Row 4 with arrows -->
+                        <div class="flex justify-center items-center h-16">
+                             <span class="text-2xl transform rotate-90">&rarr;</span>
+                        </div>
+                        <div></div>
+                        <div class="flex justify-center items-center h-16">
+                            <span class="text-2xl transform rotate-90">&rarr;</span>
+                        </div>
+
+                        <!-- Row 5 -->
+                        <div class="p-2 bg-gray-200 rounded">非金属</div>
+                        <div class="text-2xl">&rarr;</div>
+                        <div class="p-2 bg-red-100 rounded">酸性氧化物</div>
+                    </div>
+                     <p class="mt-4 text-lg">这是一个简化的核心转化关系图，各类物质之间还可以相互转化。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 12: 总结 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-gray-500 pb-2">课堂总结</h2>
+                <div class="mt-8 text-xl space-y-4">
+                    <p>今天，我们从四个维度对酸、碱、盐进行了一次全面的知识升级：</p>
+                    <ul class="list-decimal list-inside ml-4 text-2xl font-semibold text-gray-700 space-y-3">
+                        <li>精确的<strong class="text-gray-800">定义</strong></li>
+                        <li>多角度的<strong class="text-gray-800">分类</strong></li>
+                        <li>系统的化学<strong class="text-gray-800">通性</strong></li>
+                        <li>内在的<strong class="text-gray-800">转化</strong>规律</li>
+                    </ul>
+                    <p class="mt-6 text-center text-xl bg-slate-100 p-4 rounded-lg">核心是掌握它们之间的转化规律，这是解决物质推断题的“金钥匙”。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: 结束 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-5xl font-bold text-slate-800">课程结束</h2>
+                <p class="mt-8 text-2xl text-slate-700">作业：课后独立完成物质转化网络图的绘制，并为每一条路径标注一个方程式。</p>
+            </div>
+        </div>
+
+        <!-- Slide 14: 练习题一 题目 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">随堂练习（一）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">下列物质中，哪一种在水溶液中电离出的阳离子<strong class="text-red-600">全部</strong>是氢离子？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> NaHCO₃ (碳酸氢钠)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> CH₃COOH (醋酸)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> NaCl (氯化钠)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> Ba(OH)₂ (氢氧化钡)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: 练习题一 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">练习题（一）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>根据酸的定义，电离时生成的阳离子必须<strong class="text-green-700">全部</strong>是氢离子(H⁺)。</p>
+                    <ul class="list-disc list-inside">
+                        <li>(A) NaHCO₃ 电离出 Na⁺ 和 HCO₃⁻，属于盐。</li>
+                        <li>(B) CH₃COOH 是弱酸，电离出 H⁺ 和 CH₃COO⁻，阳离子全部是 H⁺。正确。</li>
+                        <li>(C) NaCl 电离出 Na⁺ 和 Cl⁻，属于盐。</li>
+                        <li>(D) Ba(OH)₂ 电离出 Ba²⁺ 和 OH⁻，属于碱。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: 练习题二 题目 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">随堂练习（二）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">下列关于硫酸 (H₂SO₄) 的描述中，<strong class="text-red-600">不正确</strong>的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 它是一种含氧酸</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 它是一种二元酸</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 它是一种强酸</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 它是一种氧化物</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: 练习题二 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">练习题（二）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>氧化物的定义是由<strong class="text-green-700">两种</strong>元素组成，且其中一种是氧元素的化合物。硫酸 (H₂SO₄) 由氢、硫、氧<strong class="text-green-700">三种</strong>元素组成，因此它不是氧化物。其它描述都是正确的。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 18: 练习题三 题目 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">随堂练习（三）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">下列哪组物质均属于强碱？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> NaOH, Cu(OH)₂</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> KOH, Ba(OH)₂</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> Ca(OH)₂, Fe(OH)₃</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> NH₃·H₂O, NaOH</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: 练习题三 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">练习题（三）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>我们需要熟记四大强碱：<code>KOH</code>, <code>NaOH</code>, <code>Ca(OH)₂</code>, <code>Ba(OH)₂</code>。</p>
+                    <ul class="list-disc list-inside">
+                        <li>(A) Cu(OH)₂ 是弱碱。</li>
+                        <li>(B) KOH 和 Ba(OH)₂ 都是强碱。</li>
+                        <li>(C) Fe(OH)₃ 是弱碱。</li>
+                        <li>(D) NH₃·H₂O (氨水) 是弱碱。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: 练习题四 题目 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">随堂练习（四）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">有一种黑色固体粉末A，可溶于稀盐酸，形成蓝色溶液B。则A物质属于下列哪一类？</p>
+                     <div class="mt-6 text-center">
+                        <svg width="300" height="80" viewBox="0 0 300 80">
+                            <rect x="20" y="20" width="80" height="40" rx="5" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+                            <text x="60" y="45" text-anchor="middle" font-size="14">A (黑色固体)</text>
+                            <path d="M 110 40 L 180 40" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+                            <text x="145" y="35" text-anchor="middle" font-size="12">+稀盐酸</text>
+                             <rect x="190" y="20" width="80" height="40" rx="5" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+                            <text x="230" y="45" text-anchor="middle" font-size="14">B (蓝色溶液)</text>
+                             <defs>
+                                <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b" />
+                                </marker>
+                            </defs>
+                        </svg>
+                    </div>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 酸性氧化物</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 碱性氧化物</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 碱</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 盐</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 21: 练习题四 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">练习题（四）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>蓝色溶液是含有铜离子(<code>Cu²⁺</code>)的特征颜色。黑色固体能与酸反应生成盐(含铜离子的盐)和水，说明该黑色固体是<strong class="text-green-700">碱性氧化物</strong>。</p>
+                    <p>推断可知 A 是 <code>CuO</code> (氧化铜)，B 是 <code>CuCl₂</code> (氯化铜)。<code>CuO</code> 是一种典型的碱性氧化物。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 22: 练习题五 题目 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">随堂练习（五）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">下列物质中，属于酸式盐的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> H₂CO₃</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> Ca(OH)₂</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> NaHSO₄</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> K₂SO₄</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 23: 练习题五 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">练习题（五）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>酸式盐是多元酸的酸根离子中仍含有可以电离的氢原子(H⁺)的盐。</p>
+                    <div class="mt-4 text-center">
+                        <svg width="400" height="120" viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg" class="mx-auto">
+                            <title>酸式盐的构成示意图</title>
+                            <text x="200" y="20" text-anchor="middle" font-size="16" font-weight="bold" fill="#334155">酸式盐的构成</text>
+                            <g>
+                                <rect x="30" y="40" width="120" height="50" rx="5" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="2"/>
+                                <text x="90" y="62" text-anchor="middle" font-size="14" font-weight="bold" fill="#0369a1">金属阳离子</text>
+                                <text x="90" y="80" text-anchor="middle" font-size="14" font-family="monospace">(或NH₄⁺)</text>
+                            </g>
+                            <text x="165" y="70" text-anchor="middle" font-size="24" fill="#64748b">+</text>
+                            <g>
+                                <rect x="190" y="40" width="180" height="50" rx="5" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+                                <text x="280" y="62" text-anchor="middle" font-size="14" font-weight="bold" fill="#a16207">含可电离H⁺的酸根</text>
+                                <text x="280" y="80" text-anchor="middle" font-size="14" font-family="monospace">(e.g., HSO₄⁻, HCO₃⁻)</text>
+                            </g>
+                        </svg>
+                    </div>
+                     <ul class="list-disc list-inside mt-4">
+                        <li>(A) H₂CO₃ 是酸。</li>
+                        <li>(B) Ca(OH)₂ 是碱。</li>
+                        <li>(C) NaHSO₄ 由金属阳离子(Na⁺)和含有可电离H⁺的酸根(HSO₄⁻)构成，是酸式盐。</li>
+                        <li>(D) K₂SO₄ 是正盐。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 24: 最终结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-5xl font-bold text-slate-800">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-700">感谢大家的参与！</p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
+

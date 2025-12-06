@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>化学平衡常数 (K)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">化学平衡常数 (K)</h1>
+                <p class="text-2xl text-slate-600 mt-2">K值的计算与应用</p>
+            </div>
+        </div>
+        
+        <!-- 实验引入 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>实验引入：H₂ + I₂ ⇌ 2HI</h2>
+                <p class="mt-8 text-xl text-slate-700">新教材通过展示多组实验数据（“不是体育彩票！”），让我们探究一个问题：</p>
+                <p class="mt-4 text-xl text-slate-700">当反应 <code>H₂(g) + I₂(g) ⇌ 2HI(g)</code> 达到平衡时，各物质的<strong class="text-red-600">平衡浓度</strong>之间是否存在某种<strong class="text-blue-600">定量关系</strong>？</p>
+            </div>
+        </div>
+
+        <!-- 实验探究 (一) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>实验探究 (一)：457.6 °C</h2>
+                <p class="mt-8 text-xl text-slate-700">在 457.6 °C 时，进行了多组实验。无论起始浓度如何，也无论是从正向（投H₂、I₂）还是逆向（投HI）开始...</p>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg text-center">
+                    <p class="text-xl text-slate-700">...当达到平衡时，计算下面这个比值：</p>
+                    <p class="text-3xl mono font-bold mt-4">
+                        [HI]² / [H₂][I₂]
+                    </p>
+                </div>
+                <div class="mt-8 bg-green-100 text-green-800 p-6 rounded-lg text-lg text-center font-semibold">
+                    实验发现：这个比值始终接近一个常数，平均值 K ≈ 48.7
+                </div>
+            </div>
+        </div>
+
+        <!-- 实验结论 (一) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>实验结论 (一)</h2>
+                 <div class="mt-8 space-y-4 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg"><strong class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">结论 1</strong><p class="mt-2 text-lg">在<strong class="text-red-600">一定温度</strong>下，<code>[HI]² / [H₂][I₂]</code> 是一个<strong class="text-blue-700">常数</strong>。</p></div>
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg"><strong class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">结论 2</strong><p class="mt-2 text-lg">这个常数与反应的<strong class="text-red-600">起始浓度</strong>大小<strong class="text-red-600">无关</strong>。</p></div>
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg"><strong class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">结论 3</strong><p class="mt-2 text-lg">这个常数与从<strong class="text-red-600">正向</strong>还是<strong class="text-red-600">逆向</strong>建立平衡<strong class="text-red-600">无关</strong>。</p></div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 实验探究 (二) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>实验探究 (二)：改变温度</h2>
+                <p class="mt-8 text-xl text-slate-700">将实验温度改为 <strong class="text-red-600">425.6 °C</strong>，重复上述实验。</p>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg text-center">
+                    <p class="text-xl text-slate-700">...当达到平衡时，再次计算该比值：</p>
+                    <p class="text-3xl mono font-bold mt-4">
+                        [HI]² / [H₂][I₂]
+                    </p>
+                </div>
+                <div class="mt-8 bg-green-100 text-green-800 p-6 rounded-lg text-lg text-center font-semibold">
+                    实验发现：这个比值仍然是一个常数，但平均值 K ≈ 54.47
+                </div>
+            </div>
+        </div>
+
+        <!-- 实验结论 (二) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>实验结论 (二)</h2>
+                 <div class="mt-8 space-y-4 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <p class="mt-2 text-lg">这个比值（常数）与浓度、投料方式无关。</p>
+                    </div>
+                    <div class="bg-red-100 text-red-800 p-6 rounded-lg">
+                        <p class="mt-2 text-lg"><strong class="text-red-900">温度改变，常数发生变化。</strong> (48.7 → 54.47)</p>
+                    </div>
+                 </div>
+                 <div class="mt-8 bg-gray-800 text-white p-6 rounded-lg text-center">
+                    <p class="text-2xl font-bold">结论：化学平衡常数 K 只受温度影响。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 什么是化学平衡常数 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>什么是化学平衡常数 (K)？</h2>
+                <div class="mt-8 bg-indigo-50 border border-indigo-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-indigo-800 text-xl">定义：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">在<strong class="text-blue-600">一定温度</strong>下，当一个可逆反应达到<strong class="text-blue-600">化学平衡</strong>时，<strong class="text-red-600">生成物</strong>浓度幂之积 与 <strong class="text-red-600">反应物</strong>浓度幂之积的比值是一个常数。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 平衡常数的表达式 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>平衡常数的表达式</h2>
+                <p class="mt-8 text-xl text-slate-700">对于反应： <code>mA + nB ⇌ pC + qD</code></p>
+                <div class="mt-8 bg-gray-100 p-6 rounded-lg text-center">
+                    <p class="text-3xl mono font-bold">K = [C]<sup>p</sup> [D]<sup>q</sup> / ([A]<sup>m</sup> [B]<sup>n</sup>)</p>
+                </div>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">注意：</h3>
+                    <p><code>[C]</code>, <code>[D]</code>, <code>[A]</code>, <code>[B]</code> 必须是物质达到<strong class="text-red-900">平衡时</strong>的<strong class="text-red-900">物质的量浓度</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- K的注意事项 (一)：固体/液体 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>K的注意事项 (一)：固体/液体</h2>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">重要规则：</h3>
+                    <p>表达式中<strong class="text-red-900">不列入</strong> <code class="bg-red-200">纯固体 (s)</code> 和 <code class="bg-red-200">纯液体 (l)</code> 的浓度。</p>
+                    <p class="mt-2 text-slate-700 text-base">（因为它们的浓度视为常数，已合并到 K 值中）</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- K的注意事项 (一)：示例 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>K的注意事项 (一)：示例</h2>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">包含固体：</h3>
+                    <p class="mono mt-2 text-center">CaCO₃(s) ⇌ CaO(s) + CO₂(g)</p>
+                    <p class="mt-2 text-lg text-center text-blue-700 font-bold">K = [CO₂]</p>
+                    <p class="mt-1 text-sm text-center text-slate-500">(CaCO₃ 和 CaO 均为固体，不写入)</p>
+                </div>
+                 <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">稀溶液中的水：</h3>
+                    <p class="mono mt-2 text-center">2CrO₄²⁻(aq) + 2H⁺(aq) ⇌ Cr₂O₇²⁻(aq) + H₂O(l)</p>
+                    <p class="mt-2 text-lg text-center text-blue-700 font-bold">K = [Cr₂O₇²⁻] / ([CrO₄²⁻]² [H⁺]²)</p>
+                    <p class="mt-1 text-sm text-center text-slate-500">(H₂O 为纯液体溶剂，不写入)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- K的注意事项 (二)：反应方向 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>K的注意事项 (二)：反应方向</h2>
+                <p class="mt-8 text-xl text-slate-700">K值与方程式的<strong class="text-red-600">书写方式</strong>有关。如果反应方向<strong class="text-red-600">逆写</strong>：</p>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <p class="mono text-center text-lg">A + 2B ⇌ 3C + D   (平衡常数为 K₁)</p>
+                    <p class="mono text-center text-lg mt-4">3C + D ⇌ A + 2B   (平衡常数为 K₂)</p>
+                </div>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg text-center font-semibold">
+                    <p class="text-2xl mono">K₂ = 1 / K₁</p>
+                    <p class="mt-2 text-xl">（正、逆反应的平衡常数互为倒数）</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- K的注意事项 (三)：计量数 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>K的注意事项 (三)：计量数</h2>
+                <p class="mt-8 text-xl text-slate-700">如果方程式中的化学计量数<strong class="text-red-600">扩大或缩小 n 倍</strong>：</p>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <p class="mono text-center text-lg">A + B ⇌ 2C   (平衡常数为 K₁)</p>
+                    <p class="mono text-center text-lg mt-4">2A + 2B ⇌ 4C   (平衡常数为 K₂)</p>
+                </div>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg text-center font-semibold">
+                    <p class="text-2xl mono">K₂ = (K₁) ²</p>
+                    <p class="mt-2 text-xl">（系数变为 n 倍，K 变为 Kⁿ）</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- K 与 ΔH 的关系对比 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>K 与 ΔH 的关系对比</h2>
+                <div class="mt-8 overflow-x-auto">
+                    <table class="min-w-full text-center text-lg border border-slate-300">
+                        <thead class="bg-slate-100">
+                            <tr class="border-b border-slate-300">
+                                <th class="p-3 border-r border-slate-300">方程式操作</th>
+                                <th class="p-3 border-r border-slate-300">ΔH 的变化</th>
+                                <th class="p-3">K 的变化</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-slate-300">
+                                <td class="p-3 border-r border-slate-300 font-bold">反应逆写</td>
+                                <td class="p-3 border-r border-slate-300 mono text-blue-600">等值异号 ( -ΔH )</td>
+                                <td class="p-3 mono text-red-600">互为倒数 ( 1/K )</td>
+                            </tr>
+                            <tr class="border-b border-slate-300">
+                                <td class="p-3 border-r border-slate-300 font-bold">系数 × n</td>
+                                <td class="p-3 border-r border-slate-300 mono text-blue-600">n 倍 ( n·ΔH )</td>
+                                <td class="p-3 mono text-red-600">n 次方 ( Kⁿ )</td>
+                            </tr>
+                            <tr class="border-b border-slate-300">
+                                <td class="p-3 border-r border-slate-300 font-bold">反应相加</td>
+                                <td class="p-3 border-r border-slate-300 mono text-blue-600">相加 ( ΔH₁ + ΔH₂ )</td>
+                                <td class="p-3 mono text-red-600">相乘 ( K₁ · K₂ )</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- K的注意事项 (四)：单位 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>K的注意事项 (四)：单位</h2>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold space-y-3">
+                    <p>1. 必须使用<strong class="text-red-900">平衡浓度 (mol/L)</strong>，不能使用<strong class="text-red-900">物质的量 (mol)</strong>。</p>
+                    <p>2. 必须使用<strong class="text-red-900">平衡时</strong>的浓度，不能使用<strong class="text-red-900">任意时刻</strong>的浓度。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- K的注意事项 (五)：水 (H₂O) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>K的注意事项 (五)：水 (H₂O)</h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                        <strong class="font-bold text-red-700 text-xl">不写入：</strong>
+                        <p class="mt-2 text-lg text-slate-700">1. 作为<strong class="text-red-600">纯液体溶剂</strong>的稀薄水溶液 (<code>aq</code>) 中的 <code>H₂O(l)</code>。</p>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 p-4 rounded-lg">
+                        <strong class="font-bold text-green-700 text-xl">要写入：</strong>
+                        <p class="mt-2 text-lg text-slate-700">1. 作为<strong class="text-green-600">气态</strong>反应物或生成物的 <code>H₂O(g)</code>。<br/>(例: <code>C(s) + H₂O(g) ⇌ CO(g) + H₂(g)</code>)</p>
+                        <p class="mt-2 text-lg text-slate-700">2. 在<strong class="text-green-600">非水溶液</strong>（如有机反应）中生成的 <code>H₂O(l)</code>。<br/>(例: 酯化反应)</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 化学平衡常数的意义 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>化学平衡常数的意义</h2>
+                <div class="mt-8 bg-teal-50 border border-teal-200 p-6 rounded-lg">
+                    <p class="mt-3 text-slate-600 text-lg">K 值是衡量一个可逆反应在一定温度下进行<strong class="text-red-600">限度</strong>（程度）的定量标志。</p>
+                </div>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-blue-800 text-2xl">K 值越大</h3>
+                        <p class="mt-3 text-slate-600"><code>[生成物]</code> 比例越大，<code>[反应物]</code> 比例越小。</p>
+                        <p class="mt-2 text-blue-700 font-semibold">正反应进行的程度越大，反应越完全，转化率越高。</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-red-800 text-2xl">K 值越小</h3>
+                        <p class="mt-3 text-slate-600"><code>[生成物]</code> 比例越小，<code>[反应物]</code> 比例越大。</p>
+                        <p class="mt-2 text-red-700 font-semibold">正反应进行的程度越小，反应越不完全，转化率越低。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- K值大小的意义 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>K值大小的意义</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-green-800 text-xl text-center">K > 10⁵</h3>
+                    <p class="mt-3 text-slate-600 text-lg text-center">可认为该反应<strong class="text-green-700">进行得基本完全</strong>。</p>
+                </div>
+                 <div class="mt-8 bg-red-50 border border-red-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-red-800 text-xl text-center">K < 10⁻⁵</h3>
+                    <p class="mt-3 text-slate-600 text-lg text-center">可认为该反应<strong class="text-red-700">基本不进行</strong>（逆反应进行得基本完全）。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- K的应用：浓度商 (Q) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>K的应用：浓度商 (Q)</h2>
+                <p class="mt-8 text-xl text-slate-700">K 值是在<strong class="text-blue-600">平衡状态</strong>下的浓度比值。</p>
+                <p class="mt-4 text-xl text-slate-700">如果在<strong class="text-red-600">任意时刻</strong>，我们将<strong class="text-red-600">瞬时浓度</strong>代入 K 的表达式，得到的值称为<strong class="text-cyan-700">浓度商 (Qc)</strong>。</p>
+                <div class="mt-8 bg-gray-100 p-6 rounded-lg text-center">
+                    <p class="text-3xl mono font-bold">Qc = [C]<sup>p</sup> [D]<sup>q</sup> / ([A]<sup>m</sup> [B]<sup>n</sup>)</p>
+                    <p class="mt-2 text-lg text-slate-600">（表达式与K相同，但代入的是<strong class="text-red-500">任意时刻</strong>的浓度）</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q 与 K 的比较 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>Q 与 K 的比较 (判断方向)</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-blue-800 text-2xl">Q < K</h3>
+                        <p class="mt-3 text-slate-600">[生成物]少 / [反应物]多</p>
+                        <p class="mt-2 text-blue-700 font-semibold text-xl">反应<strong class="text-blue-700">正向进行</strong> (→)</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-red-800 text-2xl">Q > K</h3>
+                        <p class="mt-3 text-slate-600">[生成物]多 / [反应物]少</p>
+                        <p class="mt-2 text-red-700 font-semibold text-xl">反应<strong class="text-red-700">逆向进行</strong> (←)</p>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-green-800 text-2xl">Q = K</h3>
+                        <p class="mt-3 text-slate-600">浓度比值 = 平衡常数</p>
+                        <p class="mt-2 text-green-700 font-semibold text-xl">反应达到<strong class="text-green-700">平衡状态</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q 与 K 的比较 (记忆法) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>Q 与 K 的比较 (记忆法)</h2>
+                <p class="mt-8 text-xl text-slate-700 text-center">把 < 和 > 看作钉子，用锤子把它敲平 (敲成 =)。</p>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-blue-800 text-2xl">Q < K</h3>
+                        <p class="mt-3 text-slate-600 text-3xl">🔨 →</p>
+                        <p class="mt-2 text-blue-700 font-semibold text-xl">钉子尖在左，<strong class="text-blue-700">向右</strong>敲</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-red-800 text-2xl">Q > K</h3>
+                        <p class="mt-3 text-slate-600 text-3xl">← 🔨</p>
+                        <p class="mt-2 text-red-700 font-semibold text-xl">钉子尖在右，<strong class="text-red-700">向左</strong>敲</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q 与 K 比较 (示例) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>Q 与 K 比较 (示例)</h2>
+                <p class="mt-8 text-xl text-slate-700">反应 <code>A + B ⇌ C + D</code>，已知某温度下 <code>K = 2</code>。</p>
+                <p class="mt-4 text-xl text-slate-700">某时刻测得 <code>[A]=[B]=[C]=[D] = 1 mol/L</code>。</p>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">1. 计算 Q：</h3>
+                    <p class="mono mt-2 text-center text-lg">Q = ([C][D]) / ([A][B]) = (1 * 1) / (1 * 1) = 1</p>
+                </div>
+                 <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">2. 比较 Q 和 K：</h3>
+                    <p class="mono mt-2 text-center text-lg">Q (1) < K (2)</p>
+                </div>
+                <div class="mt-8 bg-blue-100 text-blue-800 p-6 rounded-lg text-lg text-center font-semibold">
+                    结论：反应未达平衡，正向 (→) 进行。
+                </div>
+            </div>
+        </div>
+
+        <!-- 另一个指标：平衡转化率 (α) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>另一个指标：平衡转化率 (α)</h2>
+                <p class="mt-8 text-xl text-slate-700">平衡转化率 (α) 也能表示反应的限度，且更直观。</p>
+                <div class="mt-8 bg-orange-50 border border-orange-200 p-6 rounded-lg">
+                    <p class="text-xl mono text-center font-bold">α = (已转化的反应物量 / 反应物初始总量) * 100%</p>
+                </div>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <p class="text-lg text-slate-700"><strong>例：</strong>投 1 mol A，平衡时 A 剩余 0.4 mol。</p>
+                    <p class="mt-2 text-lg text-slate-700">转化量 = 1 - 0.4 = 0.6 mol</p>
+                    <p class="mt-2 text-lg text-slate-700">转化率 α = (0.6 / 1) * 100% = 60%</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 (计算题) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (计算题)</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">已知可逆反应 <code>M + N ⇌ P + Q</code> (均为气体)，在某<strong class="text-red-600">不变的温度</strong>下进行。</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p><strong>(1)</strong> 起始浓度 [M]=1, [N]=2.4 (mol/L)。达平衡时 M 的转化率为 60%。求 N 的转化率。</p>
+                        <p><strong>(2)</strong> 起始浓度 [M]=4, [N]=a (mol/L)。达平衡时 [P]=2 (mol/L)。求 a 的值。</p>
+                        <p><strong>(3)</strong> 起始浓度 [M]=b, [N]=b (mol/L)。达平衡时 M 的转化率是多少？</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习解析 (1) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习解析 (1)：三段式</h2>
+                <div class="mt-8 overflow-x-auto">
+                    <table class="min-w-full text-center text-lg border border-slate-300">
+                        <thead class="bg-slate-100">
+                            <tr class="border-b border-slate-300">
+                                <th class="p-2 border-r border-slate-300"></th>
+                                <th class="p-2 border-r border-slate-300">M</th>
+                                <th class="p-2 border-r border-slate-300">+ N</th>
+                                <th class="p-2 border-r border-slate-300">⇌ P</th>
+                                <th class="p-2">+ Q</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-slate-300">
+                                <td class="p-2 border-r border-slate-300 font-bold">初 (mol/L)</td>
+                                <td class="p-2 border-r border-slate-300">1</td>
+                                <td class="p-2 border-r border-slate-300">2.4</td>
+                                <td class="p-2 border-r border-slate-300">0</td>
+                                <td class="p-2">0</td>
+                            </tr>
+                            <tr class="border-b border-slate-300">
+                                <td class="p-2 border-r border-slate-300 font-bold">转 (mol/L)</td>
+                                <td class="p-2 border-r border-slate-300 text-red-600">-0.6</td>
+                                <td class="p-2 border-r border-slate-300 text-red-600">-0.6</td>
+                                <td class="p-2 border-r border-slate-300 text-blue-600">+0.6</td>
+                                <td class="p-2 text-blue-600">+0.6</td>
+                            </tr>
+                            <tr class="border-b border-slate-300">
+                                <td class="p-2 border-r border-slate-300 font-bold">平 (mol/L)</td>
+                                <td class="p-2 border-r border-slate-300">0.4</td>
+                                <td class="p-2 border-r border-slate-300">1.8</td>
+                                <td class="p-2 border-r border-slate-300">0.6</td>
+                                <td class="p-2">0.6</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p>M 的转化量 = 1 * 60% = 0.6 mol/L</p>
+                    <p>N 的转化率 α(N) = (转化的量 / 初始量) * 100%</p>
+                    <p>α(N) = (0.6 / 2.4) * 100% = <strong class="text-green-800 text-2xl">25%</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习解析 (2) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习解析 (2)：K值不变</h2>
+                <p class="mt-8 text-xl text-slate-700"><strong>关键：</strong>温度不变，K 不变。</p>
+                <div class="mt-6 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-lg"><strong>1. 先求 K 值 (用第1问数据)：</strong></p>
+                    <p class="mono mt-2 text-center text-lg">K = ([P][Q]) / ([M][N]) = (0.6 * 0.6) / (0.4 * 1.8) = 0.36 / 0.72 = <strong class="text-red-600">0.5</strong></p>
+                </div>
+                <div class="mt-6 overflow-x-auto">
+                    <table class="min-w-full text-center text-lg border border-slate-300">
+                        <!-- ... (表格头部) ... -->
+                        <thead class="bg-slate-100"><tr class="border-b border-slate-300"><th class="p-2 border-r border-slate-300"></th><th class="p-2 border-r border-slate-300">M</th><th class="p-2 border-r border-slate-300">+ N</th><th class="p-2 border-r border-slate-300">⇌ P</th><th class="p-2">+ Q</th></tr></thead>
+                        <tbody>
+                            <tr class="border-b border-slate-300">
+                                <td class="p-2 border-r border-slate-300 font-bold">初</td><td>4</td><td>a</td><td>0</td><td>0</td>
+                            </tr>
+                            <tr class="border-b border-slate-300">
+                                <td class="p-2 border-r border-slate-300 font-bold">转</td><td class="text-red-600">-2</td><td class="text-red-600">-2</td><td class="text-blue-600">+2</td><td class="text-blue-600">+2</td>
+                            </tr>
+                            <tr class="border-b border-slate-300">
+                                <td class="p-2 border-r border-slate-300 font-bold">平</td><td>2</td><td>a-2</td><td>2</td><td>2</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                 <div class="mt-6 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="text-lg"><strong>2. 代入 K 求解：</strong></p>
+                    <p class="mono mt-2">K = ( [P][Q] ) / ( [M][N] ) = 0.5</p>
+                    <p class="mono mt-2">( 2 * 2 ) / ( 2 * (a-2) ) = 0.5</p>
+                    <p class="mono mt-2">2 / (a-2) = 0.5</p>
+                    <p class="mono mt-2">a - 2 = 4</p>
+                    <p class="font-bold text-green-800 text-2xl">a = 6</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习解析 (3) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习解析 (3)：求解转化率</h2>
+                <p class="mt-8 text-xl text-slate-700"><strong>关键：</strong>温度不变，K 仍为 0.5。</p>
+                <div class="mt-6 overflow-x-auto">
+                    <table class="min-w-full text-center text-lg border border-slate-300">
+                        <!-- ... (表格头部) ... -->
+                        <thead class="bg-slate-100"><tr class="border-b border-slate-300"><th class="p-2 border-r border-slate-300"></th><th class="p-2 border-r border-slate-300">M</th><th class="p-2 border-r border-slate-300">+ N</th><th class="p-2 border-r border-slate-300">⇌ P</th><th class="p-2">+ Q</th></tr></thead>
+                        <tbody>
+                            <tr class="border-b border-slate-300">
+                                <td class="p-2 border-r border-slate-300 font-bold">初</td><td>b</td><td>b</td><td>0</td><td>0</td>
+                            </tr>
+                            <tr class="border-b border-slate-300">
+                                <td class="p-2 border-r border-slate-300 font-bold">转</td><td class="text-red-600">-x</td><td class="text-red-600">-x</td><td class="text-blue-600">+x</td><td class="text-blue-600">+x</td>
+                            </tr>
+                            <tr class="border-b border-slate-300">
+                                <td class="p-2 border-r border-slate-300 font-bold">平</td><td>b-x</td><td>b-x</td><td>x</td><td>x</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                 <div class="mt-6 bg-green-50 p-6 rounded-lg text-lg space-y-3 border border-green-200">
+                    <p><strong>代入 K 求解 x：</strong></p>
+                    <p class="mono">K = (x * x) / ((b-x) * (b-x)) = 0.5</p>
+                    <p class="mono">x² / (b-x)² = 0.5</p>
+                    <p class="mono mt-2">x / (b-x) = √0.5 ≈ 0.707 (或 1/√2)</p>
+                    <p class="mono mt-2">x = 0.707b - 0.707x</p>
+                    <p class="mono mt-2">1.707x = 0.707b</p>
+                    <p class="mono mt-2">x ≈ 0.414b</p>
+                    <p class="mt-4"><strong>计算转化率 α(M)：</strong></p>
+                    <p class="mono">α = (转化的量 / 初始量) = x / b = 0.414b / b = 0.414</p>
+                    <p class="font-bold text-green-800 text-2xl">α = 41.4%</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                 </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看，大家学会了吗？</p>
+                <p class="mt-4 text-2xl text-slate-600">我们下节课再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- 导航控件 -->
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <!-- JS 逻辑 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

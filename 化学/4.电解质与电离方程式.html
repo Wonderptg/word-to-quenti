@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>看透化学反应的本质——离子反应</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2rem;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+
+        .diagram-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background-color: #f8fafc;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- Slide 1: 开场 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">看透化学反应的本质</h1>
+                <p class="text-2xl text-slate-700 mt-2">—— 离子反应</p>
+            </div>
+        </div>
+        
+        <!-- Slide 2: 引入 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2">一个熟悉的反应，一个全新的视角</h2>
+                 <div class="diagram-container">
+                    <svg width="450" height="200" viewBox="0 0 450 200" xmlns="http://www.w3.org/2000/svg">
+                        <defs><marker id="arrow_intro" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" /></marker></defs>
+                        <!-- Beaker 1 -->
+                        <g transform="translate(80, 100)">
+                            <path d="M -40 50 L -40 -30 Q -40 -40 -30 -40 L 30 -40 Q 40 -40 40 -30 L 40 50 Z" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+                            <text x="0" y="80" text-anchor="middle" font-size="14">CuSO₄ 溶液</text>
+                            <circle cx="-10" cy="0" r="8" fill="#3b82f6"/><text x="-10" y="4" text-anchor="middle" font-size="8" fill="white">Cu²⁺</text>
+                            <circle cx="10" cy="20" r="8" fill="#f43f5e"/><text x="10" y="24" text-anchor="middle" font-size="8" fill="white">SO₄²⁻</text>
+                        </g>
+                         <!-- Beaker 2 -->
+                        <g transform="translate(220, 100)">
+                             <path d="M -40 50 L -40 -30 Q -40 -40 -30 -40 L 30 -40 Q 40 -40 40 -30 L 40 50 Z" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+                             <text x="0" y="80" text-anchor="middle" font-size="14">NaOH 溶液</text>
+                             <circle cx="-10" cy="0" r="8" fill="#15803d"/><text x="-10" y="4" text-anchor="middle" font-size="8" fill="white">Na⁺</text>
+                            <circle cx="10" cy="20" r="8" fill="#f43f5e"/><text x="10" y="24" text-anchor="middle" font-size="8" fill="white">OH⁻</text>
+                        </g>
+                        <text x="150" y="105" font-size="24">+</text>
+                        <path d="M 270 100 L 320 100" stroke="black" stroke-width="2" marker-end="url(#arrow_intro)"/>
+                        <!-- Result -->
+                        <g transform="translate(370, 100)">
+                             <!-- Beaker with solution -->
+                            <path d="M -40 50 L -40 -30 Q -40 -40 -30 -40 L 30 -40 Q 40 -40 40 -30 L 40 50 Z" fill="#dcfce7" stroke="#64748b" stroke-width="2"/>
+                            <!-- Precipitate at the bottom -->
+                            <path d="M -38 50 L 38 50 L 38 30 C 20 20, -20 20, -38 30 Z" fill="#3b82f6" opacity="0.7"/>
+                            <!-- Spectator ions in solution -->
+                            <circle cx="-15" cy="-10" r="8" fill="#15803d"/><text x="-15" y="-6" text-anchor="middle" font-size="8" fill="white">Na⁺</text>
+                            <circle cx="15" cy="-10" r="8" fill="#f43f5e"/><text x="15" y="-6" text-anchor="middle" font-size="8" fill="white">SO₄²⁻</text>
+                            <text x="0" y="80" text-anchor="middle" font-size="14">蓝色沉淀</text>
+                        </g>
+                    </svg>
+                 </div>
+                 <p class="mt-4 text-xl text-center text-slate-800">溶液中真正发生变化的，其实只有 <code class="text-2xl">Cu²⁺</code> 和 <code>OH⁻</code> 离子。</p>
+                 <p class="mt-6 text-2xl font-semibold text-center text-teal-700">离子反应，就是帮助我们揪出“真正干活的”离子的工具！</p>
+            </div>
+        </div>
+
+        <!-- Slide 3: 什么是离子反应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">一、离子反应的本质</h2>
+                <div class="mt-8 bg-blue-50 p-6 rounded-lg text-xl">
+                    <p class="font-bold text-blue-800">定义：</p>
+                    <p class="mt-2">在溶液中或熔融状态下，有<strong class="text-blue-600">离子参加</strong>或<strong class="text-blue-600">有离子生成</strong>的反应。</p>
+                    <hr class="my-4 border-blue-200">
+                    <p class="font-bold text-blue-800">核心思想：</p>
+                     <p class="mt-2">抓主要矛盾，忽略“吃瓜群众”（即那些在反应前后没有变化的<strong class="text-blue-600">旁观离子</strong>）。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: 离子方程式 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-red-500 pb-2">二、离子方程式：记录本质的语言</h2>
+                 <p class="mt-6 text-xl text-slate-700">用实际参加反应的离子符号来表示离子反应的式子。</p>
+                 <div class="diagram-container">
+                    <svg width="450" height="200" viewBox="0 0 450 200" xmlns="http://www.w3.org/2000/svg">
+                         <defs><marker id="arrow_eq" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" /></marker></defs>
+                        <!-- Before -->
+                        <g transform="translate(100, 100)">
+                             <path d="M -75 50 L -75 -40 Q -75 -50 -65 -50 L 65 -50 Q 75 -50 75 -40 L 75 50 Z" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+                             <circle cx="-40" cy="-10" r="8" fill="#3b82f6"/><text x="-40" y="-6" text-anchor="middle" fill="white" font-size="8">Cu²⁺</text>
+                             <circle cx="0" cy="10" r="8" fill="#f43f5e"/><text x="0" y="14" text-anchor="middle" fill="white" font-size="8">OH⁻</text>
+                             <circle cx="40" cy="-10" r="8" fill="#a3a3a3"/><text x="40" y="-6" text-anchor="middle" fill="white" font-size="8">Na⁺</text>
+                        </g>
+                        <path d="M 185 100 L 235 100" stroke="black" stroke-width="2" marker-end="url(#arrow_eq)"/>
+                        <!-- After -->
+                        <g transform="translate(325, 100)">
+                             <!-- Beaker with solution -->
+                             <path d="M -75 50 L -75 -40 Q -75 -50 -65 -50 L 65 -50 Q 75 -50 75 -40 L 75 50 Z" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+                             <!-- Precipitate at the bottom -->
+                             <path d="M -73 50 L 73 50 L 73 30 C 40 20, -40 20, -73 30 Z" fill="#3b82f6" opacity="0.7"/>
+                             <!-- Spectator ions in solution -->
+                             <circle cx="-20" cy="-10" r="8" fill="#a3a3a3"/><text x="-20" y="-6" text-anchor="middle" fill="white" font-size="8">Na⁺</text>
+                             <circle cx="20" cy="-10" r="8" fill="#f43f5e"/><text x="20" y="-6" text-anchor="middle" font-size="8" fill="white">SO₄²⁻</text>
+                        </g>
+                    </svg>
+                 </div>
+                 <div class="mt-8 bg-red-50 p-4 rounded-lg text-lg font-mono text-center">
+                    <p class="text-red-800 font-sans mb-2">化学方程式：</p>
+                    <p>CuSO₄ + 2NaOH = Cu(OH)₂↓ + Na₂SO₄</p>
+                    <p class="text-red-800 font-sans mt-4 mb-2">离子方程式：</p>
+                    <p class="text-2xl font-bold">Cu²⁺ + 2OH⁻ = Cu(OH)₂↓</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- === 新增例题 (4和5之间) 题目 === -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">小试牛刀</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">在<code>NaCl</code>溶液和<code>AgNO₃</code>溶液的反应中，“旁观离子”是？</p>
+                     <div class="mt-6 space-y-3 text-lg font-mono">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> Na⁺ 和 NO₃⁻</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> Ag⁺ 和 Cl⁻</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 只有 Na⁺</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 只有 NO₃⁻</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- === 新增例题 (4和5之间) 解析 === -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">小试牛刀：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(A)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>该反应的离子方程式是 <code>Ag⁺ + Cl⁻ = AgCl↓</code>。</p>
+                    <p class="mt-2"><code>Ag⁺</code> 和 <code>Cl⁻</code> 离子结合生成了沉淀，它们是实际参与反应的离子。而 <code class="text-green-700">Na⁺</code> 和 <code class="text-green-700">NO₃⁻</code> 在反应前后没有发生任何变化，仍然以离子的形式存在于溶液中，所以它们是“旁观离子”。</p>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Slide 5: 书写规则 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">三、书写离子方程式的“四字诀”</h2>
+                <div class="diagram-container">
+                    <svg width="450" height="120" viewBox="0 0 450 120" xmlns="http://www.w3.org/2000/svg">
+                        <defs><marker id="arrow_rule" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#166534"/></marker></defs>
+                        <rect x="10" y="45" width="80" height="40" rx="20" fill="#dcfce7"/><text x="50" y="70" text-anchor="middle">写</text>
+                        <path d="M 95 65 L 125 65" stroke="#166534" stroke-width="2" marker-end="url(#arrow_rule)"/>
+                        <rect x="130" y="45" width="80" height="40" rx="20" fill="#dcfce7"/><text x="170" y="70" text-anchor="middle">拆</text>
+                        <path d="M 215 65 L 245 65" stroke="#166534" stroke-width="2" marker-end="url(#arrow_rule)"/>
+                        <rect x="250" y="45" width="80" height="40" rx="20" fill="#dcfce7"/><text x="290" y="70" text-anchor="middle">删</text>
+                        <path d="M 335 65 L 365 65" stroke="#166534" stroke-width="2" marker-end="url(#arrow_rule)"/>
+                        <rect x="370" y="45" width="80" height="40" rx="20" fill="#dcfce7"/><text x="410" y="70" text-anchor="middle">查</text>
+                    </svg>
+                </div>
+                <div class="mt-8 text-lg space-y-4">
+                     <p><strong>1. 写：</strong>写出正确的化学方程式。</p>
+                     <p><strong>2. 拆：</strong>把易溶于水的<strong class="text-green-600">强电解质</strong>拆成离子形式。</p>
+                     <p><strong>3. 删：</strong>删去反应前后完全相同的“旁观离子”。</p>
+                     <p><strong>4. 查：</strong>检查两边的原子个数和电荷总数是否守恒。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- === 新增例题 (5和6之间) 题目与解析 === -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-gray-500 pb-2">“四字诀”应用</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg text-xl">
+                    <p><strong>例题：</strong>请用“四字诀”写出盐酸和氢氧化钠溶液反应的离子方程式。</p>
+                </div>
+                 <div class="mt-8 bg-gray-100 p-6 rounded-lg text-lg space-y-4 font-mono">
+                     <p><strong>1. 写:</strong> HCl + NaOH = NaCl + H₂O</p>
+                     <p><strong>2. 拆:</strong> <span class="text-blue-600">H⁺ + Cl⁻</span> + <span class="text-blue-600">Na⁺ + OH⁻</span> = <span class="text-blue-600">Na⁺ + Cl⁻</span> + <span class="text-red-600">H₂O</span> (水是弱电解质，不拆)</p>
+                     <p><strong>3. 删:</strong> H⁺ + <s class="text-gray-400">Cl⁻</s> + <s class="text-gray-400">Na⁺</s> + OH⁻ = <s class="text-gray-400">Na⁺</s> + <s class="text-gray-400">Cl⁻</s> + H₂O</p>
+                     <p><strong>4. 查:</strong> <span class="text-green-600">(左右电荷均为0，原子守恒)</span></p>
+                     <hr class="my-4 border-gray-300">
+                     <p class="text-2xl font-bold text-red-600 font-sans">最终结果：</p>
+                     <p class="text-xl font-bold">H⁺ + OH⁻ = H₂O</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: “拆”的规则 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">“拆”的规则：哪些物质不能拆？</h2>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                    <div class="bg-slate-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-slate-800">难溶物质</h3>
+                        <p class="mt-2 text-slate-600">如 <code>AgCl</code>, <code>BaSO₄</code>, <code>Cu(OH)₂</code></p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-slate-800">弱电解质</h3>
+                        <p class="mt-2 text-slate-600">如 <code>H₂O</code>, <code>CH₃COOH</code>, <code>NH₃·H₂O</code></p>
+                    </div>
+                     <div class="bg-slate-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-slate-800">气体</h3>
+                        <p class="mt-2 text-slate-600">如 <code>H₂</code>, <code>CO₂</code>, <code>SO₂</code></p>
+                    </div>
+                     <div class="bg-slate-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-slate-800">氧化物</h3>
+                        <p class="mt-2 text-slate-600">如 <code>CuO</code>, <code>Fe₂O₃</code></p>
+                    </div>
+                </div>
+                 <p class="mt-10 text-xl font-semibold text-center text-red-700 bg-red-100 p-4 rounded-lg">简单记：沉、弱、气、氧，还有单质，都不拆！</p>
+            </div>
+        </div>
+
+        <!-- Slide 7: 例题 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-gray-500 pb-2">四、实战演练</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg text-xl">
+                    <p><strong>例题：</strong>写出稀硫酸和氢氧化钡溶液反应的离子方程式。</p>
+                </div>
+                 <div class="mt-8 bg-gray-100 p-6 rounded-lg text-lg space-y-4 font-mono">
+                     <p><strong>1. 写:</strong> H₂SO₄ + Ba(OH)₂ = BaSO₄↓ + 2H₂O</p>
+                     <p><strong>2. 拆:</strong> 2H⁺+SO₄²⁻ + Ba²⁺+2OH⁻ = BaSO₄↓ + 2H₂O</p>
+                     <p><strong>3. 删:</strong> <span class="text-gray-400">(没有旁观离子可删)</span></p>
+                     <p><strong>4. 查:</strong> <span class="text-green-600">(电荷守恒，原子守恒)</span></p>
+                     <hr class="my-4 border-gray-300">
+                     <p class="text-2xl font-bold text-red-600 font-sans">最终结果：</p>
+                     <p class="text-xl font-bold">2H⁺ + SO₄²⁻ + Ba²⁺ + 2OH⁻ = BaSO₄↓ + 2H₂O</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: 总结 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-gray-500 pb-2">今日总结</h2>
+                <div class="mt-8 text-xl space-y-4">
+                    <p>• 我们明白了<strong class="text-gray-700">离子反应</strong>是发生在溶液中化学反应的本质。</p>
+                    <p>• 我们学会了用<strong class="text-gray-700">离子方程式</strong>来描述这种本质，剔除了“旁观离子”的干扰。</p>
+                    <p>• 我们掌握了书写离子方程式的“<strong class="text-green-600">写、拆、删、查</strong>”四字诀，特别是“拆”的规则。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 9: 结束 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-5xl font-bold text-slate-800">课程结束</h2>
+                <p class="mt-8 text-2xl text-slate-700">请大家务必多多练习，熟能生巧！</p>
+            </div>
+        </div>
+        
+        <!-- 练习题部分 -->
+        <!-- Slide 10: 练习题一 题目 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">随堂练习（一）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">下列反应中，哪一个属于离子反应？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 氢气在氯气中燃烧</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 氯化钠溶液与硝酸银溶液混合</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 固体氯化钾和浓硫酸加热</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 碳在空气中燃烧</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: 练习题一 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">练习题（一）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>离子反应的核心条件是在<strong class="text-green-700">溶液中</strong>或<strong class="text-green-700">熔融状态</strong>下，有离子参与或生成。选项A, C, D都是在非溶液/非熔融状态下进行的反应，而B是两种溶液混合，有离子参与生成了AgCl沉淀，是典型的离子反应。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: 练习题二 题目 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">随堂练习（二）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">下列离子方程式书写<strong class="text-red-600">正确</strong>的是？</p>
+                     <div class="mt-6 space-y-3 text-lg font-mono">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 铁与稀硫酸反应：2Fe + 6H⁺ = 2Fe³⁺ + 3H₂↑</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 碳酸钙与盐酸反应：CO₃²⁻ + 2H⁺ = H₂O + CO₂↑</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 氢氧化铜与稀硝酸反应：OH⁻ + H⁺ = H₂O</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 氯化钡溶液与硫酸钠溶液反应：Ba²⁺ + SO₄²⁻ = BaSO₄↓</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: 练习题二 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">练习题（二）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                     <ul class="list-disc list-inside">
+                        <li>(A) 铁与稀酸反应生成的是亚铁离子(Fe²⁺)，不是Fe³⁺。错误。</li>
+                        <li>(B) 碳酸钙(CaCO₃)是难溶物，不能拆成离子。错误。</li>
+                        <li>(C) 氢氧化铜(Cu(OH)₂)是难溶物，不能拆。错误。</li>
+                        <li>(D) 氯化钡和硫酸钠都是易溶的强电解质，可以拆；硫酸钡是沉淀，不能拆。书写完全正确。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- === 新增练习题部分 === -->
+
+        <!-- Slide 14: 练习题三 题目 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">随堂练习（三）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">下列物质中，在书写离子方程式时<strong class="text-red-600">不能</strong>拆开的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 硝酸钾 (KNO₃)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 氢氧化钠 (NaOH)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 醋酸 (CH₃COOH)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 硫酸 (H₂SO₄)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: 练习题三 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">练习题（三）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>根据“拆”的规则，我们需要将易溶于水的强电解质拆成离子。而<strong class="text-green-700">弱电解质</strong>、难溶物、气体、氧化物等都不能拆。
+                    </p>
+                     <ul class="list-disc list-inside mt-4">
+                        <li>(A) 硝酸钾是易溶于水的盐，是强电解质，要拆。</li>
+                        <li>(B) 氢氧化钠是强碱，是强电解质，要拆。</li>
+                        <li>(C) 醋酸是<strong class="text-green-700">弱酸</strong>，属于弱电解质，不能拆。</li>
+                        <li>(D) 硫酸是强酸，是强电解质，要拆。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: 练习题四 题目 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">随堂练习（四）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">在<code>Na₂SO₄</code>溶液和<code>BaCl₂</code>溶液的反应中，没有参与反应的“旁观离子”是？</p>
+                     <div class="mt-6 space-y-3 text-lg font-mono">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> Ba²⁺ 和 SO₄²⁻</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> Na⁺ 和 Cl⁻</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 只有 Na⁺</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 只有 Cl⁻</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: 练习题四 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">练习题（四）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>该反应的离子方程式是 <code>Ba²⁺ + SO₄²⁻ = BaSO₄↓</code>。
+                    </p>
+                    <p class="mt-2">比较反应前后的离子，我们可以发现 <code>Ba²⁺</code> 和 <code>SO₄²⁻</code> 结合生成了沉淀，它们是实际参与反应的离子。而 <code class="text-green-700">Na⁺</code> 和 <code class="text-green-700">Cl⁻</code> 在反应前后没有发生任何变化，仍然以离子的形式存在于溶液中，所以它们是“旁观离子”。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 18: 练习题五 题目 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">随堂练习（五）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">下列离子方程式中，<strong class="text-red-600">电荷不守恒</strong>的是？</p>
+                     <div class="mt-6 space-y-3 text-lg font-mono">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> Zn + 2H⁺ = Zn²⁺ + H₂↑</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> Ca²⁺ + CO₃²⁻ = CaCO₃↓</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> Fe + Cu²⁺ = Fe²⁺ + Cu</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> H⁺ + OH = H₂O</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: 练习题五 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">练习题（五）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>“查”是书写离子方程式的最后一步，就是要检查反应前后原子个数和<strong class="text-green-700">电荷总数</strong>是否相等。
+                    </p>
+                     <ul class="list-disc list-inside mt-4">
+                        <li>(A) 左边电荷: 2*(+1) = +2。右边电荷: +2。电荷守恒。</li>
+                        <li>(B) 左边电荷: (+2) + (-2) = 0。右边是中性物质，电荷为0。电荷守恒。</li>
+                        <li>(C) 左边电荷: +2。右边电荷: +2。电荷守恒。</li>
+                        <li>(D) 左边电荷: +1。右边是中性物质，电荷为0。左边+1，右边0，<strong class="text-green-700">电荷不守恒</strong>。正确的应为 <code>H⁺ + OH⁻ = H₂O</code>。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

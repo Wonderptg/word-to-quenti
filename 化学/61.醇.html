@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>有机化学基础：醇</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        
+        /* 表格样式 */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+        }
+        .styled-table th, .styled-table td {
+            border: 1px solid #cbd5e1;
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+        .styled-table thead {
+            background-color: #f8fafc;
+        }
+        .styled-table th {
+            font-weight: 700;
+            color: #334155;
+            text-align: center;
+        }
+        .styled-table tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+        .styled-table tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页（已删除副标题“选择性必修三 (进阶)”） -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">有机化学基础：醇</h1>
+            </div>
+        </div>
+        
+        <!-- 醇的分类 (一) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>醇的分类 (一)：按羟基数目</h2>
+                 <div class="mt-8 space-y-4 text-lg">
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="font-bold text-indigo-700 text-xl">一元醇</strong> (含 1 个 -OH)
+                        <p class="mt-2 text-slate-700 mono">例：乙醇 (CH₃CH₂OH)</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="font-bold text-indigo-700 text-xl">二元醇</strong> (含 2 个 -OH)
+                        <p class="mt-2 text-slate-700 mono">例：乙二醇 (HOCH₂-CH₂OH)</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="font-bold text-indigo-700 text-xl">多元醇</strong> (含多个 -OH)
+                        <p class="mt-2 text-slate-700 mono">例：丙三醇 (甘油)</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 醇的分类 (二) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>醇的分类 (二)：按烃基种类</h2>
+                 <div classmt-8 space-y-4 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                        <strong class="font-bold text-blue-700 text-xl">脂肪醇</strong> (烃基为链状)
+                        <p class="mt-2 text-slate-700">· <strong class="text-blue-600">饱和醇</strong>：如 乙醇 (C-C)</p>
+                        <p class="mt-2 text-slate-700">· <strong class="text-red-600">不饱和醇</strong>：如 丙烯醇 (C=C-C-OH)</p>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 p-4 rounded-lg">
+                        <strong class="font-bold text-green-700 text-xl">脂环醇</strong>
+                        <p class="mt-2 text-slate-700">如：环己醇 (环上有 -OH)</p>
+                    </div>
+                    <div class="bg-purple-50 border border-purple-200 p-4 rounded-lg">
+                        <strong class="font-bold text-purple-700 text-xl">芳香醇</strong>
+                        <p class="mt-2 text-slate-700">如：苯甲醇 (<code>C₆H₅-CH₂OH</code>) (注意：-OH <strong class="text-red-600">不在</strong>苯环上)</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 饱和一元醇 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>饱和一元醇 (重点)</h2>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">定义：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">只含 1 个 <code>-OH</code>，且烃基为<strong class="text-blue-600">饱和链状</strong>的醇。</p>
+                </div>
+                <div class="mt-8 bg-gray-100 p-6 rounded-lg text-center">
+                    <h3 class="font-bold text-gray-800 text-xl">通式 (必背)：</h3>
+                    <p class="text-3xl mono font-bold text-indigo-700 mt-2">CₙH₂ₙ₊₂O</p>
+                    <p class="mt-2 text-lg text-slate-700">或 (显示官能团)：</p>
+                    <p class="text-3xl mono font-bold text-indigo-700 mt-2">CₙH₂ₙ₊₁OH</p>
+                    <p class="mt-2 text-lg text-slate-700">(n ≥ 1)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 常见醇的物理性质 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>常见醇的物理性质</h2>
+                 <div class="mt-8 space-y-4 text-lg">
+                    <div class="bg-red-50 border border-red-200 p-4 rounded-lg"><strong class="bg-red-100 text-red-700 px-3 py-1 rounded-full">甲醇 (木精)</strong><p class="mt-2">沸点 65°C。有<strong class="text-red-600">剧毒</strong>，误食致失明甚至死亡。</p></div>
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg"><strong class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">乙二醇</strong><p class="mt-2">易溶于水，沸点高 (197°C)，用作汽车<strong class="text-blue-600">防冻液</strong>。</p></div>
+                    <div class="bg-green-50 border border-green-200 p-4 rounded-lg"><strong class="bg-green-100 text-green-700 px-3 py-1 rounded-full">丙三醇 (甘油)</strong><p class="mt-2">无色粘稠液体，有甜味，<strong class="text-green-600">吸水性强</strong>，用作<strong class="text-green-600">保湿剂</strong>。</p></div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 醇的物理性质 (规律) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>醇的物理性质 (规律)</h2>
+                 <div class="mt-8 space-y-4 text-lg">
+                    <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                        <strong class="font-bold text-red-700 text-xl">沸点：</strong>
+                        <p class="mt-2 text-slate-700">1. 醇的沸点<strong class="text-red-600">远高于</strong>相对分子质量相近的烷烃 (因为醇分子间有<strong class="text-red-600">氢键</strong>)。</p>
+                        <p class="mt-2 text-slate-700">2. 同系物中，碳原子数 ↑，范德华力 ↑，沸点 ↑。</p>
+                        <p class="mt-2 text-slate-700">3. 碳原子数相同时，<code>-OH</code> 数目 ↑，氢键 ↑，沸点 ↑。<br/>(例：丙三醇 > 乙二醇 > 乙醇)</p>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                        <strong class="font-bold text-blue-700 text-xl">溶解性：</strong>
+                        <p class="mt-2 text-slate-700">低级醇（碳数少）可与水<strong class="text-blue-600">任意比例互溶</strong> (可形成氢键)。</p>
+                        <p class="mt-2 text-slate-700">随碳原子数增多 (憎水基团增大)，溶解度<strong class="text-red-600">下降</strong>。</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 醇的化学性质 (概述) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-rose-500 rounded"></span>醇的化学性质 (概述)</h2>
+                <p class="mt-8 text-xl text-slate-700">醇的化学性质主要由官能团 <code>-OH</code> 决定。</p>
+                <div class="mt-8 bg-rose-50 border border-rose-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-rose-800 text-xl">关键断键位置：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">由于 O 的电负性强，<code>C-O</code> 键和 <code>O-H</code> 键都是<strong class="text-red-600">极性键</strong>，容易断裂。</p>
+                    <p class="mono mt-4 text-center text-xl font-bold">
+                        R — C — <span class="text-red-600">O</span> — <span class="text-blue-600">H</span>
+                    </p>
+                    <p class="mt-4 text-lg text-slate-700 text-center"><strong class="text-blue-600">1. 断 O-H 键：</strong>显弱酸性（如与Na反应）、酯化反应。</p>
+                    <p class="mt-2 text-lg text-slate-700 text-center"><strong class="text-red-600">2. 断 C-O 键：</strong>与HX取代、分子间脱水、消去反应。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 化学性质 (一)：与Na反应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-rose-500 rounded"></span>化学性质 (一)：与Na反应</h2>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">反应：(断 O-H 键)</h3>
+                    <p class="mt-4 text-center mono bg-gray-100 p-3 rounded text-xl">2CH₃CH₂OH + 2Na → 2CH₃CH₂ONa + H₂↑</p>
+                    <p class="mt-2 text-lg text-center text-slate-700">(乙醇钠)</p>
+                </div>
+                 <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">对比：(乙醇 vs 水)</h3>
+                    <p>钠与水反应<strong class="text-red-900">剧烈</strong>，与乙醇反应<strong class="text-blue-600">缓和</strong>。</p>
+                    <p class="mt-2"><strong>结论：</strong>水的 H-OH 键比乙醇的 R-OH 键更易断裂。</p>
+                    <p class="mt-2"><strong>原因：</strong>乙基 (<code>-C₂H₅</code>) 是<strong class="text-blue-600">推电子基团</strong>，使 O-H 键极性减弱，H 不易脱落。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 化学性质 (二)：取代反应 (卤代) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-rose-500 rounded"></span>化学性质 (二)：取代 (与HX)</h2>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">反应：(断 C-O 键)</h3>
+                    <p class="mt-4 text-center mono bg-gray-100 p-3 rounded text-xl">CH₃CH₂-OH + H-Br --(△)→ CH₃CH₂-Br + H₂O</p>
+                    <p class="mt-2 text-lg text-center text-slate-700"><code>-OH</code> 被 <code>-Br</code> 取代，生成卤代烃。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 化学性质 (三)：取代反应 (酯化) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-rose-500 rounded"></span>化学性质 (三)：取代 (酯化)</h2>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">反应机理：(断 O-H 键)</h3>
+                    <p class="mono mt-2 text-center text-xl">CH₃CO-<span class="text-red-600">OH</span> + <span class="text-blue-600">H</span>-OC₂H₅ ⇌ CH₃COOC₂H₅ + H₂O</p>
+                </div>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg text-center font-semibold">
+                    <h3 class="font-bold text-xl mb-2">机理口诀：</h3>
+                    <p class="text-2xl mt-2 text-red-900">酸脱羟基，醇脱氢</p>
+                    <p class="mt-2 text-lg text-slate-700">（用 O¹⁸ 标记乙醇的氧，O¹⁸ 会出现在乙酸乙酯中，而不是水中）</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 化学性质 (四)：取代反应 (成醚) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-rose-500 rounded"></span>化学性质 (四)：取代 (成醚)</h2>
+                <p class="mt-8 text-xl text-slate-700"><strong class="text-red-600">分子间</strong>脱水（两个醇分子脱一个水）：</p>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">反应条件 (重点)：</h3>
+                    <p class="text-2xl mt-2 text-center text-red-900">浓硫酸，140°C</p>
+                </div>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <p class="mono text-center text-xl">2CH₃CH₂OH --(浓H₂SO₄/140°C)→ CH₃CH₂-O-CH₂CH₃ + H₂O</p>
+                    <p class="mt-4 text-center text-lg text-slate-700">
+                        生成<strong class="text-blue-600">乙醚</strong> (<code>R-O-R'</code> 结构，含<strong class="text-blue-600">醚键</strong>)，有麻醉作用。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 化学性质 (五)：消去反应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>化学性质 (五)：消去反应</h2>
+                <p class="mt-8 text-xl text-slate-700"><strong class="text-red-600">分子内</strong>脱水（一个醇分子脱一个水）：</p>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">反应条件 (重点)：</h3>
+                    <p class="text-2xl mt-2 text-center text-red-900">浓硫酸，170°C (迅速升温)</p>
+                    <p class="mt-1 text-sm text-center text-red-900">（口诀：硫酸酒精 3:1，温度迅速 170）</p>
+                </div>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <p class="mono text-center text-xl">CH₃CH₂OH --(浓H₂SO₄/170°C)→ CH₂=CH₂↑ + H₂O</p>
+                    <p class="mt-4 text-center text-lg text-slate-700">
+                        生成<strong class="text-blue-600">乙烯</strong> (形成碳碳双键)。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 消去反应 (实验除杂) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>消去反应 (实验除杂)</h2>
+                <p class="mt-8 text-xl text-slate-700">制乙烯时，若用 KMnO₄ 检验，需先除杂。</p>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">杂质：</h3>
+                    <p>1. 挥发出的<strong class="text-red-900">乙醇蒸气</strong> (也能使KMnO₄褪色)。</p>
+                    <p>2. 浓硫酸碳化生成的 <strong class="text-red-900">SO₂</strong> (也能使KMnO₄褪色)。</p>
+                </div>
+                 <div class="mt-8 bg-green-50 border border-green-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-green-800 text-xl">除杂试剂：NaOH 溶液</h3>
+                    <p class="mt-3 text-slate-600 text-lg"><code>NaOH</code> 既能吸收 <code>SO₂</code>/<code>CO₂</code>，也能<strong class="text-blue-600">溶解乙醇</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 消去反应 (规律) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>消去反应 (规律)</h2>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">条件：</h3>
+                    <p>连接 <code>-OH</code> 的碳 (α-C) 的<strong class="text-red-900">邻位碳 (β-C)</strong> 上<strong class="text-red-900">必须有 H 原子</strong>。</p>
+                </div>
+                 <div class="mt-8 space-y-4 text-lg">
+                    <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                        <strong class="font-bold text-red-700 text-xl">× 不能消去：</strong>
+                        <p class="mt-2 text-slate-700 mono">· <code>CH₃OH</code> (甲醇) (没有 β-C)</p>
+                        <p class="mt-2 text-slate-700 mono">· <code>(CH₃)₃C-OH</code> (2-甲基-2-丙醇) (β-C 上没有 H)</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 化学性质 (六)：氧化反应 (催化) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>化学性质 (六)：催化氧化</h2>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">总反应：(Cu 或 Ag, △)</h3>
+                    <p class="mt-4 text-center mono bg-gray-100 p-3 rounded text-xl">2CH₃CH₂OH + O₂ --(Cu/△)→ 2CH₃CHO + 2H₂O</p>
+                    <p class="mt-2 text-lg text-center text-slate-700">(乙醇)  →  (乙醛)</p>
+                </div>
+                 <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">反应本质：(断 1, 3 键)</h3>
+                    <p>脱去 <code>-OH</code> 上的 <strong class="text-red-900">H</strong> 和<strong class="text-red-900">连接 -OH 的碳</strong>上的 <strong class="text-red-900">H</strong>。（去氢氧化）</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 催化氧化 (规律) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>催化氧化 (规律)</h2>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">条件：</h3>
+                    <p>连接 <code>-OH</code> 的碳 (α-C) 上<strong class="text-red-900">必须有 H 原子</strong>。</p>
+                </div>
+                 <div class="mt-8 space-y-3 text-lg">
+                    <p class="p-3 rounded-md bg-white border"><strong>伯醇 (<code>-CH₂OH</code>)：</strong>有 2 个 H → 氧化为<strong class="text-blue-600">醛 (<code>-CHO</code>)</strong> → 再氧化为<strong class="text-blue-600">羧酸 (<code>-COOH</code>)</strong></p>
+                    <p class="p-3 rounded-md bg-white border"><strong>仲醇 (<code>-CH(R)OH</code>)：</strong>有 1 个 H → 氧化为<strong class="text-green-600">酮 (<code>-C(=O)R</code>)</strong></p>
+                    <p class="p-3 rounded-md bg-white border"><strong>叔醇 (<code>-C(R)₂OH</code>)：</strong><strong class="text-red-600">没有 H</strong> → <strong class="text-red-600">不能</strong>发生催化氧化。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- （原第17页：醇的同分异构体 已删除） -->
+
+        <!-- 随堂练习 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（一）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">乙醇与浓硫酸共热至 170°C，主要发生什么反应？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 分子间脱水 (成醚)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 分子内脱水 (消去)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 催化氧化</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 酯化反应</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（一）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>考查反应条件：<br/>· 浓硫酸, <strong class="text-red-600">170°C</strong> → <strong class="text-red-600">消去反应</strong> (分子内脱水) 生成乙烯。<br/>· 浓硫酸, <strong class="text-blue-600">140°C</strong> → <strong class="text-blue-600">取代反应</strong> (分子间脱水) 生成乙醚。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（二）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">乙醇发生催化氧化反应（Cu/△），断裂的化学键是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> C-O 键 和 邻位 C-H 键</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> O-H 键 和 C-C 键</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> O-H 键 和 α-C 上的 C-H 键</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 只断 O-H 键</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（二）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>催化氧化是“去氢氧化”，脱去的是 <strong class="text-red-600">羟基上的 H</strong>（O-H 键）和<strong class="text-red-600">连接羟基的那个碳 (α-C) 上的 H</strong>（C-H 键）。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（三）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">下列醇中，<strong class="text-red-600">不能</strong>发生催化氧化反应的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(A)</strong> CH₃OH (甲醇)</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(B)</strong> CH₃CH₂OH (乙醇)</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(C)</strong> CH₃CH(OH)CH₃ (2-丙醇)</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(D)</strong> (CH₃)₃C-OH (2-甲基-2-丙醇)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（三）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>催化氧化的条件是：连接 <code>-OH</code> 的碳 (α-C) 上<strong class="text-red-600">必须有 H 原子</strong>。<br/>
+                    (A) 甲醇，α-C (即C) 上有 H。<br/>
+                    (B) 乙醇 (伯醇)，α-C 上有 H。<br/>
+                    (C) 2-丙醇 (仲醇)，α-C 上有 H。<br/>
+                    (D) 2-甲基-2-丙醇 (叔醇)，α-C 上<strong class="text-red-600">没有 H</strong> (连了3个甲基)，不能发生催化氧化。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（四）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">下列醇中，<strong class="text-red-600">不能</strong>发生消去反应的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(A)</strong> CH₃OH (甲醇)</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(B)</strong> CH₃CH₂OH (乙醇)</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(C)</strong> CH₃CH(OH)CH₃ (2-丙醇)</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(D)</strong> (CH₃)₃C-OH (2-甲基-2-丙醇)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（四）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(A)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>消去反应的条件是：1. 至少 2 个碳原子； 2. 连接 <code>-OH</code> 的碳 (α-C) 的<strong class="text-red-600">邻位碳 (β-C) 上必须有 H</strong>。<br/>
+                    (A) 甲醇只有 1 个碳，没有 β-C，<strong class="text-red-600">不能</strong>消去。<br/>
+                    (B) 乙醇，β-C (CH₃)上有 H，可以消去。<br/>
+                    (C) 2-丙醇，β-C (两个CH₃)上有 H，可以消去。<br/>
+                    (D) 2-甲基-2-丙醇，β-C (三个CH₃)上有 H，可以消去。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- （原第26、27页 随堂练习五及解析 已删除） -->
+
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                 </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看！希望大家对醇类的性质有了更深的理解！</p>
+                <p class="mt-4 text-2xl text-slate-600">下节课再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- 导航控件 -->
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <!-- JS 逻辑 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // 初始显示第一页
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

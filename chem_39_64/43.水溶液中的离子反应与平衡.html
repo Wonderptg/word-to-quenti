@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>水溶液中的离子反应与平衡</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        
+        /* 表格样式 */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+        }
+        .styled-table th, .styled-table td {
+            border: 1px solid #cbd5e1;
+            padding: 0.75rem 1rem;
+            text-align: center;
+        }
+        .styled-table thead {
+            background-color: #f8fafc;
+        }
+        .styled-table th {
+            font-weight: 700;
+            color: #334155;
+        }
+        .styled-table tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+        .styled-table tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">水溶液中的离子反应与平衡</h1>
+                <p class="text-2xl text-slate-600 mt-2">（二）水的电离与离子积常数</p>
+            </div>
+        </div>
+        
+        <!-- 水的电离 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>水的电离</h2>
+                <p class="mt-8 text-xl text-slate-700">精确的导电实验表明，纯水能<strong class="text-red-600">极微弱</strong>地电离。水是一种<strong class="text-red-600">极弱</strong>的电解质。</p>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">复杂历程 (人教版)：</h3>
+                    <p class="mono mt-2 text-center text-lg">H₂O + H₂O ⇌ H₃O⁺ + OH⁻</p>
+                    <p class="mt-1 text-sm text-center text-slate-500">(一个水分子电离出的H⁺被另一个水分子结合，形成水合氢离子 H₃O⁺)</p>
+                </div>
+                 <div class="mt-6 bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-blue-800 text-xl">简化写法 (常用)：</h3>
+                    <p class="mono mt-2 text-center text-xl font-bold text-blue-700">H₂O ⇌ H⁺ + OH⁻</p>
+                    <p class="mt-4 text-slate-600 text-lg">注意：必须使用<strong class="text-red-600">可逆符号 (⇌)</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 水的离子积常数 (Kw) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>水的离子积常数 (Kw)</h2>
+                <div class="mt-8 bg-indigo-50 border border-indigo-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-indigo-800 text-xl">定义：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">当水的电离 (<code>H₂O ⇌ H⁺ + OH⁻</code>) 达到平衡时，电离产物 <code class="bg-indigo-100">[H⁺]</code> 和 <code class="bg-indigo-100">[OH⁻]</code> 浓度的乘积是一个常数。</p>
+                </div>
+                <div class="mt-8 bg-gray-100 p-6 rounded-lg text-center">
+                    <p class="text-3xl mono font-bold text-indigo-700">Kw = [H⁺] · [OH⁻]</p>
+                    <p class="mt-2 text-xl text-slate-700">Kw 称为水的<strong class="text-indigo-700">离子积常数</strong>，简称<strong class="text-indigo-700">水的离子积</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kw 的数值 (25°C) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>Kw 的数值 (25°C)</h2>
+                <p class="mt-8 text-xl text-slate-700">实验测得，在 <strong class="text-red-600">25°C</strong> 时：</p>
+                <p class="mt-4 text-xl text-slate-700">1 L 纯水 (约 55.56 mol) 中，只有 <code>1 × 10⁻⁷</code> mol 的 H₂O 分子发生电离。</p>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg text-center">
+                    <p class="mono text-lg">H₂O ⇌ H⁺ + OH⁻</p>
+                    <p class="mono text-lg mt-2">电离 <code>10⁻⁷</code> mol → 产生 <code>10⁻⁷</code> mol H⁺ 和 <code>10⁻⁷</code> mol OH⁻</p>
+                    <p class="mono text-lg mt-2">所以，在 1 L 溶液中：<br/>
+                    [H⁺] = 10⁻⁷ mol/L<br/>
+                    [OH⁻] = 10⁻⁷ mol/L</p>
+                </div>
+                <div class="mt-8 bg-indigo-100 text-indigo-800 p-6 rounded-lg text-lg text-center font-semibold">
+                    <p class="text-2xl mono">Kw = [H⁺] · [OH⁻] = (10⁻⁷) · (10⁻⁷) = 10⁻¹⁴</p>
+                    <p class="mt-2 text-xl">(25°C 时)</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 影响 Kw 的因素：温度 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-red-500 rounded"></span>影响 Kw 的因素：温度</h2>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">唯一因素：Kw <strong class="text-red-900">只</strong>受<strong class="text-red-900">温度</strong>影响</h3>
+                    <p>温度不变，Kw 不变。</p>
+                </div>
+                 <div class="mt-8 bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-blue-800 text-xl">温度如何影响 Kw？</h3>
+                    <p class="mt-3 text-slate-600 text-lg">水的电离 <code>H₂O ⇌ H⁺ + OH⁻</code> 是一个<strong class="text-blue-700">吸热</strong>反应 (ΔH > 0)。</p>
+                    <p class="mt-2 text-slate-600 text-lg">（类比：酸碱中和是放热，其逆反应电离就是吸热）</p>
+                    <p class="mt-4 text-lg text-slate-700">根据勒夏特列原理：<br/>
+                    <strong class="text-red-600">升高温度 (T↑)</strong> → 平衡<strong class="text-blue-600">正向 (→)</strong> 移动 → [H⁺]↑, [OH⁻]↑ → <strong class="text-red-600">Kw 增大</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 影响“水的电离平衡”的因素 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>影响“水的电离平衡”的因素</h2>
+                <p class="mt-8 text-xl text-slate-700">注意：Kw 只受温度影响，但<strong class="text-red-600">水的电离平衡</strong>（即 [H⁺] 和 [OH⁻] 的相对大小）受多种因素影响。</p>
+                <p class="mt-4 text-xl text-slate-700 text-center mono">H₂O ⇌ H⁺ + OH⁻</p>
+            </div>
+        </div>
+
+        <!-- 因素 (一)：温度 (对平衡) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>因素 (一)：温度</h2>
+                 <div class="mt-8 space-y-4 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800 text-xl">升高温度 (T↑)</h3>
+                        <p class="mt-3 text-slate-600"><strong>移动：</strong><strong class="text-blue-700">正向 (→)</strong> (吸热方向)</p>
+                        <p class="mt-2 text-slate-600"><strong>[H⁺], [OH⁻]：</strong>均<strong class="text-blue-700">增大 ↑</strong></p>
+                        <p class="mt-2 text-slate-600"><strong>Kw：</strong><strong class="text-blue-700">增大 ↑</strong></p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-red-800 text-xl">降低温度 (T↓)</h3>
+                        <p class="mt-3 text-slate-600"><strong>移动：</strong><strong class="text-red-700">逆向 (←)</strong> (放热方向)</p>
+                        <p class="mt-2 text-slate-600"><strong>[H⁺], [OH⁻]：</strong>均<strong class="text-red-700">减小 ↓</strong></p>
+                        <p class="mt-2 text-slate-600"><strong>Kw：</strong><strong class="text-red-700">减小 ↓</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 因素 (二)：加酸 (同离子效应) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>因素 (二)：加酸 (同离子效应)</h2>
+                <p class="mt-8 text-xl text-slate-700">在纯水中加入 <strong class="text-blue-600">HCl</strong> 气体 (假设温度不变)：</p>
+                 <div class="mt-8 space-y-3 text-lg">
+                    <p class="p-3 rounded-md bg-white border"><strong>改变：</strong> [H⁺] <strong class="text-blue-600">增大 ↑</strong> (来自HCl的电离)。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>移动：</strong> 平衡<strong class="text-red-600">逆向 (←)</strong> 移动 (同离子效应，抑制了水的电离)。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>电离程度(水)：</strong> <strong class="text-red-600">减小 ↓</strong>。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>最终 [H⁺]：</strong> <strong class="text-blue-600">增大 ↑</strong> (外加的 >> 水被抑制的)。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>最终 [OH⁻]：</strong> <strong class="text-red-600">减小 ↓</strong> (平衡逆移导致)。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>Kw：</strong> <strong class="text-gray-700">不变</strong> (因为温度不变)。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 因素 (三)：加碱 (同离子效应) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>因素 (三)：加碱 (同离子效应)</h2>
+                <p class="mt-8 text-xl text-slate-700">在纯水中加入 <strong class="text-red-600">NaOH</strong> 固体 (假设温度不变)：</p>
+                 <div class="mt-8 space-y-3 text-lg">
+                    <p class="p-3 rounded-md bg-white border"><strong>改变：</strong> [OH⁻] <strong class="text-red-600">增大 ↑</strong> (来自NaOH的电离)。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>移动：</strong> 平衡<strong class="text-red-600">逆向 (←)</strong> 移动 (同离子效应，抑制了水的电离)。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>电离程度(水)：</strong> <strong class="text-red-600">减小 ↓</strong>。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>最终 [H⁺]：</strong> <strong class="text-red-600">减小 ↓</strong> (平衡逆移导致)。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>最终 [OH⁻]：</strong> <strong class="text-red-600">增大 ↑</strong> (外加的 >> 水被抑制的)。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>Kw：</strong> <strong class="text-gray-700">不变</strong> (因为温度不变)。</p>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 因素 (四)：加活泼金属 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>因素 (四)：加活泼金属</h2>
+                <p class="mt-8 text-xl text-slate-700">在纯水中加入 <strong class="text-green-600">Na</strong> 固体 (假设温度不变)：</p>
+                 <div class="mt-8 space-y-3 text-lg">
+                    <p class="p-3 rounded-md bg-white border"><strong>改变：</strong> Na 与水电离出的 [H⁺] 反应 (<code>2Na + 2H₂O → 2NaOH + H₂↑</code>)，导致 [H⁺] <strong class="text-red-600">减小 ↓</strong>。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>移动：</strong> 平衡<strong class="text-blue-600">正向 (→)</strong> 移动 (补充 H⁺)。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>电离程度(水)：</strong> <strong class="text-blue-600">增大 ↑</strong> (促进了水的电离)。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>最终 [H⁺]：</strong> <strong class="text-red-600">减小 ↓</strong> (溶液变碱性)。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>最终 [OH⁻]：</strong> <strong class="text-blue-600">增大 ↑</strong> (平衡正移导致)。</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>Kw：</strong> <strong class="text-gray-700">不变</strong> (因为温度不变)。</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- Kw 的适用范围 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>Kw 的适用范围</h2>
+                <div class="mt-8 bg-indigo-50 border border-indigo-200 p-6 rounded-lg">
+                    <p class="mt-3 text-slate-600 text-lg">水的离子积常数 <code>Kw = [H⁺]·[OH⁻]</code> <strong class="text-red-600">不仅适用</strong>于纯水，也<strong class="text-red-600">适用</strong>于任何<strong class="text-blue-600">稀的电解质水溶液</strong>（酸、碱、盐溶液）。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kw 在酸碱溶液中的应用 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>Kw 在酸碱溶液中的应用</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800 text-xl">酸溶液 (如 HCl)</h3>
+                        <p class="mt-3 text-slate-600"><code>[H⁺]</code> 主要来自 HCl，<strong class="text-blue-700"><code>[OH⁻]</code> 唯一来自 H₂O</strong>。</p>
+                        <p class="mt-2 text-slate-600"><code>[H⁺] (总) = [H⁺] (酸) + [H⁺] (水)</code></p>
+                        <p class="mt-2 text-slate-600"><code>[OH⁻] (总) = [OH⁻] (水)</code></p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-red-800 text-xl">碱溶液 (如 NaOH)</h3>
+                        <p class="mt-3 text-slate-600"><code>[OH⁻]</code> 主要来自 NaOH，<strong class="text-red-700"><code>[H⁺]</code> 唯一来自 H₂O</strong>。</p>
+                        <p class="mt-2 text-slate-600"><code>[H⁺] (总) = [H⁺] (水)</code></p>
+                        <p class="mt-2 text-slate-600"><code>[OH⁻] (总) = [OH⁻] (碱) + [OH⁻] (水)</code></p>
+                    </div>
+                </div>
+                 <div class="mt-8 bg-gray-100 p-6 rounded-lg text-center">
+                    <p class="text-2xl font-bold text-gray-800">关键结论：在<strong class="text-red-600">任何</strong>水溶液中，水电离出的 [H⁺] <strong class="text-red-600">一定等于</strong> 水电离出的 [OH⁻]。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Kw 应用实例 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>Kw 应用实例 (25°C)</h2>
+                <div class="mt-8 bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-blue-800 text-xl">0.1 mol/L 的 HCl 溶液：</h3>
+                    <p class="mt-3 text-slate-600 text-lg"><code>[H⁺] (总)</code> ≈ <code>[H⁺] (酸)</code> = 0.1 M</p>
+                    <p class="mt-2 text-slate-600 text-lg"><code>[OH⁻] (总)</code> = Kw / [H⁺] = 10⁻¹⁴ / 0.1 = <strong class="text-blue-700">10⁻¹³ M</strong></p>
+                    <p class="mt-2 text-slate-600 text-lg">由于 <code>[OH⁻]</code> 唯一来自水，所以：<br/>
+                    <code>[OH⁻] (水)</code> = 10⁻¹³ M<br/>
+                    <code>[H⁺] (水)</code> = <code>[OH⁻] (水)</code> = <strong class="text-blue-700">10⁻¹³ M</strong></p>
+                    <p class="mt-2 text-slate-500 text-sm">(对比纯水的 10⁻⁷ M，水的电离被极大抑制了)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kw 应用实例 (等效抑制) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>Kw 应用实例 (等效抑制)</h2>
+                <div class="mt-8 bg-red-50 border border-red-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-red-800 text-xl">0.1 mol/L 的 NaOH 溶液：</h3>
+                    <p class="mt-3 text-slate-600 text-lg"><code>[OH⁻] (总)</code> ≈ <code>[OH⁻] (碱)</code> = 0.1 M</p>
+                    <p class="mt-2 text-slate-600 text-lg"><code>[H⁺] (总)</code> = Kw / [OH⁻] = 10⁻¹⁴ / 0.1 = <strong class="text-red-700">10⁻¹³ M</strong></p>
+                    <p class="mt-2 text-slate-600 text-lg">由于 <code>[H⁺]</code> 唯一来自水，所以：<br/>
+                    <code>[H⁺] (水)</code> = 10⁻¹³ M</p>
+                </div>
+                 <div class="mt-8 bg-green-100 text-green-800 p-6 rounded-lg text-lg text-center font-semibold">
+                    <h3 class="font-bold text-xl mb-2">等效抑制：</h3>
+                    <p>0.1 M 的 HCl 和 0.1 M 的 NaOH 对水电离的<strong class="text-green-900">抑制程度相同</strong>。</p>
+                    <p>（都使水电离出的 [H⁺] 或 [OH⁻] 从 10⁻⁷ 降低到了 10⁻¹³）</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 随堂练习 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（一）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">水的电离方程式书写正确的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(A)</strong> H₂O = H⁺ + OH⁻</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(B)</strong> H₂O ⇌ H⁺ + OH⁻</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(C)</strong> 2H₂O ⇌ H₃O⁺ + OH⁻</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(D)</strong> H₂O → H₂↑ + O₂↑</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（一）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>水是<strong class="text-red-600">弱电解质</strong>，电离过程是可逆的，必须使用<strong class="text-red-600">可逆符号 (⇌)</strong>。 (A) 错。 (C) 是人教版写法，但计量数应为 <code>H₂O + H₂O</code>。(D) 是电解，不是电离。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（二）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">在 25°C 时，纯水中 [H⁺] 和 [OH⁻] 的浓度分别是多少 (mol/L)？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(A)</strong> 10⁻⁷, 10⁻⁷</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(B)</strong> 10⁻¹⁴, 10⁻¹⁴</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(C)</strong> 0, 0</p>
+                        <p class="p-3 rounded-md bg-white border mono"><strong>(D)</strong> 1, 1</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（二）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(A)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>25°C 时，纯水电离达到平衡，<code>[H⁺] = [OH⁻] = 10⁻⁷ mol/L</code>。此时 <code>Kw = [H⁺]·[OH⁻] = 10⁻¹⁴</code>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（三）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">影响水的离子积常数 (Kw) 的<strong class="text-red-600">唯一</strong>因素是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 溶液的酸碱性</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 溶液的浓度</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 温度</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 压强</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（三）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>Kw 是一个平衡常数，平衡常数<strong class="text-red-600">只受温度</strong>影响。加酸或加碱会改变 [H⁺] 和 [OH⁻]，但它们的<strong class="text-red-600">乘积 (Kw)</strong> 在温度不变时是恒定的。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（四）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">向纯水中加入少量 NaOH 固体，会发生什么？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> Kw 增大，水的电离被促进</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> Kw 减小，水的电离被抑制</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> Kw 不变，水的电离被促进</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> Kw 不变，水的电离被抑制</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（四）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>1. 假设温度不变，则 <strong class="text-gray-700">Kw 不变</strong>。<br/>2. 加入 NaOH，[OH⁻] 增大，发生<strong class="text-red-600">同离子效应</strong>，使 <code>H₂O ⇌ H⁺ + OH⁻</code> 平衡<strong class="text-red-600">逆向移动</strong>，水的电离被<strong class="text-red-600">抑制</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 随堂练习 5 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习（五）</h2>
+                <div class="mt-8 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <p class="text-xl text-slate-700">升高纯水的温度（如从 25°C 升到 100°C），会发生什么？</D></p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> [H⁺] 增大, Kw 增大</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> [H⁺] 减小, Kw 减小</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> [H⁺] 增大, Kw 不变</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> [H⁺] 减小, Kw 增大</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 5 解析 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习题（五）：解析</h2>
+                <div class="mt-8 bg-green-50 p-6 rounded-lg text-xl space-y-4 border border-green-200">
+                    <p class="font-bold text-green-800 text-2xl">答案：(A)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>水的电离是<strong class="text-blue-600">吸热</strong>反应。升高温度，平衡<strong class="text-blue-600">正向移动</strong>，[H⁺] 和 [OH⁻] 都会<strong class="text-blue-600">增大</strong>。因此，它们的乘积 Kw 也会<strong class="text-blue-600">增大</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                 </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看！请大家持续关注更多精彩课程！</p>
+                <p class="mt-4 text-2xl text-slate-600">下节课再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- 导航控件 -->
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <!-- JS 逻辑 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

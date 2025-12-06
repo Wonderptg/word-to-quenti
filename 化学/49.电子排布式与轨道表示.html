@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>核外电子的排布方式</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- 引入 MathJax 库用于渲染 LaTeX 公式和化学式 -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        // MathJax 配置，确保 LaTeX 语法中的 $...$ 被识别
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        
+        /* 表格样式 */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+        }
+        .styled-table th, .styled-table td {
+            border: 1px solid #cbd5e1;
+            padding: 0.75rem 1rem;
+            text-align: center;
+        }
+        .styled-table thead {
+            background-color: #f8fafc;
+        }
+        .styled-table th {
+            font-weight: 700;
+            color: #334155;
+        }
+        .styled-table tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+        .styled-table tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* 轨道表示式方框 */
+        .orbital-box {
+            display: inline-block;
+            width: 2.5rem; /* 40px */
+            height: 2.5rem; /* 40px */
+            border: 2px solid #6b7280; /* gray-500 */
+            margin: 0 0.125rem; /* 2px */
+            position: relative;
+            text-align: center;
+            line-height: 2.25rem; /* 36px */
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 700;
+            font-size: 1.5rem; /* 24px */
+            vertical-align: middle;
+        }
+        .orbital-box-label {
+            position: absolute;
+            bottom: -1.5rem; /* 24px */
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 0.875rem; /* 14px */
+            color: #4b5563; /* gray-600 */
+            font-family: 'Noto Serif SC', serif;
+            font-weight: 500;
+        }
+        .up-arrow { color: #ef4444; /* red-500 */ }
+        .down-arrow { color: #3b82f6; /* blue-500 */ }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 新增 引导知识页 1：封面 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-indigo-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18zM15 10.5a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm-7.5 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12 21v-4.5" />
+                 </svg>
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">核外电子的排布方式</h1>
+                <p class="text-2xl text-slate-600 mt-2">打好基础：从能层到轨道</p>
+            </div>
+        </div>
+
+        <!-- 新增 引导知识页 2：能层与能级 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>能层($n$)与能级($l$)</h2>
+                <div class="mt-8 bg-indigo-50 border border-indigo-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-indigo-800 text-xl">能层 (Energy Level)：主要能量阶梯</h3>
+                    <p class="mt-3 text-slate-600 text-lg">离核越近，能层能量越低。用主量子数 $\text{n}$ 或 $\text{K, L, M, N...}$ 表示。</p>
+                    <p class="mt-2 text-center text-xl font-bold mono text-red-600">K($\text{n}=1$) < L($\text{n}=2$) < M($\text{n}=3$) ...</p>
+                </div>
+                
+                <div class="mt-8 bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-blue-800 text-xl">能级 (Energy Sublevel)：次要能量阶梯</h3>
+                    <p class="mt-3 text-slate-600 text-lg">同一能层中，电子根据运动状态的不同，又划分为 $\text{s, p, d, f}$ 等能级。</p>
+                    <p class="mt-2 text-center text-xl font-bold mono text-blue-600">能级能量高低：$\text{s} < \text{p} < \text{d} < \text{f}$</p>
+                    <p class="mt-2 text-slate-600 text-lg"><strong>规律：</strong>第 $\text{n}$ 层，有 $\text{n}$ 种能级。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新增 引导知识页 3：原子轨道与形状 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>原子轨道与形状 ($\text{s}, \text{p}, \text{d}$)</h2>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">原子轨道：</h3>
+                    <p>电子在核外空间出现概率<strong class="text-red-900">大于 90%</strong> 的区域。每个轨道最多容纳 2 个电子。</p>
+                </div>
+                <div class="mt-6 grid grid-cols-3 gap-4 text-center">
+                    <div class="p-4 bg-white rounded-lg shadow-md">
+                        <h4 class="font-bold text-lg text-blue-600">s 轨道</h4>
+                        <p class="text-2xl mt-1">1 个</p>
+                        <!-- s 轨道 SVG -->
+                        <svg class="mx-auto mt-2" width="60" height="60" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="45" fill="#bfdbfe" stroke="#3b82f6" stroke-width="2"/>
+                        </svg>
+                        <p class="mt-1 text-slate-600"><strong>形状：</strong>球形</p>
+                    </div>
+                    <div class="p-4 bg-white rounded-lg shadow-md">
+                        <h4 class="font-bold text-lg text-green-600">p 轨道</h4>
+                        <p class="text-2xl mt-1">3 个</p>
+                        <!-- p 轨道 SVG -->
+                        <svg class="mx-auto mt-2" width="60" height="60" viewBox="0 0 100 100">
+                             <ellipse cx="50" cy="50" rx="20" ry="40" fill="#a7f3d0" stroke="#059669" stroke-width="2" transform="rotate(90 50 50)"/>
+                        </svg>
+                        <p class="mt-1 text-slate-600"><strong>形状：</strong>哑铃形 ($\text{p}_x, \text{p}_y, \text{p}_z$)</p>
+                    </div>
+                    <div class="p-4 bg-white rounded-lg shadow-md">
+                        <h4 class="font-bold text-lg text-yellow-600">d 轨道</h4>
+                        <p class="text-2xl mt-1">5 个</p>
+                        <!-- d 轨道 SVG -->
+                         <svg class="mx-auto mt-2" width="60" height="60" viewBox="0 0 100 100">
+                             <path d="M50 50 Q 65 35 50 20 Q 35 35 50 50 Z" fill="#facc15" stroke="#ca8a04" stroke-width="1.5" transform="rotate(45 50 50)" />
+                             <path d="M50 50 Q 35 65 50 80 Q 65 65 50 50 Z" fill="#facc15" stroke="#ca8a04" stroke-width="1.5" transform="rotate(45 50 50)" />
+                             <path d="M50 50 Q 65 65 80 50 Q 65 35 50 50 Z" fill="#ca8a04" stroke="#ca8a04" stroke-width="1.5" transform="rotate(45 50 50)" />
+                             <path d="M50 50 Q 35 35 20 50 Q 35 65 50 50 Z" fill="#ca8a04" stroke="#ca8a04" stroke-width="1.5" transform="rotate(45 50 50)" />
+                         </svg>
+                        <p class="mt-1 text-slate-600"><strong>形状：</strong>花瓣形/复杂</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新增 引导知识页 4：电子排布三大原则 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>核外电子排布三大原则</h2>
+                
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl text-red-600">1. 构造原理 (能量最低原理)</h3>
+                    <p class="mt-3 text-slate-700 text-lg">电子总是优先填充能量最低的轨道，以使原子处于最稳定的状态。</p>
+                    <p class="mt-1 text-center font-bold mono text-xl">排布顺序：$1\text{s} < 2\text{s} < 2\text{p} < 3\text{s} < 3\text{p} < 4\text{s} < 3\text{d} < 4\text{p} ...$</p>
+                </div>
+
+                <div class="mt-6 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl text-red-600">2. 泡利不相容原理</h3>
+                    <p class="mt-3 text-slate-700 text-lg">一个原子轨道中，最多只能容纳<strong class="text-red-700">两个</strong>电子，且这两个电子的自旋方向必须<strong class="text-red-700">相反</strong> ($\uparrow \downarrow$)。</p>
+                </div>
+                
+                <div class="mt-6 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl text-red-600">3. 洪特规则</h3>
+                    <p class="mt-3 text-slate-700 text-lg">在能量相同的轨道上 (如 $\text{p}$ 轨道)，电子应尽可能<strong class="text-red-700">分占不同的轨道</strong>，且保持<strong class="text-red-700">自旋方向相同</strong> ($\uparrow \uparrow \uparrow$)。这能使原子能量更低，更稳定。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 以下是原来的内容，现在成为第 5 页开始 -->
+        
+        <!-- 电子排布：H, He, Li -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>电子排布式 (1-3)</h2>
+                
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-xl"><strong>1 氢 (H)</strong> (1个电子)</p>
+                    <p class="mono text-2xl mt-2">1s¹</p>
+                    <p class="mt-2 text-lg">价层电子轨道表示式：</p>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">1s</span></div>
+                </div>
+
+                <div class="mt-6 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-xl"><strong>2 氦 (He)</strong> (2个电子)</p>
+                    <p class="mono text-2xl mt-2">1s²</p>
+                    <p class="mt-2 text-lg">价层电子轨道表示式：(泡利原理：自旋相反)</p>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">1s</span></div>
+                </div>
+
+                <div class="mt-6 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-xl"><strong>3 锂 (Li)</strong> (3个电子)</p>
+                    <p class="mono text-2xl mt-2">1s² 2s¹</p>
+                    <p class="mt-2 text-lg">价层电子 (最外层)：<code>2s¹</code></p>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">2s</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 电子排布：Be, B, C -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>电子排布式 (4-6)</h2>
+                
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-xl"><strong>4 铍 (Be)</strong> (4个电子) - <code>1s² 2s²</code></p>
+                    <p class="mt-2 text-lg">价层电子 (<code>2s²</code>)：</p>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">2s</span></div>
+                </div>
+
+                <div class="mt-6 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-xl"><strong>5 硼 (B)</strong> (5个电子) - <code>1s² 2s² 2p¹</code></p>
+                    <p class="mt-2 text-lg">价层电子 (<code>2s² 2p¹</code>)：</p>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">2s</span></div>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">2p</span></div>
+                    <div class="orbital-box"><span class="orbital-box-label">2p</span></div>
+                    <div class="orbital-box"><span class="orbital-box-label">2p</span></div>
+                </div>
+
+                <div class="mt-6 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-xl"><strong>6 碳 (C)</strong> (6个电子) - <code>1s² 2s² 2p²</code></p>
+                    <p class="mt-2 text-lg">价层电子 (<code>2s² 2p²</code>) - <strong class="text-red-600">洪特规则</strong> (女士优先)：</p>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">2s</span></div>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">2p</span></div>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">2p</span></div>
+                    <div class="orbital-box"><span class="orbital-box-label">2p</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 电子排布：N, F, Ne -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>电子排布式 (7, 9, 10)</h2>
+
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-xl"><strong>7 氮 (N)</strong> (7个电子) - <code>1s² 2s² 2p³</code></p>
+                    <p class="mt-2 text-lg">价层电子 (<code>2s² 2p³</code>) - 洪特规则 (p轨道<strong class="text-red-600">半充满</strong>)：</p>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">2s</span></div>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">2p</span></div>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">2p</span></div>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">2p</span></div>
+                </div>
+                
+                <div class="mt-6 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-xl"><strong>9 氟 (F)</strong> (9个电子) - <code>1s² 2s² 2p⁵</code></p>
+                    <p class="mt-2 text-lg">价层电子 (<code>2s² 2p⁵</code>)：</p>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">2s</span></div>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">2p</span></div>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">2p</span></div>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">2p</span></div>
+                </div>
+
+                <div class="mt-6 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-xl"><strong>10 氖 (Ne)</strong> (10个电子) - <code>1s² 2s² 2p⁶</code></p>
+                    <p class="mt-2 text-lg">价层电子 (<code>2s² 2p⁶</code>) - <strong class="text-green-600">全充满</strong> (8电子稳定结构)：</p>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">2s</span></div>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">2p</span></div>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">2p</span></div>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">2p</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 电子排布：Na, Mg, Al, Si -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>电子排布式 (11-14)</h2>
+                
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-xl"><strong>11 钠 (Na)</strong> - <code>...2p⁶ 3s¹</code> (价电子 <code>3s¹</code>)</p>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">3s</span></div>
+                </div>
+
+                <div class="mt-6 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-xl"><strong>12 镁 (Mg)</strong> - <code>...2p⁶ 3s²</code> (价电子 <code>3s²</code>)</p>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">3s</span></div>
+                </div>
+
+                <div class="mt-6 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-xl"><strong>13 铝 (Al)</strong> - <code>...3s² 3p¹</code> (价电子 <code>3s² 3p¹</code>)</p>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">3s</span></div>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">3p</span></div>
+                    <div class="orbital-box"><span class="orbital-box-label">3p</span></div>
+                    <div class="orbital-box"><span class="orbital-box-label">3p</span></div>
+                </div>
+                
+                <div class="mt-6 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-xl"><strong>14 硅 (Si)</strong> - <code>...3s² 3p²</code> (价电子 <code>3s² 3p²</code>)</p>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">3s</span></div>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">3p</span></div>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">3p</span></div>
+                    <div class="orbital-box"><span class="orbital-box-label">3p</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 电子排布：P, Ar -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>电子排布式 (15, 18)</h2>
+                
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-xl"><strong>15 磷 (P)</strong> - <code>...3s² 3p³</code></p>
+                    <p class="mt-2 text-lg">价层电子 (<code>3s² 3p³</code>) - 洪特规则 (p轨道<strong class="text-red-600">半充满</strong>)：</p>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">3s</span></div>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">3p</span></div>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">3p</span></div>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">3p</span></div>
+                </div>
+
+                <div class="mt-6 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-xl"><strong>18 氩 (Ar)</strong> - <code>1s² 2s² 2p⁶ 3s² 3p⁶</code></p>
+                    <p class="mt-2 text-lg">价层电子 (<code>3s² 3p⁶</code>) - <strong class="text-green-600">全充满</strong> (8电子稳定结构)：</p>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">3s</span></div>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">3p</span></div>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">3p</span></div>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">3p</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 电子排布：K, Ca (能级交错) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>能级交错 (重要)</h2>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">构造原理特例：</h3>
+                    <p><code>3p</code> 轨道填满后，电子<strong class="text-red-900">优先填入 4s</strong> 轨道，<strong class="text-red-900">然后再填 3d</strong> 轨道。</p>
+                    <p class="mt-2 text-slate-700 text-base">（酒店比喻：4楼的“总统套房”<code>4s</code> 能量 < 3楼的“普通标间”<code>3d</code>）</p>
+                </div>
+                
+                <div class="mt-6 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-xl"><strong>19 钾 (K)</strong> (19个电子)</p>
+                    <p class="mono text-2xl mt-2">1s² 2s² 2p⁶ 3s² 3p⁶ <strong class="text-blue-600">4s¹</strong></p>
+                    <p class="mono text-2xl mt-2">简写：[Ar] 4s¹</p>
+                </div>
+
+                <div class="mt-6 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-xl"><strong>20 钙 (Ca)</strong> (20个电子)</p>
+                    <p class="mono text-2xl mt-2">[Ar] 4s²</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 电子排布：Sc, Ti, V (过渡金属) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>电子排布式 (21-23)：过渡金属</h2>
+                <p class="mt-8 text-xl text-slate-700"><code>4s</code> 填满后，电子开始填入 <code>3d</code> 轨道。习惯上<strong class="text-red-600">按能层顺序</strong>书写 (3d 在 4s 前)。</p>
+
+                <div class="mt-6 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-xl"><strong>21 钪 (Sc)</strong> - <code>[Ar] 3d¹ 4s²</code></p>
+                    <p class="mt-2 text-lg">价层电子 (<code>3d¹ 4s²</code>)：</p>
+                    <div class="flex flex-wrap items-center">
+                        <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">3d</span></div>
+                        <div class="orbital-box"><span class="orbital-box-label">3d</span></div>
+                        <div class="orbital-box"><span class="orbital-box-label">3d</span></div>
+                        <div class="orbital-box"><span class="orbital-box-label">3d</span></div>
+                        <div class="orbital-box"><span class="orbital-box-label">3d</span></div>
+                        <div class="orbital-box ml-4"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">4s</span></div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-xl"><strong>22 钛 (Ti)</strong> - <code>[Ar] 3d² 4s²</code></p>
+                    <p class="text-xl mt-4"><strong>23 钒 (V)</strong> - <code>[Ar] 3d³ 4s²</code> (洪特规则)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 电子排布：Cr (特例) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-red-500 rounded"></span>特例 (一)：24 铬 (Cr)</h2>
+                <p class="mt-8 text-xl text-slate-700 mono">预期排布：[Ar] 3d⁴ 4s²</p>
+                <p class="mt-4 text-xl text-slate-700">（酒店比喻：3d 有4个“单身女士”，4s 住了“一对情侣”，女士们“嫉妒”了，强行拆散 4s，把男生“变性”成闺蜜。）</p>
+                <div class="mt-8 bg-green-50 border border-green-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-green-800 text-xl">实际排布 (更稳定)：</h3>
+                    <p class="mono text-2xl mt-2 text-center text-green-700 font-bold">[Ar] 3d⁵ 4s¹</p>
+                    <p class="mt-2 text-lg text-slate-700 text-center">d 轨道<strong class="text-green-700">半充满</strong>，s 轨道<strong class="text-green-700">半充满</strong>，能量更低，更稳定。</p>
+                </div>
+                 <div class="mt-6 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="mt-2 text-lg">价层电子 (<code>3d⁵ 4s¹</code>) - 6个未成对电子：</p>
+                    <div class="flex flex-wrap items-center">
+                        <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">3d</span></div>
+                        <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">3d</span></div>
+                        <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">3d</span></div>
+                        <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">3d</span></div>
+                        <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">3d</span></div>
+                        <div class="orbital-box ml-4"><span class="up-arrow">↑</span><span class="orbital-box-label">4s</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 电子排布：Mn, Fe, Co, Ni -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>电子排布式 (25-28)</h2>
+                
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-xl"><strong>25 锰 (Mn)</strong> - <code>[Ar] 3d⁵ 4s²</code> (正常)</p>
+                    <p class="mt-2 text-lg">价层电子 (<code>3d⁵ 4s²</code>)：</p>
+                    <div class="flex flex-wrap items-center">
+                        <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">3d</span></div>
+                        <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">3d</span></div>
+                        <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">3d</span></div>
+                        <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">3d</span></div>
+                        <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">3d</span></div>
+                        <div class="orbital-box ml-4"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">4s</span></div>
+                    </div>
+                </div>
+
+                <div class="mt-6 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-xl"><strong>26 铁 (Fe)</strong> - <code>[Ar] 3d⁶ 4s²</code></p>
+                    <p class="text-xl mt-2"><strong>27 钴 (Co)</strong> - <code>[Ar] 3d⁷ 4s²</code></p>
+                    <p class="text-xl mt-2"><strong>28 镍 (Ni)</strong> - <code>[Ar] 3d⁸ 4s²</code></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 电子排布：Cu (特例) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-red-500 rounded"></span>特例 (二)：29 铜 (Cu)</h2>
+                <p class="mt-8 text-xl text-slate-700 mono">预期排布：[Ar] 3d⁹ 4s²</p>
+                <p class="mt-4 text-xl text-slate-700">（3d 轨道差一个就全充满了）</p>
+                <div class="mt-8 bg-green-50 border border-green-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-green-800 text-xl">实际排布 (更稳定)：</h3>
+                    <p class="mono text-2xl mt-2 text-center text-green-700 font-bold">[Ar] 3d¹⁰ 4s¹</p>
+                    <p class="mt-2 text-lg text-slate-700 text-center">d 轨道<strong class="text-green-700">全充满</strong>，能量更低，更稳定。</p>
+                </div>
+                 <div class="mt-6 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="mt-2 text-lg">价层电子 (<code>3d¹⁰ 4s¹</code>)：</p>
+                    <div class="flex flex-wrap items-center">
+                        <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">3d</span></div>
+                        <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">3d</span></div>
+                        <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">3d</span></div>
+                        <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">3d</span></div>
+                        <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">3d</span></div>
+                        <div class="orbital-box ml-4"><span class="up-arrow">↑</span><span class="orbital-box-label">4s</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 电子排布：Zn -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>电子排布式 (30)：锌 (Zn)</h2>
+                
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-xl"><strong>30 锌 (Zn)</strong> - <code>[Ar] 3d¹⁰ 4s²</code></p>
+                    <p class="mt-2 text-lg">价层电子 (<code>3d¹⁰ 4s²</code>) - (3d 和 4s 均<strong class="text-green-600">全充满</strong>)：</p>
+                    <div class="flex flex-wrap items-center">
+                        <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">3d</span></div>
+                        <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">3d</span></div>
+                        <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">3d</span></div>
+                        <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">3d</span></div>
+                        <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">3d</span></div>
+                        <div class="orbital-box ml-4"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">4s</span></div>
+                    </div>
+                </div>
+                <p class="mt-4 text-xl text-slate-700">钪(21) ~ 锌(30) 共10种元素，正好填满 3d 轨道的10个电子。</p>
+            </div>
+        </div>
+
+        <!-- 电子排布：Ga, Ge, As (p区) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>电子排布式 (31-33)：p区</h2>
+                <p class="mt-8 text-xl text-slate-700"><code>3d</code> 填满后，电子开始填入 <code>4p</code> 轨道。此时为<strong class="text-blue-600">主族元素</strong>，<code>3d¹⁰</code> 视为内层电子。</p>
+                
+                <div class="mt-6 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-xl"><strong>31 镓 (Ga)</strong> (第3A族) - <code>[Ar] 3d¹⁰ 4s² 4p¹</code></p>
+                    <p class="mt-2 text-lg">价层电子 (<code>4s² 4p¹</code>)：</p>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">4s</span></div>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">4p</span></div>
+                    <div class="orbital-box"><span class="orbital-box-label">4p</span></div>
+                    <div class="orbital-box"><span class="orbital-box-label">4p</span></div>
+                </div>
+
+                <div class="mt-6 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-xl"><strong>32 锗 (Ge)</strong> (第4A族) - <code>[Ar] 3d¹⁰ 4s² 4p²</code></p>
+                    <p class="text-xl mt-2"><strong>33 砷 (As)</strong> (第5A族) - <code>[Ar] 3d¹⁰ 4s² 4p³</code></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 电子排布：Kr, Rb -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>电子排布式 (36, 37)</h2>
+
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-xl"><strong>36 氪 (Kr)</strong> - <code>[Ar] 3d¹⁰ 4s² 4p⁶</code></p>
+                    <p class="mt-2 text-lg">价层电子 (<code>4s² 4p⁶</code>) - (第四周期<strong class="text-green-600">全充满</strong>，8电子稳定结构)。</p>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">4s</span></div>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">4p</span></div>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">4p</span></div>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="down-arrow">↓</span><span class="orbital-box-label">4p</span></div>
+                </div>
+                
+                <div class="mt-6 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                    <p class="text-xl"><strong>37 铷 (Rb)</strong> (第五周期, 1A族)</p>
+                    <p class="mono text-2xl mt-2">[Kr] 5s¹</p>
+                    <p class="mt-2 text-lg">价层电子 (<code>5s¹</code>)：</p>
+                    <div class="orbital-box"><span class="up-arrow">↑</span><span class="orbital-box-label">5s</span></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 阳离子 (一)：Fe -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>过渡金属阳离子 (Fe)</h2>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">失电子规则：</h3>
+                    <p>优先失去<strong class="text-red-900">最外层 (n 最大)</strong> 的电子。</p>
+                    <p>对于过渡金属：<strong class="text-red-900">先失 4s，再失 3d</strong>。</p>
+                </div>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <p class="mono text-xl"><strong>Fe (26):</strong> [Ar] 3d⁶ 4s²</p>
+                    <p class="mono text-xl mt-4"><strong>Fe²⁺ (失2e⁻):</strong> [Ar] 3d⁶ <span class="text-slate-500">(失去 4s² 电子)</span></p>
+                    <p class="mono text-xl mt-4"><strong>Fe³⁺ (失3e⁻):</strong> [Ar] 3d⁵ <span class="text-slate-500">(失去 4s² 和一个 3d 电子)</span></p>
+                    <p class="mt-2 text-lg text-slate-700">(Fe³⁺ 的 3d 轨道<strong class="text-green-600">半充满</strong>，比 Fe²⁺ 更稳定)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 阳离子 (二)：Cu, Zn -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>过渡金属阳离子 (Cu, Zn)</h2>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <p class="mono text-xl"><strong>Cu (29):</strong> [Ar] 3d¹⁰ 4s¹</p>
+                    <p class="mono text-xl mt-4"><strong>Cu⁺ (失1e⁻):</strong> [Ar] 3d¹⁰ <span class="text-slate-500">(失去 4s¹ 电子)</span></p>
+                    <p class="mono text-xl mt-4"><strong>Cu²⁺ (失2e⁻):</strong> [Ar] 3d⁹ <span class="text-slate-500">(失去 4s¹ 和一个 3d 电子)</span></p>
+                </div>
+                 <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <p class="mono text-xl"><strong>Zn (30):</strong> [Ar] 3d¹⁰ 4s²</p>
+                    <p class="mono text-xl mt-4"><strong>Zn²⁺ (失2e⁻):</strong> [Ar] 3d¹⁰ <span class="text-slate-500">(失去 4s² 电子)</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 1 (原随堂练习 一) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (一)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>在原子的四个能层 K、L、M、N 中，能量最低的是哪个能层？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> M层</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> N层</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> K层</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> L层</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 1 (原随堂练习 一) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (一)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>电子能量由能层决定，能层序号 $\text{n}$ 越小（离原子核越近），能层能量越低。K 层 ($\text{n}=1$) 能量最低，N 层 ($\text{n}=4$) 能量最高。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 2 (原随堂练习 二) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (二)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>关于原子轨道的空间形状，下列说法正确的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> $\text{s}$ 轨道是哑铃形</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> $\text{p}$ 轨道是球形</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> $\text{d}$ 轨道是复杂的八瓣形</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> $\text{p}$ 轨道是哑铃形，且有 $\text{p}_x, \text{p}_y, \text{p}_z$ 三个相互垂直的方向</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 2 (原随堂练习 二) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (二)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>$\text{s}$ 轨道是球形，$\text{p}$ 轨道是哑铃形，且一个能级包含 $\text{p}_x, \text{p}_y, \text{p}_z$ 三个相互垂直的轨道。$\text{d}$ 轨道形状多为四花瓣形，$\text{f}$ 轨道才是更复杂的形状。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 新增 例题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (三)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>根据构造原理，电子排布的正确顺序是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> $1\text{s} \rightarrow 2\text{s} \rightarrow 2\text{p} \rightarrow 3\text{s} \rightarrow 3\text{p} \rightarrow 3\text{d} \rightarrow 4\text{s}$</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> $1\text{s} \rightarrow 2\text{s} \rightarrow 2\text{p} \rightarrow 3\text{s} \rightarrow 3\text{p} \rightarrow 4\text{s} \rightarrow 3\text{d}$</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> $1\text{s} \rightarrow 2\text{s} \rightarrow 2\text{p} \rightarrow 3\text{s} \rightarrow 3\text{d} \rightarrow 3\text{p} \rightarrow 4\text{s}$</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> $1\text{s} \rightarrow 2\text{s} \rightarrow 3\text{s} \rightarrow 3\text{p} \rightarrow 3\text{d} \rightarrow 4\text{s} \rightarrow 4\text{p}$</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新增 解析 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (三)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>根据构造原理（能量最低原理），电子排布遵循能量由低到高的顺序。在 $3\text{p}$ 轨道之后，由于能级交错，电子应优先填入 $4\text{s}$ 轨道，然后才是 $3\text{d}$ 轨道，即 $3\text{p} < 4\text{s} < 3\text{d}$。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 新增 例题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (四)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>下列哪个元素或离子核外电子排布式中的 $3\text{d}$ 轨道处于半充满稳定状态？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> $\text{Cr}$ (铬)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> $\text{Fe}^{2+}$ (亚铁离子)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> $\text{Fe}^{3+}$ (铁离子)</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> $\text{Cu}$ (铜)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新增 解析 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (四)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>半充满稳定结构指 $\text{d}$ 轨道容纳 $\text{5}$ 个电子($\text{d}^5$)。$\text{Fe}$ 核外排布为 $[\text{Ar}]3\text{d}^64\text{s}^2$。$\text{Fe}^{3+}$ 失去 $\text{4s}^2$ 和 $\text{3d}^1$ 共 $\text{3}$ 个电子，排布为 $[\text{Ar}]3\text{d}^5$，达到半充满稳定结构。$\text{Cr}$ 的实际排布是 $\text{3d}^54\text{s}^1$。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 随堂练习 (五) 和 解析 (五) 已被删除 -->
+
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                 </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看！1-37号元素的排布是后续学习的基础，请务必掌握！</p>
+                <p class="mt-4 text-2xl text-slate-600">下节课再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- 导航控件 -->
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <!-- JS 逻辑 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

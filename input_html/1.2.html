@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>集合第一课：空集与子集 (宋体可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 (正常浏览时) */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif; /* 应用宋体风格字体 */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 设置页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem; /* 限制最大宽度，类似文档 */
+            margin: 2rem auto; /* 居中显示 */
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2rem; /* 为内容提供足够的垂直间距 */
+            position: relative; /* 为卡通角色定位 */
+            padding-bottom: 8rem; /* 为卡通角色留出空间 */
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        code {
+            background-color: #f1f5f9;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .cartoon-container {
+            position: absolute;
+            bottom: 1rem;
+            right: 1.5rem;
+            width: 120px;
+            height: 120px;
+        }
+
+        /* 打印专用样式 (只在打印时生效) */
+        @media print {
+            /* 1. 设置打印页面为横向，且无边距 */
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            /* 重置body和容器的样式，使其充满打印页面 */
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact; /* 确保背景色和颜色能被打印 */
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            /* 2. 让每个section成为独立的一页，并强制分页 */
+            .section {
+                height: 100vh; /* 高度占满一页 */
+                width: 100vw;  /* 宽度占满一页 */
+                page-break-after: always; /* 每个section后强制分页 */
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none; /* 打印时去掉分隔线 */
+                padding-bottom: 4rem; /* 恢复内边距 */
+            }
+
+            /* 确保最后一个section后面没有多余的空白页 */
+            .section:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- Section 1: 空集介绍 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">第一部分：热身运动——认识“空空如也”的空集！</h2>
+                <div class="mt-6 text-lg text-slate-700 space-y-4">
+                    <h3 class="text-xl font-semibold text-slate-800">1. 什么是空集？</h3>
+                    <p>像“我们班上既是男生又是女生”的同学，或者“比2大的偶数质数”，这种一个元素都没有的集合，我们就叫它 <strong class="text-red-600">空集</strong>。</p>
+                    <p>它的专属徽章是：<code>∅</code>。记住，空集也是个集合哦！</p>
+                    <p class="mt-4">它常常喜欢藏起来，变成解题路上的小陷阱，需要我们特别留意。</p>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+        
+        <!-- Section 2: 空集例题 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">空集小试牛刀 (带参数版)</h2>
+                <div class="mt-6 text-lg text-slate-700 space-y-4">
+                    <p class="bg-slate-50 p-3 rounded-lg">例：集合 <code>P={x∈R | k−1 < x < 5−k}</code>。要使 P 是空集，参数 k 需满足什么条件？</p>
+                    <p><strong>思路：</strong>一个区间 <code>(L, R)</code> 要想是空的，就需要左端点 L ≥ 右端点 R。</p>
+                    <p><strong>解题：</strong>所以我们得让 <code>k−1 ≥ 5−k</code>。解得：<code>2k ≥ 6</code>，即 <code>k ≥ 3</code>。</p>
+                    <p class="font-bold text-blue-700 text-center text-xl mt-4">敲黑板：看到带字母参数的集合，先想“它会不会是空集？”</p>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+        <!-- Section 3: 子集介绍 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">第二部分：闪亮登场——子集！</h2>
+                <div class="mt-6 text-lg text-slate-700 space-y-4">
+                    <h3 class="text-xl font-semibold text-slate-800">1. 子集是啥意思？</h3>
+                    <p>打个比方：A是“咱们班所有同学”，B是“整个高一年级所有同学”。</p>
+                    <p>A里的每一个同学，B里头全有！我们就说，A是B的 <strong class="text-green-600">子集</strong>。</p>
+                    <p>符号：<code>A ⊆ B</code> (读作“A包含于B”)。</p>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+        <!-- Section 4: 子集形态 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">子集的“变身”形态</h2>
+                <div class="mt-6 text-lg text-slate-700 space-y-4">
+                    <ul class="list-disc list-inside space-y-3">
+                        <li><strong>真子集 (A ⊊ B)：</strong>A是B的子集，且B里至少有一个元素不属于A。 (A是B的“真小弟”)</li>
+                        <li><strong>集合相等 (A = B)：</strong>A是B的子集，B也是A的子集。(咱俩一模一样)</li>
+                        <li><strong>万能的空集：</strong>空集是<strong class="text-red-600">任何</strong>集合的子集 (<code>∅ ⊆ A</code>)。空集是<strong class="text-red-600">任何非空</strong>集合的真子集。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+
+        <!-- Section 5: 子集挑战1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">子集大挑战 1 (数轴显神通)</h2>
+                 <div class="mt-6 text-lg text-slate-700 space-y-3">
+                    <p class="bg-slate-50 p-3 rounded-lg">题目：集合 <code>A={x|1≤x<7}</code>，<code>B={x|p≤x≤2p+1}</code>。如果 <code>B ⊆ A</code>，求 p 的取值范围。</p>
+                    <p><strong>第一步：B不是空集时 (<code>p ≤ 2p+1 ⇒ p ≥ -1</code>)</strong></p>
+                    <p class="ml-4">画数轴分析，B要在A里面，则需满足：<code>p ≥ 1</code> 且 <code>2p+1 < 7</code>。解得 <code>1 ≤ p < 3</code>。</p>
+                    <p><strong>第二步：B是空集时 (<code>p > 2p+1 ⇒ p < -1</code>)</strong></p>
+                    <p class="ml-4">空集是任何集合的子集，所以 <code>p < -1</code> 也满足条件。</p>
+                    <p><strong>第三步：合并答案</strong></p>
+                    <p class="font-bold text-blue-700 text-xl">最终答案是: {p | 1 ≤ p < 3 或 p < -1}。</p>
+                 </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+        <!-- Section 6: 子集挑战2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">子集大挑战 2 (分类讨论是好汉)</h2>
+                <div class="mt-6 text-lg text-slate-700 space-y-3">
+                    <p class="bg-slate-50 p-3 rounded-lg">题目：集合 <code>A={x|x≤−2 or x≥2}</code>，<code>B={x|ax>1}</code>。如果 <code>B ⊆ A</code>，求 a 的取值范围。</p>
+                     <p><strong>Case 1: a > 0</strong>  ⇒  <code>x > 1/a</code>。要使 <code>B ⊆ A</code>, 需 <code>1/a ≥ 2</code> ⇒ <code>0 < a ≤ 1/2</code>。</p>
+                     <p><strong>Case 2: a = 0</strong>  ⇒  <code>0 > 1</code>，不成立。B是空集 <code>∅</code>。<code>∅ ⊆ A</code> 成立，所以 a=0 是解。</p>
+                     <p><strong>Case 3: a < 0</strong>  ⇒  <code>x < 1/a</code>。要使 <code>B ⊆ A</code>, 需 <code>1/a ≤ -2</code> ⇒ <code>-1/2 ≤ a < 0</code>。</p>
+                     <p><strong>汇总：</strong>三种情况的解合起来，最终答案是 <strong class="text-blue-700 text-xl">[-1/2, 1/2]</strong>。</p>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+        <!-- Section 7: 子集个数 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">第三部分：子集的个数</h2>
+                <div class="mt-6 text-lg text-slate-700 space-y-4">
+                    <p class="text-2xl text-center">一个集合里有 <strong>n</strong> 个元素，<br>那么它的子集就有 <strong>2<sup>n</sup></strong> 个！</p>
+                    <p><strong>为啥是 2<sup>n</sup> 呢？(披萨的诱惑！)</strong></p>
+                    <p>对于原集合里的每一个元素，在构成子集时，它要么“被选进”，要么“不被选进”，都是2种选择。n个元素就是n个2连乘！</p>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+        
+        <!-- Section 8: 子集个数公式 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">子集家族成员点名 (必背！)</h2>
+                 <div class="mt-6 text-lg text-slate-700 p-4 rounded-lg bg-purple-50">
+                    <ul class="list-disc list-inside mt-2 space-y-2">
+                       <li>子集总数：<code>2<sup>n</sup></code> 个</li>
+                       <li>真子集个数：<code>2<sup>n</sup> - 1</code> 个 (排除自己)</li>
+                       <li>非空子集个数：<code>2<sup>n</sup> - 1</code> 个 (排除空集)</li>
+                       <li>非空真子集个数：<code>2<sup>n</sup> - 2</code> 个 (排除自己和空集)</li>
+                    </ul>
+                </div>
+            </div>
+             <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+        <!-- Section 9: 课后习题 1 (Problem) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2 mb-6">课后习题</h2>
+                <h3 class="text-xl font-semibold text-slate-700">题一：子集的个数</h3>
+                <div class="mt-4 text-lg space-y-3">
+                    <p>例题1．集合 <code>{1, 2, 3}</code> 的非空真子集的个数为（&nbsp;&nbsp;）</p>
+                    <p>A．5 &nbsp;&nbsp; B．6 &nbsp;&nbsp; C．7 &nbsp;&nbsp; D．8</p>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+        <!-- Section 10: 课后习题 2 (Problem) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2 mb-6">课后习题</h2>
+                 <h3 class="text-xl font-semibold text-slate-700">题二：集合之间关系的判断</h3>
+                <div class="mt-4 text-lg space-y-3">
+                    <p>例题1．已知集合 <code>A = {x | x = 2k, k∈Z}</code>，<code>B = {x | x = 4k, k∈Z}</code>，则下列关系正确的是（&nbsp;&nbsp;）</p>
+                    <p>A．A ⊊ B &nbsp;&nbsp; B．B ⊊ A &nbsp;&nbsp; C．A = B &nbsp;&nbsp; D．A与B没有关系</p>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+        
+        <!-- Section 11: 课后习题 3 (Problem) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2 mb-6">课后习题</h2>
+                <h3 class="text-xl font-semibold text-slate-700">题三：求子集、真子集</h3>
+                <div class="mt-4 text-lg space-y-3">
+                    <p>例题1．集合 <code>{a, b}</code> 的所有非空子集是________________．</p>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+        <!-- Section 12: 课后习题 4 (Problem) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2 mb-6">课后习题</h2>
+                <h3 class="text-xl font-semibold text-slate-700">题四：集合相等关系的应用</h3>
+                <div class="mt-4 text-lg space-y-3">
+                    <p>例题1．已知集合 <code>A = {1, 3, x}</code>，<code>B = {x<sup>2</sup>, 1}</code>，若 <code>A = B</code>，则 x = ？</p>
+                </div>
+            </div>
+             <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+        <!-- Section 13: 答案 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2 mb-6">答案与解析</h2>
+                <h3 class="text-xl font-semibold text-slate-700">题一：子集的个数</h3>
+                <div class="mt-4 text-lg space-y-3">
+                     <div class="bg-slate-50 p-4 rounded-lg">
+                        <p><strong class="text-blue-600">【答案】B</strong></p>
+                        <p class="mt-2 text-slate-700">【解析】集合有3个元素，n=3。非空真子集个数公式为 <code>2<sup>n</sup> - 2</code>。所以个数为 <code>2<sup>3</sup> - 2 = 8 - 2 = 6</code>。故选：B。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+        
+        <!-- Section 14: 答案 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2 mb-6">答案与解析</h2>
+                <h3 class="text-xl font-semibold text-slate-700">题二：集合之间关系的判断</h3>
+                 <div class="mt-4 text-lg space-y-3">
+                     <div class="bg-slate-50 p-4 rounded-lg">
+                        <p><strong class="text-blue-600">【答案】B</strong></p>
+                        <p class="mt-2 text-slate-700">【解析】A是所有偶数的集合，B是所有4的倍数的集合。所有4的倍数肯定都是偶数，所以B是A的子集。但A中有不属于B的元素（如2），所以B是A的真子集。故选：B。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+        <!-- Section 15: 答案 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2 mb-6">答案与解析</h2>
+                <h3 class="text-xl font-semibold text-slate-700">题三：求子集、真子集</h3>
+                <div class="mt-4 text-lg space-y-3">
+                     <div class="bg-slate-50 p-4 rounded-lg">
+                        <p><strong class="text-blue-600">【答案】<code>{a}, {b}, {a, b}</code></strong></p>
+                        <p class="mt-2 text-slate-700">【解析】子集包括：空集 <code>∅</code>，单元素子集 <code>{a}</code>, <code>{b}</code>，双元素子集 <code>{a, b}</code>。其中非空子集为 <code>{a}</code>, <code>{b}</code>, <code>{a, b}</code>。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+        <!-- Section 16: 答案 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2 mb-6">答案与解析</h2>
+                <h3 class="text-xl font-semibold text-slate-700">题四：集合相等关系的应用</h3>
+                <div class="mt-4 text-lg space-y-3">
+                     <div class="bg-slate-50 p-4 rounded-lg">
+                        <p><strong class="text-red-600">【解析】</strong>若A = B，则两集合元素必须完全相同。A有3个元素，B只有2个。要使它们相等，B必须有重复元素，即 <code>x² = 1</code>，解得 x=1 或 x=-1。</p>
+                        <ul class="list-disc list-inside ml-4 mt-2">
+                           <li>当 x=1 时，A={1, 3, 1}，元素重复，不满足互异性，舍去。</li>
+                           <li>当 x=-1 时，A={1, 3, -1}，B={1, 1}，元素个数和内容都不相等。</li>
+                        </ul>
+                         <p class="font-bold mt-2">【结论】原题条件有误，无解。在考试中遇到此类问题，应复查题目。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+        <!-- Section 17: 总结 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">第四部分：课堂小结与展望</h2>
+                <div class="mt-6 text-lg space-y-4">
+                    <ul class="list-disc list-inside space-y-2 bg-slate-50 p-4 rounded-lg">
+                        <li><strong>空集 ∅：</strong>不含任何元素，是任何集合的子集。</li>
+                        <li><strong>子集 A⊆B：</strong>A中所有元素B中都有。别忘了真子集 A⊊B。</li>
+                        <li><strong>解题法宝：</strong>遇到带参数的子集问题，画数轴、分类讨论是王道，时刻警惕空集！</li>
+                        <li><strong>子集个数：</strong>记住 2<sup>n</sup> 和它的“兄弟姐妹们”。</li>
+                    </ul>
+                    <p>今天的课信息量有点大，大家课后一定要多练几道题。下一节课，我们要学习集合之间更多的互动方式——交集、并集和补集！下课！</p>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+    </div>
+    <script>
+        window.onload = function() {
+            const canvases = document.querySelectorAll('.cartoon-container canvas');
+            const contexts = Array.from(canvases).map(c => c.getContext('2d'));
+
+            const drawings = [
+                // 1. 小机器人
+                (ctx) => {
+                    ctx.fillStyle = '#a0aec0'; // gray-500
+                    ctx.fillRect(30, 40, 60, 50); // body
+                    ctx.fillStyle = '#4a5568'; // gray-700
+                    ctx.fillRect(20, 40, 10, 30); // left arm
+                    ctx.fillRect(90, 40, 10, 30); // right arm
+                    ctx.fillStyle = '#e2e8f0'; // gray-200
+                    ctx.fillRect(45, 20, 30, 30); // head
+                    ctx.fillStyle = '#2d3748'; // gray-800
+                    ctx.fillRect(52, 28, 5, 5); // left eye
+                    ctx.fillRect(63, 28, 5, 5); // right eye
+                    ctx.fillRect(35, 90, 20, 15); // left leg
+                    ctx.fillRect(65, 90, 20, 15); // right leg
+                },
+                // 2. 小猫咪
+                (ctx) => {
+                    ctx.fillStyle = '#f6ad55'; // orange-400
+                    ctx.strokeStyle = '#dd6b20'; // orange-600
+                    ctx.lineWidth = 2;
+                    // head
+                    ctx.beginPath();
+                    ctx.arc(60, 60, 30, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.stroke();
+                    // ears
+                    ctx.beginPath();
+                    ctx.moveTo(35, 40); ctx.lineTo(45, 20); ctx.lineTo(55, 40); ctx.closePath();
+                    ctx.fill(); ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(65, 40); ctx.lineTo(75, 20); ctx.lineTo(85, 40); ctx.closePath();
+                    ctx.fill(); ctx.stroke();
+                    // eyes
+                    ctx.fillStyle = 'black';
+                    ctx.beginPath(); ctx.arc(50, 55, 3, 0, Math.PI * 2); ctx.fill();
+                    ctx.beginPath(); ctx.arc(70, 55, 3, 0, Math.PI * 2); ctx.fill();
+                    // nose
+                     ctx.beginPath(); ctx.moveTo(60, 60); ctx.lineTo(55, 65); ctx.lineTo(65, 65); ctx.closePath(); ctx.fill();
+                    // whiskers
+                    ctx.strokeStyle = 'black';
+                    ctx.beginPath(); ctx.moveTo(30, 60); ctx.lineTo(45, 60); ctx.stroke();
+                    ctx.beginPath(); ctx.moveTo(75, 60); ctx.lineTo(90, 60); ctx.stroke();
+                     ctx.beginPath(); ctx.moveTo(30, 65); ctx.lineTo(45, 68); ctx.stroke();
+                    ctx.beginPath(); ctx.moveTo(75, 68); ctx.lineTo(90, 65); ctx.stroke();
+                },
+                 // 3. 小花
+                (ctx) => {
+                    ctx.fillStyle = '#f6e05e'; // yellow-400
+                    ctx.strokeStyle = '#d69e2e'; // yellow-600
+                    ctx.lineWidth = 2;
+                    // center
+                    ctx.beginPath(); ctx.arc(60, 50, 15, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+                    // petals
+                    ctx.fillStyle = '#fc8181'; // red-400
+                     for (let i = 0; i < 6; i++) {
+                        const angle = (i / 6) * Math.PI * 2;
+                        ctx.beginPath();
+                        const x = 60 + Math.cos(angle) * 25;
+                        const y = 50 + Math.sin(angle) * 25;
+                        ctx.arc(x, y, 15, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    // stem
+                    ctx.strokeStyle = '#48bb78'; // green-500
+                    ctx.lineWidth = 5;
+                    ctx.beginPath(); ctx.moveTo(60, 65); ctx.lineTo(60, 110); ctx.stroke();
+                },
+                // 4. 小火箭
+                (ctx) => {
+                     ctx.fillStyle = '#63b3ed'; // blue-400
+                     ctx.beginPath();
+                     ctx.moveTo(60, 20); ctx.lineTo(40, 50); ctx.lineTo(80, 50); ctx.closePath(); ctx.fill(); // top cone
+                     ctx.fillStyle = '#e2e8f0'; // gray-200
+                     ctx.fillRect(40, 50, 40, 50); // body
+                     ctx.fillStyle = '#f56565'; // red-500
+                     ctx.beginPath();
+                     ctx.moveTo(30, 80); ctx.lineTo(40, 100); ctx.lineTo(40, 70); ctx.closePath(); ctx.fill(); // left fin
+                     ctx.beginPath();
+                     ctx.moveTo(90, 80); ctx.lineTo(80, 100); ctx.lineTo(80, 70); ctx.closePath(); ctx.fill(); // right fin
+                     // flame
+                     ctx.fillStyle = '#f6ad55'; // orange-400
+                     ctx.beginPath();
+                     ctx.moveTo(50, 100); ctx.lineTo(70, 100); ctx.lineTo(60, 115); ctx.closePath(); ctx.fill();
+                },
+                // 5. 小树
+                (ctx) => {
+                    ctx.fillStyle = '#8b5cf6'; // purple-500 trunk
+                    ctx.fillRect(50, 80, 20, 30);
+                    ctx.fillStyle = '#22c55e'; // green-500 leaves
+                    ctx.beginPath();
+                    ctx.arc(60, 60, 35, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = '#16a34a'; // green-600
+                    ctx.beginPath();
+                    ctx.arc(45, 65, 20, 0, Math.PI * 2);
+                    ctx.fill();
+                     ctx.beginPath();
+                    ctx.arc(75, 65, 20, 0, Math.PI * 2);
+                    ctx.fill();
+                },
+                 // 6. 太阳
+                (ctx) => {
+                    ctx.fillStyle = '#facc15'; // yellow-400
+                    ctx.strokeStyle = '#f59e0b'; // amber-500
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.arc(60, 60, 30, 0, Math.PI * 2);
+                    ctx.fill();
+                    // rays
+                    for(let i=0; i<8; i++){
+                        const angle = i * Math.PI / 4;
+                        ctx.beginPath();
+                        ctx.moveTo(60 + Math.cos(angle) * 35, 60 + Math.sin(angle) * 35);
+                        ctx.lineTo(60 + Math.cos(angle) * 45, 60 + Math.sin(angle) * 45);
+                        ctx.stroke();
+                    }
+                },
+                // 7. 书本
+                (ctx) => {
+                    ctx.fillStyle = '#3b82f6'; // blue-500
+                    ctx.strokeStyle = '#1e40af'; // blue-800
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(20, 30);
+                    ctx.lineTo(20, 90);
+                    ctx.lineTo(80, 105);
+                    ctx.lineTo(80, 45);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+
+                    ctx.fillStyle = '#ffffff';
+                    ctx.beginPath();
+                    ctx.moveTo(25, 35); ctx.lineTo(75, 50); ctx.lineTo(75, 95); ctx.lineTo(25, 80); ctx.closePath();
+                    ctx.fill();
+
+                     ctx.strokeStyle = '#9ca3af';
+                     ctx.beginPath(); ctx.moveTo(30, 55); ctx.lineTo(70, 65); ctx.stroke();
+                     ctx.beginPath(); ctx.moveTo(30, 65); ctx.lineTo(70, 75); ctx.stroke();
+                },
+                // 8. 铅笔
+                (ctx) => {
+                    ctx.fillStyle = '#fcd34d'; // amber-300
+                    ctx.beginPath();
+                    ctx.moveTo(30, 30); ctx.lineTo(90, 50); ctx.lineTo(80, 80); ctx.lineTo(20, 60); ctx.closePath(); ctx.fill(); // body
+                    ctx.fillStyle = '#f87171'; // red-400
+                    ctx.fillRect(80, 50, 15, 30); // eraser
+                     ctx.fillStyle = '#374151'; // gray-700
+                     ctx.beginPath();
+                     ctx.moveTo(30, 30); ctx.lineTo(20, 60); ctx.lineTo(15, 50); ctx.closePath(); ctx.fill(); // tip
+                },
+                // 9. 笑脸
+                (ctx) => {
+                    ctx.strokeStyle = '#f97316'; // orange-500
+                    ctx.lineWidth = 4;
+                    ctx.beginPath();
+                    ctx.arc(60, 60, 40, 0, Math.PI * 2); // face
+                    ctx.stroke();
+                    ctx.fillStyle = '#f97316';
+                    ctx.beginPath(); ctx.arc(45, 50, 5, 0, Math.PI * 2); ctx.fill(); // left eye
+                    ctx.beginPath(); ctx.arc(75, 50, 5, 0, Math.PI * 2); ctx.fill(); // right eye
+                    ctx.beginPath();
+                    ctx.arc(60, 65, 25, 0.2 * Math.PI, 0.8 * Math.PI); // smile
+                    ctx.stroke();
+                },
+                // 10. 小星星
+                (ctx) => {
+                    ctx.fillStyle = '#818cf8'; // indigo-400
+                    ctx.strokeStyle = '#4338ca'; // indigo-700
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(60, 20);
+                    for (let i = 1; i < 5; i++) {
+                        const angle = i * 0.8 * Math.PI;
+                        const r = i % 2 === 1 ? 20 : 40;
+                        ctx.lineTo(60 + r * Math.sin(angle), 60 - r * Math.cos(angle));
+                    }
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                },
+                 // 11. 咖啡杯
+                (ctx) => {
+                    ctx.fillStyle = '#8d6e63'; // brown-400
+                    ctx.strokeStyle = '#5d4037'; // brown-600
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(30, 40);
+                    ctx.lineTo(35, 100);
+                    ctx.quadraticCurveTo(60, 110, 85, 100);
+                    ctx.lineTo(90, 40);
+                    ctx.quadraticCurveTo(60, 30, 30, 40);
+                    ctx.fill();
+                    ctx.stroke();
+                    // handle
+                    ctx.beginPath();
+                    ctx.moveTo(90, 60);
+                    ctx.quadraticCurveTo(105, 70, 90, 80);
+                    ctx.stroke();
+                },
+                 // 12. 云朵
+                (ctx) => {
+                    ctx.fillStyle = '#e5e7eb'; // gray-200
+                    ctx.strokeStyle = '#9ca3af'; // gray-400
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(30, 80);
+                    ctx.arc(45, 80, 15, Math.PI, 2*Math.PI);
+                    ctx.arc(60, 70, 20, Math.PI/2, 2.5*Math.PI);
+                    ctx.arc(80, 80, 15, Math.PI, 2*Math.PI);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                },
+                // 13. 月亮
+                (ctx) => {
+                    ctx.fillStyle = '#fef08a'; // yellow-200
+                    ctx.strokeStyle = '#facc15'; // yellow-400
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.arc(60, 60, 40, 0.5 * Math.PI, 1.5 * Math.PI, false);
+                    ctx.quadraticCurveTo(50, 60, 60, 20);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                },
+                // 14
+                 (ctx) => {
+                    ctx.fillStyle = '#fbbf24'; // amber-400
+                    ctx.fillRect(40, 40, 40, 40);
+                    ctx.fillStyle = '#000';
+                    ctx.fillText('?', 55, 65);
+                 },
+                // 15
+                (ctx) => {
+                    ctx.strokeStyle = '#34d399'; // emerald-400
+                    ctx.lineWidth = 5;
+                    ctx.beginPath();
+                    ctx.moveTo(30, 60);
+                    ctx.lineTo(50, 80);
+                    ctx.lineTo(90, 40);
+                    ctx.stroke();
+                },
+                // 16
+                (ctx) => {
+                    ctx.font = '60px sans-serif';
+                    ctx.fillText('💡', 30, 80);
+                },
+                // 17
+                (ctx) => {
+                    ctx.font = '60px sans-serif';
+                    ctx.fillText('👋', 30, 80);
+                }
+            ];
+
+            contexts.forEach((ctx, i) => {
+                const drawFunc = drawings[i % drawings.length];
+                drawFunc(ctx);
+            });
+        };
+    </script>
+</body>
+</html>
+

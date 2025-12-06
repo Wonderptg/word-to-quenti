@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>化学反应速率（简约图版）</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .section.active { display: flex; opacity: 1; }
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+        .mono { font-family: 'Courier New', Courier, monospace; font-weight: 600; }
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        figure { margin: 0; }
+        figcaption { font-size: 0.9rem; color: #475569; text-align: center; margin-top: 0.5rem; }
+        .svg-diagram { width: 100%; height: auto; background: #fff; border: 1px solid #e5e7eb; border-radius: .375rem; }
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="presentation-container">
+
+    <!-- 封面 -->
+    <section class="section">
+        <div class="w-full max-w-4xl mx-auto text-center">
+            <svg class="w-24 h-24 mx-auto text-lime-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">化学反应速率</h1>
+            <p class="text-2xl text-slate-600 mt-2">—— 探究反应快慢的奥秘</p>
+        </div>
+    </section>
+
+    <!-- 课程说明（精简） -->
+    <section class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-slate-500 rounded"></span>课程说明
+            </h2>
+            <div class="mt-8 bg-gray-50 border border-gray-200 p-8 rounded-lg text-lg text-slate-700 space-y-3">
+                <p>目标：理解<strong class="text-teal-600">反应速率的表示</strong>与<strong class="text-purple-600">主要影响因素</strong>。</p>
+                <p>范围：必修基础；复杂推导（速率方程/活化能）放在后续章节。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 定义与表示 + 极简图 -->
+    <section class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-blue-500 rounded"></span>化学反应速率 (v) 的定义与表示
+            </h2>
+            <p class="mt-8 text-xl text-slate-700"><strong>定义：</strong>用来衡量化学反应进行<strong class="text-blue-600">快慢程度</strong>的物理量。</p>
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                <div>
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <p class="text-lg text-slate-700">通常用<strong class="text-red-600">单位时间</strong>内<strong class="text-red-600">浓度的变化量</strong>来表示（取正值）。</p>
+                        <p class="mono text-center mt-4 text-2xl font-bold text-blue-800">v = Δc / Δt</p>
+                        <p class="text-lg text-slate-600 mt-4"><strong>单位：</strong><code>mol·L⁻¹·s⁻¹</code></p>
+                    </div>
+                </div>
+                <figure>
+                    <!-- 极简 速率-时间 折线 -->
+                    <svg class="svg-diagram" viewBox="0 0 480 260" aria-label="浓度-时间示意图">
+                        <g fill="none" stroke="#94a3b8" stroke-width="1.5">
+                            <path d="M60,200 H440" />
+                            <path d="M60,200 V40" />
+                        </g>
+                        <text x="45" y="45" fill="#64748b" font-size="12">c</text>
+                        <text x="445" y="215" fill="#64748b" font-size="12">t</text>
+                        <path d="M60,80 C130,95 210,125 300,160 360,185 400,195 440,200" fill="none" stroke="#0ea5e9" stroke-width="2.5"/>
+                        <line x1="220" y1="120" x2="320" y2="165" stroke="#ef4444" stroke-dasharray="4 4"/>
+                        <line x1="320" y1="165" x2="320" y2="200" stroke="#ef4444" stroke-dasharray="4 4"/>
+                        <text x="230" y="115" fill="#ef4444" font-size="12">Δc</text>
+                        <text x="325" y="185" fill="#ef4444" font-size="12">Δt</text>
+                        <text x="260" y="145" fill="#0ea5e9" font-size="12">斜率≈速率</text>
+                    </svg>
+                    <figcaption>同一反应：曲线斜率的绝对值反映速率大小</figcaption>
+                </figure>
+            </div>
+            <p class="mt-6 text-xl text-slate-600"><strong>注意：</strong>不能用<strong class="text-red-600">固体</strong>或<strong class="text-red-600">纯液体</strong>的“浓度变化”表示速率。</p>
+        </div>
+    </section>
+
+    <!-- 速率换算 -->
+    <section class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>速率换算与比较
+            </h2>
+            <div class="mt-6 bg-cyan-50 border border-cyan-200 p-6 rounded-lg text-lg">
+                <p class="mono text-center">mA + nB ⇌ pC + qD</p>
+                <p class="mono text-center mt-4 text-xl font-bold text-cyan-800">v(A):v(B):v(C):v(D) = m:n:p:q</p>
+                <p class="mono text-center mt-2">v(A)/m = v(B)/n = v(C)/p = v(D)/q</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 影响因素：温度（极简对比图） -->
+    <section class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-red-500 rounded"></span>影响因素：温度
+            </h2>
+            <p class="mt-8 text-xl text-slate-700">比较 H₂O₂ 在冷水与热水中分解的快慢。</p>
+            <figure class="mt-6">
+                <svg class="svg-diagram" viewBox="0 0 960 260" aria-label="温度对速率影响—双试管示意">
+                    <!-- 左：冷 -->
+                    <g transform="translate(120,20)">
+                        <rect x="0" y="0" width="220" height="220" rx="12" fill="#e2e8f0" />
+                        <text x="110" y="30" text-anchor="middle" fill="#475569">冷水</text>
+                        <rect x="70" y="60" width="80" height="140" fill="none" stroke="#94a3b8" stroke-width="2" rx="6"/>
+                        <rect x="80" y="140" width="60" height="50" fill="#93c5fd" opacity="0.5"/>
+                        <g fill="#93c5fd">
+                            <circle cx="110" cy="160" r="3"/><circle cx="104" cy="170" r="2.5"/><circle cx="116" cy="175" r="2.5"/>
+                        </g>
+                        <text x="110" y="210" text-anchor="middle" fill="#ef4444" font-size="12">较慢</text>
+                    </g>
+
+                    <!-- 右：热 -->
+                    <g transform="translate(520,20)">
+                        <rect x="0" y="0" width="220" height="220" rx="12" fill="#fee2e2" />
+                        <text x="110" y="30" text-anchor="middle" fill="#475569">热水</text>
+                        <rect x="70" y="60" width="80" height="140" fill="none" stroke="#ef4444" stroke-width="2" rx="6"/>
+                        <rect x="80" y="120" width="60" height="70" fill="#fda4af" opacity="0.4"/>
+                        <g fill="#ef4444">
+                            <circle cx="110" cy="150" r="3.5"/><circle cx="104" cy="162" r="3.2"/><circle cx="116" cy="170" r="3.2"/><circle cx="110" cy="140" r="3.2"/>
+                        </g>
+                        <text x="110" y="210" text-anchor="middle" fill="#ef4444" font-size="12">更快</text>
+                    </g>
+                </svg>
+                <figcaption>升温 → 速率增大</figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <!-- 影响因素：浓度（极简对比图） -->
+    <section class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>影响因素：反应物浓度
+            </h2>
+            <p class="mt-8 text-xl text-slate-700">比较不同浓度盐酸与大理石的反应快慢。</p>
+            <figure class="mt-6">
+                <svg class="svg-diagram" viewBox="0 0 960 260" aria-label="浓度对速率影响—双烧杯示意">
+                    <!-- 左：低浓度 -->
+                    <g transform="translate(120,20)">
+                        <rect x="0" y="0" width="220" height="220" rx="12" fill="#f8fafc" />
+                        <text x="110" y="30" text-anchor="middle" fill="#475569">低浓度</text>
+                        <path d="M40,60 L180,60 L170,200 L50,200 Z" fill="none" stroke="#94a3b8" stroke-width="2"/>
+                        <path d="M52,170 L168,170 L163,195 L57,195 Z" fill="#bae6fd" opacity="0.6"/>
+                        <g fill="#60a5fa">
+                            <circle cx="110" cy="178" r="2.2"/><circle cx="105" cy="186" r="2.2"/>
+                        </g>
+                        <text x="110" y="210" text-anchor="middle" fill="#ef4444" font-size="12">较慢</text>
+                    </g>
+                    <!-- 右：高浓度 -->
+                    <g transform="translate(520,20)">
+                        <rect x="0" y="0" width="220" height="220" rx="12" fill="#fff7ed" />
+                        <text x="110" y="30" text-anchor="middle" fill="#475569">高浓度</text>
+                        <path d="M40,60 L180,60 L170,200 L50,200 Z" fill="none" stroke="#f59e0b" stroke-width="2"/>
+                        <path d="M52,160 L168,160 L163,195 L57,195 Z" fill="#fed7aa" opacity="0.6"/>
+                        <g fill="#f59e0b">
+                            <circle cx="110" cy="170" r="3.2"/><circle cx="105" cy="182" r="3.2"/><circle cx="115" cy="186" r="3.2"/>
+                        </g>
+                        <text x="110" y="210" text-anchor="middle" fill="#ef4444" font-size="12">更快</text>
+                    </g>
+                </svg>
+                <figcaption>增大浓度 → 速率增大</figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <!-- 影响因素：催化剂（极简对比图） -->
+    <section class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>影响因素：催化剂
+            </h2>
+            <p class="mt-8 text-xl text-slate-700">比较 H₂O₂ 在无/有 MnO₂ 条件下的分解速率。</p>
+            <figure class="mt-6">
+                <svg class="svg-diagram" viewBox="0 0 960 260" aria-label="催化剂对速率影响—对比示意">
+                    <!-- 左：无催化剂 -->
+                    <g transform="translate(120,20)">
+                        <rect x="0" y="0" width="220" height="220" rx="12" fill="#f8fafc" />
+                        <text x="110" y="30" text-anchor="middle" fill="#475569">无催化剂</text>
+                        <path d="M40,60 L180,60 L170,200 L50,200 Z" fill="none" stroke="#94a3b8" stroke-width="2"/>
+                        <rect x="80" y="150" width="60" height="45" fill="#c7d2fe" opacity="0.5" />
+                        <g fill="#93c5fd">
+                            <circle cx="110" cy="170" r="2.2"/><circle cx="105" cy="180" r="2.2"/>
+                        </g>
+                        <text x="110" y="210" text-anchor="middle" fill="#ef4444" font-size="12">较慢</text>
+                    </g>
+                    <!-- 右：MnO₂ -->
+                    <g transform="translate(520,20)">
+                        <rect x="0" y="0" width="220" height="220" rx="12" fill="#faf5ff" />
+                        <text x="110" y="30" text-anchor="middle" fill="#475569">MnO₂</text>
+                        <path d="M40,60 L180,60 L170,200 L50,200 Z" fill="none" stroke="#7c3aed" stroke-width="2"/>
+                        <rect x="80" y="145" width="60" height="50" fill="#ddd6fe" opacity="0.6" />
+                        <g fill="#7c3aed">
+                            <circle cx="110" cy="162" r="3.2"/><circle cx="104" cy="172" r="3.2"/><circle cx="116" cy="176" r="3.2"/>
+                        </g>
+                        <text x="110" y="210" text-anchor="middle" fill="#ef4444" font-size="12">更快</text>
+                    </g>
+                </svg>
+                <figcaption>加入合适催化剂 → 速率显著增大（催化剂前后不变）</figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <!-- 影响因素：表面积（极简图） -->
+    <section class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-lime-500 rounded"></span>影响因素：固体反应物表面积
+            </h2>
+            <p class="mt-8 text-xl text-slate-700">比较块状与粉末状大理石与盐酸反应的快慢。</p>
+            <figure class="mt-6">
+                <svg class="svg-diagram" viewBox="0 0 960 260" aria-label="表面积对速率影响—方块/颗粒示意">
+                    <!-- 左：块状 -->
+                    <g transform="translate(120,20)">
+                        <rect x="0" y="0" width="220" height="220" rx="12" fill="#f8fafc" />
+                        <text x="110" y="30" text-anchor="middle" fill="#475569">块状</text>
+                        <rect x="95" y="150" width="30" height="30" fill="#94a3b8" />
+                        <g fill="#60a5fa">
+                            <circle cx="110" cy="188" r="2.2" /><circle cx="104" cy="194" r="2.2" />
+                        </g>
+                        <text x="110" y="210" text-anchor="middle" fill="#ef4444" font-size="12">较慢</text>
+                    </g>
+                    <!-- 右：粉末 -->
+                    <g transform="translate(520,20)">
+                        <rect x="0" y="0" width="220" height="220" rx="12" fill="#ecfee8" />
+                        <text x="110" y="30" text-anchor="middle" fill="#475569">粉末</text>
+                        <g fill="#84cc16">
+                            <circle cx="85" cy="170" r="6"/><circle cx="120" cy="170" r="6"/><circle cx="155" cy="170" r="6"/>
+                        </g>
+                        <g fill="#22c55e">
+                            <circle cx="110" cy="150" r="3.2"/><circle cx="104" cy="160" r="3.2"/><circle cx="116" cy="165" r="3.2"/>
+                        </g>
+                        <text x="110" y="210" text-anchor="middle" fill="#ef4444" font-size="12">更快</text>
+                    </g>
+                </svg>
+                <figcaption>增大接触面积 → 速率增大</figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <!-- 影响因素：压强（仅对气体） -->
+    <section class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>影响因素：压强（气体反应）
+            </h2>
+            <p class="mt-8 text-xl text-slate-700">恒温下，压强改变本质是改变气体<strong class="text-indigo-600">浓度</strong>。</p>
+            <figure class="mt-6">
+                <svg class="svg-diagram" viewBox="0 0 960 260" aria-label="压强对速率影响—活塞示意">
+                    <!-- 左：低压（大体积） -->
+                    <g transform="translate(120,20)">
+                        <rect x="0" y="0" width="220" height="220" rx="12" fill="#f8fafc" />
+                        <text x="110" y="30" text-anchor="middle" fill="#475569">低压</text>
+                        <rect x="60" y="60" width="100" height="120" fill="none" stroke="#94a3b8" stroke-width="2"/>
+                        <rect x="60" y="60" width="100" height="10" fill="#94a3b8" />
+                        <g fill="#60a5fa">
+                            <circle cx="90" cy="120" r="5"/><circle cx="130" cy="110" r="5"/>
+                        </g>
+                    </g>
+                    <!-- 右：高压（小体积） -->
+                    <g transform="translate(520,20)">
+                        <rect x="0" y="0" width="220" height="220" rx="12" fill="#eef2ff" />
+                        <text x="110" y="30" text-anchor="middle" fill="#475569">高压</text>
+                        <rect x="70" y="80" width="80" height="95" fill="none" stroke="#6366f1" stroke-width="2"/>
+                        <rect x="70" y="80" width="80" height="10" fill="#6366f1" />
+                        <g fill="#6366f1">
+                            <circle cx="95" cy="120" r="5"/><circle cx="120" cy="115" r="5"/><circle cx="110" cy="135" r="5"/>
+                        </g>
+                    </g>
+                </svg>
+                <figcaption>增大压强（等温、等容或等压不同条件下）→ 一般使速率增大</figcaption>
+            </figure>
+            <div class="mt-4 text-sm text-slate-500">
+                <p>恒容充入无关气体：总压↑，反应物浓度不变 → 速率不变。</p>
+                <p>恒压充入无关气体：体积↑，反应物浓度↓ → 速率减小。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 练习（保留原结构） -->
+    <section class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>随堂练习（节选）
+            </h2>
+            <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                <p>对于反应 <code>N₂ + 3H₂ ⇌ 2NH₃</code>，若 v(N₂) = 0.1 mol·L⁻¹·min⁻¹，则 v(NH₃) = ？</p>
+                <div class="mt-6 space-y-3 text-lg">
+                    <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 0.1</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 0.2</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 0.3</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 0.05</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 解析 -->
+    <section class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>解析
+            </h2>
+            <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                <p>同一反应中，不同物质表示的速率之比等于计量数之比：v(N₂):v(NH₃)=1:2 → v(NH₃)=0.2。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 结束 -->
+    <section class="section">
+        <div class="w-full max-w-4xl mx-auto text-center">
+            <svg class="w-24 h-24 mx-auto text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+            <p class="mt-8 text-2xl text-slate-600">感谢观看！</p>
+        </div>
+    </section>
+
+</div>
+
+<!-- 导航 -->
+<div id="navigation" class="text-center">
+    <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+    <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+    <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const sections = document.querySelectorAll('.section');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const pageIndicator = document.getElementById('page-indicator');
+  let currentPage = 0;
+  const totalPages = sections.length;
+
+  function showPage(pageIndex) {
+    sections.forEach((section) => section.classList.remove('active'));
+    sections[pageIndex].classList.add('active');
+    pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+    prevBtn.disabled = pageIndex === 0;
+    nextBtn.disabled = pageIndex === totalPages - 1;
+    prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+    prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+    nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+    nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+  }
+
+  nextBtn.addEventListener('click', () => {
+    if (currentPage < totalPages - 1) {
+      currentPage++;
+      showPage(currentPage);
+      window.scrollTo(0, 0);
+    }
+  });
+
+  prevBtn.addEventListener('click', () => {
+    if (currentPage > 0) {
+      currentPage--;
+      showPage(currentPage);
+      window.scrollTo(0, 0);
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' && currentPage < totalPages - 1) nextBtn.click();
+    else if (e.key === 'ArrowLeft' && currentPage > 0) prevBtn.click();
+  });
+
+  showPage(0);
+});
+</script>
+
+</body>
+</html>

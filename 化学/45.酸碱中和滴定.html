@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>酸碱中和滴定</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        
+        /* 表格样式 */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+        }
+        .styled-table th, .styled-table td {
+            border: 1px solid #cbd5e1;
+            padding: 0.75rem 1rem;
+            text-align: center;
+        }
+        .styled-table thead {
+            background-color: #f8fafc;
+        }
+        .styled-table th {
+            font-weight: 700;
+            color: #334155;
+        }
+        .styled-table tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+        .styled-table tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">酸碱中和滴定实验</h1>
+                <p class="text-2xl text-slate-600 mt-2">（一）仪器、步骤与原理</p>
+            </div>
+        </div>
+        
+        <!-- 课程介绍 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>本节课内容</h2>
+                <p class="mt-8 text-xl text-slate-700">酸碱中和滴定实验是考试的热点，涉及仪器、步骤、计算和误差分析。</p>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800 text-2xl text-center">本节课 (视频一)</h3>
+                        <p class="mt-3 text-slate-600 text-center">实验仪器、操作步骤</p>
+                    </div>
+                    <div class="bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-gray-800 text-2xl text-center">下节课 (视频二)</h3>
+                        <p class="mt-3 text-slate-600 text-center">数据处理、误差分析</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 概念与原理 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>概念与原理</h2>
+                <div class="mt-8 bg-indigo-50 border border-indigo-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-indigo-800 text-xl">概念：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">依据中和反应，用<strong class="text-blue-600">已知浓度</strong>的酸（或碱）来测定<strong class="text-red-600">未知浓度</strong>的碱（或酸）的实验方法。</p>
+                    <p class="mt-2 text-lg text-slate-700 text-center">核心：<strong class="text-indigo-700">用已知测未知</strong></p>
+                </div>
+                <div class="mt-8 bg-gray-100 p-6 rounded-lg text-center">
+                    <h3 class="font-bold text-gray-800 text-xl">原理：</h3>
+                    <p class="text-2xl mono font-bold text-indigo-700 mt-2">n(H⁺) = n(OH⁻)</p>
+                    <p class="mt-3 text-lg text-slate-700">当酸可电离的 <code>H⁺</code> 物质的量 与 碱可电离的 <code>OH⁻</code> 物质的量<strong class="text-red-600">恰好完全中和</strong>时，建立等式进行计算。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 滴定原理计算 (通式) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>滴定原理计算 (通式)</h2>
+                <p class="mt-8 text-xl text-slate-700">对于 <code>n</code> 元酸 (浓度a, 体积V₁) 和 <code>m</code> 元碱 (浓度b, 体积V₂) 恰好完全中和：</p>
+                <div class="mt-8 bg-gray-100 p-6 rounded-lg text-center">
+                    <p class="text-xl text-slate-700 mono">n(H⁺) = n(OH⁻)</p>
+                    <p class="text-xl mono mt-2 text-blue-700">(a · V₁) · n <span class="text-gray-700">=</span> <span class="text-red-600">(b · V₂) · m</span></p>
+                    <p class="mt-2 text-lg text-slate-700">(酸的mol数) × n = (碱的mol数) × m</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 计算示例 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>计算示例</h2>
+                <p class="mt-8 text-xl text-slate-700">用 <code class="text-blue-600">0.1 mol/L</code> 的 <code>NaOH</code> 溶液滴定 <code>20.00 mL</code> <code class="text-red-600">未知浓度</code>的 <code>H₂SO₄</code> 溶液，恰好完全中和时，消耗 <code>NaOH</code> 溶液 <code>20.00 mL</code>。求 <code>H₂SO₄</code> 浓度 (c)？</p>
+                 <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <p class="mono text-center text-xl">n(H⁺) = n(OH⁻)</p>
+                    <p class="mono text-center text-xl mt-2"><span class="text-red-600">(c mol/L · 0.020 L) · 2</span> = <span class="text-blue-600">(0.1 mol/L · 0.020 L) · 1</span></p>
+                    <p class="mt-4 text-center text-lg text-slate-700">(硫酸的mol数) × 2 = (NaOH的mol数) × 1</p>
+                    <p class="mono text-center text-xl mt-2 text-green-700 font-bold">c = 0.05 mol/L</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实验仪器与试剂 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>实验仪器与试剂</h2>
+                 <div class="mt-8 space-y-4 text-lg">
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">试剂</strong>
+                        <p class="mt-2">标准溶液 (已知浓度)、待测溶液 (未知浓度)、酸碱指示剂、蒸馏水</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong class="bg-green-100 text-green-700 px-3 py-1 rounded-full">仪器</strong>
+                        <p class="mt-2"><strong class="text-red-600">酸式滴定管</strong>、<strong class="text-red-600">碱式滴定管</strong>、滴定管夹、铁架台、<strong class="text-red-600">锥形瓶</strong></p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 重点仪器：滴定管 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>重点仪器：滴定管</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800 text-2xl text-center">酸式滴定管</h3>
+                        <p class="mt-3 text-slate-600 text-center">下端为<strong class="text-blue-700">玻璃活塞</strong>。</p>
+                        <p class="mt-2 text-slate-600 text-center">
+<figure class="mt-4">
+<svg viewBox="0 0 380 520" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto" role="img" aria-label="酸式滴定管（玻璃活塞）结构示意">
+  <!-- 管体 -->
+  <rect x="170" y="20" width="40" height="400" rx="12" ry="12" fill="none" stroke="#334155" stroke-width="2"/>
+  <!-- 刻度 -->
+  <g stroke="#94a3b8">
+    <line x1="170" y1="40" x2="158" y2="40" stroke-width="2"/>
+<text x="122" y="44" font-size="10" fill="#475569">0.0</text>
+<line x1="170" y1="50" x2="164" y2="50" stroke-width="1"/>
+<line x1="170" y1="60" x2="164" y2="60" stroke-width="1"/>
+<line x1="170" y1="70" x2="164" y2="70" stroke-width="1"/>
+<line x1="170" y1="80" x2="164" y2="80" stroke-width="1"/>
+<line x1="170" y1="90" x2="158" y2="90" stroke-width="2"/>
+<text x="122" y="94" font-size="10" fill="#475569">2.5</text>
+<line x1="170" y1="100" x2="164" y2="100" stroke-width="1"/>
+<line x1="170" y1="110" x2="164" y2="110" stroke-width="1"/>
+<line x1="170" y1="120" x2="164" y2="120" stroke-width="1"/>
+<line x1="170" y1="130" x2="164" y2="130" stroke-width="1"/>
+<line x1="170" y1="140" x2="158" y2="140" stroke-width="2"/>
+<text x="122" y="144" font-size="10" fill="#475569">5.0</text>
+<line x1="170" y1="150" x2="164" y2="150" stroke-width="1"/>
+<line x1="170" y1="160" x2="164" y2="160" stroke-width="1"/>
+<line x1="170" y1="170" x2="164" y2="170" stroke-width="1"/>
+<line x1="170" y1="180" x2="164" y2="180" stroke-width="1"/>
+<line x1="170" y1="190" x2="158" y2="190" stroke-width="2"/>
+<text x="122" y="194" font-size="10" fill="#475569">7.5</text>
+<line x1="170" y1="200" x2="164" y2="200" stroke-width="1"/>
+<line x1="170" y1="210" x2="164" y2="210" stroke-width="1"/>
+<line x1="170" y1="220" x2="164" y2="220" stroke-width="1"/>
+<line x1="170" y1="230" x2="164" y2="230" stroke-width="1"/>
+<line x1="170" y1="240" x2="158" y2="240" stroke-width="2"/>
+<text x="122" y="244" font-size="10" fill="#475569">10.0</text>
+<line x1="170" y1="250" x2="164" y2="250" stroke-width="1"/>
+<line x1="170" y1="260" x2="164" y2="260" stroke-width="1"/>
+<line x1="170" y1="270" x2="164" y2="270" stroke-width="1"/>
+<line x1="170" y1="280" x2="164" y2="280" stroke-width="1"/>
+<line x1="170" y1="290" x2="158" y2="290" stroke-width="2"/>
+<text x="122" y="294" font-size="10" fill="#475569">12.5</text>
+<line x1="170" y1="300" x2="164" y2="300" stroke-width="1"/>
+<line x1="170" y1="310" x2="164" y2="310" stroke-width="1"/>
+<line x1="170" y1="320" x2="164" y2="320" stroke-width="1"/>
+<line x1="170" y1="330" x2="164" y2="330" stroke-width="1"/>
+<line x1="170" y1="340" x2="158" y2="340" stroke-width="2"/>
+<text x="122" y="344" font-size="10" fill="#475569">15.0</text>
+<line x1="170" y1="350" x2="164" y2="350" stroke-width="1"/>
+<line x1="170" y1="360" x2="164" y2="360" stroke-width="1"/>
+<line x1="170" y1="370" x2="164" y2="370" stroke-width="1"/>
+<line x1="170" y1="380" x2="164" y2="380" stroke-width="1"/>
+<line x1="170" y1="390" x2="158" y2="390" stroke-width="2"/>
+<text x="122" y="394" font-size="10" fill="#475569">17.5</text>
+<line x1="170" y1="400" x2="164" y2="400" stroke-width="1"/>
+<line x1="170" y1="410" x2="164" y2="410" stroke-width="1"/>
+<line x1="170" y1="420" x2="164" y2="420" stroke-width="1"/>
+<line x1="170" y1="430" x2="164" y2="430" stroke-width="1"/>
+<line x1="170" y1="440" x2="158" y2="440" stroke-width="2"/>
+<text x="122" y="444" font-size="10" fill="#475569">20.0</text>
+
+  </g>
+  <!-- 0刻度标识 -->
+  <text x="220" y="40" font-size="14" fill="#334155">0.00 mL</text>
+  <!-- 管尖 -->
+  <path d="M190,420 v40" stroke="#334155" stroke-width="3" fill="none"/>
+  <!-- 玻璃活塞主体 -->
+  <rect x="170" y="430" width="40" height="26" rx="6" fill="#e2e8f0" stroke="#334155" stroke-width="2"/>
+  <!-- T形手柄 -->
+  <rect x="160" y="422" width="60" height="8" rx="4" fill="#94a3b8" stroke="#334155" stroke-width="1.5"/>
+  <!-- 出液口 -->
+  <path d="M210,456 h18 v18" stroke="#334155" stroke-width="3" fill="none"/>
+  <circle cx="228" cy="474" r="4" fill="#0ea5e9"/>
+  <!-- 标签 -->
+  <text x="24" y="500" font-size="16" fill="#0f766e">酸式滴定管：下端玻璃活塞（耐酸/氧化性溶液）</text>
+</svg>
+<figcaption class="text-center text-sm text-slate-600">酸式滴定管（玻璃活塞）</figcaption>
+</figure>
+</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-red-800 text-2xl text-center">碱式滴定管</h3>
+                        <p class="mt-3 text-slate-600 text-center">下端为<strong class="text-red-700">橡胶管</strong>和<strong class="text-red-700">玻璃球</strong>。</p>
+                        <p class="mt-2 text-slate-600 text-center">
+<figure class="mt-4">
+<svg viewBox="0 0 420 520" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto" role="img" aria-label="碱式滴定管（橡胶管+玻璃球）结构示意">
+  <!-- 管体 -->
+  <rect x="170" y="20" width="40" height="400" rx="12" ry="12" fill="none" stroke="#334155" stroke-width="2"/>
+  <!-- 刻度 -->
+  <g stroke="#94a3b8">
+    <line x1="170" y1="40" x2="158" y2="40" stroke-width="2"/>
+<text x="122" y="44" font-size="10" fill="#475569">0.0</text>
+<line x1="170" y1="50" x2="164" y2="50" stroke-width="1"/>
+<line x1="170" y1="60" x2="164" y2="60" stroke-width="1"/>
+<line x1="170" y1="70" x2="164" y2="70" stroke-width="1"/>
+<line x1="170" y1="80" x2="164" y2="80" stroke-width="1"/>
+<line x1="170" y1="90" x2="158" y2="90" stroke-width="2"/>
+<text x="122" y="94" font-size="10" fill="#475569">2.5</text>
+<line x1="170" y1="100" x2="164" y2="100" stroke-width="1"/>
+<line x1="170" y1="110" x2="164" y2="110" stroke-width="1"/>
+<line x1="170" y1="120" x2="164" y2="120" stroke-width="1"/>
+<line x1="170" y1="130" x2="164" y2="130" stroke-width="1"/>
+<line x1="170" y1="140" x2="158" y2="140" stroke-width="2"/>
+<text x="122" y="144" font-size="10" fill="#475569">5.0</text>
+<line x1="170" y1="150" x2="164" y2="150" stroke-width="1"/>
+<line x1="170" y1="160" x2="164" y2="160" stroke-width="1"/>
+<line x1="170" y1="170" x2="164" y2="170" stroke-width="1"/>
+<line x1="170" y1="180" x2="164" y2="180" stroke-width="1"/>
+<line x1="170" y1="190" x2="158" y2="190" stroke-width="2"/>
+<text x="122" y="194" font-size="10" fill="#475569">7.5</text>
+<line x1="170" y1="200" x2="164" y2="200" stroke-width="1"/>
+<line x1="170" y1="210" x2="164" y2="210" stroke-width="1"/>
+<line x1="170" y1="220" x2="164" y2="220" stroke-width="1"/>
+<line x1="170" y1="230" x2="164" y2="230" stroke-width="1"/>
+<line x1="170" y1="240" x2="158" y2="240" stroke-width="2"/>
+<text x="122" y="244" font-size="10" fill="#475569">10.0</text>
+<line x1="170" y1="250" x2="164" y2="250" stroke-width="1"/>
+<line x1="170" y1="260" x2="164" y2="260" stroke-width="1"/>
+<line x1="170" y1="270" x2="164" y2="270" stroke-width="1"/>
+<line x1="170" y1="280" x2="164" y2="280" stroke-width="1"/>
+<line x1="170" y1="290" x2="158" y2="290" stroke-width="2"/>
+<text x="122" y="294" font-size="10" fill="#475569">12.5</text>
+<line x1="170" y1="300" x2="164" y2="300" stroke-width="1"/>
+<line x1="170" y1="310" x2="164" y2="310" stroke-width="1"/>
+<line x1="170" y1="320" x2="164" y2="320" stroke-width="1"/>
+<line x1="170" y1="330" x2="164" y2="330" stroke-width="1"/>
+<line x1="170" y1="340" x2="158" y2="340" stroke-width="2"/>
+<text x="122" y="344" font-size="10" fill="#475569">15.0</text>
+<line x1="170" y1="350" x2="164" y2="350" stroke-width="1"/>
+<line x1="170" y1="360" x2="164" y2="360" stroke-width="1"/>
+<line x1="170" y1="370" x2="164" y2="370" stroke-width="1"/>
+<line x1="170" y1="380" x2="164" y2="380" stroke-width="1"/>
+<line x1="170" y1="390" x2="158" y2="390" stroke-width="2"/>
+<text x="122" y="394" font-size="10" fill="#475569">17.5</text>
+<line x1="170" y1="400" x2="164" y2="400" stroke-width="1"/>
+<line x1="170" y1="410" x2="164" y2="410" stroke-width="1"/>
+<line x1="170" y1="420" x2="164" y2="420" stroke-width="1"/>
+<line x1="170" y1="430" x2="164" y2="430" stroke-width="1"/>
+<line x1="170" y1="440" x2="158" y2="440" stroke-width="2"/>
+<text x="122" y="444" font-size="10" fill="#475569">20.0</text>
+
+  </g>
+  <text x="220" y="40" font-size="14" fill="#334155">0.00 mL</text>
+  <!-- 下端连接橡胶管 -->
+  <path d="M190,420 v20" stroke="#334155" stroke-width="3" fill="none"/>
+  <path d="M190,440 q40,10 60,0 q20,-6 40,6" fill="none" stroke="#0f172a" stroke-width="3"/>
+  <!-- 玻璃球（挤压放液） -->
+  <circle cx="310" cy="448" r="18" fill="#f1f5f9" stroke="#334155" stroke-width="2"/>
+  <!-- 出液嘴 -->
+  <path d="M328,448 q18,8 28,26" fill="none" stroke="#334155" stroke-width="3"/>
+  <circle cx="356" cy="478" r="4" fill="#ef4444"/>
+  <!-- 标签 -->
+  <text x="24" y="500" font-size="16" fill="#b91c1c">碱式滴定管：下端橡胶管+玻璃球（耐碱/中性溶液）</text>
+</svg>
+<figcaption class="text-center text-sm text-slate-600">碱式滴定管（橡胶管+玻璃球）</figcaption>
+</figure>
+</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 滴定管的使用 (一) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>滴定管的使用 (一)</h2>
+                <div class="mt-8 overflow-x-auto">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>类型</th>
+                                <th>酸式滴定管 (玻璃活塞)</th>
+                                <th>碱式滴定管 (橡胶管)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold">√ 可装</td>
+                                <td><strong class="text-blue-700">酸性</strong>溶液、<strong class="text-blue-700">氧化性</strong>溶液 (如KMnO₄)、中性溶液</td>
+                                <td><strong class="text-red-700">碱性</strong>溶液、中性溶液</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">× 不可装</td>
+                                <td><strong class="text-red-700">碱性</strong>溶液 (会腐蚀玻璃活塞使其粘住)、<strong class="text-red-700">HF</strong></td>
+                                <td><strong class="text-red-700">酸性</strong>溶液、<strong class="text-red-700">氧化性</strong>溶液 (会腐蚀橡胶管)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 滴定管的使用 (二) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>滴定管的使用 (二)</h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full">规格</strong><p class="mt-2 text-lg">常用 25.00 mL 或 50.00 mL</p></div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full">分度</strong><p class="mt-2 text-lg">最小分度为 <strong class="text-red-600">0.1 mL</strong></p></div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full">读数</strong><p class="mt-2 text-lg">精密度高，应估读至 <strong class="text-red-600">0.01 mL</strong> (如 2.30 mL)</p></div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full">刻度</strong><p class="mt-2 text-lg"><strong class="text-red-600">0 刻度在上</strong>，读数<strong class="text-red-600">由上往下</strong>增大 (表示放出液体的体积)</p></div>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 滴定管操作 (一)：查漏与润洗 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>滴定管操作 (一)：查漏与润洗</h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                        <strong class="font-bold text-blue-700 text-xl">1. 查漏</strong>
+                        <p class="mt-2 text-lg text-slate-700">滴定管、容量瓶、分液漏斗使用前必须检查是否漏水。</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                        <strong class="font-bold text-red-700 text-xl">2. 润洗 (重要)</strong>
+                        <p class="mt-2 text-lg text-slate-700">滴定管用蒸馏水洗净后，必须用<strong class="text-red-600">待装溶液</strong>润洗 2-3 次。</p>
+                        <p class="mt-2 text-sm text-slate-500">（目的：防止残留的蒸馏水稀释待装溶液，造成浓度误差。）</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 滴定管操作 (二)：排气泡 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>滴定管操作 (二)：排气泡</h2>
+                <p class="mt-8 text-xl text-slate-700">装液后，必须赶走尖嘴处的气泡：</p>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800 text-xl text-center">酸式滴定管</h3>
+                        <p class="mt-3 text-slate-600 text-center">旋转活塞，<strong class="text-blue-700">快速放液</strong>，用溶液冲走气泡。</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-red-800 text-xl text-center">碱式滴定管</h3>
+                        <p class="mt-3 text-slate-600 text-center">将橡胶管<strong class="text-red-700">向上弯折</strong>，捏开玻璃球，让溶液<strong class="text-red-700">向上喷出</strong>，带走气泡。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 滴定管操作 (三)：读数 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>滴定管操作 (三)：读数</h2>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <p class="mt-2 text-lg text-slate-700">1. 赶走气泡后，调节液面至 0 刻度或 0 刻度以下。</p>
+                    <p class="mt-2 text-lg text-slate-700">2. <strong class="text-red-600">必须</strong>准确记录<strong class="text-red-600">起始读数 V₁</strong> (估读到 0.01 mL)。</p>
+                    <p class="mt-2 text-lg text-slate-700">3. 滴定结束后，准确记录<strong class="text-red-600">终点读数 V₂</strong> (估读到 0.01 mL)。</p>
+                    <p class="mt-2 text-lg text-slate-700">4. 消耗体积 V = V₂ - V₁。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 实验步骤 (一)：准备 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>实验步骤 (一)：准备</h2>
+                <p class="mt-8 text-xl text-slate-700">情景：用已知浓度的 <code class="text-blue-600">HCl</code> 滴定未知浓度的 <code class="text-red-600">NaOH</code> (恒河水)。</p>
+                <div class="mt-8 space-y-4 text-lg">
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong>1. 查漏：</strong>酸、碱滴定管均查漏。</div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong>2. 洗涤：</strong>
+                        <br/>· 滴定管：蒸馏水洗 → <strong class="text-blue-600">标准液/待测液</strong> 润洗
+                        <br/>· 锥形瓶：蒸馏水洗
+                    </div>
+                    <div class="bg-red-100 text-red-800 p-4 rounded-lg font-semibold"><strong class="font-bold text-red-900 text-xl">× 陷阱：</strong><br/>锥形瓶<strong class="text-red-900">绝不能</strong>用待测液润洗！（否则待测液n偏大，V(标)偏大，C(待)偏高）</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实验步骤 (二)：取液 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>实验步骤 (二)：取液</h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                        <strong class="font-bold text-blue-700 text-xl">1. 装标准液 (HCl)：</strong>
+                        <p class="mt-2 text-lg text-slate-700">用<strong class="text-blue-600">酸式滴定管</strong>装 HCl，排气泡，记录<strong class="text-blue-600">起始读数 V₁</strong>。</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                        <strong class="font-bold text-red-700 text-xl">2. 装待测液 (NaOH)：</strong>
+                        <p class="mt-2 text-lg text-slate-700">用<strong class="text-red-600">碱式滴定管</strong>准确移取 <code class="mono">25.00 mL</code> NaOH 溶液，放入<strong class="text-red-600">锥形瓶</strong>中。</p>
+                        <p class="mt-2 text-lg text-slate-700">加入 <code class="mono">2-3</code> 滴<strong class="text-pink-500">酚酞</strong>指示剂。（此时溶液为<strong class="text-pink-500">红色</strong>）</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 实验步骤 (三)：滴定 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>实验步骤 (三)：滴定</h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong>1. 准备：</strong>锥形瓶下垫<strong class="text-gray-700">白纸</strong>，以便观察颜色变化。</div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong>2. 操作：</strong><strong class="text-blue-600">左手</strong>控制活塞，<strong class="text-blue-600">右手</strong>摇晃锥形瓶。</div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong>3. 速率：</strong>先快后慢。接近终点时（颜色变化又褪去），应<strong class="text-red-600">“滴加半滴”</strong>。</div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg"><strong>4. 眼睛：</strong><strong class="text-red-600">紧盯锥形瓶内</strong>溶液颜色变化。</div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 滴定终点的判断 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>滴定终点的判断 (重点)</h2>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">滴定终点：</h3>
+                    <p>当加入<strong class="text-red-900">最后半滴</strong>标准液时，锥形瓶中溶液颜色<strong class="text-red-900">突变</strong>，且<strong class="text-red-900">半分钟内不恢复</strong>成原色。</p>
+                </div>
+                 <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">本实验终点现象 (酚酞)：</h3>
+                    <p class="mt-3 text-slate-600 text-lg text-center">溶液由 <strong class="text-pink-500">红色</strong> 变为 <strong class="text-gray-700">无色</strong>，且半分钟不褪色。</p>
+                </div>
+                <div class="mt-6 bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                    <p class="text-lg text-slate-700">立即关闭活塞，记录<strong class="text-blue-600">终点读数 V₂</strong>。计算 V = V₂ - V₁。重复实验 2-3 次，取平均值计算。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 指示剂的选择 (一)：滴定曲线 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>指示剂的选择 (一)：滴定曲线</h2>
+                <p class="mt-8 text-xl text-slate-700">滴定终点 ≠ 恰好完全中和点 (化学计量点)。</p>
+                <p class="mt-4 text-xl text-slate-700">我们选择的指示剂，其<strong class="text-purple-700">变色范围</strong>应落在 pH <strong class="text-red-600">突变范围</strong>内。</p>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <p class="mt-2 text-lg text-slate-700">
+<figure class="mt-4">
+<svg viewBox="0 0 860 420" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto" role="img" aria-label="强酸强碱滴定曲线（等当点附近pH突变）">
+  <!-- 坐标轴 -->
+  <line x1="80" y1="360" x2="800" y2="360" stroke="#334155" stroke-width="2"/>
+  <line x1="80" y1="360" x2="80" y2="40" stroke="#334155" stroke-width="2"/>
+  <text x="36" y="42" font-size="14" fill="#334155">pH</text>
+  <text x="780" y="388" font-size="14" fill="#334155">体积 V(强碱)</text>
+
+  <!-- pH刻度 -->
+  <line x1="76" y1="360" x2="84" y2="360" stroke="#94a3b8" stroke-width="1"/>
+<text x="52" y="364" font-size="10" fill="#475569">0</text>
+<line x1="76" y1="340" x2="84" y2="340" stroke="#94a3b8" stroke-width="1"/>
+<text x="52" y="344" font-size="10" fill="#475569">1</text>
+<line x1="76" y1="320" x2="84" y2="320" stroke="#94a3b8" stroke-width="1"/>
+<text x="52" y="324" font-size="10" fill="#475569">2</text>
+<line x1="76" y1="300" x2="84" y2="300" stroke="#94a3b8" stroke-width="1"/>
+<text x="52" y="304" font-size="10" fill="#475569">3</text>
+<line x1="76" y1="280" x2="84" y2="280" stroke="#94a3b8" stroke-width="1"/>
+<text x="52" y="284" font-size="10" fill="#475569">4</text>
+<line x1="76" y1="260" x2="84" y2="260" stroke="#94a3b8" stroke-width="1"/>
+<text x="52" y="264" font-size="10" fill="#475569">5</text>
+<line x1="76" y1="240" x2="84" y2="240" stroke="#94a3b8" stroke-width="1"/>
+<text x="52" y="244" font-size="10" fill="#475569">6</text>
+<line x1="76" y1="220" x2="84" y2="220" stroke="#94a3b8" stroke-width="1"/>
+<text x="52" y="224" font-size="10" fill="#475569">7</text>
+<line x1="76" y1="200" x2="84" y2="200" stroke="#94a3b8" stroke-width="1"/>
+<text x="52" y="204" font-size="10" fill="#475569">8</text>
+<line x1="76" y1="180" x2="84" y2="180" stroke="#94a3b8" stroke-width="1"/>
+<text x="52" y="184" font-size="10" fill="#475569">9</text>
+<line x1="76" y1="160" x2="84" y2="160" stroke="#94a3b8" stroke-width="1"/>
+<text x="52" y="164" font-size="10" fill="#475569">10</text>
+<line x1="76" y1="140" x2="84" y2="140" stroke="#94a3b8" stroke-width="1"/>
+<text x="52" y="144" font-size="10" fill="#475569">11</text>
+<line x1="76" y1="120" x2="84" y2="120" stroke="#94a3b8" stroke-width="1"/>
+<text x="52" y="124" font-size="10" fill="#475569">12</text>
+<line x1="76" y1="100" x2="84" y2="100" stroke="#94a3b8" stroke-width="1"/>
+<text x="52" y="104" font-size="10" fill="#475569">13</text>
+<line x1="76" y1="80" x2="84" y2="80" stroke="#94a3b8" stroke-width="1"/>
+<text x="52" y="84" font-size="10" fill="#475569">14</text>
+
+
+  <!-- 强酸强碱曲线 -->
+  <path d="M100,340 
+           C 220,320 300,300 380,260
+           C 430,240 470,220 520,200
+           C 560,185 600,180 640,190
+           C 680,230 700,280 720,320" 
+        fill="none" stroke="#0ea5e9" stroke-width="3"/>
+
+  <!-- 等当点（突变区） -->
+  <line x1="520" y1="360" x2="520" y2="40" stroke="#94a3b8" stroke-dasharray="6,6"/>
+  <circle cx="520" cy="200" r="5" fill="#0ea5e9"/>
+  <text x="528" y="200" font-size="12" fill="#0ea5e9">化学计量点</text>
+
+  <!-- 指示剂变色范围 -->
+  <rect x="600" y="110" width="120" height="12" fill="#fda4af" opacity="0.6"/>
+  <text x="602" y="106" font-size="12" fill="#b91c1c">酚酞变色 8.2–10.0</text>
+
+  <rect x="430" y="290" width="120" height="12" fill="#fde68a" opacity="0.7"/>
+  <text x="432" y="306" font-size="12" fill="#92400e">甲基橙 3.1–4.4</text>
+
+  <!-- 文字说明 -->
+  <text x="96" y="50" font-size="12" fill="#475569">强酸起始pH低</text>
+  <text x="640" y="210" font-size="12" fill="#475569">pH突变区：半滴即可跨越</text>
+</svg>
+<figcaption class="text-center text-sm text-slate-600">强酸强碱滴定曲线与指示剂变色范围</figcaption>
+</figure>
+</p>
+                    <p class="mt-4 text-lg text-slate-700">在化学计量点附近，半滴溶液即可引起 pH 剧烈变化（如 pH 从 4.2 → 9.8）。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 指示剂的选择 (二)：常见指示剂 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>指示剂的选择 (二)：常见指示剂</h2>
+                <div class="mt-8 overflow-x-auto">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>指示剂</th>
+                                <th>pH 变色范围</th>
+                                <th>低 pH 颜色</th>
+                                <th>高 pH 颜色</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold">甲基橙</td>
+                                <td class="mono text-orange-600">3.1 ~ 4.4</td>
+                                <td class="text-red-600 font-bold">红</td>
+                                <td class="text-yellow-500 font-bold">黄</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">酚酞</td>
+                                <td class="mono text-pink-600">8.2 ~ 10.0</td>
+                                <td class="font-bold">无色</td>
+                                <td class="text-red-600 font-bold">红</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">石蕊</td>
+                                <td class="mono text-gray-500">5.0 ~ 8.0</td>
+                                <td class="text-red-600 font-bold">红</td>
+                                <td class="text-blue-600 font-bold">蓝</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-6 bg-red-100 text-red-800 p-4 rounded-lg text-lg font-semibold">
+                    <strong class="font-bold text-red-900 text-xl">× 注意：</strong><strong class="text-red-900">不用石蕊</strong>。其变色范围太宽，颜色变化不突兀（红→紫→蓝），误差大。
+                </div>
+            </div>
+        </div>
+        
+        <!-- 指示剂的选择 (三)：结论 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>指示剂的选择 (三)：结论</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-green-800 text-xl">强酸 ⇌ 强碱 滴定：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">pH 突变范围极大 (约 3 ~ 11)，<strong class="text-green-700">酚酞</strong> 和 <strong class="text-green-700">甲基橙</strong> 均可选用。</p>
+                </div>
+                 <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">弱酸 ⇌ 强碱 滴定：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">（后续课程：盐类水解）</p>
+                    <p class="mt-2 text-slate-600 text-lg">恰好中和时，生成强碱弱酸盐，溶液呈<strong class="text-red-600">碱性</strong>。突变范围偏上。</p>
+                    <p class="mt-2 text-lg text-center font-bold text-red-600">→ 只能用酚酞</p>
+                </div>
+                 <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">强酸 ⇌ 弱碱 滴定：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">（后续课程：盐类水解）</p>
+                    <p class="mt-2 text-slate-600 text-lg">恰好中和时，生成强酸弱碱盐，溶液呈<strong class="text-blue-600">酸性</strong>。突变范围偏下。</p>
+                    <p class="mt-2 text-lg text-center font-bold text-blue-600">→ 只能用甲基橙</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                 </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看！请大家务必掌握滴定管的使用和终点判断。</p>
+                <p class="mt-4 text-2xl text-slate-600">下节课我们将重点讲解<strong class="text-red-600">误差分析</strong>，再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- 导航控件 -->
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <!-- JS 逻辑 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圆的一般方程 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <!-- MathJax Library -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0.25rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            overflow-x: auto;
+            text-align: center;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">圆的一般方程</h1>
+                <p class="text-2xl text-slate-600 mt-4">解开 "乱码" 背后的秘密</p>
+                <p class="mt-8 text-xl text-cyan-600 font-semibold">"为什么 $x^2+y^2-6x+2y+6=0$ 也是一个圆？"</p>
+            </div>
+        </div>
+
+        <!-- 引入新朋友 -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-4">标准方程 vs 一般方程</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <p class="text-lg"><strong>标准方程</strong> (“实诚”)：$(x-a)^2 + (y-b)^2 = r^2$
+                <br>$\implies$ 圆心 $(a, b)$ 和半径 $r$ 一目了然。</p>
+                <p class="text-lg mt-4"><strong>它是怎么来的？</strong>把标准方程“脱掉外套”（展开）：</p>
+                <div class="formula-box text-base">
+                    <p>$(x-3)^2 + (y+1)^2 = 4$</p>
+                    <p>$(x^2 - 6x + 9) + (y^2 + 2y + 1) = 4$</p>
+                    <p>整理 $\implies x^2 + y^2 - 6x + 2y + 6 = 0$</p>
+                </div>
+                <p class="text-lg mt-4">这就得到了<strong>圆的一般方程</strong>：</p>
+                <div class="formula-box text-xl font-bold">
+                    $x^2 + y^2 + Dx + Ey + F = 0$
+                </div>
+            </div>
+        </div>
+        
+        <!-- 核心技能：配方 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-2 mb-4">核心技能：配方法</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <p class="text-lg">如何把“乱码” $x^2+y^2-6x+2y+6=0$ 打回原形？</p>
+                <p class="text-lg mt-2"><strong>配方三步走：</strong></p>
+                <ol class="list-decimal list-inside text-lg space-y-2 mt-2">
+                    <li><strong>分组：</strong>x跟x玩, y跟y玩。常数扔到右边。
+                    <br><span class="text-base font-mono">$(x^2 - 6x\_\_) + (y^2 + 2y\_\_) = -6$</span></li>
+                    
+                    <li><strong>配方：</strong>加上“一次项系数一半的平方”。
+                    <br><span class="text-base font-mono">x项：-6的一半是-3，平方是 9。</span>
+                    <br><span class="text-base font-mono">y项：+2的一半是+1，平方是 1。</span></li>
+                    
+                    <li><strong>平衡：</strong>左边加了9和1，右边也要加！
+                    <br><span class="text-base font-mono">$(x^2 - 6x + 9) + (y^2 + 2y + 1) = -6 + 9 + 1$</span></li>
+                    
+                    <li><strong>收工：</strong>
+                    <br><span class="text-base font-mono font-bold text-blue-700">$(x - 3)^2 + (y + 1)^2 = 4$</span></li>
+                </ol>
+                <p class="text-lg mt-2 text-center"><strong>圆心：$(3, -1)$，半径：$2$。</strong></p>
+            </div>
+        </div>
+        
+        <!-- 快捷公式 -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-2 mb-4">快捷公式 (“兵器”)</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <p class="text-lg">对于 $x^2 + y^2 + Dx + Ey + F = 0$：</p>
+                <div class="formula-box text-lg">
+                    <p><strong>圆心：</strong> $(-\frac{D}{2}, -\frac{E}{2})$</p>
+                    <p><strong>半径：</strong> $r = \frac{1}{2}\sqrt{D^2 + E^2 - 4F}$</p>
+                </div>
+                <p class="text-lg mt-4"><strong>验证：</strong> $x^2+y^2-6x+2y+6=0$
+                <br>$D=-6$, $E=2$, $F=6$</p>
+                <p class="text-lg mt-2"><strong>圆心：</strong> $(-\frac{-6}{2}, -\frac{2}{2}) = (3, -1)$。 完美！</p>
+                <div class="bg-amber-50 p-4 rounded-lg mt-4">
+                    <p class="font-bold text-amber-800">老师忠告：</p>
+                    <p>配方法是“内功”，必须会！公式是“兵器”，可以用来加速或检查。不能只依赖兵器！</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 陷阱一 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-rose-500 pb-2">陷阱一：这是圆吗？</h2>
+                 <div class="mt-4 text-lg">
+                    <p>是不是 $x^2 + y^2 + ...$ 的形式就一定是圆？</p>
+                    <p><strong>例：</strong> $x^2+y^2+2x+4y+8=0$</p>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 陷阱一 结论 (新页面) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-rose-500 pb-2">陷阱一：结论</h2>
+                <div class="mt-4 text-lg">
+                    <p class="mt-4 font-bold">结论：看 $D^2 + E^2 - 4F$ (半径公式的“芯”)</p>
+                    <ul class="list-disc list-inside ml-4">
+                        <li>$D^2 + E^2 - 4F > 0 \implies$ <strong>是一个圆</strong> (右边是正数)</li>
+                        <li>$D^2 + E^2 - 4F = 0 \implies$ <strong>是一个点</strong> (右边是0)</li>
+                        <li>$D^2 + E^2 - 4F < 0 \implies$ <strong>不是圆</strong> (右边是负数)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 陷阱二 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-rose-500 pb-2">陷阱二：系数的伪装</h2>
+                 <div class="mt-4 text-lg space-y-4">
+                    <p><strong>情况一：</strong> $5x^2 + 5y^2 - 10x + ... = 0$
+                    <br><strong>这是圆吗？</strong>
+                    <br><span class="text-emerald-700 font-bold">是！</span>因为 $x^2$ 和 $y^2$ 的系数相等（都是5）。我们可以在配方前，两边同时除以5，把它变回 $x^2 + y^2 ...$ 的标准一般式。</p>
+                    
+                    <p><strong>情况二：</strong> $5x^2 - 5y^2 - 10x + ... = 0$
+                    <br><strong>这是圆吗？</strong>
+                    <br><span class="text-red-700 font-bold">不是！</span>$x^2$ 和 $y^2$ 的系数一正一负，这绝对不是圆。（这是我们以后会学的双曲线）</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 应用一 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-indigo-500 pb-2">实战应用(一)：求过三点的圆</h2>
+                 <div class="mt-4 text-lg">
+                    <p><strong>例：</strong>求经过 $A(1,1)$, $B(2,-2)$, $C(5,-1)$ 三点的圆的方程。</p>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 应用二 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-indigo-500 pb-2">实战应用(二)：最值问题</h2>
+                 <div class="mt-4 text-lg">
+                    <p><strong>例：</strong>已知圆 $C: x^2+y^2+4x-10y+13=0$，求圆上任意一点 P 到原点 O(0,0) 的最大距离。</p>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 练习题 1/4 -->
+        <div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (1/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                    <p class="font-semibold mb-2">1. 圆 $x^2+y^2-4x+6y-1=0$ 的圆心坐标是？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) $(2, -3)$</p>
+                        <p>(B) $(-2, 3)$</p>
+                        <p>(C) $(4, -6)$</p>
+                        <p>(D) $(-4, 6)$</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题 2/4 -->
+        <div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (2/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                    <p class="font-semibold mb-2">2. 将方程 $x^2+y^2+2x=0$ 配方后得到的标准方程是？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) $(x-1)^2+y^2=1$</p>
+                        <p>(B) $(x+1)^2+y^2=-1$</p>
+                        <p>(C) $(x+1)^2+y^2=1$</p>
+                        <p>(D) $x^2+(y+1)^2=1$</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3/4 -->
+        <div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (3/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                     <p class="font-semibold mb-2">3. 方程 $x^2+y^2+Dx+Ey+F=0$ 表示一个点, 则 D, E, F 满足的条件是？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) $D^2+E^2-4F > 0$</p>
+                        <p>(B) $D^2+E^2-4F < 0$</p>
+                        <p>(C) $D^2+E^2-4F = 0$</p>
+                        <p>(D) $F=0$</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题 4/4 -->
+        <div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (4/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                     <p class="font-semibold mb-2">4. 关于方程 $2x^2+y^2-8x=0$, 下列说法正确的是？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) 它表示一个圆, 圆心是(2,0)。</p>
+                        <p>(B) 它表示一个点。</p>
+                        <p>(C) 它不表示一个圆, 因为 $x^2$ 和 $y^2$ 的系数不相等。</p>
+                        <p>(D) 它不表示任何图形。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题解析 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析</h2>
+                <div class="space-y-3 text-base">
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>1. 答案：A</strong></p>
+                        <p><strong>解析：</strong>用快捷公式：圆心 $(-\frac{D}{2}, -\frac{E}{2})$。这里 $D=-4$, $E=6$。
+                        <br>圆心 $(-\frac{-4}{2}, -\frac{6}{2}) = (2, -3)$。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>2. 
+答案：C</strong></p>
+                        <p><strong>解析：</strong>配方法：$(x^2+2x) + y^2 = 0$。x项配方需加1，两边都加1。
+                        <br>$(x^2+2x+1) + y^2 = 1 \implies (x+1)^2 + y^2 = 1$。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>3. 答案：C</strong></p>
+                        <p><strong>解析：</strong>当 $D^2+E^2-4F=0$ 时，配方后方程右边等于0，方程变为 $(x-a)^2 + (y-b)^2 = 0$，这只表示一个点 $(a, b)$。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>4. 答案：C</strong></p>
+                        <p><strong>解析：</strong>圆的一般方程一个重要前提是 $x^2$ 和 $y^2$ 的系数必须相等且不为0。这里系数分别是2和1，不相等，所以它不表示一个圆。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 总结 -->
+         <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8">课程总结</h2>
+                <p class="text-xl">今天我们给圆换了件“马甲”，叫一般方程：</p>
+                <div class="formula-box text-lg">
+                    <strong>$x^2 + y^2 + Dx + Ey + F = 0$</strong>
+                </div>
+                <ul class="list-disc list-inside text-left text-lg mt-4 space-y-2">
+                    <li><strong>核心技能：</strong>配方法！(标准 $\leftrightarrow$ 一般)</li>
+                    <li><strong>快捷方式：</strong>圆心 $(-\frac{D}{2}, -\frac{E}{2})$</li>
+                    <li><strong>火眼金睛：</strong>用 $D^2+E^2-4F$ 判断它是真圆、是点、还是冒牌货。</li>
+                    <li><strong>应用：</strong>凡是碰到一般方程，先配方(扒马甲)，99%的问题都会变回我们上节课熟悉的样子!</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
+
+
+
+
+
+

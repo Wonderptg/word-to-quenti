@@ -1,0 +1,532 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>离散型随机变量：二项分布与超几何分布 - PPT</title>
+ <script src="https://cdn.tailwindcss.com"></script>
+ 
+ <!-- MathJax Configuration -->
+ <script>
+ window.MathJax = {
+ tex: {
+ inlineMath: [['$', '$'], ['\\(', '\\)']],
+ displayMath: [['$$', '$$'], ['\\[', '\\]']],
+ processEscapes: true
+ },
+ svg: { fontCache: 'global' }
+ };
+ </script>
+ <script id="MathJax-script" async src="https://cdn.bootcdn.net/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+ <style>
+ html, body {
+ margin: 0;
+ padding: 0;
+ font-family: 'Noto Serif SC', serif;
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
+ background-color: #f1f5f9;
+ }
+ 
+ #presentation-container {
+ max-width: 64rem; /* 1024px width for standard slide feel */
+ margin: 2rem auto;
+ background-color: white;
+ border-radius: 0.5rem;
+ box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+ }
+
+ .section {
+ width: 100%;
+ box-sizing: border-box;
+ padding: 3rem 4rem; /* Generous padding */
+ position: relative; 
+ min-height: 600px; /* Standard slide height */
+ display: flex;
+ flex-direction: column;
+ justify-content: center; 
+ align-items: center; 
+ text-align: center;
+ }
+ 
+ .section:not(:last-child) {
+ border-bottom: 1px solid #e5e7eb;
+ }
+ 
+ h1 { font-size: 2.5rem; font-weight: 700; color: #1e293b; margin-bottom: 1.5rem; }
+ h2 { font-size: 2rem; font-weight: 600; color: #334155; margin-bottom: 2rem; }
+ h3 { font-size: 1.5rem; font-weight: 600; color: #2563eb; margin-bottom: 1rem; }
+ 
+ p, li { font-size: 1.25rem; color: #475569; line-height: 1.75; }
+ 
+ .formula-box {
+ background-color: #f8fafc;
+ border-left: 6px solid #3b82f6;
+ padding: 2rem;
+ margin: 2rem 0;
+ border-radius: 0.5rem;
+ font-size: 1.5rem;
+ line-height: 1.5;
+ box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+ width: 100%;
+ max-width: 90%;
+ }
+
+ .example-block {
+ background-color: #f0fdf4;
+ padding: 1.5rem;
+ border-radius: 0.5rem;
+ margin-bottom: 1.5rem;
+ width: 100%;
+ max-width: 90%;
+ text-align: left;
+ }
+ 
+ ul.options-list {
+ list-style-type: none;
+ padding: 0;
+ text-align: left;
+ width: 100%;
+ max-width: 80%;
+ }
+ 
+ ul.options-list li {
+ background-color: #f8fafc;
+ margin-bottom: 0.75rem;
+ padding: 1rem;
+ border-radius: 0.375rem;
+ border: 1px solid #e2e8f0;
+ }
+
+ .answer-reveal {
+ font-size: 1.5rem;
+ font-weight: bold;
+ color: #16a34a;
+ margin-top: 1rem;
+ padding: 1rem;
+ background-color: #dcfce7;
+ border-radius: 0.5rem;
+ display: inline-block;
+ }
+
+ @media print {
+ @page { size: landscape; margin: 0; }
+ body, html { background-color: white; }
+ #presentation-container { margin: 0; max-width: 100%; box-shadow: none; }
+ .section { height: 100vh; width: 100vw; page-break-after: always; border-bottom: none; }
+ .section:last-child { page-break-after: auto; }
+ }
+ </style>
+</head>
+<body>
+
+<div id="presentation-container">
+
+    <!-- Slide 1: Title -->
+    <div class="section">
+        <div class="text-blue-600 font-bold tracking-widest uppercase mb-4">数学讲堂</div>
+        <h1 class="text-7xl mb-4">离散型随机变量</h1>
+        <h2 class="text-6xl text-blue-700 mt-4">二项分布与超几何分布</h2>
+        <p class="mt-8 text-gray-500"></p>
+    </div>
+
+ <!-- Slide 2: Bernoulli Trial -->
+ <div class="section">
+ <h3>1. 从伯努利试验说起</h3>
+ <div class="example-block">
+ <p class="font-bold text-green-700 mb-2">🪙 经典场景</p>
+ <p>抛硬币（正/反）、罚球（中/不中）、产品抽检（合格/次品）。</p>
+ </div>
+ <div class="text-left max-w-4xl space-y-4">
+ <p><strong>定义：</strong> 只有两种可能结果（成功/失败）的随机试验，称为<strong>伯努利试验</strong>。</p>
+ <p>设成功的概率为 $p$，则失败概率为 $1-p$。</p>
+ <p>随机变量 $X$ 服从<strong>两点分布</strong>（或伯努利分布）。</p>
+ </div>
+ </div>
+
+ <!-- Slide 3: n Repetitions -->
+ <div class="section">
+ <h3>$n$ 重伯努利试验</h3>
+ <div class="text-left max-w-4xl space-y-6">
+ <p><strong>定义：</strong> 在相同条件下，重复进行 $n$ 次伯努利试验。</p>
+ <p><strong>关键点：</strong></p>
+ <ul class="list-disc pl-8 space-y-2">
+ <li>每次试验条件相同（$p$ 不变）。</li>
+ <li>各次试验结果<strong>相互独立</strong>（互不影响）。</li>
+ </ul>
+ <p class="text-gray-500 text-sm italic mt-4">例如：抛10次硬币，射击运动员打5发子弹。</p>
+ </div>
+ </div>
+
+ <!-- Slide 4: Visualization (Coin Toss) -->
+ <div class="section">
+ <h3>探究：抛3次硬币</h3>
+ <p class="mb-4">为什么 $P(X=1) \neq p(1-p)^2$？</p>
+ <!-- Optimized SVG for 3 coin tosses -->
+ <svg width="640" height="240" viewBox="0 0 640 240" xmlns="http://www.w3.org/2000/svg" class="max-w-full h-auto">
+ <!-- Background -->
+ <rect width="640" height="240" fill="#ffffff" rx="10"/>
+
+ <!-- X=0 -->
+ <g transform="translate(40, 30)">
+ <text x="30" y="0" class="group-label" font-weight="bold">X=0</text>
+ <!-- Row 1 -->
+ <circle cx="15" cy="30" r="12" fill="#e0e0e0" stroke="#9e9e9e"/>
+ <circle cx="45" cy="30" r="12" fill="#e0e0e0" stroke="#9e9e9e"/>
+ <circle cx="75" cy="30" r="12" fill="#e0e0e0" stroke="#9e9e9e"/>
+ <text x="45" y="65" text-anchor="middle" font-size="12">反反反</text>
+ </g>
+
+ <!-- X=1 -->
+ <g transform="translate(170, 30)">
+ <text x="45" y="0" class="group-label" font-weight="bold">X=1</text>
+ 
+ <!-- Row 1 -->
+ <circle cx="15" cy="30" r="12" fill="#ffcc80" stroke="#ef6c00"/>
+ <circle cx="45" cy="30" r="12" fill="#e0e0e0" stroke="#9e9e9e"/>
+ <circle cx="75" cy="30" r="12" fill="#e0e0e0" stroke="#9e9e9e"/>
+ 
+ <!-- Row 2 -->
+ <circle cx="15" cy="70" r="12" fill="#e0e0e0" stroke="#9e9e9e"/>
+ <circle cx="45" cy="70" r="12" fill="#ffcc80" stroke="#ef6c00"/>
+ <circle cx="75" cy="70" r="12" fill="#e0e0e0" stroke="#9e9e9e"/>
+ 
+ <!-- Row 3 -->
+ <circle cx="15" cy="110" r="12" fill="#e0e0e0" stroke="#9e9e9e"/>
+ <circle cx="45" cy="110" r="12" fill="#e0e0e0" stroke="#9e9e9e"/>
+ <circle cx="75" cy="110" r="12" fill="#ffcc80" stroke="#ef6c00"/>
+ 
+ <!-- Brace visual (simple line) -->
+ <path d="M 100 30 Q 110 70 100 110" fill="none" stroke="#c51162" stroke-width="2"/>
+ <text x="115" y="75" font-size="12">3种情况</text>
+ <text x="115" y="90" font-family="monospace" font-weight="bold" fill="#c51162">C(3,1)</text>
+ </g>
+
+ <!-- X=2 -->
+ <g transform="translate(350, 30)">
+ <text x="45" y="0" class="group-label" font-weight="bold">X=2</text>
+ 
+ <!-- Row 1 -->
+ <circle cx="15" cy="30" r="12" fill="#ffcc80" stroke="#ef6c00"/>
+ <circle cx="45" cy="30" r="12" fill="#ffcc80" stroke="#ef6c00"/>
+ <circle cx="75" cy="30" r="12" fill="#e0e0e0" stroke="#9e9e9e"/>
+ 
+ <!-- Row 2 -->
+ <circle cx="15" cy="70" r="12" fill="#ffcc80" stroke="#ef6c00"/>
+ <circle cx="45" cy="70" r="12" fill="#e0e0e0" stroke="#9e9e9e"/>
+ <circle cx="75" cy="70" r="12" fill="#ffcc80" stroke="#ef6c00"/>
+ 
+ <!-- Row 3 -->
+ <circle cx="15" cy="110" r="12" fill="#e0e0e0" stroke="#9e9e9e"/>
+ <circle cx="45" cy="110" r="12" fill="#ffcc80" stroke="#ef6c00"/>
+ <circle cx="75" cy="110" r="12" fill="#ffcc80" stroke="#ef6c00"/>
+ 
+ <path d="M 100 30 Q 110 70 100 110" fill="none" stroke="#c51162" stroke-width="2"/>
+ <text x="115" y="75" font-size="12">3种情况</text>
+ <text x="115" y="90" font-family="monospace" font-weight="bold" fill="#c51162">C(3,2)</text>
+ </g>
+
+ <!-- X=3 -->
+ <g transform="translate(530, 30)">
+ <text x="30" y="0" class="group-label" font-weight="bold">X=3</text>
+ <circle cx="15" cy="30" r="12" fill="#ffcc80" stroke="#ef6c00"/>
+ <circle cx="45" cy="30" r="12" fill="#ffcc80" stroke="#ef6c00"/>
+ <circle cx="75" cy="30" r="12" fill="#ffcc80" stroke="#ef6c00"/>
+ <text x="45" y="65" text-anchor="middle" font-size="12">正正正</text>
+ </g>
+ </svg>
+ </div>
+
+ <!-- Slide 5: Binomial Formula Definition -->
+ <div class="section">
+ <h3>二项分布公式</h3>
+ <p>进行 $n$ 次重复独立试验，成功概率为 $p$，则成功 $k$ 次的概率为：</p>
+ 
+ <div class="formula-box">
+ $$P(X=k) = C_n^k p^k (1-p)^{n-k}$$
+ $$\text{记作：} X \sim B(n, p)$$
+ </div>
+ 
+ <p class="text-sm text-gray-500">
+ $C_n^k$：组合数，代表 $k$ 次成功在 $n$ 次试验中的不同位置分布。<br>
+ 这也是二项式 $(p + (1-p))^n$ 展开式的通项。
+ </p>
+ </div>
+
+ <!-- Slide 6: Binomial E & D -->
+ <div class="section">
+ <h3>二项分布的期望与方差</h3>
+ <p class="mb-8">若 $X \sim B(n, p)$，则：</p>
+ 
+ <div class="grid grid-cols-2 gap-8 w-full max-w-4xl">
+ <div class="bg-blue-50 p-6 rounded-lg text-center">
+ <div class="text-lg font-bold text-blue-800 mb-2">数学期望</div>
+ <div class="text-3xl">$$E(X) = np$$</div>
+ </div>
+ <div class="bg-blue-50 p-6 rounded-lg text-center">
+ <div class="text-lg font-bold text-blue-800 mb-2">方差</div>
+ <div class="text-3xl">$$D(X) = np(1-p)$$</div>
+ </div>
+ </div>
+ 
+ <p class="mt-8 text-gray-500 text-sm">理解：做1次期望是 $p$，做 $n$ 次就是 $np$。</p>
+ </div>
+
+ <!-- Slide 7: Hypergeometric Intro -->
+ <div class="section">
+ <h3>2. 超几何分布</h3>
+ <p class="mb-6 font-bold text-xl">关键区别：无放回抽取</p>
+ 
+ <div class="example-block">
+ <p><strong>🏭 例子：产品抽检</strong></p>
+ <p>总量 $N=100$，次品 $M=8$。从中抽 $n=4$ 件。</p>
+ </div>
+
+ <ul class="list-disc text-left max-w-2xl space-y-4">
+ <li><strong>有放回：</strong> 二项分布 (独立重复，概率不变)。</li>
+ <li><strong>无放回：</strong> 超几何分布 (抽一件少一件，概率改变)。</li>
+ </ul>
+ </div>
+
+ <!-- Slide 8: Hypergeometric Visualization -->
+ <div class="section">
+ <h3>古典概型思维：凑人头</h3>
+ <p class="mb-4">不需要死记公式，想通“组合”逻辑。</p>
+ 
+ <!-- Optimized SVG for Hypergeometric -->
+ <svg width="600" height="280" viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg" class="max-w-full h-auto">
+ <defs>
+ <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+ <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+ </marker>
+ </defs>
+ <rect x="50" y="60" width="160" height="180" rx="10" fill="#f5f5f5" stroke="#333" stroke-width="2"/>
+ <text x="130" y="40" text-anchor="middle" font-weight="bold" fill="#1a237e" font-size="16">总体 N</text>
+ <circle cx="90" cy="90" r="12" fill="#ef5350" stroke="#b71c1c"/>
+ <circle cx="120" cy="100" r="12" fill="#ef5350" stroke="#b71c1c"/>
+ <text x="130" y="80" text-anchor="start" fill="#d32f2f" font-size="14" font-weight="bold">次品 M</text>
+ <circle cx="80" cy="160" r="12" fill="#66bb6a" stroke="#2e7d32"/>
+ <circle cx="110" cy="180" r="12" fill="#66bb6a" stroke="#2e7d32"/>
+ <circle cx="140" cy="150" r="12" fill="#66bb6a" stroke="#2e7d32"/>
+ <circle cx="90" cy="200" r="12" fill="#66bb6a" stroke="#2e7d32"/>
+ <text x="150" y="220" text-anchor="middle" fill="#2e7d32" font-size="14" font-weight="bold">良品 N-M</text>
+ <path d="M 220 150 L 320 150" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)"/>
+ <text x="270" y="140" text-anchor="middle" font-size="14" fill="#333">无放回取出 n 件</text>
+ <rect x="340" y="90" width="140" height="120" rx="10" fill="#e8eaf6" stroke="#3f51b5" stroke-width="2" stroke-dasharray="8,4"/>
+ <text x="410" y="70" text-anchor="middle" fill="#3f51b5" font-weight="bold" font-size="16">样本</text>
+ <text x="410" y="130" text-anchor="middle" font-size="14">包含 k 个次品</text>
+ <text x="410" y="160" text-anchor="middle" font-size="14">包含 n-k 个良品</text>
+ <text x="410" y="230" text-anchor="middle" font-family="monospace" font-weight="bold" fill="#c51162">方法数: C(M,k) * C(N-M, n-k)</text>
+ </svg>
+ </div>
+
+ <!-- Slide 9: Hypergeometric Formula Definition -->
+ <div class="section">
+ <h3>超几何分布公式</h3>
+ <p>总数 $N$，次品 $M$，抽取 $n$，抽到 $k$ 个次品：</p>
+ 
+ <div class="formula-box">
+ $$P(X=k) = \frac{C_M^k \cdot C_{N-M}^{n-k}}{C_N^n}$$
+ </div>
+
+ <ul class="text-left max-w-3xl space-y-2 mt-4 text-gray-600">
+ <li><strong>分母：</strong> 从 $N$ 件中任取 $n$ 件的总组合数。</li>
+ <li><strong>分子第一部分：</strong> 从 $M$ 件次品中取 $k$ 件。</li>
+ <li><strong>分子第二部分：</strong> 从 $N-M$ 件良品中取 $n-k$ 件。</li>
+ </ul>
+ </div>
+
+ <!-- Slide 10: Hypergeometric E & D -->
+ <div class="section">
+ <h3>超几何分布的期望</h3>
+ <p>虽然公式复杂，但期望形式很简单：</p>
+ 
+ <div class="formula-box w-1/2">
+ $$E(X) = n \frac{M}{N}$$
+ </div>
+ 
+ <p class="text-left max-w-4xl mt-4">
+ <strong>对比：</strong> <br>
+ 二项分布 $E(X)=np$。<br>
+ 这里 $\frac{M}{N}$ 就是“次品率”，相当于 $p$。<br>
+ 所以本质上还是：<strong>抽取数量 $\times$ 次品率</strong>。
+ </p>
+ </div>
+
+ <!-- Slide 11: Summary Table -->
+ <div class="section">
+ <h3>📝 总结对比</h3>
+ <table class="w-full max-w-5xl border-collapse text-left text-lg mt-8">
+ <thead>
+ <tr class="bg-gray-200">
+ <th class="p-4 border border-gray-300">特性</th>
+ <th class="p-4 border border-gray-300 text-blue-700">二项分布 $B(n,p)$</th>
+ <th class="p-4 border border-gray-300 text-green-700">超几何分布</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr>
+ <td class="p-4 border border-gray-300 font-bold">抽取方式</td>
+ <td class="p-4 border border-gray-300">有放回（独立重复）</td>
+ <td class="p-4 border border-gray-300">无放回</td>
+ </tr>
+ <tr>
+ <td class="p-4 border border-gray-300 font-bold">公式核心</td>
+ <td class="p-4 border border-gray-300">$C_n^k p^k (1-p)^{n-k}$</td>
+ <td class="p-4 border border-gray-300">$\frac{C_M^k C_{N-M}^{n-k}}{C_N^n}$</td>
+ </tr>
+ <tr>
+ <td class="p-4 border border-gray-300 font-bold">期望 $E(X)$</td>
+ <td class="p-4 border border-gray-300">$np$</td>
+ <td class="p-4 border border-gray-300">$n \frac{M}{N}$</td>
+ </tr>
+ </tbody>
+ </table>
+ </div>
+
+ <!-- Slide 12: Quiz 1 Q -->
+ <div class="section">
+ <h3>🧠 小测验 1</h3>
+ <p class="mb-6 font-bold text-xl">下列哪个试验最符合二项分布的模型？</p>
+ <ul class="options-list">
+ <li>A. 从一副扑克牌中不放回地抽出5张牌，观察红桃的数量</li>
+ <li>B. 投掷一枚硬币10次，观察正面朝上的次数</li>
+ <li>C. 某人一直射击直到击中靶心为止，观察射击次数</li>
+ <li>D. 观察某路口一小时内通过的车辆数</li>
+ </ul>
+ </div>
+
+ <!-- Slide 13: Quiz 1 A -->
+ <div class="section">
+ <h3>✅ 答案解析</h3>
+ <p class="text-gray-400 mb-4">问题：下列哪个试验最符合二项分布的模型？</p>
+ 
+ <div class="answer-reveal">答案：B</div>
+ 
+ <div class="mt-8 text-left max-w-3xl space-y-3">
+ <p><strong>解析：</strong></p>
+ <p><strong>A (不放回)：</strong> 超几何分布。</p>
+ <p><strong>B (重复独立)：</strong> 只有正反两种结果，且每次互不影响，符合二项分布。</p>
+ <p><strong>C (直到...为止)：</strong> 几何分布。</p>
+ <p><strong>D (单位时间内的发生次数)：</strong> 泊松分布。</p>
+ </div>
+ </div>
+
+ <!-- Slide 14: Quiz 2 Q -->
+ <div class="section">
+ <h3>🧠 小测验 2</h3>
+ <p class="mb-6 font-bold text-xl">若随机变量 $X \sim B(10, 0.6)$，则 $E(X)$ 等于多少？</p>
+ <ul class="options-list">
+ <li>A. 0.6</li>
+ <li>B. 6</li>
+ <li>C. 2.4</li>
+ <li>D. 60</li>
+ </ul>
+ </div>
+
+ <!-- Slide 15: Quiz 2 A -->
+ <div class="section">
+ <h3>✅ 答案解析</h3>
+ <p class="text-gray-400 mb-4">问题：若随机变量 $X \sim B(10, 0.6)$，则 $E(X)$ 等于多少？</p>
+ 
+ <div class="answer-reveal">答案：B</div>
+ 
+ <div class="mt-8 text-left max-w-3xl">
+ <p><strong>解析：</strong></p>
+ <p>二项分布的期望公式为 $E(X) = np$。</p>
+ <p>$$E(X) = 10 \times 0.6 = 6$$</p>
+ </div>
+ </div>
+
+ <!-- Slide 16: Quiz 3 Q -->
+ <div class="section">
+ <h3>🧠 小测验 3</h3>
+ <p class="mb-6 font-bold text-xl">在二项分布公式中，$C_n^k$ 的作用是？</p>
+ <ul class="options-list">
+ <li>A. 计算单次试验的概率</li>
+ <li>B. 计算所有概率之和</li>
+ <li>C. 确定 $k$ 次成功在 $n$ 次试验中出现的位置组合数</li>
+ <li>D. 没有任何实际意义</li>
+ </ul>
+ </div>
+
+ <!-- Slide 17: Quiz 3 A -->
+ <div class="section">
+ <h3>✅ 答案解析</h3>
+ <p class="text-gray-400 mb-4">问题：在二项分布公式中，$C_n^k$ 的作用是？</p>
+ 
+ <div class="answer-reveal">答案：C</div>
+ 
+ <div class="mt-8 text-left max-w-3xl">
+ <p><strong>解析：</strong></p>
+ <p>概率 $p^k(1-p)^{n-k}$ 仅代表某一种特定的排列（例如前 $k$ 次成功）。</p>
+ <p>由于这 $k$ 次成功可以出现在 $n$ 次试验中的任意位置，因此必须乘以组合数 $C_n^k$ 来包含所有情况。</p>
+ </div>
+ </div>
+
+ <!-- Slide 18: Quiz 4 Q -->
+ <div class="section">
+ <h3>🧠 小测验 4</h3>
+ <p class="mb-6 font-bold text-xl">有10个零件，其中3个次品。从中无放回取出2个，设次品数为 $X$，则 $X$ 服从？</p>
+ <ul class="options-list">
+ <li>A. 二项分布</li>
+ <li>B. 两点分布</li>
+ <li>C. 正态分布</li>
+ <li>D. 超几何分布</li>
+ </ul>
+ </div>
+
+ <!-- Slide 19: Quiz 4 A -->
+ <div class="section">
+ <h3>✅ 答案解析</h3>
+ <p class="text-gray-400 mb-4">问题：有10个零件，其中3个次品。无放回取出2个，X服从？</p>
+ 
+ <div class="answer-reveal">答案：D</div>
+ 
+ <div class="mt-8 text-left max-w-3xl">
+ <p><strong>解析：</strong></p>
+ <p>关键词是<strong>“无放回”</strong>。</p>
+ <p>这属于典型的从有限总体中抽取样本的问题，样本之间的概率是不独立的，符合超几何分布的定义。</p>
+ </div>
+ </div>
+
+ <!-- Slide 20: Quiz 5 Q -->
+ <div class="section">
+ <h3>🧠 小测验 5</h3>
+ <p class="mb-6 font-bold text-xl">当总体数量 $N$ 非常大时，超几何分布可以用什么分布来近似？</p>
+ <ul class="options-list">
+ <li>A. 二项分布</li>
+ <li>B. 均匀分布</li>
+ <li>C. 几何分布</li>
+ <li>D. 无法近似</li>
+ </ul>
+ </div>
+
+ <!-- Slide 21: Quiz 5 A -->
+ <div class="section">
+ <h3>✅ 答案解析</h3>
+ <p class="text-gray-400 mb-4">问题：当总体数量 N 非常大时，超几何分布可以用什么分布来近似？</p>
+ 
+ <div class="answer-reveal">答案：A</div>
+ 
+ <div class="mt-8 text-left max-w-3xl">
+ <p><strong>解析：</strong></p>
+ <p>当总体 $N$ 很大而抽取数 $n$ 相对较小时，取出一件物品对总体结构（次品率）的影响微乎其微。</p>
+ <p>此时“无放回”近似于“有放回”，超几何分布趋近于二项分布。</p>
+ </div>
+ </div>
+
+ <!-- Slide 22: End -->
+ <div class="section">
+ <h1 class="text-blue-600">下课！</h1>
+ <p class="mt-4">记得复习排列组合的乘法原理哦。</p>
+ </div>
+
+</div>
+
+</body>
+</html>

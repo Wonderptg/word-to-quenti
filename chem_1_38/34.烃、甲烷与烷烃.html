@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>烃、甲烷与烷烃（补图版）</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body { margin:0; padding:0; font-family: 'Noto Serif SC', serif; background:#f1f5f9; }
+        #presentation-container { max-width:56rem; margin:2rem auto; background:#fff; border-radius:.5rem; box-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); overflow:hidden; }
+        .section { width:100%; box-sizing:border-box; padding:4rem 2.5rem; display:none; flex-direction:column; justify-content:center; min-height:80vh; opacity:0; transition:opacity .5s ease-in-out; }
+        .section.active { display:flex; opacity:1; }
+        #navigation { position:sticky; bottom:0; background:#f8fafc; padding:1rem; max-width:56rem; margin:0 auto; border-top:1px solid #e2e8f0; z-index:10; }
+        code, .mono { font-family: 'Courier New', Courier, monospace; font-weight:600; }
+        code { background:#eef2ff; color:#4338ca; padding:.2rem .5rem; border-radius:.25rem; font-size:.9em; }
+        figure.fig { width:100%; margin:1rem 0; }
+        figure.fig svg { width:100%; height:100%; }
+        figure.fig figcaption { margin-top:.5rem; font-size:.9rem; color:#64748b; text-align:center; }
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background:#fff; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+            #presentation-container { margin:0; padding:0; border:none; box-shadow:none; width:100%; max-width:100%; }
+            .section { min-height:100vh; width:100vw; page-break-after:always; display:flex !important; opacity:1 !important; flex-direction:column; justify-content:center; align-items:center; padding:2rem; box-sizing:border-box; }
+            .section:last-child { page-break-after:auto; }
+            #navigation { display:none; }
+        }
+    </style>
+<style>@media print{ .print-break{ page-break-before: always; } }</style>
+</head>
+<body>
+<div id="presentation-container">
+
+    <div class="section">
+        <div class="w-full max-w-4xl mx-auto text-center">
+            <svg class="w-24 h-24 mx-auto text-gray-800" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 002.25-2.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v2.25A2.25 2.25 0 006 10.5zm0 9.75h2.25A2.25 2.25 0 0010.5 18v-2.25a2.25 2.25 0 00-2.25-2.25H6a2.25 2.25 0 00-2.25 2.25V18A2.25 2.25 0 006 20.25zm9.75-9.75H18a2.25 2.25 0 002.25-2.25V6A2.25 2.25 0 0018 3.75h-2.25A2.25 2.25 0 0013.5 6v2.25a2.25 2.25 0 002.25 2.25z" />
+            </svg>
+            <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">烃、甲烷与烷烃</h1>
+            <p class="text-2xl text-slate-600 mt-2">—— 有机化学的起点</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-blue-500 rounded"></span>烃 (Hydrocarbon) 的概念与分类</h2>
+            <p class="mt-8 text-xl text-slate-700"><strong>定义：</strong><strong class="text-blue-600">仅含碳、氢</strong>两种元素的有机化合物，又称碳氢化合物。</p>
+            <div class="mt-8 bg-blue-50 border border-blue-200 p-8 rounded-lg text-lg">
+                <h3 class="font-bold text-blue-800 text-xl mb-4">分类方式一：按碳碳键类型</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white p-4 rounded border">
+                        <h4 class="font-semibold text-blue-700">饱和烃 (烷烃)</h4>
+                        <p class="text-slate-600 text-base mt-1">分子中碳原子间<strong class="text-red-600">只含碳碳单键</strong> (C-C)。</p>
+                        <p class="text-slate-500 text-sm">例：乙烷 (CH₃-CH₃), 环丁烷</p>
+                    </div>
+                    <div class="bg-white p-4 rounded border">
+                        <h4 class="font-semibold text-blue-700">不饱和烃</h4>
+                        <p class="text-slate-600 text-base mt-1">分子中含有<strong class="text-red-600">碳碳双键 (C=C)</strong> 或<strong class="text-red-600">碳碳三键 (C≡C)</strong> 或<strong class="text-red-600">苯环</strong>。</p>
+                        <p class="text-slate-500 text-sm">例：乙烯 (CH₂=CH₂), 乙炔 (CH≡CH), 苯</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>烃的分类方式二：按碳骨架结构</h2>
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                <div class="bg-cyan-50 border border-cyan-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-cyan-800 text-xl">链状烃</h3>
+                    <p class="mt-3 text-slate-600">碳原子连接成<strong class="text-red-600">链状</strong>，分子中<strong class="text-red-600">不存在环</strong>。</p>
+                    <p class="mt-2 text-slate-600">包括：链状烷烃、链状烯烃、链状炔烃。</p>
+                    <figure class="fig" aria-label="链状烃示意">
+                        <svg viewBox="0 0 640 150">
+                            <g stroke="#06b6d4" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="40,100 120,60 200,100 280,60 360,100 440,60 520,100"/>
+                            </g>
+                            <g fill="#0f172a" font-size="14" text-anchor="middle">
+                                <text x="40" y="120">CH₃</text>
+                                <text x="120" y="50">CH₂</text>
+                                <text x="200" y="120">CH₂</text>
+                                <text x="280" y="50">CH₂</text>
+                                <text x="360" y="120">CH₂</text>
+                                <text x="440" y="50">CH₂</text>
+                                <text x="520" y="120">CH₃</text>
+                            </g>
+                        </svg>
+                        <figcaption>直链烷烃（示例：正庚烷片段）。</figcaption>
+                    </figure>
+                </div>
+                <div class="bg-purple-50 border border-purple-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-purple-800 text-xl">环状烃</h3>
+                    <p class="mt-3 text-slate-600">碳原子连接成<strong class="text-red-600">环状</strong>结构。</p>
+                    <p class="mt-2 text-slate-600">包括：脂环烃 (如环丙烷, 环丁烯) 和 <strong class="text-red-600">芳香烃</strong> (含苯环，如苯, 甲苯, 萘)。</p>
+                    <figure class="fig" aria-label="环状烃示意">
+                        <svg viewBox="0 0 640 150">
+                            <g transform="translate(80,20)" stroke="#a78bfa" stroke-width="3" fill="none" stroke-linejoin="round">
+                                <polygon points="40,20 0,90 80,90"/>
+                                <text x="40" y="115" fill="#6b21a8" font-size="12" text-anchor="middle">环丙烷</text>
+                            </g>
+                            <g transform="translate(260,15)" stroke="#a78bfa" stroke-width="3" fill="none" stroke-linejoin="round">
+                                <polyline points="0,60 40,20 100,20 140,60 100,100 40,100 0,60"/>
+                                <text x="70" y="125" fill="#6b21a8" font-size="12" text-anchor="middle">环己烷</text>
+                            </g>
+                            <g transform="translate(480,20)" stroke="#a78bfa" stroke-width="3" fill="none" stroke-linejoin="round">
+                                <polygon points="40,10 0,40 10,90 70,90 80,40 40,10"/>
+                                <circle cx="40" cy="50" r="20" stroke="#c4b5fd"/>
+                                <text x="40" y="115" fill="#6b21a8" font-size="12" text-anchor="middle">苯</text>
+                            </g>
+                        </svg>
+                        <figcaption>脂环烃与芳香烃（苯环）对比。</figcaption>
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>甲烷 (Methane, CH₄)：结构 (1)</h2>
+            <p class="mt-8 text-xl text-slate-700">最简单的有机化合物，天然气的主要成分。</p>
+            <div class="mt-8 bg-teal-50 border border-teal-200 p-6 rounded-lg">
+                <h3 class="font-bold text-teal-800 text-xl mb-4">分子结构：</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+                    <div>
+                        <p class="font-semibold">电子式</p>
+                        <figure class="fig" aria-label="甲烷电子式">
+                            <svg viewBox="0 0 240 120">
+                                <g fill="#0f172a" font-size="16" text-anchor="middle">
+                                    <text x="120" y="60" font-weight="700">C</text>
+                                    <circle cx="120" cy="25" r="3" fill="#0ea5a6"/>
+                                    <circle cx="120" cy="95" r="3" fill="#0ea5a6"/>
+                                    <circle cx="85" cy="60" r="3" fill="#0ea5a6"/>
+                                    <circle cx="155" cy="60" r="3" fill="#0ea5a6"/>
+                                    <text x="120" y="20">H</text>
+                                    <text x="120" y="115">H</text>
+                                    <text x="70" y="64">H</text>
+                                    <text x="170" y="64">H</text>
+                                </g>
+                            </svg>
+                        </figure>
+                    </div>
+                    <div>
+                        <p class="font-semibold">结构式</p>
+                        <figure class="fig" aria-label="甲烷结构式">
+                            <svg viewBox="0 0 240 120">
+                                <g stroke="#14b8a6" stroke-width="3" stroke-linecap="round">
+                                    <line x1="120" y1="60" x2="120" y2="15"/>
+                                    <line x1="120" y1="60" x2="120" y2="105"/>
+                                    <line x1="120" y1="60" x2="70" y2="60"/>
+                                    <line x1="120" y1="60" x2="170" y2="60"/>
+                                </g>
+                                <g fill="#0f172a" font-size="16" text-anchor="middle">
+                                    <text x="120" y="60" font-weight="700">C</text>
+                                    <text x="120" y="12">H</text>
+                                    <text x="120" y="120">H</text>
+                                    <text x="58" y="64">H</text>
+                                    <text x="182" y="64">H</text>
+                                </g>
+                            </svg>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>甲烷 (Methane, CH₄)：结构 (2)</h2>
+            <div class="mt-8 bg-teal-50 border border-teal-200 p-6 rounded-lg">
+                <h3 class="font-bold text-teal-800 text-xl mb-4">分子结构：</h3>
+                <div class="grid grid-cols-1 md:grid-cols-1 gap-4 text-center">
+                    <div class="print-break">
+                        <p class="font-semibold">球棍/投影模型</p>
+                        <figure class="fig" aria-label="甲烷四面体投影">
+                            <svg viewBox="0 0 240 140">
+                                <circle cx="120" cy="70" r="14" fill="#14b8a6"/>
+                                <g stroke="#0f172a" stroke-linecap="round">
+                                    <line x1="120" y1="70" x2="120" y2="18" stroke-width="4"/>
+                                    <line x1="120" y1="70" x2="60" y2="100" stroke-width="2"/>
+                                    <line x1="120" y1="70" x2="180" y2="100" stroke-width="2"/>
+                                    <line x1="120" y1="70" x2="120" y2="126" stroke-width="1.5" stroke-dasharray="4 3"/>
+                                </g>
+                                <circle cx="120" cy="14" r="8" fill="#e2e8f0" stroke="#0f172a"/>
+                                <circle cx="56" cy="104" r="8" fill="#e2e8f0" stroke="#0f172a"/>
+                                <circle cx="184" cy="104" r="8" fill="#e2e8f0" stroke="#0f172a"/>
+                                <circle cx="120" cy="130" r="8" fill="#e2e8f0" stroke="#0f172a"/>
+                            </svg>
+                        </figure>
+                    </div>
+                </div>
+                <p class="mt-4 text-lg text-slate-600">分子构型：<strong class="text-red-600">正四面体</strong>；键角 H–C–H：<strong class="text-red-600">109°28′</strong>；4 个等价 C–H 键。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-600 rounded"></span>甲烷 (Methane, CH₄)：物理性质</h2>
+            <div class="mt-8 bg-gray-100 border border-gray-300 p-8 rounded-lg text-lg text-slate-700 space-y-4">
+                <p><strong>颜色/气味：</strong><strong class="text-red-600">无色、无味</strong>的气体。</p>
+                <p><strong>密度：</strong>相对分子质量16 < 空气平均(约29)，密度比空气<strong class="text-red-600">小</strong>。</p>
+                <p><strong>溶解性：</strong><strong class="text-red-600">极难溶</strong>于水。</p>
+                <p><strong>安全性：</strong>本身<strong class="text-green-600">无毒</strong>，但易燃易爆。为安全起见，天然气中常加入有特殊臭味的物质。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>甲烷 (Methane, CH₄)：化学性质</h2>
+            <p class="mt-8 text-xl text-slate-700">通常状况下性质<strong class="text-orange-600">稳定</strong>，不与强酸、强碱、强氧化剂 (如 KMnO₄) 反应。</p>
+            <div class="mt-6 space-y-4">
+                <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-red-800 text-xl">1. 氧化反应 (燃烧)</h3>
+                    <p class="mono text-center mt-3 bg-red-100 p-3 rounded">CH₄ + 2O₂ <span class="text-slate-500">(点燃)</span> → CO₂ + 2H₂O</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>甲烷 (Methane, CH₄)：燃烧反应</h2>
+            <div class="mt-6 space-y-4">
+                <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-red-800 text-xl">燃烧现象</h3>
+                    <figure class="fig print-break" aria-label="甲烷燃烧示意">
+                        <svg viewBox="0 0 680 140">
+                            <g transform="translate(60,20)">
+                                <rect x="0" y="80" width="80" height="30" rx="6" fill="#94a3b8"/>
+                                <path d="M40,80 C45,70 48,62 40,50 C32,62 35,70 40,80 Z" fill="#fb923c"/>
+                                <path d="M40,70 C44,64 46,58 40,52 C34,58 36,64 40,70 Z" fill="#f59e0b"/>
+                            </g>
+                            <g font-size="14" fill="#0f172a">
+                                <text x="200" y="95">CH₄ + 2O₂</text>
+                                <line x1="270" y1="88" x2="410" y2="88" stroke="#ef4444" stroke-width="2" marker-end="url(#arr)"/>
+                                <text x="440" y="95">CO₂ + 2H₂O</text>
+                            </g>
+                            <defs>
+                                <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+                                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#ef4444"/>
+                                </marker>
+                            </defs>
+                        </svg>
+                        <figcaption>点燃产生淡蓝色火焰，放热。</figcaption>
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>甲烷 (Methane, CH₄)：化学性质</h2>
+            <div class="mt-8 bg-purple-50 border border-purple-200 p-6 rounded-lg">
+                <h3 class="font-bold text-purple-800 text-xl">2. 取代反应 (与卤素)</h3>
+                <p class="mt-3 text-lg text-slate-600">在<strong class="text-red-600">光照</strong>条件下，甲烷中的氢原子可被卤素原子 (如 Cl, Br) <strong class="text-red-600">逐步取代</strong>。</p>
+                <p class="mono text-center mt-2 bg-purple-100 p-2 rounded text-sm">CH₄ + Cl₂ <span class="text-slate-500">(光照)</span> → CH₃Cl (一氯甲烷) + HCl</p>
+                <p class="mono text-center mt-1 bg-purple-100 p-2 rounded text-sm">CH₃Cl + Cl₂ <span class="text-slate-500">(光照)</span> → CH₂Cl₂ (二氯甲烷) + HCl</p>
+                <p class="mono text-center mt-1 bg-purple-100 p-2 rounded text-sm">CH₂Cl₂ + Cl₂ <span class="text-slate-500">(光照)</span> → CHCl₃ (三氯甲烷/氯仿) + HCl</p>
+                <p class="mono text-center mt-1 bg-purple-100 p-2 rounded text-sm">CHCl₃ + Cl₂ <span class="text-slate-500">(光照)</span> → CCl₄ (四氯甲烷/四氯化碳) + HCl</p>
+                <p class="mt-3 text-lg text-slate-600">特点：<strong class="text-red-600">光照</strong>是必要条件；反应是<strong class="text-red-600">连锁、逐步</strong>进行；产物是<strong class="text-red-600">混合物</strong> (多种氯代甲烷 + HCl)。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>甲烷与氯气取代反应的实验现象</h2>
+            <figure class="fig" aria-label="甲烷取代实验装置">
+                <svg viewBox="0 0 820 180">
+                    <g transform="translate(80,10)">
+                        <rect x="0" y="0" width="120" height="160" rx="20" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+                        <rect x="0" y="90" width="120" height="70" rx="0" fill="#fef08a" opacity="0.5"/>
+                        <text x="60" y="30" text-anchor="middle" font-size="12" fill="#0f172a">Cl₂ (黄绿色)</text>
+                        <text x="60" y="150" text-anchor="middle" font-size="12" fill="#0f172a">产物油状滴</text>
+                    </g>
+                    <g transform="translate(260,20)">
+                        <circle cx="40" cy="40" r="18" fill="#fde047" stroke="#f59e0b"/>
+                        <path d="M40,10 L40,0 M40,80 L40,90 M10,40 L0,40 M80,40 L90,40 M18,18 L10,10 M62,62 L70,70 M18,62 L10,70 M62,18 L70,10" stroke="#f59e0b"/>
+                        <text x="40" y="110" text-anchor="middle" font-size="12" fill="#0f172a">光照</text>
+                    </g>
+                    <g>
+                        <text x="390" y="90" font-size="14">CH₄ + Cl₂</text>
+                        <line x1="455" y1="85" x2="560" y2="85" stroke="#a78bfa" stroke-width="2" marker-end="url(#arr2)"/>
+                        <text x="580" y="90" font-size="14">CH₃Cl + HCl + …</text>
+                    </g>
+                    <defs>
+                        <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#a78bfa"/>
+                        </marker>
+                    </defs>
+                </svg>
+                <figcaption>氯气褪色、出现白雾与油状液滴；需光照。</figcaption>
+            </figure>
+            <div class="mt-6 bg-purple-50 border border-purple-200 p-6 rounded-lg text-lg">
+                <ul class="list-disc list-inside space-y-2">
+                    <li>试管内气体<strong class="text-red-600">黄绿色变浅</strong> (Cl₂ 消耗)。</li>
+                    <li>试管壁出现<strong class="text-red-600">油状液滴</strong> (CH₂Cl₂, CHCl₃, CCl₄)。</li>
+                    <li>可能观察到<strong class="text-red-600">白雾</strong> (HCl 溶于水蒸气)。</li>
+                    <li>试管内<strong class="text-red-600">液面上升</strong> (HCl 易溶于水，气体体积减小)。</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-700 rounded"></span>烷烃 (Alkanes)：物理性质</h2>
+            <p class="mt-8 text-xl text-slate-700">链状烷烃通式：<code class="text-xl">C<sub class="text-sm">n</sub>H<sub class="text-sm">2n+2</sub></code> (n≥1)。</p>
+            <div class="mt-8 bg-gray-100 border border-gray-300 p-6 rounded-lg text-lg space-y-3">
+                <p><strong>熔沸点：</strong>相对较低，随碳原子数(n)增多而<strong class="text-red-600">逐渐升高</strong>。</p>
+                <p><strong>状态 (常温常压)：</strong><br> - n ≤ 4：气态 (甲烷~丁烷)<br> - 5 ≤ n ≤ 16/17：液态<br> - n > 16/17：固态</p>
+                <p><strong>密度：</strong>均<strong class="text-red-600">小于水</strong>，随碳原子数增多而<strong class="text-red-600">逐渐增大</strong>。</p>
+                <p><strong>溶解性：</strong><strong class="text-red-600">难溶于水</strong>，易溶于有机溶剂。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>烷烃 (Alkanes)：化学性质</h2>
+            <p class="mt-8 text-xl text-slate-700">与甲烷类似，烷烃通常性质<strong class="text-orange-600">稳定</strong>，主要发生两类反应：</p>
+            <div class="mt-6 space-y-4">
+                <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-red-800 text-xl">1. 氧化反应 (燃烧)</h3>
+                    <p class="mt-3 text-lg text-slate-600">完全燃烧生成 CO₂ 和 H₂O，放出大量热。</p>
+                    <p class="mono text-center mt-2 bg-red-100 p-2 rounded text-sm">C<sub class="text-xs">n</sub>H<sub class="text-xs">2n+2</sub> + (3n+1)/2 O₂ <span class="text-slate-500">(点燃)</span> → nCO₂ + (n+1)H₂O</p>
+                </div>
+                <div class="bg-purple-50 border border-purple-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-purple-800 text-xl">2. 取代反应 (与卤素)</h3>
+                    <p class="mt-3 text-lg text-slate-600">在<strong class="text-red-600">光照</strong>条件下，氢原子可被卤素原子 (Cl, Br) <strong class="text-red-600">逐步取代</strong>。</p>
+                    <p class="mono text-center mt-2 bg-purple-100 p-2 rounded text-sm">C<sub class="text-xs">n</sub>H<sub class="text-xs">2n+2</sub> + X₂ <span class="text-slate-500">(光照)</span> → C<sub class="text-xs">n</sub>H<sub class="text-xs">2n+1</sub>X + HX</p>
+                    <p class="mt-1 text-slate-600 text-sm">产物是多种卤代烃和卤化氢的<strong class="text-red-600">混合物</strong>。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>随堂练习 (一)</h2>
+            <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                <p>下列物质中，属于烃类的是？</p>
+                <div class="mt-6 space-y-3 text-lg">
+                    <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> CH₃OH (甲醇)</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> C₂H₄ (乙烯)</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> CO₂ (二氧化碳)</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> CCl₄ (四氯化碳)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (一)：解析</h2>
+            <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                <p class="font-bold text-green-800 text-2xl">答案：(B)</p>
+                <p><strong>解析：</strong></p>
+                <p>烃类是仅含碳(C)和氢(H)两种元素的有机化合物。<br>A. 甲醇含氧元素。<br>B. <strong class="text-green-700">乙烯</strong>只含碳和氢，属于烃类。<br>C. 二氧化碳是无机物。<br>D. 四氯化碳含氯元素。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>随堂练习 (二)</h2>
+            <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                <p>关于甲烷分子结构的说法，正确的是？</p>
+                <div class="mt-6 space-y-3 text-lg">
+                    <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 平面正方形结构</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 直线形结构</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 正四面体结构</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 三角锥形结构</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (二)：解析</h2>
+            <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                <p><strong>解析：</strong></p>
+                <p>甲烷(CH₄)分子中的碳原子位于中心，四个氢原子位于顶点，构成一个<strong class="text-green-700">正四面体</strong>结构，所有C-H键键长相等，所有H-C-H键角相等 (109°28′)。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>随堂练习 (三)</h2>
+            <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                <p>甲烷与氯气发生取代反应的必要条件是？</p>
+                <div class="mt-6 space-y-3 text-lg">
+                    <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 加热</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 加压</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 光照</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 催化剂</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (三)：解析</h2>
+            <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                <p><strong>解析：</strong></p>
+                <p>甲烷与卤素单质（如氯气、溴蒸气）的取代反应需要在<strong class="text-green-700">光照</strong>条件下才能发生。无光照或黑暗中不反应。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>随堂练习 (四)</h2>
+            <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                <p>下列关于烷烃物理性质的说法，错误的是？</p>
+                <div class="mt-6 space-y-3 text-lg">
+                    <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 熔沸点随碳原子数增多而升高</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 密度都小于水</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> 都易溶于水</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> 常温下，碳原子数少的烷烃是气体</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (四)：解析</h2>
+            <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                <p><strong>解析：</strong></p>
+                <p>烷烃属于非极性或弱极性分子，而水是强极性溶剂。根据“相似相溶”原理，烷烃<strong class="text-green-700">难溶于水</strong>。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>随堂练习 (五)</h2>
+            <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                <p>等物质的量的甲烷和氯气在光照下充分反应，得到的产物是？</p>
+                <div class="mt-6 space-y-3 text-lg">
+                    <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> 纯净的CH₃Cl</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> 纯净的CH₂Cl₂</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> CH₃Cl和HCl的混合物</p>
+                    <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> CH₃Cl, CH₂Cl₂, CHCl₃, CCl₄和HCl的混合物</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="w-full max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (五)：解析</h2>
+            <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                <p><strong>解析：</strong></p>
+                <p>甲烷与氯气的取代反应是<strong class="text-green-700">逐步、连锁</strong>发生的，一旦开始，后续的取代会同时进行，直到氯气耗尽或甲烷的氢原子被完全取代。因此，无论反应物的比例如何，只要发生反应，产物必然是<strong class="text-green-700">多种氯代甲烷</strong>（CH₃Cl, CH₂Cl₂, CHCl₃, CCl₄）和<strong class="text-green-700">HCl</strong>的混合物。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="w-full max-w-4xl mx-auto text-center">
+            <svg class="w-24 h-24 mx-auto text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+            <p class="mt-8 text-2xl text-slate-600">感谢观看！下节课学习烯烃。</p>
+        </div>
+    </div>
+
+</div>
+
+<div id="navigation" class="text-center">
+    <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+    <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+    <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const sections = document.querySelectorAll('.section');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const pageIndicator = document.getElementById('page-indicator');
+        let currentPage = 0;
+        const totalPages = sections.length;
+
+        function showPage(pageIndex) {
+            sections.forEach((section) => section.classList.remove('active'));
+            sections[pageIndex].classList.add('active');
+            pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+            prevBtn.disabled = pageIndex === 0;
+            nextBtn.disabled = pageIndex === totalPages - 1;
+            prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+            prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+            nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+            nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            window.scrollTo(0, 0);
+        }
+        nextBtn.addEventListener('click', () => { if (currentPage < totalPages - 1) { currentPage++; showPage(currentPage);} });
+        prevBtn.addEventListener('click', () => { if (currentPage > 0) { currentPage--; showPage(currentPage);} });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' && currentPage < totalPages - 1) nextBtn.click();
+            else if (e.key === 'ArrowLeft' && currentPage > 0) prevBtn.click();
+        });
+        showPage(0);
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>核外电子的排布方式</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- 引入 MathJax 库用于渲染 LaTeX 公式和化学式 -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        // MathJax 配置，确保 LaTeX 语法中的 $...$ 被识别
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        
+        /* 表格样式 */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+        }
+        .styled-table th, .styled-table td {
+            border: 1px solid #cbd5e1;
+            padding: 0.75rem 1rem;
+            text-align: center;
+        }
+        .styled-table thead {
+            background-color: #f8fafc;
+        }
+        .styled-table th {
+            font-weight: 700;
+            color: #334155;
+        }
+        .styled-table tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+        .styled-table tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+        
+        /* 确保 MathJax 渲染的内容不影响布局 */
+        .MathJax {
+            display: inline !important;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">核外电子的排布方式</h1>
+                <!-- 删除了 <p class="text-2xl text-slate-600 mt-2">选择性必修二 (选修三)。</p> -->
+            </div>
+        </div>
+        
+        <!-- 课程介绍 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>本节课内容</h2>
+                <p class="mt-8 text-xl text-slate-700">这节课内容是高中化学的重要基础，虽然抽象难懂，但非常重要。高一、高二、高三同学都建议学习。</p>
+                
+            </div>
+        </div>
+
+        <!-- 能层 (Energy Level) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>能层 (K, L, M, N...)</h2>
+                <div class="mt-8 bg-indigo-50 border border-indigo-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-indigo-800 text-xl">定义：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">核外电子的能量不同。离核越近，能量越低；离核越远，能量越高。我们将电子分成不同的<strong class="text-indigo-700">能层</strong>。</p>
+                </div>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <p class="mono text-lg text-slate-700"><strong>n = 1：</strong> <strong class="text-red-600">K</strong> 层 (1楼)</p>
+                    <p class="mono text-lg text-slate-700 mt-2"><strong>n = 2：</strong> <strong class="text-red-600">L</strong> 层 (2楼)</p>
+                    <p class="mono text-lg text-slate-700 mt-2"><strong>n = 3：</strong> <strong class="text-red-600">M</strong> 层 (3楼)</p>
+                    <p class="mono text-lg text-slate-700 mt-2"><strong>n = 4：</strong> <strong class="text-red-600">N</strong> 层 (4楼)</p>
+                    <p class="mt-4 text-xl text-center font-semibold text-gray-800">记忆：烤(K)冷(L)面(M)(N)</p>
+                    <p class="mt-4 text-xl text-center font-semibold text-blue-700">能量高低：K < L < M < N ...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 杰哥原子大酒店 (表格) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>杰哥原子大酒店 (布局)</h2>
+                <div class="mt-8 overflow-x-auto">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>能层 (楼层)</th>
+                                <th>n</th>
+                                <th>能级 (房间类型)</th>
+                                <th>原子轨道 (房间数)</th>
+                                <th>轨道总数 ($n^2$)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold">K (1楼)</td>
+                                <td class="mono">1</td>
+                                <td>1s</td>
+                                <td class="mono">1</td>
+                                <td class="mono font-bold">1</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">L (2楼)</td>
+                                <td class="mono">2</td>
+                                <td>2s, 2p</td>
+                                <td class="mono">1 + 3</td>
+                                <td class="mono font-bold">4</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">M (3楼)</td>
+                                <td class="mono">3</td>
+                                <td>3s, 3p, 3d</td>
+                                <td class="mono">1 + 3 + 5</td>
+                                <td class="mono font-bold">9</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">N (4楼)</td>
+                                <td class="mono">4</td>
+                                <td>4s, 4p, 4d, 4f</td>
+                                <td class="mono">1 + 3 + 5 + 7</td>
+                                <td class="mono font-bold">16</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                 <div class="mt-6 bg-blue-50 border border-blue-200 p-4 rounded-lg text-lg">
+                    <p><strong>规律：</strong>第 <code>n</code> 能层，就有 <code>n</code> 种能级，共有 <code>n²</code> 个原子轨道（房间）。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 电子云 (概念) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>什么是电子云？(房间的样子)</h2>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">无法观测的电子：</h3>
+                    <p>电子质量极小、运动极快（近光速）。</p>
+                    <p class="mt-2">我们无法像观察宏观物体（如学姐）一样去观测它。光一打到电子，电子就“飞”了（像被高铁撞到）。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 电子云 (小倩学姐) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>小倩学姐 (鬼) 的比喻</h2>
+                <p class="mt-8 text-xl text-slate-700">我们无法观测电子（小倩学姐），不知道它下一秒在哪，只能描述它在某个空间<strong class="text-red-600">出现的概率</strong>。</p>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-green-50 border border-green-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-green-800 text-xl">高概率区域</h3>
+                        <p class="mt-3 text-slate-600">三年二班 (她学籍在) <br/> 三年一班 (闺蜜在) <br/> 女厕 (鬼也有三急)</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-red-800 text-xl">零概率区域</h3>
+                        <p class="mt-3 text-slate-600">男厕</p>
+                        <p class="mt-2 text-slate-500 text-base">(在男厕等她告白，永远等不到)</p>
+                    </div>
+                </div>
+                 <div class="mt-8 bg-blue-100 text-blue-800 p-6 rounded-lg text-lg text-center font-semibold">
+                    <strong class="text-blue-900">电子云：</strong>就是电子在核外空间<strong class="text-blue-900">概率分布</strong>的形象化描述。点越密集，出现概率越大。
+                </div>
+            </div>
+        </div>
+
+        <!-- 电子云轮廓图 (s, p) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>电子云轮廓图 (s, p 形状)</h2>
+                <p class="mt-8 text-xl text-slate-700">我们用轮廓图来表示电子在空间中出现概率 > 90% 的区域形状：</p>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-blue-800 text-2xl">s 轨道 (Spherical)</h3>
+                        <p class="mt-3 text-slate-600 text-2xl"><strong class="text-blue-700">球形</strong> (中心对称)</p>
+                        <!-- 使用 SVG 绘制 s 轨道示意图 (球体) -->
+                        <svg class="mx-auto mt-4" width="150" height="150" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="45" fill="#bfdbfe" stroke="#3b82f6" stroke-width="2"/>
+                            <circle cx="50" cy="50" r="3" fill="#1d4ed8"/>
+                            <path d="M5 50 A 45 45 0 0 1 95 50" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="5,3"/>
+                            <text x="50" y="55" font-size="8" text-anchor="middle" fill="#1d4ed8">核</text>
+                        </svg>
+                        <p class="mt-2 text-slate-600">酒店比喻：<strong class="text-blue-700">360°无敌海景房</strong></p>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-green-800 text-2xl">p 轨道 (Principal)</h3>
+                        <p class="mt-3 text-slate-600 text-2xl"><strong class="text-green-700">哑铃形/纺锤形</strong></p>
+                        <!-- 使用 SVG 绘制 p 轨道示意图 (哑铃) -->
+                        <svg class="mx-auto mt-4" width="150" height="150" viewBox="0 0 100 100">
+                             <ellipse cx="50" cy="50" rx="20" ry="40" fill="#a7f3d0" stroke="#059669" stroke-width="2" transform="rotate(45 50 50)"/>
+                             <ellipse cx="50" cy="50" rx="20" ry="40" fill="#34d399" stroke="#059669" stroke-width="2" transform="rotate(-45 50 50)"/>
+                             <circle cx="50" cy="50" r="3" fill="#047857"/>
+                            <text x="50" y="55" font-size="8" text-anchor="middle" fill="#047857">核</text>
+                        </svg>
+                        <p class="mt-2 text-slate-600">有3个 ($\text{p}_x$, $\text{p}_y$, $\text{p}_z$)，互相垂直。</p>
+                        <p class="mt-1 text-slate-600">酒店比喻：<strong class="text-green-700">商务大床房</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 电子云轮廓图 (d, f) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>电子云轮廓图 (d, f 形状)</h2>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-yellow-50 border border-yellow-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-yellow-800 text-2xl">d 轨道 (Diffused)</h3>
+                        <p class="mt-3 text-slate-600 text-2xl"><strong class="text-yellow-700">花瓣形</strong> (四个花瓣)</p>
+                        <!-- 使用 SVG 绘制 d 轨道示意图 (dxy/dxz/dyz类型) -->
+                        <svg class="mx-auto mt-4" width="150" height="150" viewBox="0 0 100 100">
+                             <!-- 4 lobes -->
+                             <path d="M50 50 Q 60 40 70 50 Q 60 60 50 50 Z" fill="#facc15" stroke="#ca8a04" stroke-width="1.5" transform="rotate(0 50 50) scale(1.5)" opacity="0.8"/>
+                             <path d="M50 50 Q 40 60 30 50 Q 40 40 50 50 Z" fill="#facc15" stroke="#ca8a04" stroke-width="1.5" transform="rotate(0 50 50) scale(1.5)" opacity="0.8"/>
+                             <path d="M50 50 Q 40 40 50 30 Q 60 40 50 50 Z" fill="#ca8a04" stroke="#ca8a04" stroke-width="1.5" transform="rotate(90 50 50) scale(1.5)" opacity="0.8"/>
+                             <path d="M50 50 Q 60 60 50 70 Q 40 60 50 50 Z" fill="#ca8a04" stroke="#ca8a04" stroke-width="1.5" transform="rotate(90 50 50) scale(1.5)" opacity="0.8"/>
+                             
+                             <path d="M50 50 Q 65 35 50 20 Q 35 35 50 50 Z" fill="#facc15" stroke="#ca8a04" stroke-width="1.5" transform="rotate(45 50 50)" />
+                             <path d="M50 50 Q 35 65 50 80 Q 65 65 50 50 Z" fill="#facc15" stroke="#ca8a04" stroke-width="1.5" transform="rotate(45 50 50)" />
+                             <path d="M50 50 Q 65 65 80 50 Q 65 35 50 50 Z" fill="#ca8a04" stroke="#ca8a04" stroke-width="1.5" transform="rotate(45 50 50)" />
+                             <path d="M50 50 Q 35 35 20 50 Q 35 65 50 50 Z" fill="#ca8a04" stroke="#ca8a04" stroke-width="1.5" transform="rotate(45 50 50)" />
+                             
+                             <circle cx="50" cy="50" r="3" fill="#854d0e"/>
+                            <text x="50" y="55" font-size="8" text-anchor="middle" fill="#854d0e">核</text>
+                        </svg>
+                        <p class="mt-2 text-slate-600">有 5 个，其中 4 个为四花瓣形，1个为双哑铃加环状。</p>
+                        <p class="mt-1 text-slate-600">酒店比喻：<strong class="text-yellow-700">普通标间</strong></p>
+                    </div>
+                    <div class="bg-gray-50 border border-gray-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-gray-800 text-2xl">f 轨道 (Fundamental)</h3>
+                        <p class="mt-3 text-slate-600 text-2xl"><strong class="text-gray-700">形状复杂</strong> (八花瓣或哑铃加双环)</p>
+                        <!-- 使用 SVG 绘制 f 轨道示意图 (抽象复杂图形) -->
+                        <svg class="mx-auto mt-4" width="150" height="150" viewBox="0 0 100 100">
+                             <!-- 8 lobes (abstract representation) -->
+                             <g fill="#94a3b8" stroke="#475569" stroke-width="1">
+                                 <ellipse cx="50" cy="50" rx="40" ry="10" transform="rotate(0 50 50)"/>
+                                 <ellipse cx="50" cy="50" rx="40" ry="10" transform="rotate(45 50 50)"/>
+                                 <ellipse cx="50" cy="50" rx="40" ry="10" transform="rotate(90 50 50)"/>
+                                 <ellipse cx="50" cy="50" rx="40" ry="10" transform="rotate(135 50 50)"/>
+                             </g>
+                             <g fill="#475569" opacity="0.8">
+                                <circle cx="50" cy="50" r="5"/>
+                             </g>
+                            <text x="50" y="55" font-size="8" text-anchor="middle" fill="#1e293b">核</text>
+                            <text x="50" y="85" font-size="10" text-anchor="middle" fill="#1e293b">（复杂多瓣形）</text>
+                        </svg>
+                        <p class="mt-2 text-slate-600">有 7 个，形状极度复杂，高中阶段只需了解。</p>
+                        <p class="mt-1 text-slate-600">酒店比喻：<strong class="text-gray-700">工具间/杂物间</strong> (最不爽)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 原子轨道的能量 (房间价格) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>原子轨道的能量 (房间价格)</h2>
+                <p class="mt-8 text-xl text-slate-700">能量越低，越稳定（住得越“爽”）。</p>
+                 <div class="mt-8 space-y-4 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                        <strong>1. 同能层 (n) 中：</strong><br/>
+                        <p class="mt-2 text-slate-700 mono text-center text-xl">s < p < d < f</p>
+                        <p class="mt-1 text-slate-600 text-center">(海景房 < 商务房 < 标间 < 工具间)</p>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 p-4 rounded-lg">
+                         <strong>2. 同能级 (形状相同)：</strong><br/>
+                        <p class="mt-2 text-slate-700 mono text-center text-xl">1s < 2s < 3s < 4s...</p>
+                        <p class="mt-1 text-slate-600 text-center">(楼层越低，能量越低)</p>
+                    </div>
+                    <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                         <strong>3. 同能层、同能级 (简并轨道)：</strong><br/>
+                        <p class="mt-2 text-slate-700 mono text-center text-xl">3px = 3py = 3pz</p>
+                        <p class="mt-1 text-slate-600 text-center">(同一楼层的同类型房间，能量相等)</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 例题 1 (新) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (一)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>在原子的四个能层 K、L、M、N 中，能量最低的是哪个能层？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> M层</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> N层</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> K层</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> L层</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 1 (新) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (一)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(C)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>电子能量由能层决定，能层序号 $\text{n}$ 越小（离原子核越近），能层能量越低。K 层 ($\text{n}=1$) 能量最低，N 层 ($\text{n}=4$) 能量最高。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 例题 2 (新) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>随堂练习 (二)</h2>
+                <div class="mt-8 bg-slate-50 border border-slate-200 p-8 rounded-lg text-xl">
+                    <p>关于原子轨道的空间形状，下列说法正确的是？</p>
+                     <div class="mt-6 space-y-3 text-lg">
+                        <p class="p-3 rounded-md bg-white border"><strong>(A)</strong> s 轨道是哑铃形</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(B)</strong> p 轨道是球形</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(C)</strong> d 轨道是复杂的八瓣形</p>
+                        <p class="p-3 rounded-md bg-white border"><strong>(D)</strong> p 轨道是哑铃形，且有 $\text{p}_x, \text{p}_y, \text{p}_z$ 三个相互垂直的方向</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析 2 (新) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>练习 (二)：解析</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-8 rounded-lg text-xl space-y-4">
+                    <p class="font-bold text-green-800 text-2xl">答案：(D)</p>
+                    <p><strong>解析：</strong></p>
+                    <p>s 轨道是球形，p 轨道是哑铃形，且一个能级包含 $\text{p}_x, \text{p}_y, \text{p}_z$ 三个相互垂直的轨道。d 轨道形状多为四花瓣形，f 轨道才是更复杂的形状。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                 </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看！希望大家理解了“原子大酒店”的布局！</p>
+                <p class="mt-4 text-2xl text-slate-600">下节课再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- 导航控件 -->
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <!-- JS 逻辑 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

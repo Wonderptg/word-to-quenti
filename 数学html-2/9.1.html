@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数列第一课 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <!-- MathJax Library -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0.25rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            overflow-x: auto;
+            text-align: center;
+        }
+        
+        .highlight-box {
+            background-color: #fffbe6;
+            border: 2px dashed #f59e0b;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 标题页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">数列第一课</h1>
+                <p class="text-2xl text-slate-600 mt-4">初识数列的奥秘</p>
+                <p class="mt-8 text-xl text-cyan-600 font-semibold">"数列，就是按一定顺序排列的一组数。"</p>
+            </div>
+        </div>
+
+        <!-- 什么是数列 -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-4">什么是数列？</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <p class="text-lg"><strong>例子：</strong> (1, 4, 9, 16, 25, ...)</p>
+                <p class="text-lg mt-4"><strong>数列 vs 集合</strong></p>
+                <ul class="list-disc list-inside text-lg mt-2 space-y-2">
+                    <li><strong>顺序：</strong> 集合元素无所谓顺序 {1, 2, 3} = {3, 2, 1}。
+                    <br>数列<strong>必须讲顺序</strong> (1, 4, 9) $\neq$ (9, 4, 1)。</li>
+                    <li><strong>重复：</strong> 集合元素不能重复 {1, 1, 2} = {1, 2}。
+                    <br>数列<strong>可以重复</strong> (90, 85, 90, 92)。</li>
+                </ul>
+                <p class="text-lg mt-4 text-center text-red-600 font-bold">数列是一种定义域为<strong>正整数集</strong>的特殊函数。</p>
+            </div>
+        </div>
+        
+        <!-- 通项公式 an -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-2 mb-4">核心一：通项公式 ($a_n$)</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <p class="text-lg">通项公式是数列的“<strong>身份证</strong>”或“<strong>通用规律公式</strong>”。</p>
+                <p class="text-lg mt-2">数列 (1, 4, 9, 16, ...)</p>
+                <ul class="list-none text-lg mt-2 space-y-1">
+                    <li>第一项：$a_1 = 1$</li>
+                    <li>第二项：$a_2 = 4$</li>
+                    <li>第三项：$a_3 = 9$</li>
+                    <li>...</li>
+                    <li>第 $n$ 项：$a_n = n^2$</li>
+                </ul>
+                <p class="text-lg mt-2">有了 $a_n = n^2$，就可以求任意一项：</p>
+                <p class="text-lg mt-1 ml-4">$a_{100} = 100^2 = 10000$</p>
+                <p class="text-lg mt-1 ml-4">$a_{50} = 50^2 = 2500$</p>
+            </div>
+        </div>
+
+        <!-- 演练1 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-amber-500 pb-2">实战演练 1：代入检验法</h2>
+                 <div class="mt-4 text-base bg-gray-50 p-4 rounded-lg">
+                     <p class="font-bold text-lg">题目：数列 ( -1, 1, -1, 1, ... )，下列哪个<strong>不能</strong>作为它的通项公式？</p>
+                     <p>(A) $a_n = (-1)^n$</p>
+                     <p>(B) $a_n = \cos(n\pi)$</p>
+                     <p>(C) $a_n = \sin(n\pi)$</p>
+                     <p>(D) $a_n = -(-1)^{n-1}$</p>
+                 </div>
+                 <!-- Removed analysis section -->
+            </div>
+        </div>
+        
+        <!-- 前n项和 Sn -->
+        <div class="section">
+            <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-2 mb-4">核心二：前 $n$ 项和 ($S_n$)</h2>
+            <div class="w-full max-w-4xl mx-auto">
+                <p class="text-lg">前 $n$ 项和是数列的“<strong>累加器</strong>”。</p>
+                <div class="formula-box text-xl font-bold">
+                    $S_n = a_1 + a_2 + a_3 + ... + a_n$
+                </div>
+                <p class="text-lg mt-4"><strong>例：</strong>数列 $a_n = n^2$ (1, 4, 9, 16, ...)</p>
+                <ul class="list-none text-lg mt-2 space-y-1">
+                    <li>$S_1 = a_1 = 1$</li>
+                    <li>$S_2 = a_1 + a_2 = 1 + 4 = 5$</li>
+                    <li>$S_4 = a_1 + a_2 + a_3 + a_4 = 1 + 4 + 9 + 16 = 30$</li>
+                </ul>
+                <p class="text-lg mt-4"><strong>例：</strong>已知 $a_n = 2n - 1$，求 $S_4$。</p>
+                <p class="text-lg ml-4">$a_1 = 1, a_2 = 3, a_3 = 5, a_4 = 7$</p>
+                <p class="text-lg ml-4">$S_4 = 1 + 3 + 5 + 7 = 16$</p>
+            </div>
+        </div>
+        
+        <!-- 递推公式 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-indigo-500 pb-2">拓展：递推公式</h2>
+                 <div class="mt-4 text-lg">
+                     <p>递推公式是“<strong>连锁反应</strong>”的规则，通过前一项（或几项）来推出后一项。</p>
+                     <p class="mt-2"><strong>例：</strong> $a_1 = 1$ 且 $a_{n+1} = a_n + 2$。
+                     <br>（含义：“任何一项 = 前一项 + 2”）</p>
+                     <ul class="list-disc list-inside ml-4">
+                         <li>$a_1 = 1$</li>
+                         <li>$a_2 = a_1 + 2 = 1 + 2 = 3$</li>
+                         <li>$a_3 = a_2 + 2 = 3 + 2 = 5$</li>
+                         <li>$a_4 = a_3 + 2 = 5 + 2 = 7$</li>
+                     </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 演练2 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-amber-500 pb-2">实战演练 2：递推找周期</h2>
+                 <div class="mt-4 text-base bg-gray-50 p-4 rounded-lg">
+                     <p class="font-bold text-lg">题目：已知 $a_1 = 1, a_2 = 1$，且 $a_{n+2} = a_{n+1} - a_n$。求 $a_{2025}$。</p>
+                 </div>
+                 <!-- Removed analysis section -->
+            </div>
+        </div>
+
+        <!-- 演练3 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-amber-500 pb-2">实战演练 3：递推 + 求和</h2>
+                 <div class="mt-4 text-base bg-gray-50 p-4 rounded-lg">
+                     <p class="font-bold text-lg">题目：已知 $a_1 = 10, a_2 = 20, a_5 = 10$。
+                     <br>规则：若 $a_p = a_q$，则 $a_{p+1} = a_{q+1}$。
+                     <br>且 $a_3 + a_4 = 50$。求 $S_{100}$。</p>
+                 </div>
+                 <!-- Removed analysis section -->
+            </div>
+        </div>
+
+        <!-- 练习题 1/4 -->
+        <div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (1/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                    <p class="font-semibold mb-2">1. 下列关于数列和函数的说法中，<strong>错误</strong>的是？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) 数列可以看作是一种特殊的函数。</p>
+                        <p>(B) 数列的图像是一群孤立的点。</p>
+                        <p>(C) 函数的定义域总是实数集 $R$。</p>
+                        <p>(D) 数列的定义域是正整数集 $N^*$ 或其子集。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题 2/4 -->
+        <div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (2/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                    <p class="font-semibold mb-2">2. 已知一个数列的通项公式为 $a_n = 3n + 2$，那么这个数列的第 5 项 $a_5$ 是多少？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) 10</p>
+                        <p>(B) 15</p>
+                        <p>(C) 17</p>
+                        <p>(D) 20</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3/4 -->
+        <div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (3/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                     <p class="font-semibold mb-2">3. 已知数列 $a_n$ 中，$a_1 = 5, a_2 = -2, a_3 = 8$，那么这个数列的前 3 项和 $S_3$ 是多少？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) 5</p>
+                        <p>(B) 3</p>
+                        <p>(C) 11</p>
+                        <p>(D) 15</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 练习题 4/4 -->
+        <div class="section">
+            <div class="w-full max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center mb-6">随堂练习 (4/4)</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-lg">
+                     <p class="font-semibold mb-2">4. 已知数列 $a_n$ 满足递推公式 $a_{n+1} = 2a_n$，且 $a_1 = 3$。那么 $a_3$ 的值是？</p>
+                    <div class="space-y-2 ml-4">
+                        <p>(A) 7</p>
+                        <p>(B) 9</p>
+                        <p>(C) 12</p>
+                        <p>(D) 18</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题解析 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析</h2>
+                <div class="space-y-3 text-base">
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>1. 答案：C</strong></p>
+                        <p><strong>解析：</strong>函数的定义域不总是实数集 $R$。例如 $f(x) = \sqrt{x}$ 的定义域是 $[0, +\infty)$。而数列是一种定义域为正整数集的特殊函数，所以 A、B、D 都是正确的。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>2. 答案：C</strong></p>
+                        <p><strong>解析：</strong>通项公式为 $a_n = 3n + 2$，要求第 5 项 $a_5$，只需将 $n=5$ 代入：$a_5 = 3(5) + 2 = 15 + 2 = 17$。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>3. 答案：C</strong></p>
+                        <p><strong>解析：</strong>$S_3$ 是前 3 项的和，即 $S_3 = a_1 + a_2 + a_3$。
+                        <br>$S_3 = (5) + (-2) + (8) = 3 + 8 = 11$。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>4. 答案：C</strong></p>
+                        <p><strong>解析：</strong>递推公式 $a_{n+1} = 2a_n$， $a_1 = 3$。
+                        <br>第一步：$a_2 = 2a_1 = 2 \times 3 = 6$。
+                        <br>第二步：$a_3 = 2a_2 = 2 \times 6 = 12$。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 总结 -->
+         <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8">总结</h2>
+                <p class="text-xl">今天我们干了三件大事：</p>
+                <ul class="list-disc list-inside text-left text-lg mt-4 space-y-2">
+                    <li><strong>认识了数列：</strong>有序的数，图像是孤立的点。</li>
+                    <li><strong>掌握了 $a_n$ (通项公式)：</strong>数列的“身份证”，用“代入法”检验。</li>
+                    <li><strong>掌握了 $S_n$ (前n项和)：</strong>数列的“累加器”，“先求项，再求和”。</li>
+                    <li><strong>(附赠) 递推公式：</strong>靠“连锁反应”定义，做题核心是<strong>找周期</strong>！</li>
+                </ul>
+                <p class="text-xl mt-6">下节课，我们将正式认识数列家族的“超级明星”——<strong>等差数列</strong>和<strong>等比数列</strong>！</p>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

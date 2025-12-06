@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>影响化学平衡的因素</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">影响化学平衡的因素</h1>
+                <p class="text-2xl text-slate-600 mt-2">勒夏特列原理</p>
+            </div>
+        </div>
+        
+        <!-- 什么是化学平衡的移动 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>什么是化学平衡的移动？</h2>
+                <p class="mt-8 text-xl text-slate-700">可逆反应达到平衡状态后，如果改变了反应条件（如温度、压强、浓度等），平衡就可能被<strong class="text-red-600">破坏</strong>。</p>
+                <p class="mt-4 text-xl text-slate-700">此时，<code>v(正) ≠ v(逆)</code>。</p>
+                <div class="mt-8 bg-green-50 border border-green-200 p-6 rounded-lg">
+                    <p class="text-xl text-slate-700">这个<strong class="text-green-700">“旧平衡”</strong>被破坏，向着建立<strong class="text-green-700">“新平衡”</strong>转化的过程，就称为<strong class="text-blue-600">化学平衡的移动</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 平衡移动的实质 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-sky-500 rounded"></span>平衡移动的实质：v(正) vs v(逆)</h2>
+                 <div class="mt-8 space-y-4 text-lg">
+                    <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                        <strong class="text-lg">原平衡：</strong><br/>
+                        <p class="mono text-center text-xl mt-2">v(正) = v(逆)</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                        <strong class="text-lg text-red-700">改变条件 (破坏平衡)：</strong><br/>
+                        <p class="mono text-center text-xl mt-2 text-red-700">v(正) ≠ v(逆)</p>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 p-4 rounded-lg">
+                        <strong class="text-lg text-green-700">移动过程 (寻找新平衡)：</strong><br/>
+                        <p class="mono text-center text-xl mt-2 text-green-700">通过平衡正移或逆移，调节速率。</p>
+                    </div>
+                     <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                        <strong class="text-lg">新平衡：</strong><br/>
+                        <p class="mono text-center text-xl mt-2">v(正)' = v(逆)'</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 如何判断平衡移动的方向 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>如何判断平衡移动的方向？</h2>
+                 <div class="mt-8 space-y-4 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg"><strong class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">方法一</strong><p class="mt-2 text-lg">比较 <code>v(正)</code> 和 <code>v(逆)</code> 的相对大小。</p></div>
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg"><strong class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">方法二</strong><p class="mt-2 text-lg">比较 <code>Q</code> (浓度商) 和 <code>K</code> (平衡常数) 的相对大小。</p></div>
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg"><strong class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">方法三</strong><p class="mt-2 text-lg">使用 <strong class="text-red-600">勒夏特列原理</strong>。</p></div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 判断方法 (一)：速率比较法 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>判断方法 (一)：速率比较法</h2>
+                <p class="mt-8 text-xl text-slate-700">改变条件后，瞬时比较正、逆反应速率：</p>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-blue-800 text-2xl">v(正) > v(逆)</h3>
+                        <p class="mt-3 text-slate-600 text-xl">平衡<strong class="text-blue-700">正向移动</strong> (→)</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-red-800 text-2xl">v(正) < v(逆)</h3>
+                        <p class="mt-3 text-slate-600 text-xl">平衡<strong class="text-red-700">逆向移动</strong> (←)</p>
+                    </div>
+                    <div class="bg-gray-50 border border-gray-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-gray-800 text-2xl">v(正) = v(逆)</h3>
+                        <p class="mt-3 text-slate-600 text-xl">平衡<strong class="text-gray-700">不移动</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 判断方法 (二)：Q vs K 比较法 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>判断方法 (二)：Q vs K 比较法</h2>
+                <p class="mt-8 text-xl text-slate-700 text-center">改变条件后，计算瞬时的浓度商 Q，与平衡常数 K 比较。</p>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-blue-800 text-2xl">Q < K</h3>
+                        <p class="mt-3 text-slate-600 text-3xl">🔨 →</p>
+                        <p class="mt-2 text-blue-700 font-semibold text-xl">钉子在左，<strong class="text-blue-700">向右</strong>敲 (正向移动)</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-red-800 text-2xl">Q > K</h3>
+                        <p class="mt-3 text-slate-600 text-3xl">← 🔨</p>
+                        <p class="mt-2 text-red-700 font-semibold text-xl">钉子在右，<strong class="text-red-700">向左</strong>敲 (逆向移动)</p>
+                    </div>
+                </div>
+                 <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg text-center">
+                    <h3 class="font-bold text-gray-800 text-2xl">Q = K</h3>
+                    <p class="mt-3 text-slate-600 text-xl">反应处于<strong class="text-gray-700">平衡状态</strong>，不移动</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 判断方法 (三)：勒夏特列原理 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>判断方法 (三)：勒夏特列原理</h2>
+                <div class="mt-8 bg-indigo-50 border border-indigo-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-indigo-800 text-xl">定义：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">如果改变影响平衡的一个因素（如温度、压强、浓度），平衡就会向着能够<strong class="text-red-600">减弱</strong>这种改变的方向移动。</p>
+                </div>
+                <p class="mt-6 text-xl text-slate-700 text-center">核心思想：<strong class="text-red-600">“抵消”</strong>、<strong class="text-red-600">“对着干”</strong></p>
+            </div>
+        </div>
+
+        <!-- 勒夏特列原理 (生活化理解) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>勒夏特列原理 (生活化理解)</h2>
+                <p class="mt-8 text-xl text-slate-700">把平衡想象成一个天平，或你的零花钱：</p>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-blue-800 text-2xl">钱 增多了 ↑</h3>
+                        <p class="mt-3 text-slate-600">（妈妈给了20万）</p>
+                        <p class="mt-3 text-xl text-blue-700"><strong>抵消：</strong>赶紧<strong class="text-red-600">花钱</strong> (消耗) ↓</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg text-center">
+                        <h3 class="font-bold text-red-800 text-2xl">钱 减少了 ↓</h3>
+                        <p class="mt-3 text-slate-600">（买足彩赔光）</p>
+                        <p class="mt-3 text-xl text-red-700"><strong>抵消：</strong>赶紧<strong class="text-blue-600">赚钱</strong> (补充) ↑</p>
+                    </div>
+                </div>
+                 <div class="mt-8 bg-gray-100 p-6 rounded-lg text-center">
+                    <p class="text-2xl font-bold text-gray-800">多了就消耗，少了就补充</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 影响因素 (一)：浓度 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>影响因素 (一)：浓度</h2>
+                <p class="mt-8 text-xl text-slate-700 mono text-center">2CrO₄²⁻(<span class="text-yellow-500">黄</span>) + 2H⁺ ⇌ Cr₂O₇²⁻(<span class="text-orange-500">橙</span>) + H₂O</p>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800 text-xl">1. 加入 HCl (酸)</h3>
+                        <p class="mt-3 text-slate-600"><strong>改变 (因)：</strong> <code>[H⁺]</code> 增大 ↑</p>
+                        <p class="mt-2 text-slate-600"><strong>抵消 (勒)：</strong> 平衡<strong class="text-blue-700">正向 (→)</strong> 移动 (消耗 H⁺)</p>
+                        <p class="mt-2 text-slate-600"><strong>结果 (果)：</strong> <code>[Cr₂O₇²⁻]</code> 增大，溶液由黄变<strong class="text-orange-500">橙</strong>。</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-red-800 text-xl">2. 加入 NaOH (碱)</h3>
+                        <p class="mt-3 text-slate-600"><strong>改变 (因)：</strong> <code>[H⁺]</code> 减小 ↓ (被OH⁻中和)</p>
+                        <p class="mt-2 text-slate-600"><strong>抵消 (勒)：</strong> 平衡<strong class="text-red-700">逆向 (←)</strong> 移动 (补充 H⁺)</p>
+                        <p class="mt-2 text-slate-600"><strong>结果 (果)：</strong> <code>[CrO₄²⁻]</code> 增大，溶液由橙变<strong class="text-yellow-500">黄</strong>。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 浓度 (总结) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-teal-500 rounded"></span>影响因素 (一)：浓度 (总结)</h2>
+                <div class="mt-8 bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-blue-800 text-xl text-center">平衡正向 (→) 移动</h3>
+                    <p class="mt-3 text-slate-600 text-lg text-center">增大<strong class="text-blue-700">反应物</strong>浓度 (消耗它)</p>
+                    <p class="mt-2 text-slate-600 text-lg text-center">减小<strong class="text-blue-700">生成物</strong>浓度 (补充它)</p>
+                </div>
+                 <div class="mt-8 bg-red-50 border border-red-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-red-800 text-xl text-center">平衡逆向 (←) 移动</h3>
+                    <p class="mt-3 text-slate-600 text-lg text-center">减小<strong class="text-red-700">反应物</strong>浓度 (补充它)</p>
+                    <p class="mt-2 text-slate-600 text-lg text-center">增大<strong class="text-red-700">生成物</strong>浓度 (消耗它)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 影响因素 (二)：压强 (前提) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>影响因素 (二)：压强 (前提)</h2>
+                 <div class="mt-8 space-y-4 text-lg">
+                    <div class="bg-red-100 text-red-800 p-4 rounded-lg"><strong class="font-bold text-red-900">1. 只影响气体：</strong>压强改变<strong class="text-red-900">只</strong>影响<strong class="text-red-900">气体</strong>的平衡，对固体、液体无影响。</div>
+                    <div class="bg-red-100 text-red-800 p-4 rounded-lg"><strong class="font-bold text-red-900">2. 看计量数：</strong>必须看反应前后<strong class="text-red-900">气体计量数总和 (Δn(g))</strong> 是否变化。</div>
+                    <div class="bg-red-100 text-red-800 p-4 rounded-lg"><strong class="font-bold text-red-900">3. 操作本质：</strong><br/>加压 = <strong class="text-red-900">压缩体积 (V↓)</strong> = <strong class="text-red-900">所有气体浓度 (c) 增大</strong><br/>减压 = <strong class="text-red-900">扩大体积 (V↑)</strong> = <strong class="text-red-900">所有气体浓度 (c) 减小</strong></div>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 压强 (Case 1: Δn(g) ≠ 0) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>压强 (Case 1: Δn(g) ≠ 0)</h2>
+                <p class="mt-8 text-xl text-slate-700 mono text-center">N₂(g) + 3H₂(g) ⇌ 2NH₃(g)</p>
+                <p class="mt-2 text-xl text-slate-700 text-center">(气体计量数：左 4 mol ≠ 右 2 mol)</p>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800 text-xl">增大压强 (V↓)</h3>
+                        <p class="mt-3 text-slate-600"><strong>抵消：</strong>平衡向气体计量数<strong class="text-blue-700">减小 (→)</strong> 的方向移动，以减弱压强增大的效果。</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-red-800 text-xl">减小压强 (V↑)</h3>
+                        <p class="mt-3 text-slate-600"><strong>抵消：</strong>平衡向气体计量数<strong class="text-red-700">增大 (←)</strong> 的方向移动，以补充压强减小的效果。</p>
+                    </div>
+                </div>
+                 <div class="mt-8 bg-gray-100 p-6 rounded-lg text-center">
+                    <p class="text-2xl font-bold text-gray-800">口诀：大压小移，小压大移</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 压强 (Case 2: Δn(g) = 0) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>压强 (Case 2: Δn(g) = 0)</h2>
+                <p class="mt-8 text-xl text-slate-700 mono text-center">H₂(g) + I₂(g) ⇌ 2HI(g)</p>
+                <p class="mt-2 text-xl text-slate-700 text-center">(气体计量数：左 2 mol = 右 2 mol)</p>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">增大或减小压强</h3>
+                    <p class="mt-3 text-slate-600 text-lg"><strong>分析：</strong>无论向左还是向右移动，气体总计量数都不变，<strong class="text-gray-700">无法“减弱”</strong>压强的改变。</p>
+                    <p class="mt-2 text-slate-600 text-lg">（从速率看：v(正) 和 v(逆) <strong class="text-gray-700">同等倍数</strong>增大或减小，<code>v(正)</code> 始终等于 <code>v(逆)</code>）</p>
+                </div>
+                 <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg text-center font-semibold">
+                    结论：平衡不移动。
+                </div>
+            </div>
+        </div>
+
+        <!-- 压强 (Case 3: 充入无关气体) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>压强 (Case 3: 充入无关气体)</h2>
+                <p class="mt-8 text-xl text-slate-700">向平衡体系 <code>N₂ + 3H₂ ⇌ 2NH₃</code> 中充入 He (氦气)。</p>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800 text-xl">A. 恒温恒容 (V 不变)</h3>
+                        <p class="mt-3 text-slate-600">总压P增大，但 <code>[N₂]</code>, <code>[H₂]</code>, <code>[NH₃]</code> <strong class="text-blue-700">浓度不变</strong>。</p>
+                        <p class="mt-2 text-slate-600"><code>v(正)</code>, <code>v(逆)</code> 均不变。</p>
+                        <p class="mt-4 font-bold text-blue-800 text-xl text-center">结论：平衡不移动</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-red-800 text-xl">B. 恒温恒压 (P 不变)</h3>
+                        <p class="mt-3 text-slate-600">为保持P不变，<strong class="text-red-700">体积V增大</strong>。</p>
+                        <p class="mt-2 text-slate-600"><code>[N₂]</code>, <code>[H₂]</code>, <code>[NH₃]</code> <strong class="text-red-700">浓度均减小</strong>。</p>
+                        <p class="mt-2 text-slate-600">等同于<strong class="text-red-700">减压</strong>效果。</p>
+                        <p class="mt-4 font-bold text-red-800 text-xl text-center">结论：平衡逆向 (←) 移动<br/>(向气体计量数增大的方向)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 影响因素 (三)：温度 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-orange-500 rounded"></span>影响因素 (三)：温度</h2>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-800 text-xl">升高温度 (T↑)</h3>
+                        <p class="mt-3 text-slate-600"><strong>改变 (因)：</strong> 热量增多 ↑</p>
+                        <p class="mt-2 text-slate-600"><strong>抵消 (勒)：</strong> 平衡向<strong class="text-blue-700">吸热 (Endothermic)</strong> 反应方向移动 (消耗热量)。</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-red-800 text-xl">降低温度 (T↓)</h3>
+                        <p class="mt-3 text-slate-600"><strong>改变 (因)：</strong> 热量减少 ↓</p>
+                        <p class="mt-2 text-slate-600"><strong>抵消 (勒)：</strong> 平衡向<strong class="text-red-700">放热 (Exothermic)</strong> 反应方向移动 (补充热量)。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 影响因素 (四)：催化剂 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-green-500 rounded"></span>影响因素 (四)：催化剂</h2>
+                <div class="mt-8 bg-green-50 border border-green-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-green-800 text-xl">催化剂的作用：</h3>
+                    <p class="mt-3 text-slate-600 text-lg"><strong class="text-green-700">同等倍数</strong>地增大 <code>v(正)</code> 和 <code>v(逆)</code>。</p>
+                </div>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg text-center font-semibold">
+                    <p class="text-2xl mono">v(正) 依然等于 v(逆)</p>
+                    <p class="mt-4 text-xl">平衡没有被破坏，因此<strong class="text-red-900">平衡不移动</strong>。</p>
+                    <p class="mt-2 text-lg text-slate-700">（催化剂只改变达到平衡的时间，不改变平衡的位置）</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 勒夏特列原理的“减弱” -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>勒夏特列原理的“减弱”</h2>
+                <p class="mt-8 text-xl text-slate-700">“减弱” ≠ “抵消”或“逆转”。平衡的移动只能<strong class="text-red-600">部分补偿</strong>外界的改变。</p>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">例：增大 [N₂]</h3>
+                    <p class="mt-3 text-slate-600 text-lg"><code>N₂ + 3H₂ ⇌ 2NH₃</code></p>
+                    <p class="mt-2 text-slate-600 text-lg">原平衡 [N₂] = 1.0 M</p>
+                    <p class="mt-2 text-slate-600 text-lg"><strong>改变 (因)：</strong> 瞬间<strong class="text-red-600">增加</strong> N₂，使其 [N₂] = 2.0 M</p>
+                    <p class="mt-2 text-slate-600 text-lg"><strong>移动 (勒)：</strong> 平衡正移 (→)，消耗 N₂ (减弱)</p>
+                    <p class="mt-2 text-slate-600 text-lg"><strong>新平衡 (果)：</strong> [N₂] = 1.7 M</p>
+                    <p class="mt-4 text-xl text-center font-semibold text-red-700">
+                        1.7 M (新) > 1.0 M (原)
+                    </p>
+                    <p class="mt-1 text-lg text-center text-slate-700">结论：平衡移动无法逆转改变，[N₂] 最终还是增大了。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 勒夏特列原理的“减弱” (续) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2"><span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>勒夏特列原理的“减弱” (续)</h2>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">例：增大压强 (压缩体积)</h3>
+                    <p class="mt-3 text-slate-600 text-lg"><code>N₂ + 3H₂ ⇌ 2NH₃</code></p>
+                    <p class="mt-2 text-slate-600 text-lg">原平衡 P(总) = 10 atm</p>
+                    <p class="mt-2 text-slate-600 text-lg"><strong>改变 (因)：</strong> 瞬间<strong class="text-red-600">压缩</strong>体积，P(总) = 20 atm</p>
+                    <p class="mt-2 text-slate-600 text-lg"><strong>移动 (勒)：</strong> 平衡正移 (→)，总物质的量n减小 (减弱)</p>
+                    <p class="mt-2 text-slate-600 text-lg"><strong>新平衡 (果)：</strong> P(总) = 18 atm</p>
+                    <p class="mt-4 text-xl text-center font-semibold text-red-700">
+                        18 atm (新) > 10 atm (原)
+                    </p>
+                    <p class="mt-1 text-lg text-center text-slate-700">结论：平衡移动无法逆转改变，P(总) 最终还是增大了。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                 </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看！这节课非常重要，请务必反复观看，理解“抵消”和“减弱”的概念！</p>
+                <p class="mt-4 text-2xl text-slate-600">下节课再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- 导航控件 -->
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <!-- JS 逻辑 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                 sections.forEach((section, index) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // Show the first page initially
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

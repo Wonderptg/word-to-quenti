@@ -1,0 +1,27 @@
+# ============ Step 1: Gemini API (HTML -> cards.raw.json) ============
+GEMINI_API_KEY=你的Gemini_API_Key
+
+# 可选配置
+# INPUT_DIR=input_html
+# OUT_DIR=out
+# GEMINI_MODEL=gemini-2.0-flash
+# MAX_CHARS=50000
+
+# ============ Step 2: LaTeX 渲染 (可选配置) ============
+# INPUT_FILE=out/cards.raw.json
+# OUTPUT_FILE=out/cards.json
+# FORMULAS_DIR=out/formulas
+# SCALE=2
+
+# ============ Step 3: Quenti 导入 ============
+APP_URL=https://你的quenti站点
+CDN_ENDPOINT=https://你的cdn-worker
+SESSION_COOKIE=next-auth.session-token=xxx; __Secure-next-auth.session-token=xxx
+STUDY_SET_ID=clxxxx
+CONCURRENCY=3
+
+
+
+
+
+

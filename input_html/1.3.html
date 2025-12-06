@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>集合第二课：集合的基本运算</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 (正常浏览时) */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif; /* 应用宋体风格字体 */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 设置页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem; /* 限制最大宽度，类似文档 */
+            margin: 2rem auto; /* 居中显示 */
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2rem; /* 为内容提供足够的垂直间距 */
+            position: relative; /* 为卡通角色定位 */
+            padding-bottom: 8rem; /* 为卡通角色留出空间 */
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        code {
+            background-color: #f1f5f9;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .cartoon-container {
+            position: absolute;
+            bottom: 1rem;
+            right: 1.5rem;
+            width: 120px;
+            height: 120px;
+        }
+
+        /* 打印专用样式 (只在打印时生效) */
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw; 
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+                padding-bottom: 4rem;
+            }
+
+            .section:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- Section 1: Introduction -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">第一部分：生活中的集合与基本概念</h2>
+                <div class="mt-6 text-lg text-slate-700 space-y-4">
+                    <h3 class="text-xl font-semibold text-slate-800">🏠 情景热身，发现集合</h3>
+                    <p>想象一下，周末咱们班要组织活动，有三个备选方案：A去看科幻大片，B去公园搞户外运动，C在教室里玩桌游。</p>
+                    <ul class="list-disc list-inside ml-4">
+                        <li>既想看电影，又想玩桌游的同学有哪些？(共同点)</li>
+                        <li>电影、运动、桌游都行的同学有哪些？(合起来)</li>
+                        <li>除了户外运动，其他都可以的同学有哪些？(去掉)</li>
+                    </ul>
+                    <p>这些想法，就是我们今天要学的“集合的运算”！</p>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+        
+        <!-- Section 2: Intersection -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">🤝 认识新朋友一：交集 (Intersection)</h2>
+                <div class="mt-6 text-lg text-slate-700 space-y-4">
+                    <p>“既想看电影，又想玩桌游的同学”，就是电影爱好者集合和桌游爱好者集合的“交集”。</p>
+                    <p><strong>定义：</strong>指那些“同时属于”好几个集合的共同元素。</p>
+                    <p><strong>符号：</strong><code>∩</code> (一个倒过来的U)</p>
+                    <p><strong>关键词：</strong><code class="bg-amber-200">都</code> <code class="bg-amber-200">且</code> <code class="bg-amber-200">共同的</code></p>
+                    <p class="bg-slate-50 p-3 rounded-lg"><strong>举例：</strong>喜欢数学的有{小华, 小丽, 小军}，喜欢物理的有{小丽, 小强, 小军}。那么数学 ∩ 物理 = {小丽, 小军}。</p>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+        <!-- Section 3: Union -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">🤗 认识新朋友二：并集 (Union)</h2>
+                <div class="mt-6 text-lg text-slate-700 space-y-4">
+                    <p>“电影、运动、桌游，去哪个都开心的同学”，就是把所有愿意参加的同学合并起来，这就是“并集”。</p>
+                    <p><strong>定义：</strong>把好几个集合里的所有元素都放在一起，组成的一个新集合。</p>
+                    <p><strong>符号：</strong><code>∪</code> (一个正的U)</p>
+                    <p><strong>关键词：</strong><code class="bg-sky-200">或</code> <code class="bg-sky-200">所有</code> <code class="bg-sky-200">一共</code></p>
+                     <p class="bg-slate-50 p-3 rounded-lg"><strong>举例：</strong>喜欢数学的 ∪ 喜欢物理的 = {小华, 小丽, 小军, 小强}。<strong class="text-red-600">注意：重复的元素只写一次！</strong></p>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+        <!-- Section 4: Complement -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">🧐 认识新朋友三：补集 (Complement)</h2>
+                <div class="mt-6 text-lg text-slate-700 space-y-4">
+                    <p>要理解补集，得先有个大框框，叫“全集”(用U表示)。</p>
+                    <p><strong>定义：</strong>相对于全集U，一个集合A的补集，就是指全集U中，所有不属于A的元素组成的集合。</p>
+                    <p><strong>符号：</strong><code>∁<sub>U</sub>A</code></p>
+                    <p><strong>关键词：</strong><code class="bg-rose-200">不是</code> <code class="bg-rose-200">除了…以外的</code> <code class="bg-rose-200">剩下的</code></p>
+                    <p class="bg-slate-50 p-3 rounded-lg"><strong>举例：</strong>全集U是{1..10}，集合B是偶数{2,4,6,8,10}，那么B的补集就是奇数{1,3,5,7,9}。</p>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+        
+        <!-- Section 5: Tools Intro -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2 inline-block">第二部分：集合运算的两大神器</h2>
+                <p class="mt-6 text-xl">当集合是连续范围或关系复杂时...</p>
+                <div class="mt-8 flex justify-center gap-12">
+                    <div class="text-center">
+                        <span class="text-6xl">📏</span>
+                        <p class="text-2xl font-semibold mt-2">数轴</p>
+                    </div>
+                    <div class="text-center">
+                        <span class="text-6xl">🎨</span>
+                        <p class="text-2xl font-semibold mt-2">韦恩图</p>
+                    </div>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+        <!-- Section 6: Number Line -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">📏 神器一：数轴来帮忙！</h2>
+                <div class="mt-6 text-lg text-slate-700 space-y-4">
+                    <p>当集合是连续的范围时，数轴是最好的朋友！</p>
+                    <p class="bg-slate-50 p-3 rounded-lg"><strong>例：</strong>U=R, A = {x | x > -2}, B = {x | x ≤ 5}。</p>
+                    <ul class="list-disc list-inside ml-4 space-y-2">
+                        <li><strong>A ∪ B (并集)：</strong>画图发现覆盖了整条数轴，所以是 R。</li>
+                        <li><strong>A ∩ B (交集)：</strong>重叠的部分是 {x | -2 < x ≤ 5}。</li>
+                        <li><strong>∁<sub>U</sub>A (A的补集)：</strong>A是大于-2的，补集就是小于等于-2的，即 {x | x ≤ -2}。</li>
+                    </ul>
+                     <p class="text-center mt-4 font-semibold">核心思想：数形结合！</p>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+        <!-- Section 7: Venn Diagram -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">🎨 神器二：神奇的韦恩图！</h2>
+                <div class="mt-6 text-lg text-slate-700 space-y-4">
+                    <p>用圆圈代表集合，更直观地展示关系，专治计数和抽象问题。</p>
+                     <div class="flex justify-center my-4">
+                        <svg width="250" height="150" viewBox="0 0 250 150" class="bg-slate-50 rounded-lg border">
+                            <rect x="5" y="5" width="240" height="140" fill="none" stroke="#64748b" stroke-width="2"></rect>
+                            <text x="225" y="25" font-size="16" fill="#64748b">U</text>
+                            <circle cx="100" cy="75" r="50" fill="#a5b4fc" fill-opacity="0.6" stroke="#4f46e5" stroke-width="2"></circle>
+                            <text x="95" y="80" font-size="16" fill="#1e3a8a">A</text>
+                            <circle cx="150" cy="75" r="50" fill="#6ee7b7" fill-opacity="0.6" stroke="#047857" stroke-width="2"></circle>
+                            <text x="145" y="80" font-size="16" fill="#064e3b">B</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+        
+        <!-- Section 8: Venn Diagram Example -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">韦恩图应用：解决计数问题</h2>
+                 <div class="mt-6 text-lg text-slate-700 space-y-4">
+                    <p><strong>问题：</strong>班里30人唱歌，25人跳舞，12人都会。问至少会一项的有多少人？</p>
+                     <div class="flex justify-center my-4">
+                        <svg width="400" height="220" viewBox="0 0 400 220" class="bg-slate-50 rounded-lg p-2">
+                            <!-- Define circles for reuse and clipping -->
+                            <defs>
+                                <circle id="circleA" cx="150" cy="110" r="80"></circle>
+                                <circle id="circleB" cx="250" cy="110" r="80"></circle>
+                                
+                                <!-- Create a clip path for the intersection area -->
+                                <clipPath id="intersectionClip">
+                                    <use href="#circleA"></use>
+                                </clipPath>
+                            </defs>
+
+                            <!-- Circle A (Singing) -->
+                            <use href="#circleA" fill="#a5b4fc" fill-opacity="0.7"></use>
+                            <text x="110" y="50" font-size="20" font-weight="bold" fill="#1e3a8a">唱歌 (30)</text>
+                            <text x="115" y="120" font-size="40" font-weight="bold" fill="#1e3a8a">18</text>
+
+                            <!-- Circle B (Dancing) -->
+                            <use href="#circleB" fill="#6ee7b7" fill-opacity="0.7"></use>
+                            <text x="210" y="50" font-size="20" font-weight="bold" fill="#064e3b">跳舞 (25)</text>
+                            <text x="285" y="120" font-size="40" font-weight="bold" fill="#064e3b">13</text>
+                            
+                            <!-- Intersection Area - drawn using the clip path -->
+                            <use href="#circleB" clip-path="url(#intersectionClip)" fill="#8b5cf6" fill-opacity="0.7"></use>
+                            <text x="190" y="120" font-size="40" font-weight="bold" fill="white">12</text>
+                            
+                            <!-- Draw strokes on top so they are not covered by fills -->
+                            <use href="#circleA" fill="none" stroke="#4f46e5" stroke-width="2.5"></use>
+                            <use href="#circleB" fill="none" stroke="#047857" stroke-width="2.5"></use>
+                        </svg>
+                    </div>
+                    <p class="text-center"><strong>解：</strong>先填中间(12)，再算两边(30-12=18, 25-12=13)。总人数 = 18+13+12 = 43人。</p>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+        <!-- Section 9: Practice Problem 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2 mb-6">课后习题</h2>
+                <div class="text-lg">
+                    <p><strong>1. (并集与交集)</strong> 已知集合 A={x|x>1}, B={y|y≤2}，则 A∩B = ?</p>
+                    <div class="mt-4 space-y-2">
+                        <p>A. {x|x > 1}</p>
+                        <p>B. {x|x ≤ 2}</p>
+                        <p>C. {x|1 < x ≤ 2}</p>
+                        <p>D. ∅</p>
+                    </div>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+        <!-- Section 10: Practice Problem 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2 mb-6">课后习题</h2>
+                <div class="text-lg">
+                    <p><strong>2. (补集)</strong> 设全集 U={1,2,3,4,5}，A={1,3}，则 ∁<sub>U</sub>A = ?</p>
+                     <div class="mt-4 space-y-2">
+                        <p>A. {1,3}</p>
+                        <p>B. {2,4}</p>
+                        <p>C. {2,4,5}</p>
+                        <p>D. {1,2,3,4,5}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+        <!-- Section 11: Practice Problem 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2 mb-6">课后习题</h2>
+                <div class="text-lg">
+                    <p><strong>3. (混合运算)</strong> 已知 U=R, A={x|-1≤x≤3}, B={x|x>2}，求 A∪(∁<sub>U</sub>B) = ?</p>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+        <!-- Section 12: Practice Problem 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-amber-500 pb-2 mb-6">课后习题</h2>
+                <div class="text-lg">
+                    <p><strong>4. (韦恩图)</strong> 已知全集U, (A∪B)的补集是{1,5,6}，B的补集是{1,4,6}，则图中阴影部分(A∩(∁<sub>U</sub>B))表示的集合是?</p>
+                    <div class="flex justify-center my-4"><svg width="150" height="100" viewBox="0 0 150 100"><rect x="2" y="2" width="146" height="96" fill="none" stroke="#000"></rect><text x="130" y="18">U</text><circle cx="60" cy="50" r="35" fill="#ccc"></circle><path d="M 60 15 A 35 35 0 0 1 60 85 C 85 85 85 15 60 15 Z" fill="#fff"></path><circle cx="90" cy="50" r="35" fill="none" stroke="#000"></circle><text x="55" y="55">A</text><text x="85" y="55">B</text></svg></div>
+                     <div class="mt-4 space-y-2">
+                        <p>A. {1,6}</p>
+                        <p>B. {4}</p>
+                        <p>C. {5}</p>
+                        <p>D. {1,4,6}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+        <!-- Section 13: Answers Intro -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2 inline-block">答案与解析</h2>
+                <p class="mt-8 text-2xl">思考完毕？来看看正确答案吧！</p>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+        <!-- Section 14: Answer 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2 mb-6">答案与解析</h2>
+                <div class="bg-slate-50 p-4 rounded-lg text-lg">
+                    <p><strong>1. 【答案】C. {x|1 < x ≤ 2}</strong></p>
+                    <p class="mt-2">【解析】画数轴，集合A表示大于1的区域，集合B表示小于等于2的区域。它们的公共重叠部分（交集）就是从1到2的区域，不包括1但包括2。</p>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+        <!-- Section 15: Answer 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2 mb-6">答案与解析</h2>
+                <div class="bg-slate-50 p-4 rounded-lg text-lg">
+                    <p><strong>2. 【答案】C. {2,4,5}</strong></p>
+                    <p class="mt-2">【解析】补集是指在全集U中，但不在集合A中的元素。全集U是{1,2,3,4,5}，从中“去掉”A的元素{1,3}后，剩下的就是{2,4,5}。</p>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+        <!-- Section 16: Answer 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2 mb-6">答案与解析</h2>
+                <div class="bg-slate-50 p-4 rounded-lg text-lg">
+                    <p><strong>3. 【答案】{x|x≤3}</strong></p>
+                    <p class="mt-2">【解析】第一步，求B的补集：B是{x|x>2}，那么它的补集∁<sub>U</sub>B就是{x|x≤2}。第二步，求A与B的补集的并集，即{x|-1≤x≤3} ∪ {x|x≤2}。在数轴上画出这两个范围并将它们“合并”起来，得到的结果是{x|x≤3}。</p>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+        
+        <!-- Section 17: Answer 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-teal-500 pb-2 mb-6">答案与解析</h2>
+                <div class="bg-slate-50 p-4 rounded-lg text-lg">
+                    <p><strong>4. 【答案】B. {4}</strong></p>
+                    <p class="mt-2">【解析】阴影部分是 A \ B，也等于 A ∩ (∁<sub>U</sub>B)。题目已知 (∁<sub>U</sub>B) = {1,4,6}，所以我们要求 A ∩ {1,4,6}。又已知 (A∪B)的补集 = {1,5,6}，这说明 A 和 B 都不包含1, 5, 6。所以 A ∩ {1,4,6} 不可能包含1和6，只可能包含4（如果4在A中的话）。我们需要确定4是否在A中。因为 4 ∉ (A∪B)'，所以 4 ∈ (A∪B)。又因为 4 ∈ (∁<sub>U</sub>B)，所以 4 ∉ B。一个元素在A∪B中，但不在B中，那么它一定在A中。所以 4 ∈ A。因此 A ∩ {1,4,6} = {4}。</p>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+        <!-- Section 18: Summary -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">第三部分：总结与展望</h2>
+                <div class="mt-6 text-lg space-y-4">
+                    <div class="p-4 bg-slate-50 rounded-lg">
+                        <h3 class="font-semibold text-xl">今日总结</h3>
+                        <ul class="list-disc list-inside mt-2">
+                           <li><strong>三大核心运算：</strong>交集(∩)找共同，并集(∪)全都要，补集(∁)找剩余。</li>
+                           <li><strong>两大神器：</strong>数轴解决范围问题，韦恩图直观展示关系。</li>
+                           <li class="font-bold">核心思想：数形结合！</li>
+                        </ul>
+                    </div>
+                    <p>回去用今天学的知识，分析一下你们兴趣小组的成员情况。今天的集合探秘之旅就到这里，下课！</p>
+                </div>
+            </div>
+            <div class="cartoon-container"><canvas width="120" height="120"></canvas></div>
+        </div>
+
+    </div>
+<script>
+    window.onload = function() {
+        const canvases = document.querySelectorAll('.cartoon-container canvas');
+        const contexts = Array.from(canvases).map(c => c.getContext('2d'));
+
+        const drawings = [
+            // 1
+            (ctx) => {
+                ctx.font = '60px sans-serif';
+                ctx.fillText('🤔', 30, 80);
+            },
+            // 2
+            (ctx) => {
+                ctx.font = '60px sans-serif';
+                ctx.fillText('🤝', 30, 80);
+            },
+            // 3
+            (ctx) => {
+                ctx.font = '60px sans-serif';
+                ctx.fillText('🤗', 30, 80);
+            },
+            // 4
+            (ctx) => {
+                ctx.font = '60px sans-serif';
+                ctx.fillText('🧐', 30, 80);
+            },
+            // 5. 神器
+            (ctx) => {
+                ctx.font = '60px sans-serif';
+                ctx.fillText('🛠️', 30, 80);
+            },
+            // 6. 小树
+            (ctx) => {
+                ctx.fillStyle = '#a16207'; // yellow-700 trunk
+                ctx.fillRect(50, 80, 20, 30);
+                ctx.fillStyle = '#4d7c0f'; // lime-700 leaves
+                ctx.beginPath();
+                ctx.arc(60, 60, 35, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#65a30d'; // lime-600
+                ctx.beginPath();
+                ctx.arc(45, 65, 20, 0, Math.PI * 2);
+                ctx.fill();
+                 ctx.beginPath();
+                ctx.arc(75, 65, 20, 0, Math.PI * 2);
+                ctx.fill();
+            },
+             // 7. 猫头鹰
+            (ctx) => {
+                ctx.fillStyle = '#92400e'; // amber-800 body
+                ctx.beginPath();
+                ctx.ellipse(60, 75, 30, 40, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#fef3c7'; // amber-100 face
+                ctx.beginPath();
+                ctx.ellipse(60, 65, 25, 20, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#000'; // eyes
+                ctx.beginPath(); ctx.arc(50, 65, 5, 0, Math.PI * 2); ctx.fill();
+                ctx.beginPath(); ctx.arc(70, 65, 5, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#fb923c'; // orange-400 beak
+                ctx.beginPath(); ctx.moveTo(60, 68); ctx.lineTo(55, 75); ctx.lineTo(65, 75); ctx.closePath(); ctx.fill();
+            },
+            // 8
+            (ctx) => {
+                 ctx.font = '60px sans-serif';
+                ctx.fillText('📊', 30, 80);
+            },
+            // 9
+            (ctx) => {
+                 ctx.font = '60px sans-serif';
+                ctx.fillText('📝', 30, 80);
+            },
+            // 10
+             (ctx) => {
+                ctx.font = '60px sans-serif';
+                ctx.fillText('🧠', 30, 80);
+            },
+            // 11
+            (ctx) => {
+                ctx.font = '60px sans-serif';
+                ctx.fillText('✍️', 30, 80);
+            },
+             // 12
+            (ctx) => {
+                ctx.font = '60px sans-serif';
+                ctx.fillText('🧐', 30, 80);
+            },
+             // 13
+            (ctx) => {
+                ctx.font = '60px sans-serif';
+                ctx.fillText('💡', 30, 80);
+            },
+             // 14
+            (ctx) => {
+                ctx.strokeStyle = '#34d399'; // emerald-400
+                ctx.lineWidth = 5;
+                ctx.beginPath();
+                ctx.moveTo(30, 60);
+                ctx.lineTo(50, 80);
+                ctx.lineTo(90, 40);
+                ctx.stroke();
+            },
+            // 15
+             (ctx) => {
+                ctx.strokeStyle = '#34d399'; // emerald-400
+                ctx.lineWidth = 5;
+                ctx.beginPath();
+                ctx.moveTo(30, 60);
+                ctx.lineTo(50, 80);
+                ctx.lineTo(90, 40);
+                ctx.stroke();
+            },
+            // 16
+             (ctx) => {
+                ctx.strokeStyle = '#34d399'; // emerald-400
+                ctx.lineWidth = 5;
+                ctx.beginPath();
+                ctx.moveTo(30, 60);
+                ctx.lineTo(50, 80);
+                ctx.lineTo(90, 40);
+                ctx.stroke();
+            },
+             // 17
+            (ctx) => {
+                ctx.strokeStyle = '#34d399'; // emerald-400
+                ctx.lineWidth = 5;
+                ctx.beginPath();
+                ctx.moveTo(30, 60);
+                ctx.lineTo(50, 80);
+                ctx.lineTo(90, 40);
+                ctx.stroke();
+            },
+            // 18
+            (ctx) => {
+                ctx.font = '60px sans-serif';
+                ctx.fillText('👋', 30, 80);
+            }
+        ];
+
+        contexts.forEach((ctx, i) => {
+            const drawFunc = drawings[i % drawings.length];
+            drawFunc(ctx);
+        });
+    };
+</script>
+</body>
+</html>
+
+

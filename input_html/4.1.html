@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>指数运算进阶 (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 400px; /* 保证内容较少时也有足够高度 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .cartoon-canvas {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            width: 100px;
+            height: 100px;
+        }
+
+        .worksheet-bg {
+             background-color: #f8fafc;
+             background-image: repeating-linear-gradient(
+                to bottom,
+                #e2e8f0,
+                #e2e8f0 1px,
+                transparent 1px,
+                transparent 40px
+            );
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+
+            .section:last-child {
+                page-break-after: auto;
+            }
+            .cartoon-canvas {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- Section 1: Title -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">指数运算进阶</h1>
+                <p class="text-2xl text-slate-600 mt-4">攻克“又大又长”的化简题</p>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 2: Intro -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800">看到这个“拦路虎”，你慌了吗？</h2>
+                <p class="mt-8 text-4xl text-slate-700 leading-relaxed font-mono">
+                    √(x³ · ⁴√x²) ÷ ³√x
+                </p>
+                <p class="mt-8 text-xl text-slate-600">
+                    别怕！它就是一只“纸老虎”！<br>核心就是把“根号”变成我们熟悉的老朋友——“指数”。
+                </p>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 3: Fractional Exponents -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">核心概念一：给根号一个“指数身份”</h2>
+                <p class="mt-6 text-2xl font-semibold text-center text-red-600">口诀：分母管开根，分子管次方！</p>
+                <div class="mt-6 bg-amber-50 p-6 rounded-lg text-lg">
+                    <p class="font-semibold text-xl">x<sup>n/m</sup> = ᵐ√(xⁿ)</p>
+                    <ul class="list-disc list-inside mt-4 space-y-2">
+                        <li>8<sup>1/3</sup> = ³√8 = 2</li>
+                        <li>16<sup>3/4</sup> = (⁴√16)³ = 2³ = 8</li>
+                    </ul>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 4: Practice for Concept 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-700 border-b-2 border-amber-300 pb-2">来，马上练一下手！</h3>
+                <p class="mt-4 text-2xl text-center font-mono">(125/64)<sup>-2/3</sup></p>
+                <div class="mt-4 bg-amber-50 p-4 rounded-lg text-lg">
+                    <p>1. 括号内：125/64 = (5/4)³</p>
+                    <p>2. 幂的乘方：[(5/4)³]<sup>-2/3</sup> = (5/4)<sup>(3 * -2/3)</sup> = (5/4)⁻²</p>
+                    <p>3. 负指数幂：(5/4)⁻² = (4/5)² = 16/25</p>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 5: Absolute Value Trap (Part 1 - The Story) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">核心概念二：必须警惕的“绝对值陷阱”</h2>
+                
+                <p class="mt-6 text-lg text-slate-700 leading-relaxed">
+                    “好了，基本功我们练完了。接下来，我要带大家看一个非常非常重要的点，一个考试里专门用来‘钓鱼’的陷阱，无数人在这里丢过分，大家一定要竖起耳朵听！”
+                </p>
+        
+                <div class="my-6 p-4 bg-slate-800 text-white rounded-lg text-center shadow-lg">
+                     <p class="text-4xl font-mono tracking-wider">⁴√((-5)²)</p>
+                </div>
+        
+                <p class="text-lg text-slate-700 leading-relaxed">
+                    “看到这个题目，有同学可能这么想：‘老师我刚学了，根号化指数！’ 于是他写：<code class="font-mono bg-amber-100 p-1 rounded">(-5)<sup>2/4</sup></code>。然后他发现，2/4 可以约分啊，变成 1/2。所以就等于 <code class="font-mono bg-amber-100 p-1 rounded">(-5)<sup>1/2</sup></code>，也就是 <code class="font-mono bg-amber-100 p-1 rounded">√-5</code>……”
+                </p>
+                
+                <p class="mt-4 text-lg text-slate-700 leading-relaxed font-semibold text-red-600">
+                    “停！大家觉得对吗？<code class="font-mono bg-red-100 p-1 rounded">√-5</code>，负数能开平方吗（在实数范围内）？不能！算出个没意义的东西。可是一开始的 <code class="font-mono bg-red-100 p-1 rounded">(-5)²</code> 是 25，<code class="font-mono bg-red-100 p-1 rounded">⁴√25</code> 明明是一个正数啊！一个好好的正数，怎么算着算着就算没了呢？问题出在哪？”
+                </p>
+        
+                <p class="mt-4 text-lg text-slate-700 leading-relaxed">
+                    “问题就出在<strong class="text-blue-600">约分</strong>！你把 <code class="font-mono bg-blue-100 p-1 rounded">2/4</code> 约成 <code class="font-mono bg-blue-100 p-1 rounded">1/2</code> 的时候，把原来那个‘<strong class="text-blue-600">偶数次方</strong>’的 2 给约掉了！偶数次方有个什么重要功能？<strong class="text-blue-600">它可以把负数变成正数！</strong> 是个强大的‘扭转乾坤’的符号。你把它约掉了，这个功能就没了，(-5) 就被打回原形，自然就出错了！”
+                </p>
+            </div>
+        </div>
+
+        <!-- Section 6: Blank Practice Page -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">核心概念二：必须警惕的“绝对值陷阱”</h2>
+                 <p class="mt-8 text-lg text-slate-700 leading-relaxed">现在，请试着分析并化简下面的表达式。思考每一步的依据，特别是当根号内出现负数和偶数次方时，应该如何正确处理。</p>
+                 <div class="my-8 p-8 bg-slate-50 rounded-lg text-center">
+                      <p class="text-3xl font-mono tracking-wider text-slate-800">⁴√((-5)²)</p>
+                 </div>
+                 <!-- 此处留有足够的空白区域用于演算和笔记 -->
+                 <div class="h-48"></div> <!-- Empty div for spacing -->
+            </div>
+        </div>
+
+        <!-- Section 7: Absolute Value Trap (Part 2 - The Rule) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">核心法则：偶次根开偶次方</h2>
+                <p class="mt-6 text-lg text-slate-700 leading-relaxed font-bold">
+                    “所以，请大家务必，务必记住这个法则：”
+                </p>
+        
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                    <div class="bg-green-50 p-6 rounded-lg border-l-4 border-green-500">
+                        <h3 class="font-bold text-green-700 text-xl">当 n 是奇数时</h3>
+                        <p class="font-mono text-xl mt-2">ⁿ√(aⁿ) = a</p>
+                        <p class="mt-2">奇次根下奇次方，原样出来。</p>
+                        <p class="text-base mt-2 font-mono text-slate-600">例: ³√(-2)³ = -2</p>
+                    </div>
+                    <div class="bg-red-50 p-6 rounded-lg border-l-4 border-red-500">
+                        <h3 class="font-bold text-red-700 text-xl">当 n 是偶数时</h3>
+                        <p class="font-mono text-xl mt-2">ⁿ√(aⁿ) = |a|</p>
+                        <p class="mt-2">偶次根下偶次方，加绝对值！</p>
+                        <p class="text-base mt-2 font-mono text-slate-600">例: ⁴√(-2)⁴ = |-2| = 2</p>
+                    </div>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 8: Practice 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">实战演练：数字综合题</h2>
+                 <p class="mt-4 text-xl text-center font-mono">(0.125)<sup>-1/3</sup> + (π-3)⁰ - ³√27² + 81<sup>-3/4</sup></p>
+                 <div class="mt-4 bg-purple-50 p-4 rounded-lg text-lg min-h-[16rem]">
+                      <!-- Solution removed for practice -->
+                 </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 9: Practice 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-purple-500 pb-2">实战演练：字母综合题</h2>
+                <p class="mt-6 text-2xl text-center font-mono">√(x³ · ⁴√x²) ÷ ³√x</p>
+                <div class="mt-4 bg-teal-50 p-6 rounded-lg text-lg min-h-[16rem]">
+                     <!-- Solution removed for practice -->
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+        
+        <!-- Section 10: Comprehensive Practice (I) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">综合练习 (一)</h2>
+                <div class="mt-6 space-y-8 text-lg flex-grow flex flex-col justify-center">
+                    <div>
+                        <p class="font-semibold text-xl">1. 下列各式计算正确的是 ( &nbsp;&nbsp;&nbsp;&nbsp; )</p>
+                        <ul class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 font-mono text-xl">
+                            <li>A. (-1)⁰ = 1</li>
+                            <li>B. a<sup>1/2</sup> ⋅ a² = a</li>
+                            <li>C. 4<sup>2/4</sup> = 8</li>
+                            <li>D. a<sup>2/3</sup> ÷ a<sup>-1/3</sup> = a<sup>1/3</sup></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+             <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 11: Comprehensive Practice (II) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">综合练习 (二)</h2>
+                <div class="mt-6 space-y-8 text-lg flex-grow flex flex-col justify-center">
+                    <div>
+                        <p class="font-semibold text-xl">2. 若 a<sup>m</sup> = 3, a<sup>n</sup> = 4, 则 a<sup>(2m+3n)/2</sup> = ( &nbsp;&nbsp;&nbsp;&nbsp; )</p>
+                         <ul class="mt-4 grid grid-cols-1 md:grid-cols-4 gap-x-8 gap-y-4 font-mono text-xl">
+                            <li>A. 24</li>
+                            <li>B. 12</li>
+                            <li>C. 2√6</li>
+                            <li>D. 2√3</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+             <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 12: Comprehensive Practice (III) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">综合练习 (三)</h2>
+                <div class="mt-6 space-y-8 text-lg flex-grow flex flex-col justify-center">
+                    <div>
+                        <p class="font-semibold text-xl">3. √<span>a√a</span> (a > 0) 可以化简成 ( &nbsp;&nbsp;&nbsp;&nbsp; )</p>
+                         <ul class="mt-4 grid grid-cols-1 md:grid-cols-4 gap-x-8 gap-y-4 font-mono text-xl">
+                            <li>A. a<sup>1/4</sup></li>
+                            <li>B. a<sup>3/4</sup></li>
+                            <li>C. a<sup>2/3</sup></li>
+                            <li>D. a<sup>2/5</sup></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 13: Comprehensive Practice (IV) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-green-500 pb-2">综合练习 (四)</h2>
+                <div class="mt-6 space-y-8 text-lg flex-grow flex flex-col justify-center">
+                    <div>
+                         <p class="font-semibold text-xl">4. 化简：(1/32)<sup>-2/5</sup> + ⁶√((√5 - 3)⁶)</p>
+                         <div class="mt-4 p-4 bg-slate-50 rounded-lg min-h-[10rem]">
+                             <!-- Blank space for answer -->
+                         </div>
+                    </div>
+                </div>
+            </div>
+            <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+        <!-- Section 14: Answers and Analysis (Part 1) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-red-500 pb-2">综合练习 - 答案与解析 (上)</h2>
+                <div class="mt-6 space-y-6 text-lg">
+                    <!-- Problem 1 -->
+                    <div class="bg-slate-50 p-4 rounded-lg">
+                        <p class="font-bold text-slate-700">1. 正确答案：A</p>
+                        <p class="mt-2 text-slate-600"><b>解析：</b><br> A: 根据零指数幂的定义，任何非零数的0次方都等于1。(-1)≠0，所以(-1)⁰=1，此项正确。<br> B: 同底数幂相乘，指数相加。a<sup>1/2</sup> ⋅ a² = a<sup>1/2 + 2</sup> = a<sup>5/2</sup> ≠ a。<br> C: 4<sup>2/4</sup> = 4<sup>1/2</sup> = √4 = 2 ≠ 8。<br> D: 同底数幂相除，指数相减。a<sup>2/3</sup> ÷ a<sup>-1/3</sup> = a<sup>2/3 - (-1/3)</sup> = a<sup>3/3</sup> = a ≠ a<sup>1/3</sup>。</p>
+                    </div>
+                    <!-- Problem 2 -->
+                    <div class="bg-slate-50 p-4 rounded-lg">
+                        <p class="font-bold text-slate-700">2. 正确答案：A</p>
+                        <p class="mt-2 text-slate-600"><b>解析：</b><br> a<sup>(2m+3n)/2</sup> = (a<sup>2m+3n</sup>)<sup>1/2</sup> = √(a<sup>2m</sup> ⋅ a<sup>3n</sup>) = √((a<sup>m</sup>)² ⋅ (a<sup>n</sup>)³)。<br> 将 a<sup>m</sup> = 3 和 a<sup>n</sup> = 4 代入表达式：<br> √((3)² ⋅ (4)³) = √(9 ⋅ 64) = √576 = 24。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 15: Answers and Analysis (Part 2) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-red-500 pb-2">综合练习 - 答案与解析 (下)</h2>
+                <div class="mt-6 space-y-6 text-lg">
+                    <!-- Problem 3 -->
+                    <div class="bg-slate-50 p-4 rounded-lg">
+                        <p class="font-bold text-slate-700">3. 正确答案：B</p>
+                        <p class="mt-2 text-slate-600"><b>解析：</b><br> 核心策略是“见根号，化指数”。<br> √<span>a√a</span> = (a ⋅ a<sup>1/2</sup>)<sup>1/2</sup><br> = (a<sup>1 + 1/2</sup>)<sup>1/2</sup> = (a<sup>3/2</sup>)<sup>1/2</sup><br> 根据幂的乘方法则，指数相乘：<br> = a<sup>(3/2) ⋅ (1/2)</sup> = a<sup>3/4</sup>。</p>
+                    </div>
+                    <!-- Problem 4 -->
+                    <div class="bg-slate-50 p-4 rounded-lg">
+                        <p class="font-bold text-slate-700">4. 正确答案：7 - √5</p>
+                        <p class="mt-2 text-slate-600"><b>解析：</b><br> 原式分为两部分计算。<br> <b>第一部分：</b>(1/32)<sup>-2/5</sup> = (32)<sup>2/5</sup> = (⁵√32)² = 2² = 4。<br> <b>第二部分：</b>⁶√((√5 - 3)⁶)。这是一个典型的“绝对值陷阱”。因为是偶次根开偶次方，所以结果要加绝对值。即 |√5 - 3|。<br> 判断绝对值内正负：因为 √5 ≈ 2.236，所以 √5 - 3 是一个负数。<br> 负数取绝对值，等于它的相反数：|√5 - 3| = -(√5 - 3) = 3 - √5。<br> <b>最后，</b>将两部分结果相加：4 + (3 - √5) = 7 - √5。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 16: Summary -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2">总结</h2>
+                 <p class="mt-6 text-xl text-slate-700">降服“纸老虎”的三件法宝：</p>
+                 <ul class="mt-4 list-disc list-inside space-y-3 text-lg">
+                      <li><strong>翻译器：</strong>分数指数幂 (分母管开根，分子管次方)。</li>
+                      <li><strong>总战略：</strong>所有根号都变成指数再计算！</li>
+                      <li class="text-red-600 font-bold"><strong>防盗网：</strong>偶次根下偶次方，结果一定加绝对值！</li>
+                 </ul>
+             </div>
+             <canvas class="cartoon-canvas"></canvas>
+        </div>
+
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Draw cartoon for all small canvases
+            const canvases = document.querySelectorAll('.cartoon-canvas');
+            canvases.forEach((canvas, index) => {
+                const ctx = canvas.getContext('2d');
+                drawCartoon(ctx, index, canvas.width, canvas.height); 
+            });
+        });
+
+        function drawCartoon(ctx, index, w, h) {
+            ctx.clearRect(0, 0, w, h);
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 2;
+
+            // Map the canvas index to the correct drawing function
+            const drawingMap = [0, 1, 2, 3, 4, 5, 5, 6, 7, 6, 7, 6, 7, 0, 1];
+            const drawingIndex = drawingMap[index] !== undefined ? drawingMap[index] : index % 8;
+
+            switch (drawingIndex) { 
+                case 0: // Title - thinking face
+                    ctx.fillStyle = '#fde047';
+                    ctx.beginPath();
+                    ctx.arc(w/2, h/2, w*0.4, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.stroke();
+                    ctx.fillStyle = 'black';
+                    ctx.beginPath();
+                    ctx.arc(w*0.35, h*0.4, w*0.05, 0, Math.PI*2);
+                    ctx.arc(w*0.65, h*0.4, w*0.05, 0, Math.PI*2);
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.4, h*0.65);
+                    ctx.lineTo(w*0.6, h*0.65);
+                    ctx.stroke();
+                    break;
+                case 1: // Paper Tiger
+                    ctx.fillStyle = '#f97316';
+                    ctx.beginPath();
+                    ctx.arc(w/2, h/2, w*0.3, 0, Math.PI*2);
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.3, h*0.3); ctx.lineTo(w*0.2, h*0.1); ctx.lineTo(w*0.4, h*0.2);
+                    ctx.closePath(); ctx.fill();
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.7, h*0.3); ctx.lineTo(w*0.8, h*0.1); ctx.lineTo(w*0.6, h*0.2);
+                    ctx.closePath(); ctx.fill();
+                    ctx.strokeStyle = 'black';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath(); ctx.moveTo(w*0.3, h*0.6); ctx.lineTo(w*0.2, h*0.65); ctx.stroke();
+                    ctx.beginPath(); ctx.moveTo(w*0.4, h*0.6); ctx.lineTo(w*0.3, h*0.65); ctx.stroke();
+                    ctx.beginPath(); ctx.moveTo(w*0.6, h*0.6); ctx.lineTo(w*0.7, h*0.65); ctx.stroke();
+                    ctx.beginPath(); ctx.moveTo(w*0.7, h*0.6); ctx.lineTo(w*0.8, h*0.65); ctx.stroke();
+                    break;
+                case 2: // Root to exponent
+                    ctx.font = 'bold 25px Arial';
+                    ctx.fillStyle = '#0ea5e9';
+                    ctx.fillText('ᵐ√xⁿ', w*0.1, h*0.6);
+                    ctx.fillText('→', w*0.45, h*0.6);
+                    ctx.fillText('xⁿ/ᵐ', w*0.6, h*0.6);
+                    break;
+                case 3: // Calculator
+                    ctx.fillStyle = '#475569';
+                    ctx.fillRect(w*0.2, h*0.1, w*0.6, h*0.8);
+                    ctx.fillStyle = '#cbd5e1';
+                    ctx.fillRect(w*0.25, h*0.15, w*0.5, h*0.2);
+                      for(let i=0; i<3; i++){
+                          for(let j=0; j<3; j++){
+                               ctx.fillStyle = '#94a3b8';
+                               ctx.fillRect(w*(0.25 + j*0.18), h*(0.4 + i*0.18), w*0.12, h*0.12);
+                          }
+                      }
+                    break;
+                case 4: // Absolute value trap (Bear Trap)
+                      ctx.strokeStyle = '#4b5563';
+                      ctx.lineWidth = 4;
+                      ctx.beginPath();
+                      ctx.arc(w/2, h/2, w*0.3, Math.PI, 2*Math.PI);
+                      ctx.stroke();
+                      ctx.beginPath();
+                      ctx.arc(w/2, h*0.55, w*0.3, 0, Math.PI);
+                      ctx.stroke();
+                      for(let i=0; i<6; i++){
+                          const angle = Math.PI + i * Math.PI / 5;
+                          ctx.beginPath();
+                          ctx.moveTo(w/2, h/2);
+                          ctx.lineTo(w/2 + Math.cos(angle)*w*0.4, h/2 + Math.sin(angle)*h*0.4);
+                          ctx.stroke();
+                      }
+                    break;
+                case 5: // Gears
+                    ctx.font = 'bold 20px Arial';
+                    ctx.fillStyle = 'black';
+                    ctx.fillText('√x', w*0.1, h*0.2);
+                    ctx.fillText('x¹/²', w*0.7, h*0.2);
+                    ctx.strokeStyle = '#f59e0b';
+                    ctx.beginPath();
+                    ctx.arc(w*0.3, h*0.5, w*0.2, 0, Math.PI*2);
+                    ctx.moveTo(w*0.7, h*0.5);
+                    ctx.arc(w*0.7, h*0.5, w*0.2, 0, Math.PI*2);
+                    ctx.stroke();
+                    break;
+                case 6: // Checklist
+                    ctx.strokeStyle = '#16a34a';
+                    ctx.lineWidth = 4;
+                    ctx.strokeRect(w*0.2, h*0.2, w*0.6, h*0.6);
+                    ctx.beginPath();
+                    ctx.moveTo(w*0.3, h*0.4); ctx.lineTo(w*0.4, h*0.5); ctx.lineTo(w*0.7, h*0.3);
+                    ctx.moveTo(w*0.3, h*0.6); ctx.lineTo(w*0.4, h*0.7); ctx.lineTo(w*0.7, h*0.5);
+                    ctx.stroke();
+                    break;
+                case 7: // Lightbulb
+                    ctx.fillStyle = '#facc15';
+                    ctx.beginPath();
+                    ctx.arc(w/2, h*0.4, w*0.25, 0, Math.PI*2);
+                    ctx.fill();
+                    ctx.fillRect(w*0.4, h*0.65, w*0.2, h*0.1);
+                    ctx.stroke();
+                    break;
+
+            }
+        }
+    </script>
+</body>
+</html>
+

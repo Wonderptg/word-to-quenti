@@ -1,0 +1,121 @@
+[
+  {
+    "term": "【糖类·定义】化学本质",
+    "definitionHtml": "多羟基醛、多羟基酮或它们的脱水缩合物。注意：糖不一定甜（如淀粉），甜不一定是糖（如甘油）。",
+    "latex": "C_m(H_2O)_n \\quad (通式，但不绝对)",
+    "imageFileName": "",
+    "pngPath": "out\\formulas\\0000_latex.png"
+  },
+  {
+    "term": "【葡萄糖·结构】官能团",
+    "definitionHtml": "多羟基醛糖，含5个羟基和1个醛基。与果糖互为同分异构体。",
+    "latex": "CH_2OH(CHOH)_4CHO",
+    "imageFileName": "",
+    "pngPath": "out\\formulas\\0001_latex.png"
+  },
+  {
+    "term": "【果糖·结构】官能团",
+    "definitionHtml": "多羟基酮糖，含5个羟基和1个酮羰基。甜度高于蔗糖和葡萄糖。",
+    "latex": "CH_2OH(CHOH)_3COCH_2OH",
+    "imageFileName": "",
+    "pngPath": "out\\formulas\\0002_latex.png"
+  },
+  {
+    "term": "【葡萄糖·性质】银镜反应",
+    "definitionHtml": "水浴加热条件下与银氨溶液反应生成光亮银镜，证明含有醛基（还原性糖）。",
+    "latex": "R-CHO + 2Ag(NH_3)_2OH \\xrightarrow{\\Delta} 2Ag\\downarrow",
+    "imageFileName": "",
+    "pngPath": "out\\formulas\\0003_latex.png"
+  },
+  {
+    "term": "【葡萄糖·性质】与新制氢氧化铜",
+    "definitionHtml": "加热条件下反应生成砖红色沉淀，证明含有醛基。",
+    "latex": "R-CHO + 2Cu(OH)_2 \\xrightarrow{\\Delta} Cu_2O\\downarrow (砖红色)",
+    "imageFileName": "",
+    "pngPath": "out\\formulas\\0004_latex.png"
+  },
+  {
+    "term": "【二糖·对比】蔗糖与麦芽糖",
+    "definitionHtml": "分子式均为C₁₂H₂₂O₁₁。蔗糖无醛基（非还原），麦芽糖有醛基（还原性）。",
+    "latex": "C_{12}H_{22}O_{11}",
+    "imageFileName": "",
+    "pngPath": "out\\formulas\\0005_latex.png"
+  },
+  {
+    "term": "【糖类·实验】水解检验关键",
+    "definitionHtml": "蔗糖/淀粉酸性水解后，必须先加碱中和酸，再加银氨或氢氧化铜检验，否则反应不发生。",
+    "latex": "H^+ + OH^- = H_2O",
+    "imageFileName": "",
+    "pngPath": "out\\formulas\\0006_latex.png"
+  },
+  {
+    "term": "【多糖·性质】淀粉与纤维素",
+    "definitionHtml": "天然高分子混合物，通式相同但n值不同。淀粉遇碘变蓝，人体能消化淀粉但不能消化纤维素。",
+    "latex": "(C_6H_{10}O_5)_n",
+    "imageFileName": "",
+    "pngPath": "out\\formulas\\0007_latex.png"
+  },
+  {
+    "term": "【淀粉·实验】水解程度判断",
+    "definitionHtml": "碘水变蓝且银镜反应阳性→部分水解；碘水不变蓝且银镜反应阳性→完全水解。",
+    "latex": "A蓝, B镜 \\Rightarrow 部分; \\quad A不蓝, B镜 \\Rightarrow 完全",
+    "imageFileName": "",
+    "pngPath": "out\\formulas\\0008_latex.png"
+  },
+  {
+    "term": "【氨基酸·结构】α-氨基酸",
+    "definitionHtml": "氨基和羧基连接在同一个碳原子上。具有两性，既能与酸反应也能与碱反应。",
+    "latex": "NH_2-CH(R)-COOH",
+    "imageFileName": "",
+    "pngPath": "out\\formulas\\0009_latex.png"
+  },
+  {
+    "term": "【蛋白质·反应】成肽反应",
+    "definitionHtml": "一个氨基酸的羧基与另一个的氨基脱水缩合，形成肽键。",
+    "latex": "-COOH + H_2N- \\rightarrow -CO-NH- + H_2O",
+    "imageFileName": "",
+    "pngPath": "out\\formulas\\0010_latex.png"
+  },
+  {
+    "term": "【蛋白质·性质】盐析与变性",
+    "definitionHtml": "盐析（加轻金属盐）是物理可逆过程；变性（加热/重金属/强酸碱）是化学不可逆过程。",
+    "latex": "盐析 \\rightleftharpoons 溶解, \\quad 变性 \\rightarrow 失活",
+    "imageFileName": "",
+    "pngPath": "out\\formulas\\0011_latex.png"
+  },
+  {
+    "term": "【蛋白质·性质】显色与灼烧",
+    "definitionHtml": "含苯环蛋白质遇浓硝酸变黄；灼烧有烧焦羽毛气味（鉴别真丝/羊毛）。",
+    "latex": "蛋白质 + HNO_3(浓) \\xrightarrow{\\Delta} 黄色",
+    "imageFileName": "",
+    "pngPath": "out\\formulas\\0012_latex.png"
+  },
+  {
+    "term": "【核酸·组成】基本单位",
+    "definitionHtml": "由C、H、O、N、P组成。单体是核苷酸，水解生成磷酸、五碳糖、含氮碱基。",
+    "latex": "核苷酸 = 磷酸 + 五碳糖 + 碱基",
+    "imageFileName": "",
+    "pngPath": "out\\formulas\\0013_latex.png"
+  },
+  {
+    "term": "【核酸·对比】五碳糖区别",
+    "definitionHtml": "DNA含脱氧核糖，RNA含核糖。两者只差一个氧原子。",
+    "latex": "DNA: C_5H_{10}O_4, \\quad RNA: C_5H_{10}O_5",
+    "imageFileName": "",
+    "pngPath": "out\\formulas\\0014_latex.png"
+  },
+  {
+    "term": "【DNA·结构】碱基互补配对",
+    "definitionHtml": "A与T配对（2个氢键），G与C配对（3个氢键）。RNA中U代替T。",
+    "latex": "A=T, \\quad G \\equiv C",
+    "imageFileName": "",
+    "pngPath": "out\\formulas\\0015_latex.png"
+  },
+  {
+    "term": "【氨基酸·计算】二肽种类",
+    "definitionHtml": "两种不同氨基酸（A, B）缩合，最多形成4种二肽：A-B, B-A, A-A, B-B。",
+    "latex": "2^2 = 4 \\quad (排列组合)",
+    "imageFileName": "",
+    "pngPath": "out\\formulas\\0016_latex.png"
+  }
+]

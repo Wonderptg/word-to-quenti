@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>加法与乘法原理 (演示版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <!-- MathJax Library -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 64rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 4rem;
+            position: relative; 
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            page-break-after: always;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 6px solid #3b82f6;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border-radius: 0.25rem;
+            font-size: 1.25rem;
+            line-height: 1.8;
+            overflow-x: auto;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .highlight-box {
+            background-color: #fffbe6;
+            border: 2px dashed #f59e0b;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-size: 1.1rem;
+            margin-top: 1.5rem;
+        }
+
+        .image-placeholder {
+            background-color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 1.2rem;
+            border-radius: 0.5rem;
+            margin: 1.5rem auto;
+            overflow: hidden;
+        }
+
+        .quiz-option {
+            padding: 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quiz-option:hover {
+            background-color: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0mm;
+            }
+
+            body, html {
+                width: 100%;
+                height: 100%;
+                background-color: white;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            #presentation-container {
+                margin: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+                width: 100% !important;
+                max-width: none !important;
+            }
+            
+            .section {
+                height: 100vh !important;
+                width: 100vw !important;
+                max-width: none !important;
+                min-height: 0 !important;
+                page-break-after: always !important;
+                break-after: page !important;
+                page-break-inside: avoid !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                align-items: center !important;
+                padding: 1cm !important;
+                border-bottom: none !important;
+            }
+
+            .section > div {
+                width: 90% !important;
+                max-width: 100% !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-6xl font-bold text-slate-800 mb-6">人生就是无数次的选择</h1>
+                <p class="text-3xl text-slate-600 mt-4">排列组合基石：加法与乘法原理</p>
+                <div class="mt-12 p-6 bg-blue-50 rounded-xl inline-block">
+                    <p class="text-2xl text-blue-800 font-semibold">"搞懂这两块基石，看穿所有题目本质"</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第一部分：分类加法原理 -->
+        <div class="section">
+             <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-sky-500 pb-4 mb-8">一、分类加法原理：殊途同归</h2>
+            <div class="w-full max-w-5xl mx-auto grid grid-cols-2 gap-8 items-center">
+                <div>
+                    <p class="text-xl mb-4 font-bold">场景：上学方案</p>
+                    <ul class="space-y-4 text-lg text-slate-700">
+                        <li class="flex items-center">
+                            <span class="bg-sky-100 text-sky-800 px-2 py-1 rounded mr-2">类1</span>
+                            <span>坐公交 (3种)</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="bg-indigo-100 text-indigo-800 px-2 py-1 rounded mr-2">类2</span>
+                            <span>坐地铁 (2种)</span>
+                        </li>
+                    </ul>
+                    
+                    <div class="highlight-box mt-6">
+                        <p class="font-bold text-amber-800 text-xl mb-2">核心逻辑：并联</p>
+                        <p>每一类都能<strong>独立完成任务</strong>。</p>
+                        <p>选了A就不用选B (互斥)。</p>
+                    </div>
+                    
+                    <div class="formula-box">
+                        $$N = 3 + 2 = 5$$
+                    </div>
+                </div>
+                
+                <div class="image-placeholder h-80 bg-slate-50 border border-slate-200 rounded-xl overflow-hidden">
+                    <!-- SVG: Parallel Circuit / Paths -->
+                    <svg viewBox="0 0 400 300" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Start Point -->
+                        <circle cx="50" cy="150" r="15" fill="#3b82f6" />
+                        <text x="35" y="155" fill="white" font-size="12" font-weight="bold">家</text>
+                        
+                        <!-- End Point -->
+                        <circle cx="350" cy="150" r="15" fill="#ef4444" />
+                        <text x="335" y="155" fill="white" font-size="12" font-weight="bold">校</text>
+                        
+                        <!-- Path Group 1 (Bus) -->
+                        <path d="M 65,150 C 150,50 250,50 335,150" fill="none" stroke="#0ea5e9" stroke-width="3" stroke-dasharray="5,5"/>
+                        <text x="200" y="40" text-anchor="middle" fill="#0ea5e9" font-weight="bold">公交 (3条)</text>
+                        
+                        <!-- Path Group 2 (Subway) -->
+                        <path d="M 65,150 C 150,250 250,250 335,150" fill="none" stroke="#6366f1" stroke-width="3" />
+                        <text x="200" y="270" text-anchor="middle" fill="#6366f1" font-weight="bold">地铁 (2条)</text>
+                        
+                        <!-- Arrows -->
+                        <path d="M 200,92 L 210,100 L 200,108" fill="none" stroke="#0ea5e9" stroke-width="2" />
+                        <path d="M 200,192 L 210,200 L 200,208" fill="none" stroke="#6366f1" stroke-width="2" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 第二部分：分步乘法原理 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-emerald-500 pb-4 mb-8">二、分步乘法原理：步步惊心</h2>
+            <div class="w-full max-w-5xl mx-auto grid grid-cols-2 gap-8 items-center">
+                <div>
+                    <p class="text-xl mb-4 font-bold">场景：超级套餐</p>
+                    <p class="text-lg mb-4">规则：必须选 <strong>1主食</strong> + <strong>1饮料</strong></p>
+                    <ul class="space-y-2 text-lg text-slate-700 ml-4 list-disc">
+                        <li>主食：4种 (炒饭/面/饺/披)</li>
+                        <li>饮料：3种 (乐/汁/奶)</li>
+                    </ul>
+                    
+                    <div class="highlight-box mt-6 bg-emerald-50 border-emerald-400">
+                        <p class="font-bold text-emerald-800 text-xl mb-2">核心逻辑：串联</p>
+                        <p>每一步<strong>缺一不可</strong>。</p>
+                        <p>必须连续做完，任务才算结束。</p>
+                    </div>
+                    
+                    <div class="formula-box">
+                        $$N = 4 \times 3 = 12$$
+                    </div>
+                </div>
+                
+                <div class="image-placeholder h-80 bg-slate-50 border border-slate-200 rounded-xl overflow-hidden">
+                    <!-- SVG: Series Steps -->
+                    <svg viewBox="0 0 400 200" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Step 1 Box -->
+                        <rect x="50" y="75" width="100" height="50" rx="8" fill="#10b981" />
+                        <text x="100" y="105" text-anchor="middle" fill="white" font-weight="bold">Step 1: 主食</text>
+                        <text x="100" y="145" text-anchor="middle" fill="#059669">4种</text>
+                        
+                        <!-- Arrow -->
+                        <line x1="150" y1="100" x2="250" y2="100" stroke="#334155" stroke-width="2" marker-end="url(#arrow)" />
+                        <polygon points="245,95 255,100 245,105" fill="#334155" />
+                        
+                        <!-- Step 2 Box -->
+                        <rect x="250" y="75" width="100" height="50" rx="8" fill="#f59e0b" />
+                        <text x="300" y="105" text-anchor="middle" fill="white" font-weight="bold">Step 2: 饮料</text>
+                        <text x="300" y="145" text-anchor="middle" fill="#d97706">3种</text>
+                        
+                        <!-- "AND" Logic -->
+                        <text x="200" y="90" text-anchor="middle" font-weight="bold" font-size="14">AND</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第三部分：进阶模型 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-amber-500 pb-4 mb-8">三、进阶模型：谁选谁？</h2>
+            <div class="w-full max-w-5xl mx-auto grid grid-cols-2 gap-8 items-center">
+                <div>
+                    <p class="text-xl font-bold mb-4">旅客住店模型</p>
+                    <p class="text-lg mb-4">3名旅客，4家酒店。每人选一家。</p>
+                    
+                    <div class="bg-amber-50 p-4 rounded border-l-4 border-amber-500 mb-4">
+                        <p class="font-bold text-amber-900 text-xl">避坑心法：</p>
+                        <p class="text-lg mt-2">谁是主动的？<br>谁必须归位？</p>
+                    </div>
+
+                    <ul class="space-y-2 text-lg">
+                        <li>第1人：4种选择</li>
+                        <li>第2人：4种选择</li>
+                        <li>第3人：4种选择</li>
+                    </ul>
+                    <div class="formula-box">
+                        $$4 \times 4 \times 4 = 4^3 = 64$$
+                    </div>
+                </div>
+                
+                <div class="image-placeholder h-80 bg-slate-50 border border-slate-200 rounded-xl overflow-hidden">
+                    <!-- SVG: Active Selection -->
+                    <svg viewBox="0 0 400 300" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                        <!-- People (Active) -->
+                        <circle cx="80" cy="60" r="15" fill="#f59e0b" />
+                        <text x="80" y="95" text-anchor="middle">客1</text>
+                        
+                        <circle cx="80" cy="150" r="15" fill="#f59e0b" />
+                        <text x="80" y="185" text-anchor="middle">客2</text>
+                        
+                        <circle cx="80" cy="240" r="15" fill="#f59e0b" />
+                        <text x="80" y="275" text-anchor="middle">客3</text>
+                        
+                        <!-- Hotels (Passive) -->
+                        <rect x="300" y="30" width="40" height="40" fill="#94a3b8" />
+                        <rect x="300" y="90" width="40" height="40" fill="#94a3b8" />
+                        <rect x="300" y="150" width="40" height="40" fill="#94a3b8" />
+                        <rect x="300" y="210" width="40" height="40" fill="#94a3b8" />
+                        <text x="320" y="270" text-anchor="middle">酒店(4)</text>
+                        
+                        <!-- Selection Arrows -->
+                        <path d="M 100,60 Q 200,60 290,50" fill="none" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="4,4"/>
+                        <path d="M 100,150 Q 200,150 290,170" fill="none" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="4,4"/>
+                        <path d="M 100,240 Q 200,240 290,230" fill="none" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="4,4"/>
+                        
+                        <text x="200" y="290" text-anchor="middle" font-weight="bold" fill="#d97706">主动选择</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第四部分：混合双打 -->
+        <div class="section">
+            <h2 class="text-4xl font-bold text-slate-800 text-center border-b-4 border-indigo-500 pb-4 mb-8">四、混合双打：加乘结合</h2>
+            <div class="w-full max-w-5xl mx-auto grid grid-cols-2 gap-8 items-center">
+                <div>
+                    <p class="text-xl font-bold mb-4">场景：勇者闯关</p>
+                    
+                    <div class="space-y-4 text-lg">
+                        <div class="p-4 bg-indigo-50 rounded border-l-4 border-indigo-500">
+                            <p class="font-bold text-indigo-900">路线 A (陆路串联)</p>
+                            <p>火焰山(3) $\to$ 黑森林(2)</p>
+                            <p class="font-bold mt-1">$\implies 3 \times 2 = 6$ 种</p>
+                        </div>
+                        
+                        <div class="p-4 bg-sky-50 rounded border-l-4 border-sky-500">
+                            <p class="font-bold text-sky-900">路线 B (水路直达)</p>
+                            <p>快船 / 慢船 / 潜艇</p>
+                            <p class="font-bold mt-1">$\implies 3$ 种</p>
+                        </div>
+                    </div>
+                    
+                    <div class="highlight-box mt-6">
+                        <p class="text-xl">最终汇总 (并联)：</p>
+                        <div class="formula-box bg-white mt-2 py-2">
+                            $$N = 6 + 3 = 9$$
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="image-placeholder h-80 bg-slate-50 border border-slate-200 rounded-xl overflow-hidden">
+                    <!-- SVG: Mixed Circuit -->
+                    <svg viewBox="0 0 400 300" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Start/End -->
+                        <circle cx="40" cy="150" r="10" fill="#1e293b" />
+                        <circle cx="360" cy="150" r="10" fill="#ef4444" />
+                        
+                        <!-- Path A (Top) -->
+                        <path d="M 40,150 C 100,50 150,50 200,50 S 300,50 360,150" fill="none" stroke="#4f46e5" stroke-width="3" />
+                        <rect x="120" y="30" width="40" height="40" fill="#e0e7ff" stroke="#4f46e5" />
+                        <text x="140" y="55" text-anchor="middle" font-size="10">3</text>
+                        <rect x="240" y="30" width="40" height="40" fill="#e0e7ff" stroke="#4f46e5" />
+                        <text x="260" y="55" text-anchor="middle" font-size="10">2</text>
+                        <text x="200" y="25" text-anchor="middle" fill="#4f46e5" font-weight="bold">A: 乘法</text>
+                        
+                        <!-- Path B (Bottom) -->
+                        <path d="M 40,150 Q 200,250 360,150" fill="none" stroke="#0ea5e9" stroke-width="3" stroke-dasharray="5,5" />
+                        <text x="200" y="230" text-anchor="middle" fill="#0ea5e9" font-weight="bold">B: 直接 (3种)</text>
+                        
+                        <!-- Plus Sign -->
+                        <text x="200" y="150" text-anchor="middle" font-size="30" font-weight="bold" fill="#64748b">+</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <div class="bg-blue-600 text-white px-4 py-1 rounded-t-lg inline-block font-bold">随堂小测 1/4</div>
+                <div class="bg-white border-2 border-gray-200 p-8 rounded-b-lg rounded-tr-lg shadow-lg">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-6">题目 1</h3>
+                    <p class="text-xl mb-8">小明想要买一支笔。文具店A有5种不同款式的笔，文具店B有4种不同款式的笔。小明只想买一支笔，请问他有多少种选择？</p>
+                    <div class="space-y-2 text-lg">
+                        <div class="quiz-option">(A) 9种</div>
+                        <div class="quiz-option">(B) 20种</div>
+                        <div class="quiz-option">(C) 1种</div>
+                        <div class="quiz-option">(D) 5种</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 1 解析 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-400 mb-4">题目 1 解析</h3>
+                <div class="bg-green-50 border-l-8 border-green-500 p-8 rounded shadow-sm">
+                    <p class="text-3xl font-bold text-green-800 mb-6">✅ 正确答案：(A)</p>
+                    <div class="text-xl leading-relaxed text-slate-700">
+                        <p><strong>解析：</strong> 典型的“分类”问题。</p>
+                        <p class="mt-4">去店A买（5种）或者去店B买（4种）都能独立完成任务。</p>
+                        <p class="mt-2">互斥且独立，使用<strong>加法原理</strong>。</p>
+                        <p class="formula-box bg-white mt-4 text-2xl font-bold">
+                            $5 + 4 = 9$
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <div class="bg-blue-600 text-white px-4 py-1 rounded-t-lg inline-block font-bold">随堂小测 2/4</div>
+                <div class="bg-white border-2 border-gray-200 p-8 rounded-b-lg rounded-tr-lg shadow-lg">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-6">题目 2 (计算)</h3>
+                    <p class="text-xl mb-8">小红的衣柜里有3件不同的T恤和4条不同的裙子。如果她今天要穿一件T恤搭配一条裙子出门，一共有多少种穿搭方案？</p>
+                    <div class="space-y-2 text-lg">
+                        <div class="quiz-option">(A) 7种</div>
+                        <div class="quiz-option">(B) 10种</div>
+                        <div class="quiz-option">(C) 12种</div>
+                        <div class="quiz-option">(D) 24种</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 2 解析 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-400 mb-4">题目 2 解析</h3>
+                <div class="bg-green-50 border-l-8 border-green-500 p-8 rounded shadow-sm">
+                    <p class="text-3xl font-bold text-green-800 mb-6">✅ 正确答案：(C)</p>
+                    <div class="text-xl leading-relaxed text-slate-700">
+                        <p><strong>解析：</strong> 典型的“分步”问题。</p>
+                        <p class="mt-4">必须“先选T恤”且“再选裙子”，两步缺一不可才能完成出门任务。</p>
+                        <p class="mt-2">环环相扣，使用<strong>乘法原理</strong>。</p>
+                        <p class="formula-box bg-white mt-4 text-2xl font-bold">
+                            $3 \times 4 = 12$
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <div class="bg-blue-600 text-white px-4 py-1 rounded-t-lg inline-block font-bold">随堂小测 3/4</div>
+                <div class="bg-white border-2 border-gray-200 p-8 rounded-b-lg rounded-tr-lg shadow-lg">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-6">题目 3</h3>
+                    <p class="text-xl mb-8">将3封不同的信投入2个不同的邮筒，每封信都必须投入一个邮筒，共有多少种投法？</p>
+                    <div class="space-y-2 text-lg">
+                        <div class="quiz-option">(A) $2 \times 3 = 6$</div>
+                        <div class="quiz-option">(B) $3^2 = 9$</div>
+                        <div class="quiz-option">(C) $2^3 = 8$</div>
+                        <div class="quiz-option">(D) $3 + 2 = 5$</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 3 解析 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-400 mb-4">题目 3 解析</h3>
+                <div class="bg-green-50 border-l-8 border-green-500 p-8 rounded shadow-sm">
+                    <p class="text-3xl font-bold text-green-800 mb-6">✅ 正确答案：(C)</p>
+                    <div class="text-xl leading-relaxed text-slate-700">
+                        <p><strong>解析：</strong> 主动归位逻辑。</p>
+                        <p class="mt-4">信是主动的。每封信都要做出选择。</p>
+                        <ul class="list-disc list-inside mt-2 ml-4">
+                            <li>第1封信：2种选择</li>
+                            <li>第2封信：2种选择</li>
+                            <li>第3封信：2种选择</li>
+                        </ul>
+                        <p class="formula-box bg-white mt-4 text-2xl font-bold">
+                            $2 \times 2 \times 2 = 8$
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <div class="bg-blue-600 text-white px-4 py-1 rounded-t-lg inline-block font-bold">随堂小测 4/4</div>
+                <div class="bg-white border-2 border-gray-200 p-8 rounded-b-lg rounded-tr-lg shadow-lg">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-6">题目 4</h3>
+                    <p class="text-xl mb-8">下列哪种情况适合使用“分步乘法原理”？</p>
+                    <div class="space-y-2 text-lg">
+                        <div class="quiz-option">(A) 从书架上的5本小说或3本漫画中选一本来看</div>
+                        <div class="quiz-option">(B) 从北京到上海，选飞机（3个航班）或高铁（5趟列车）</div>
+                        <div class="quiz-option">(C) 从甲地经乙地到丙地，甲到乙2条路，乙到丙3条路</div>
+                        <div class="quiz-option">(D) 班级里选出一名值日生，男生10人，女生15人</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习题 4 解析 -->
+        <div class="section">
+            <div class="w-full max-w-3xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-400 mb-4">题目 4 解析</h3>
+                <div class="bg-green-50 border-l-8 border-green-500 p-8 rounded shadow-sm">
+                    <p class="text-3xl font-bold text-green-800 mb-6">✅ 正确答案：(C)</p>
+                    <div class="text-xl leading-relaxed text-slate-700">
+                        <p><strong>解析：</strong></p>
+                        <ul class="list-disc list-inside mt-4 space-y-2">
+                            <li>A、B、D 都是“或”的关系，选其一即可完成任务 $\to$ <strong>加法原理</strong>。</li>
+                            <li>C 是“串联”关系，必须先走完第一段，再走完第二段 $\to$ <strong>乘法原理</strong>。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 总结与思考 -->
+         <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-5xl font-bold text-slate-800 mb-10">通关口诀</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+                    <div class="bg-sky-50 p-8 rounded-xl border border-sky-100">
+                        <h3 class="text-2xl font-bold text-sky-800 mb-4">判断方法</h3>
+                        <p class="text-lg">分类要彻底，用加法；<br>分步要连贯，用乘法。</p>
+                    </div>
+                    <div class="bg-amber-50 p-8 rounded-xl border border-amber-100">
+                        <h3 class="text-2xl font-bold text-amber-800 mb-4">避坑指南</h3>
+                        <p class="text-lg">谁主动谁去选，<br>千万别搞反。</p>
+                    </div>
+                </div>
+                <div class="mt-12 p-6 bg-gray-50 rounded-lg">
+                    <p class="text-xl font-bold text-slate-600">🤔 思考：如果选披萨配料，"培根+蘑菇" 和 "蘑菇+培根" 算一种还是两种？</p>
+                    <p class="text-lg text-slate-500 mt-2">(这是下一节课：有序 vs 无序)</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

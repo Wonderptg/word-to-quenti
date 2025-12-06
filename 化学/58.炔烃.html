@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>有机化学基础：炔烃</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 屏幕显示样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9; /* 页面背景色 */
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4rem 2.5rem;
+            display: none; /* JS控制显示 */
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        #navigation {
+            position: sticky;
+            bottom: 0;
+            background: #f8fafc;
+            padding: 1rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        code, .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        
+        /* 表格样式 */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+        }
+        .styled-table th, .styled-table td {
+            border: 1px solid #cbd5e1;
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+        .styled-table thead {
+            background-color: #f8fafc;
+        }
+        .styled-table th {
+            font-weight: 700;
+            color: #334155;
+            text-align: center;
+        }
+        .styled-table tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+        .styled-table tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            @page { size: landscape; margin: 0; }
+            body, html { background-color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #presentation-container { margin: 0; padding: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            .section { min-height: 100vh; width: 100vw; page-break-after: always; display: flex !important; opacity: 1 !important; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-sizing: border-box; border-bottom: none; }
+            .section:last-child { page-break-after: auto; }
+            #navigation { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 封面页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4 mt-4">有机化学基础：炔烃</h1>
+            </div>
+        </div>
+        
+        <!-- 炔烃 (一)：结构与组成 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                     <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>
+                     炔烃 (一)：结构与组成
+                 </h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="font-bold text-indigo-700 text-xl">官能团：</strong>
+                        <p class="mt-2 text-lg text-slate-700">碳碳三键 (<code>C≡C</code>)</p>
+                        <p class="mt-1 text-sm text-slate-500">（对比烯烃：碳碳双键 <code>C=C</code>）</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="font-bold text-indigo-700 text-xl">不饱和度：</strong>
+                        <p class="mt-2 text-lg text-slate-700">碳碳三键含有 <strong class="text-red-600">2 个 π 键</strong>（不饱和度为 2）。</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="font-bold text-indigo-700 text-xl">通式 (含一个C≡C)：</strong>
+                        <p class="mono mt-2 text-xl text-center font-bold">CₙH₂ₙ₋₂ <span class="text-base text-slate-500 font-normal">(n ≥ 2)</span></p>
+                        <p class="mt-1 text-sm text-slate-500">（烷烃 CₙH₂ₙ₊₂ 失去 4 个 H 形成 2 个 π 键）</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 炔烃的物理性质 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                     <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>
+                     炔烃的物理性质
+                 </h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="font-bold text-gray-700 text-xl">沸点：</strong>
+                        <p class="mt-2 text-lg text-slate-700">随碳原子数递增而<strong class="text-blue-600">升高</strong>（范德华力增大）。</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="font-bold text-gray-700 text-xl">状态：</strong>
+                        <p class="mt-2 text-lg text-slate-700">常温下，碳原子数 ≤ 4 时为<strong class="text-blue-600">气态</strong>。最简单的炔烃是乙炔 (<code>C₂H₂</code>)。</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                        <strong class="font-bold text-gray-700 text-xl">溶解性与密度：</strong>
+                        <p class="mt-2 text-lg text-slate-700"><strong class="text-red-600">难溶于水</strong>，易溶于有机溶剂；密度比水<strong class="text-red-600">小</strong>。</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- 乙炔 (C₂H₂) 的结构特点 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                     <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-indigo-500 rounded"></span>
+                     乙炔 (C₂H₂) 的结构特点
+                 </h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                        <strong class="font-bold text-blue-700 text-xl">1. 杂化方式：</strong>
+                        <p class="mt-2 text-lg text-slate-700">碳原子采取 <strong class="text-red-600">sp 杂化</strong>。</p>
+                        <p class="mt-1 text-sm text-slate-500">（每个C形成 2 个 σ 键，0 个孤电子对，价层电子对数 = 2）</p>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 p-4 rounded-lg">
+                        <strong class="font-bold text-green-700 text-xl">2. 键的组成：</strong>
+                        <p class="mt-2 text-lg text-slate-700">C≡C 三键由 <strong class="text-green-600">1 个 σ 键</strong> 和 <strong class="text-red-600">2 个 π 键</strong> 组成。</p>
+                        <p class="mt-1 text-sm text-slate-500">(1个s和1个p杂化成2个sp轨道形成σ键；剩余2个p轨道(py, pz)“肩并肩”形成2个π键)</p>
+                    </div>
+                    <div class="bg-purple-50 border border-purple-200 p-4 rounded-lg">
+                        <strong class="font-bold text-purple-700 text-xl">3. 空间构型：</strong>
+                        <p class="mt-2 text-lg text-slate-700"><strong class="text-red-600">直线形</strong>结构，所有 4 个原子<strong class="text-red-600">共直线</strong>。</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 乙炔的多种表示方法 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                     <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>
+                     乙炔的多种表示方法
+                 </h2>
+                <div class="mt-8 overflow-x-auto">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>名称</th>
+                                <th>表示</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold">分子式</td>
+                                <td class="mono">C₂H₂</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">最简式</td>
+                                <td class="mono">CH</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">电子式</td>
+                                <td class="mono">H:C⋮⋮C:H</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">结构式</td>
+                                <td class="mono">H—C≡C—H</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">结构简式</td>
+                                <td class="mono">CH≡CH</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">键线式</td>
+                                <td class="mono text-center">
+                                    <svg width="100" height="20" viewBox="0 0 100 20" class="inline-block">
+                                        <line x1="10" y1="5" x2="90" y2="5" stroke="black" stroke-width="2"></line>
+                                        <line x1="10" y1="10" x2="90" y2="10" stroke="black" stroke-width="2"></line>
+                                        <line x1="10" y1="15" x2="90" y2="15" stroke="black" stroke-width="2"></line>
+                                    </svg>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 乙炔的实验室制法 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                     <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>
+                     乙炔的实验室制法
+                 </h2>
+                <div class="mt-8 bg-cyan-50 border border-cyan-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-cyan-800 text-xl">1. 反应原理：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">用电石 (CaC₂) 与水反应。</p>
+                    <p class="mono mt-2 text-center text-xl">CaC₂ + 2H₂O → C₂H₂↑ + Ca(OH)₂</p>
+                </div>
+                <div class="mt-8 bg-yellow-50 border border-yellow-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-yellow-800 text-xl">2. 关键操作：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">通常用<strong class="text-red-600">饱和食盐水</strong>代替水。</p>
+                    <p class="mt-2 text-slate-600 text-lg"><strong>目的：</strong>水的“浓度”降低，可以<strong class="text-red-600">减慢反应速率</strong>，便于控制。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 乙炔的除杂 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                     <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>
+                     乙炔的除杂 (重要)
+                 </h2>
+                <div class="mt-8 bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-gray-800 text-xl">1. 杂质：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">电石 (CaC₂) 中的 S, P 等杂质会与水反应，生成 <code>H₂S</code>, <code>PH₃</code> 等还原性气体。</p>
+                    <p class="mt-2 text-lg text-slate-700 font-bold text-red-600">干扰：H₂S 和 PH₃ 也能使 KMnO₄ 溶液褪色，干扰乙炔的性质检验。</p>
+                </div>
+                <div class="mt-8 bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-blue-800 text-xl">2. 除杂：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">将气体通入<strong class="text-blue-700">硫酸铜 (CuSO₄) 溶液</strong>中进行洗气。</p>
+                    <p class="mono mt-2 text-center text-lg">H₂S + CuSO₄ = CuS↓ (黑色) + H₂SO₄</p>
+                    <p class="mt-1 text-sm text-center text-slate-500">(PH₃ 也会被氧化除去)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 乙炔的性质检验 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                     <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-cyan-500 rounded"></span>
+                     乙炔的性质检验
+                 </h2>
+                <p class="mt-8 text-xl text-slate-700">将<strong class="text-green-600">除杂后</strong>的乙炔气体通入：</p>
+                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                    <div class="bg-yellow-50 border border-yellow-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-yellow-800 text-xl">现象一：</h3>
+                        <p class="mt-3 text-slate-600">使<strong class="text-yellow-700">溴的CCl₄溶液</strong>褪色。</p>
+                        <p class="mt-2 text-xl text-center font-semibold text-yellow-800">结论：发生<strong class="text-red-600">加成反应</strong></p>
+                    </div>
+                    <div class="bg-purple-50 border border-purple-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-purple-800 text-xl">现象二：</h3>
+                        <p class="mt-3 text-slate-600">使<strong class="text-purple-700">酸性KMnO₄</strong>溶液褪色。</p>
+                        <p class="mt-2 text-xl text-center font-semibold text-purple-800">结论：发生<strong class="text-red-600">氧化反应</strong></p>
+                    </div>
+                </div>
+                 <div class="mt-8 bg-red-50 border border-red-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-red-800 text-xl">现象三：点燃</h3>
+                    <p class="mt-3 text-slate-600 text-lg">火焰<strong class="text-red-700">明亮</strong>，伴随<strong class="text-red-700">浓烈黑烟</strong> (含碳量高)。</p>
+                    <p class="mt-2 text-slate-600 text-lg">氧炔焰 (纯O₂) 温度 > 3000°C，用于焊接金属。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 炔烃的化学性质 (一)：加成反应 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                     <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-red-500 rounded"></span>
+                     炔烃的化学性质 (一)：加成反应
+                 </h2>
+                <p class="mt-8 text-xl text-slate-700">1 mol 碳碳三键 (C≡C) 最多可与 2 mol H₂、Br₂、HX 等发生加成。</p>
+                 <div class="mt-8 space-y-3 text-lg">
+                    <p class="p-3 rounded-md bg-white border mono">
+                        <strong>1. 与 H₂：</strong>CH≡CH + 2H₂ --(催化/△)→ CH₃-CH₃
+                    </p>
+                    <p class="p-3 rounded-md bg-white border mono">
+                        <strong>2. 与 HCl：</strong>CH≡CH + HCl --(一定条件)→ CH₂=CHCl (氯乙烯)
+                    </p>
+                    <p class="p-3 rounded-md bg-red-50 border border-red-200 mono">
+                        <strong>3. 与 H₂O (特殊)：</strong><br/>
+                        CH≡CH + H₂O --(催化/△)→ [CH₂=CHOH] (乙烯醇)<br/>
+                        <span class="text-red-600 ml-4">↓ (不稳定, 立即转化)</span><br/>
+                        <strong class="text-red-700 ml-4">CH₃CHO (乙醛)</strong>
+                    </p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 炔烃的化学性质 (二)：加聚/氧化 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                     <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-red-500 rounded"></span>
+                     炔烃的化学性质 (二)：加聚/氧化
+                 </h2>
+                 <div class="mt-8 space-y-4">
+                    <div class="bg-orange-50 border border-orange-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-orange-800 text-xl">1. 加聚反应</h3>
+                        <p class="mt-3 text-slate-600 text-lg">乙炔加聚生成<strong class="text-orange-700">聚乙炔</strong>，可作<strong class="text-blue-600">导电高分子材料</strong>。</p>
+                        <p class="mono mt-2 text-center text-lg">n CH≡CH --(催化剂)→ -[CH=CH]ₙ-</p>
+                    </div>
+                    <div class="bg-yellow-50 border border-yellow-200 p-6 rounded-lg">
+                        <h3 class="font-bold text-yellow-800 text-xl">2. 氧化反应</h3>
+                        <p class="mt-3 text-slate-600 text-lg">· <strong class="text-red-600">燃烧</strong>：<code>CₙH₂ₙ₋₂ + (3n-1)/2 O₂ → nCO₂ + (n-1)H₂O</code></p>
+                        <p class="mt-2 text-slate-600 text-lg">· <strong class="text-red-600">被KMnO₄氧化</strong>：能使酸性高锰酸钾溶液褪色 (<code>C₂H₂ → CO₂</code>)。</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 烷 烯 炔 结构对比 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                     <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>
+                     烷、烯、炔 结构对比
+                 </h2>
+                <div class="mt-8 overflow-x-auto">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>类别</th>
+                                <th>通式 (链状)</th>
+                                <th>代表物</th>
+                                <th>官能团</th>
+                                <th>饱和度</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold">烷烃</td>
+                                <td class="mono">CₙH₂ₙ₊₂</td>
+                                <td class="mono">CH₄</td>
+                                <td>C-C (无)</td>
+                                <td class="text-blue-600">饱和</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">烯烃</td>
+                                <td class="mono">CₙH₂ₙ</td>
+                                <td class="mono">C₂H₄</td>
+                                <td>C=C</td>
+                                <td class="text-red-600">不饱和 (1个π键)</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">炔烃</td>
+                                <td class="mono">CₙH₂ₙ₋₂</td>
+                                <td class="mono">C₂H₂</td>
+                                <td>C≡C</td>
+                                <td class="text-red-600">不饱和 (2个π键)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 烷 烯 炔 性质对比 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                     <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>
+                     烷、烯、炔 性质对比
+                 </h2>
+                <div class="mt-8 overflow-x-auto">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>性质</th>
+                                <th>烷烃</th>
+                                <th>烯烃</th>
+                                <th>炔烃</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold">加成反应</td>
+                                <td class="text-red-600">× 不能</td>
+                                <td class="text-blue-600">√ 能</td>
+                                <td class="text-blue-600">√ 能</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">加聚反应</td>
+                                <td class="text-red-600">× 不能</td>
+                                <td class="text-blue-600">√ 能</td>
+                                <td class="text-blue-600">√ 能</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">酸性KMnO₄</td>
+                                <td class="text-red-600">× 不褪色</td>
+                                <td class="text-blue-600">√ 褪色 (氧化)</td>
+                                <td class="text-blue-600">√ 褪色 (氧化)</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">溴水/Br₂(CCl₄)</td>
+                                <td class="text-red-600">× 不褪色</td>
+                                <td class="text-blue-600">√ 褪色 (加成)</td>
+                                <td class="text-blue-600">√ 褪色 (加成)</td>
+                            </tr>
+                             <tr>
+                                <td class="font-bold">燃烧黑烟</td>
+                                <td>(火焰明亮)</td>
+                                <td>有黑烟</td>
+                                <td><strong class="text-black">浓烈黑烟</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 鉴别与除杂 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                     <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-gray-500 rounded"></span>
+                     鉴别与除杂
+                 </h2>
+                <div class="mt-8 bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                    <h3 class="font-bold text-blue-800 text-xl">鉴别 烷烃 vs (烯烃/炔烃)：</h3>
+                    <p class="mt-3 text-slate-600 text-lg">
+                        使用 <strong class="text-orange-600">溴水</strong> 或 <strong class="text-purple-600">酸性KMnO₄溶液</strong>。<br/>
+                        · 不能使两者褪色的是 → 烷烃<br/>
+                        · 能使两者褪色的是 → 烯烃或炔烃
+                    </p>
+                </div>
+                <div class="mt-8 bg-red-100 text-red-800 p-6 rounded-lg text-lg font-semibold">
+                    <h3 class="font-bold text-xl mb-2">除杂：除去 乙烷 中的 乙烯/乙炔</h3>
+                    <p class="mt-2"><strong class="text-red-900">× 错误：</strong>不能用酸性KMnO₄ (会氧化生成 CO₂，引入新杂质)。</p>
+                    <p class="mt-2"><strong class="text-green-700">√ 正确：</strong>应用<strong class="text-orange-600">溴水</strong> (或Br₂的CCl₄溶液)，通过加成反应除去不饱和烃，且不引入新气体杂质。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 课后小练习（一）：第1～3题 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>
+                    课后小练习（一）
+                </h2>
+                <p class="mt-3 text-slate-500 text-base">（第 1～3 题，难度偏基础，适合课后自测）</p>
+                <div class="mt-6 text-slate-700 text-lg space-y-5">
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-lg">
+                        <p class="font-semibold">1．下列关于炔烃的说法正确的是（ ）</p>
+                        <p class="mt-2">A．炔烃都是饱和烃</p>
+                        <p>B．炔烃分子中一定含有 C=C</p>
+                        <p>C．炔烃的官能团是碳碳三键 C≡C</p>
+                        <p>D．炔烃的通式为 CₙH₂ₙ</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-lg">
+                        <p class="font-semibold">2．下列各组物质中，都能使酸性 KMnO₄ 溶液褪色的是（ ）</p>
+                        <p class="mt-2">A．CH₄、C₂H₂</p>
+                        <p>B．C₂H₄、C₂H₂</p>
+                        <p>C．C₂H₆、CH₄</p>
+                        <p>D．C₂H₆、C₂H₄</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-lg">
+                        <p class="font-semibold">3．实验室用电石和水制取乙炔时，常用饱和食盐水代替纯水，其主要原因是（ ）</p>
+                        <p class="mt-2">A．提高乙炔的纯度</p>
+                        <p>B．防止生成 H₂S、PH₃ 等杂质</p>
+                        <p>C．降低水的“有效浓度”，减慢反应速率</p>
+                        <p>D．使乙炔更易溶解于水中</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 课后小练习（二）：第4～5题 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-purple-500 rounded"></span>
+                    课后小练习（二）
+                </h2>
+                <p class="mt-3 text-slate-500 text-base">（第 4～5 题，侧重结构理解与实验应用）</p>
+                <div class="mt-6 text-slate-700 text-lg space-y-5">
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-lg">
+                        <p class="font-semibold">4．下列关于乙炔结构的描述中，错误的是（ ）</p>
+                        <p class="mt-2">A．碳原子为 sp 杂化</p>
+                        <p>B．C≡C 三键中含有 1 个 σ 键和 2 个 π 键</p>
+                        <p>C．乙炔分子中 4 个原子呈正四面体排列</p>
+                        <p>D．乙炔分子呈直线形结构</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-lg">
+                        <p class="font-semibold">5．下列除去气体混合物中不饱和烃的方法，合理的是（ ）</p>
+                        <p class="mt-2">A．用酸性 KMnO₄ 溶液除去乙烷中的乙烯、乙炔</p>
+                        <p>B．用溴水除去乙烷中的乙烯、乙炔</p>
+                        <p>C．用水洗除去乙烯中的乙烷</p>
+                        <p>D．点燃使乙烯、乙炔燃烧除去</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 课后小练习解析（一）：第1～3题 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-emerald-500 rounded"></span>
+                    课后小练习解析（一）
+                </h2>
+                <p class="mt-3 text-slate-500 text-base">（对应练习第 1～3 题，建议先独立完成再对照）</p>
+                <div class="mt-6 text-slate-700 text-lg space-y-5">
+                    <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-lg">
+                        <p class="font-semibold">1．【答案】C</p>
+                        <p class="mt-2">
+                            解析：炔烃是不饱和烃，通式为 CₙH₂ₙ₋₂，含有碳碳三键 C≡C。
+                            <br>A 错：炔烃是不饱和烃；B 错：炔烃分子中不一定有 C=C，只有 C≡C；
+                            D 错：CₙH₂ₙ 是烯烃通式。
+                        </p>
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-lg">
+                        <p class="font-semibold">2．【答案】B</p>
+                        <p class="mt-2">
+                            解析：能使酸性 KMnO₄ 溶液褪色的一般是不饱和烃（含 C=C 或 C≡C）。
+                            <br>· C₂H₄（烯烃）和 C₂H₂（炔烃）都为不饱和烃，能被氧化，溶液褪色；
+                            <br>· CH₄、C₂H₆ 为饱和烃，不能使酸性 KMnO₄ 溶液褪色。
+                        </p>
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-lg">
+                        <p class="font-semibold">3．【答案】C</p>
+                        <p class="mt-2">
+                            解析：用饱和食盐水代替纯水，可以降低水的“有效浓度”，
+                            从而减慢电石与水的反应速率，防止反应过于剧烈，便于安全控制。
+                            <br>杂质 H₂S、PH₃ 需要通过 CuSO₄ 溶液洗气去除，而不是靠食盐水。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 课后小练习解析（二）：第4～5题 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 relative pb-2">
+                    <span class="absolute bottom-0 left-0 w-1/4 h-1 bg-emerald-500 rounded"></span>
+                    课后小练习解析（二）
+                </h2>
+                <p class="mt-3 text-slate-500 text-base">（对应练习第 4～5 题，可结合本节结构与实验部分回顾）</p>
+                <div class="mt-6 text-slate-700 text-lg space-y-5">
+                    <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-lg">
+                        <p class="font-semibold">4．【答案】C</p>
+                        <p class="mt-2">
+                            解析：乙炔中每个碳原子为 sp 杂化，形成直线形结构，
+                            C≡C 由 1 个 σ 键和 2 个 π 键组成，4 个原子共直线。
+                            <br>A 正确；B 正确；D 正确；
+                            <br>C 说“4 个原子呈正四面体排列”，这是甲烷（CH₄）的空间构型，不是乙炔的，因此 C 错。
+                        </p>
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-lg">
+                        <p class="font-semibold">5．【答案】B</p>
+                        <p class="mt-2">
+                            解析：要从“乙烷 + 乙烯/乙炔”的混合气体中除去不饱和烃（乙烯、乙炔），
+                            又<strong>不引入新的气体杂质</strong>，可用溴水发生加成反应：
+                            乙烯、乙炔与 Br₂ 反应生成液体或固体溴代物被除去，乙烷不反应仍保留。
+                            <br>A：酸性 KMnO₄ 氧化生成 CO₂ 等新气体杂质，不合适；
+                            <br>C：水对各气体溶解度都很小，效果差；
+                            <br>D：点燃会使混合气整体消耗或产生大量 CO₂，无法得到“纯乙烷”。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结束页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                 <svg class="w-24 h-24 mx-auto text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                 </svg>
+                <h2 class="text-5xl font-bold text-slate-800 mt-4">本节课结束</h2>
+                <p class="mt-8 text-2xl text-slate-600">感谢观看！希望大家能把烷、烯、炔对比学习，掌握牢固！</p>
+                <p class="mt-4 text-2xl text-slate-600">下节课再见！</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- 导航控件 -->
+    <div id="navigation" class="text-center">
+        <button id="prevBtn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded transition-opacity">上一页</button>
+        <span id="page-indicator" class="mx-4 text-slate-700 font-semibold"></span>
+        <button id="nextBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-opacity">下一页</button>
+    </div>
+
+    <!-- JS 逻辑 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageIndicator = document.getElementById('page-indicator');
+            let currentPage = 0;
+            const totalPages = sections.length;
+
+            function showPage(pageIndex) {
+                sections.forEach((section) => {
+                    section.classList.remove('active');
+                });
+
+                const activeSection = sections[pageIndex];
+                activeSection.classList.add('active');
+                
+                pageIndicator.textContent = `${pageIndex + 1} / ${totalPages}`;
+                
+                prevBtn.disabled = pageIndex === 0;
+                nextBtn.disabled = pageIndex === totalPages - 1;
+
+                prevBtn.classList.toggle('opacity-50', pageIndex === 0);
+                prevBtn.classList.toggle('cursor-not-allowed', pageIndex === 0);
+                nextBtn.classList.toggle('opacity-50', pageIndex === totalPages - 1);
+                nextBtn.classList.toggle('cursor-not-allowed', pageIndex === totalPages - 1);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    showPage(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+                    prevBtn.click();
+                }
+            });
+
+            // 初始显示第一页
+            showPage(0);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,174 @@
+{
+  "timestamp": "2025-12-06T13:19:44.943Z",
+  "inputDir": "chem_38_64",
+  "studySetId": "cmiu4pakg01bf3oodqe8jyizg",
+  "studySetUrl": "http://cika.dzexam.cn/cmiu4pakg01bf3oodqe8jyizg",
+  "totalFiles": 27,
+  "successCount": 27,
+  "failCount": 0,
+  "totalCards": 326,
+  "results": [
+    {
+      "file": "38.基元反应与反应历程.html",
+      "success": true,
+      "cards": 15,
+      "error": null
+    },
+    {
+      "file": "39.化学平衡状态.html",
+      "success": true,
+      "cards": 15,
+      "error": null
+    },
+    {
+      "file": "40.化学平衡常数 (K).html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "41.影响化学平衡的因素.html",
+      "success": true,
+      "cards": 16,
+      "error": null
+    },
+    {
+      "file": "42.水溶液中的离子反应与平衡.html",
+      "success": true,
+      "cards": 14,
+      "error": null
+    },
+    {
+      "file": "43.水溶液中的离子反应与平衡.html",
+      "success": true,
+      "cards": 15,
+      "error": null
+    },
+    {
+      "file": "44.溶液的酸碱性与pH.html",
+      "success": true,
+      "cards": 17,
+      "error": null
+    },
+    {
+      "file": "45.酸碱中和滴定.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "46.盐类水解基本概念.html",
+      "success": true,
+      "cards": 16,
+      "error": null
+    },
+    {
+      "file": "47.沉淀溶解平衡.html",
+      "success": true,
+      "cards": 15,
+      "error": null
+    },
+    {
+      "file": "48.核外电子的排布方式.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "49.电子排布式与轨道表示.html",
+      "success": true,
+      "cards": 14,
+      "error": null
+    },
+    {
+      "file": "50.共价键：形成、分类与键参数.html",
+      "success": true,
+      "cards": 14,
+      "error": null
+    },
+    {
+      "file": "51.分子间作用力：范德华力与氢键.html",
+      "success": true,
+      "cards": 15,
+      "error": null
+    },
+    {
+      "file": "52.晶体结构与性质.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "53.晶体晶胞.html",
+      "success": true,
+      "cards": 20,
+      "error": null
+    },
+    {
+      "file": "54.金属键与金属晶体.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "55.配位键与配合物.html",
+      "success": true,
+      "cards": 17,
+      "error": null
+    },
+    {
+      "file": "56.分子晶体与共价晶体.html",
+      "success": true,
+      "cards": 16,
+      "error": null
+    },
+    {
+      "file": "57.烯烃.html",
+      "success": true,
+      "cards": 16,
+      "error": null
+    },
+    {
+      "file": "58.炔烃.html",
+      "success": true,
+      "cards": 15,
+      "error": null
+    },
+    {
+      "file": "59.苯及其同系物.html",
+      "success": true,
+      "cards": 15,
+      "error": null
+    },
+    {
+      "file": "60.卤代烃.html",
+      "success": true,
+      "cards": 15,
+      "error": null
+    },
+    {
+      "file": "61.醇.html",
+      "success": true,
+      "cards": 14,
+      "error": null
+    },
+    {
+      "file": "62.苯酚.html",
+      "success": true,
+      "cards": 15,
+      "error": null
+    },
+    {
+      "file": "63.醛与酮.html",
+      "success": true,
+      "cards": 0,
+      "error": null
+    },
+    {
+      "file": "64.生物大分子.html",
+      "success": true,
+      "cards": 17,
+      "error": null
+    }
+  ]
+}

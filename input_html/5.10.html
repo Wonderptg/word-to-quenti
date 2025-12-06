@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二倍角公式——三角函数的“变形金刚” (可打印版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f1f5f9;
+        }
+        
+        #presentation-container {
+            max-width: 56rem;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3rem 2rem;
+            position: relative; 
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 4px solid;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0.25rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .arrow {
+            font-size: 2rem;
+            color: #9ca3af;
+            margin: 0.5rem 0;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+
+            body, html {
+                background-color: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #presentation-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .section {
+                height: 100vh;
+                width: 100vw;
+                page-break-after: always;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem;
+                box-sizing: border-box;
+                border-bottom: none;
+            }
+            
+            .section:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <!-- 1. 标题页 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold text-slate-800 mb-4">二倍角公式</h1>
+                <p class="text-2xl text-slate-600 mt-4">三角函数的“变形金刚”</p>
+                <div class="mt-12 text-xl text-cyan-700 bg-cyan-50 p-4 rounded-lg">
+                    <p>"如果想喝一杯‘双份苹果’果汁，该怎么办？"</p>
+                    <p class="mt-2">在数学里，就是求 sin(α + α) = ?</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. 工具一：正弦 (核心) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 mb-2">工具一：正弦 sin(2α)</h2>
+                <p class="text-xl text-slate-500 mb-8">—— 最耿直的工具</p>
+                <div class="bg-sky-50 text-left p-6 rounded-lg text-lg space-y-4">
+                    <p>由 sin(α)cos(α) + cos(α)sin(α) 两项合并而来。</p>
+                    <p class="font-bold">核心结构：<br><span class="text-2xl text-sky-600">sin(2α) = 2sin(α)cos(α)</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. 工具一：正弦 (应用) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 mb-2">sin(2α)的应用：分裂与合并</h2>
+                <p class="text-xl text-slate-500 mb-8">—— 正用与逆用</p>
+                <div class="bg-sky-50 text-left p-6 rounded-lg text-lg space-y-4">
+                    <div>
+                        <p class="font-semibold">应用场景：</p>
+                        <p>一个二倍角能“分裂”成两个一倍角；反之亦可“合并”。</p>
+                        <p class="text-base text-gray-600 mt-2"><strong>小试牛刀：</strong> 2sin(75°)cos(75°) <br>= sin(2 * 75°) = sin(150°) = 1/2。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. 工具二：正切 (核心) -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 mb-2">工具二：正切 tan(2α)</h2>
+                <p class="text-xl text-slate-500 mb-8">—— 最专一的工具</p>
+                 <div class="bg-emerald-50 text-left p-6 rounded-lg text-lg space-y-4">
+                    <p>由 (tanα + tanα) / (1 - tanαtanα) 化简而来。</p>
+                    <p class="font-bold">核心结构：<br><span class="text-2xl text-emerald-600">tan(2α) = 2tan(α) / (1 - tan²(α))</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. 工具二：正切 (应用) -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 mb-2">tan(2α)的应用：纯粹的代入</h2>
+                <p class="text-xl text-slate-500 mb-8">—— 知一求一</p>
+                <div class="bg-emerald-50 text-left p-6 rounded-lg text-lg space-y-4">
+                    <div>
+                        <p class="font-semibold">应用场景：</p>
+                        <p>整个公式只有 tan(α)，非常纯粹。一旦知道 tan(α) 的值，就能直接代入计算。</p>
+                        <p class="text-base text-gray-600 mt-2"><strong>例如：</strong>已知 tan(α) = 1/3，代入即可求值。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. 工具三：余弦 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-slate-800 mb-2">工具三：余弦 cos(2α)</h2>
+                <p class="text-xl text-slate-500 mb-8">—— 我们的“瑞士军刀”！</p>
+                <div class="bg-red-50 text-left p-6 rounded-lg text-lg space-y-3">
+                    <p>它功能超多，有三种形态，需要学会<strong class="text-red-600">“看人下菜”</strong>！</p>
+                    <div class="formula-box border-red-300 !mt-2">
+                        <strong class="text-red-600">基础形态：cos²(α) - sin²(α)</strong><br>
+                        <span class="text-sm">特点是“齐次”，在解决复杂求值时有奇效。</span>
+                    </div>
+                     <div class="formula-box border-red-300 !mt-2">
+                        <strong class="text-red-600">纯cos形态：2cos²(α) - 1</strong><br>
+                        <span class="text-sm">当题目只给了 cos(α) 时使用。</span>
+                    </div>
+                     <div class="formula-box border-red-300 !mt-2">
+                        <strong class="text-red-600">纯sin形态：1 - 2sin²(α)</strong><br>
+                        <span class="text-sm">当题目只给了 sin(α) 时使用。</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 7. 公式总结 -->
+        <div class="section">
+             <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-gray-500 pb-2 mb-4">三大核心公式：工具箱概览</h2>
+            <div class="w-full max-w-4xl mx-auto space-y-4">
+                <div class="formula-box border-sky-500">
+                    <strong class="text-sky-600">sin(2α) = 2sin(α)cos(α)</strong>
+                </div>
+                 <div class="formula-box border-red-500">
+                    <strong class="text-red-600">cos(2α) = cos²(α) - sin²(α)</strong> <span class="text-sm text-gray-500">(齐次形态)</span><br>
+                    = 2cos²(α) - 1 <span class="text-sm text-gray-500">(已知cos用)</span><br>
+                    = 1 - 2sin²(α) <span class="text-sm text-gray-500">(已知sin用)</span>
+                </div>
+                 <div class="formula-box border-emerald-500">
+                    <strong class="text-emerald-600">tan(2α) = 2tan(α) / (1 - tan²(α))</strong>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 8. 核心思想 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8">核心思想：角度与次数的“翻译机”</h2>
+                <div class="text-2xl text-slate-700 leading-relaxed bg-amber-50 p-8 rounded-lg">
+                    <p>二倍角公式的威力在于，它可以在<br/><span class="text-3xl font-bold text-amber-600">“角度加倍”</span> 和 <span class="text-3xl font-bold text-amber-600">“次数升幂”</span> 之间自由切换！</p>
+                    <div class="mt-6 text-xl flex justify-center items-center">
+                        <span class="bg-red-100 px-3 py-1 rounded">cos(<span class="font-bold">2</span>α)</span>
+                        <span class="mx-4 text-2xl font-bold">⇌</span>
+                        <span class="bg-blue-100 px-3 py-1 rounded">2cos<span class="font-bold">²</span>(α) - 1</span>
+                    </div>
+                </div>
+             </div>
+        </div>
+
+        <!-- 9. 大Boss挑战 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800 text-center border-b-4 border-amber-500 pb-2">挑战大Boss：思想升华</h2>
+                <div class="mt-6 text-lg bg-amber-50 p-6 rounded-lg">
+                    <p class="font-bold">已知 2sin(α) - cos(α) = 0，求 (5 - sin(2α)) / (3 + cos(2α)) 的值。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 10. 练习题 1 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (一)</h2>
+                <div class="text-base md:text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg"><strong>1.</strong> 2sin(π/8)cos(π/8) 的值是？<br/><br/>
+                        (A) 1/2 <br/>
+                        (B) √2/2 <br/>
+                        (C) √3/2 <br/>
+                        (D) 1
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 11. 练习题 2 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (二)</h2>
+                <div class="text-base md:text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg"><strong>2.</strong> 已知 cos(α) = 1/3, 则 cos(2α) 的值等于？<br/><br/>
+                        (A) 2/3 <br/>
+                        (B) -2/3 <br/>
+                        (C) 7/9 <br/>
+                        (D) -7/9
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 12. 练习题 3 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (三)</h2>
+                <div class="text-base md:text-lg">
+                     <div class="bg-gray-50 p-4 rounded-lg"><strong>3.</strong> 如果 tan(α) = 1/2, 那么 tan(2α) 等于？<br/><br/>
+                        (A) 1 <br/>
+                        (B) 4/3 <br/>
+                        (C) 3/4 <br/>
+                        (D) 2/3
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 13. 练习题 4 -->
+        <div class="section">
+            <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">随堂练习 (四)</h2>
+                <div class="text-base md:text-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg"><strong>4.</strong> 表达式 1 - 2sin²(π/12) 的值等于？<br/><br/>
+                        (A) sin(π/6) <br/>
+                        (B) cos(π/12) <br/>
+                        (C) cos(π/6) <br/>
+                        (D) 1/2
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 14. 练习题解析 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-800 text-center mb-8">练习题解析</h2>
+                <div class="space-y-3 text-base">
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>1. 答案：B</strong></p>
+                        <p><strong>解析：</strong>原式 = sin(2 * π/8) = sin(π/4) = √2/2。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>2. 答案：D</strong></p>
+                        <p><strong>解析：</strong>cos(2α) = 2cos²(α) - 1 = 2(1/3)² - 1 = 2/9 - 1 = -7/9。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>3. 答案：B</strong></p>
+                        <p><strong>解析：</strong>tan(2α) = 2tan(α)/(1-tan²α) = (2*1/2)/(1-(1/2)²) = 1/(3/4) = 4/3。</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-lg">
+                        <p><strong>4. 答案：C</strong></p>
+                        <p><strong>解析：</strong>原式结构为 1-2sin²α = cos(2α)，所以等于 cos(2 * π/12) = cos(π/6)。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 15. 总结 -->
+        <div class="section">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8">三大锦囊，请收好！</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-lg">
+                    <div class="bg-sky-100 p-6 rounded-lg">
+                        <h3 class="font-bold text-2xl mb-2">锦囊一：追根溯源</h3>
+                        <p>忘了可以自己推导，它们都源于两角和公式。</p>
+                    </div>
+                    <div class="bg-amber-100 p-6 rounded-lg">
+                         <h3 class="font-bold text-2xl mb-2">锦囊二：看人下菜</h3>
+                         <p>根据已知条件，灵活选用cos(2α)的三种形态。</p>
+                    </div>
+                    <div class="bg-emerald-100 p-6 rounded-lg">
+                         <h3 class="font-bold text-2xl mb-2">锦囊三：终极奥义</h3>
+                         <p>巧用“齐次化”思想解决复杂求值问题。</p>
+                    </div>
+                </div>
+                 <p class="mt-12 text-2xl text-slate-700">掌握“变形”精髓，玩转三角函数！</p>
+            </div>
+        </div>
+
+    </div>
+    
+</body>
+</html>
+
